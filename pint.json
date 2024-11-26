@@ -1,0 +1,8 @@
+{
+    "preset": "psr12",
+    "rules": {
+        "new_with_braces": {
+            "named_class": false
+        }
+    }
+}
