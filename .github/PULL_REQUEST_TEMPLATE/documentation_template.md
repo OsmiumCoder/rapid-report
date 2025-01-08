@@ -1,4 +1,4 @@
-# Documentation Update PR Template
+# Documentation Update
 
 ## Summary
 
