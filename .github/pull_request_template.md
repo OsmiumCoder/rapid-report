@@ -1,4 +1,4 @@
-# Feature Addition PR Template
+# Feature Addition
 
 ## Summary
 

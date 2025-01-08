@@ -1,4 +1,4 @@
-# Bug Fix PR Template
+# Bug Fix
 
 ## Summary
 
