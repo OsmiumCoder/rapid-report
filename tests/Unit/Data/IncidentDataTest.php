@@ -33,8 +33,6 @@ class IncidentDataTest extends TestCase
             true,
             'Minor burn treated with ointment',
             $incidentDate,
-            $closedAt,
-            0,
         );
 
         // Assert: Check that the instance was created with the correct values
@@ -49,9 +47,7 @@ class IncidentDataTest extends TestCase
         $this->assertEquals('A fire broke out in the room.', $incidentData->description);
         $this->assertTrue($incidentData->has_injury);
         $this->assertEquals('Minor burn treated with ointment', $incidentData->first_aid_description);
-        $this->assertEquals(0, $incidentData->status);
         $this->assertInstanceOf(Carbon::class, $incidentData->incident_date);
-        $this->assertInstanceOf(Carbon::class, $incidentData->closed_at);
         $this->assertCount(2, $incidentData->witnesses);  // Check the number of witnesses
     }
 }
