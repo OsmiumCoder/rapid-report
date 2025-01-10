@@ -19,7 +19,15 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::resource('incidents', IncidentController::class)->middleware(['auth', 'verified']);
+Route::resource('incidents', IncidentController::class)->only([
+    "create",
+    "store"
+]);
+
+Route::resource('incidents', IncidentController::class)->except([
+    "create",
+    "store"
+])->middleware(['auth', 'verified']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

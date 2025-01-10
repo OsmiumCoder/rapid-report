@@ -1,12 +1,12 @@
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import GuestLayout from "@/Layouts/GuestLayout";
 import {PageProps} from "@/types";
 
 export default function Create({form}: PageProps<{ form: object }>) {
     return (
-        <AuthenticatedLayout>
+        <GuestLayout>
             <pre>
                 {JSON.stringify(form, null, 2)}
             </pre>
-        </AuthenticatedLayout>
+        </GuestLayout>
     );
 }
