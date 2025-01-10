@@ -10,7 +10,7 @@ use Illuminate\Foundation\Testing\TestCase;
 
 class IncidentModelTest extends TestCase
 {
-    public function test_creates_an_incident_with_valid_attributes()
+    public function test_creates_an_incident_model_with_valid_attributes()
     {
         $user = User::factory()->create(); // Create a user
         $incident = Incident::factory()->create([
@@ -18,10 +18,13 @@ class IncidentModelTest extends TestCase
         ]);
 
         $this->assertNotNull($incident->user_id);
+        $this->assertNotNull($incident->work_related);
         $this->assertNotNull($incident->incident_date);
         $this->assertNotNull($incident->location);
         $this->assertNotNull($incident->incident_type);
         $this->assertNotNull($incident->descriptor);
         $this->assertNotNull($incident->description);
+        $this->assertNotNull($incident->status);
+        $this->assertNotNull($incident->has_injury);
     }
 }

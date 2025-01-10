@@ -30,20 +30,23 @@ class IncidentDataTest extends TestCase
             true,
             'Minor burn treated with ointment',
             $incidentDate,
+            false,
+            0
         );
 
         $this->assertEquals(1, $incidentData->user_id);
         $this->assertEquals(2, $incidentData->supervisor_id);
-        $this->assertFalse($incidentData->work_related);
         $this->assertEquals('Building A', $incidentData->location);
         $this->assertEquals('123A', $incidentData->room_number);
         $this->assertEquals('John Doe', $incidentData->reported_to);
         $this->assertEquals('Fire', $incidentData->incident_type);
         $this->assertEquals('Burn', $incidentData->descriptor);
+        $this->assertCount(2, $incidentData->witnesses);
         $this->assertEquals('A fire broke out in the room.', $incidentData->description);
         $this->assertTrue($incidentData->has_injury);
         $this->assertEquals('Minor burn treated with ointment', $incidentData->first_aid_description);
         $this->assertInstanceOf(Carbon::class, $incidentData->incident_date);
-        $this->assertCount(2, $incidentData->witnesses);  // Check the number of witnesses
+        $this->assertFalse($incidentData->work_related);
+        $this->assertEquals(0, $incidentData->status);
     }
 }

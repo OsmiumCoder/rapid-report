@@ -20,6 +20,8 @@ class IncidentData extends Data
         public bool $has_injury,
         public string $first_aid_description,
         public Carbon $incident_date,
-        public bool $work_related = false,
-    ) {}
+        public bool $work_related,
+        public int $status,
+    ) {
+    }
 }

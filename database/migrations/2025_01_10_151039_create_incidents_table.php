@@ -14,7 +14,7 @@ return new class () extends Migration {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('supervisor_id')->nullable();
-            $table->boolean('work_related')->default(false);
+            $table->boolean('work_related');
             $table->datetime('incident_date');
             $table->string('location');
             $table->string('room_number')->nullable();
@@ -22,9 +22,9 @@ return new class () extends Migration {
             $table->string('incident_type');
             $table->string('descriptor');
             $table->string('description');
-            $table->boolean('has_injury')->default(false);
+            $table->boolean('has_injury');
             $table->string('first_aid_description')->nullable();
-            $table->integer('status')->default(0);
+            $table->integer('status');
             $table->date('closed_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
