@@ -11,15 +11,12 @@ class IncidentDataTest extends TestCase
 {
     public function test_creates_an_incident_data_instance_with_correct_values(): void
     {
-        // Arrange: Create mock data for witnesses and other fields
         $user = User::factory()->create();
         $supervisor = User::factory()->create();
         $witnesses = [$user, $supervisor];
 
         $incidentDate = now();
-        $closedAt = now()->addDays(1);
 
-        // Act: Create an instance of IncidentData
         $incidentData = new IncidentData(
             1,
             2,
@@ -35,7 +32,6 @@ class IncidentDataTest extends TestCase
             $incidentDate,
         );
 
-        // Assert: Check that the instance was created with the correct values
         $this->assertEquals(1, $incidentData->user_id);
         $this->assertEquals(2, $incidentData->supervisor_id);
         $this->assertFalse($incidentData->work_related);
