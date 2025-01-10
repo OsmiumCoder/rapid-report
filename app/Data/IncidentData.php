@@ -23,5 +23,6 @@ class IncidentData extends Data
         public ?Carbon $closed_at = null,
         public int $status = 0,
         public bool $work_related = false,
-    ) {}
+    ) {
+    }
 }
