@@ -11,6 +11,7 @@ class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;
+
     use Notifiable;
 
     /**
@@ -45,5 +46,15 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function incidents_witnessed()
+    {
+        return $this->belongsToMany(Incident::class, 'witnesses', 'user_id', 'incident_id');
+    }
+
+    public function incidents()
+    {
+        return $this->hasMany(Incident::class);
     }
 }
