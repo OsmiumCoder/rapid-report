@@ -48,7 +48,7 @@ class User extends Authenticatable
         ];
     }
 
-    public function incident_witnesses()
+    public function incident_witnessed()
     {
         return $this->belongsToMany(Incident::class, 'witnesses', 'user_id', 'incident_id');
     }

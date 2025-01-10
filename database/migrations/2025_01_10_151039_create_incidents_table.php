@@ -25,9 +25,10 @@ return new class() extends Migration
             $table->string('description');
             $table->boolean('has_injury')->default(false);
             $table->string('first_aid_description')->nullable();
-            $table->boolean('completed')->default(false);
-            $table->date('closing_date')->nullable();
+            $table->integer('status')->default(0);
+            $table->date('closed_at')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -36,6 +37,6 @@ return new class() extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('incident_reports');
+        Schema::dropIfExists('incidents');
     }
 };

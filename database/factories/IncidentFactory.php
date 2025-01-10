@@ -25,7 +25,7 @@ class IncidentFactory extends Factory
             'descriptor' => 'Slip',
             'description' => fake()->text(),
             'has_injury' => fake()->boolean(),
-            'completed' => false,
+            'status' => 0,
         ];
     }
 }
