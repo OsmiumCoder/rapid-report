@@ -15,7 +15,8 @@ class StoredEvent extends ShouldBeStored
      *
      * @return void
      */
-    public function handle() {
+    public function handle()
+    {
 
     }
 
@@ -25,7 +26,8 @@ class StoredEvent extends ShouldBeStored
      *
      * @return void
      */
-    public function react() {
+    public function react()
+    {
 
     }
 }

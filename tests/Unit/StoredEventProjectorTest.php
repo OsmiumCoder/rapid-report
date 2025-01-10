@@ -9,7 +9,8 @@ use Mockery\Adapter\Phpunit\MockeryTestCase;
 
 class StoredEventProjectorTest extends MockeryTestCase
 {
-    public function test_stored_event_handle_method_called() {
+    public function test_stored_event_handle_method_called()
+    {
         $mock = Mockery::spy(StoredEvent::class);
 
         $mock->shouldReceive("handle")->once();
@@ -23,7 +24,8 @@ class StoredEventProjectorTest extends MockeryTestCase
         $mock->shouldNotHaveReceived("react");
     }
 
-    private function getProjector() {
+    private function getProjector()
+    {
         return new StoredEventProjector;
     }
 }
