@@ -17,22 +17,22 @@ class IncidentDataTest extends TestCase
 
         $incidentDate = now();
 
-        $incidentData = new IncidentData(
-            1,
-            2,
-            'Building A',
-            '123A',
-            'John Doe',
-            'Fire',
-            'Burn',
-            $witnesses,
-            'A fire broke out in the room.',
-            true,
-            'Minor burn treated with ointment',
-            $incidentDate,
-            false,
-            0
-        );
+        $incidentData = IncidentData::from([
+            'user_id' => 1,
+            'supervisor_id' => 2,
+            'location' => 'Building A',
+            'room_number' => '123A',
+            'reported_to' => 'John Doe',
+            'incident_type' => 'Fire',
+            'descriptor' => 'Burn',
+            'witnesses' => $witnesses,
+            'description' => 'A fire broke out in the room.',
+            'has_injury' => true,
+            'first_aid_description' => 'Minor burn treated with ointment',
+            'incident_date' => $incidentDate,
+            'work_related' => false,
+            'status' => 0,
+        ]);
 
         $this->assertEquals(1, $incidentData->user_id);
         $this->assertEquals(2, $incidentData->supervisor_id);

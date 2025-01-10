@@ -12,7 +12,7 @@ class IncidentModelTest extends TestCase
 {
     public function test_creates_an_incident_model_with_valid_attributes()
     {
-        $user = User::factory()->create(); // Create a user
+        $user = User::factory()->create();
         $incident = Incident::factory()->create([
             'user_id' => $user->id,
         ]);
