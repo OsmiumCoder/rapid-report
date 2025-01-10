@@ -12,20 +12,44 @@ return new class () extends Migration {
     {
         Schema::create('incidents', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('supervisor_id')->nullable();
+
+            $table->integer('role');
+
+            $table->string('last_name');
+            $table->string('first_name');
+            $table->string('upei_id')->nullable();
+            $table->string('email');
+            $table->string('phone');
+
             $table->boolean('work_related');
-            $table->datetime('incident_date');
+
+            $table->datetime('happened_at');
+
             $table->string('location');
+
             $table->string('room_number')->nullable();
+
             $table->string('reported_to')->nullable();
-            $table->string('incident_type');
+
+            $table->jsonb('witnesses')->nullable();
+
+            $table->integer('incident_type');
             $table->string('descriptor');
+
             $table->string('description');
-            $table->boolean('has_injury');
+
+            $table->string('injury_description')->nullable();
+
             $table->string('first_aid_description')->nullable();
+
+            $table->string('reporters_email')->nullable();
+
+            $table->string('supervisor_name')->nullable();
+
             $table->integer('status');
-            $table->date('closed_at')->nullable();
+
+            $table->timestamp('closed_at')->nullable();
+
             $table->timestamps();
             $table->softDeletes();
         });

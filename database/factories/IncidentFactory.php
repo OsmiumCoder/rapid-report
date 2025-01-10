@@ -17,14 +17,17 @@ class IncidentFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => 1,
-            'work_related' => fake()->boolean(),
-            'incident_date' => fake()->date(),
+            'role' => fake()->numberBetween(0, 5),
+            'last_name' => fake()->lastName(),
+            'first_name' => fake()->firstName(),
+            'email' => fake()->email(),
+            'phone' => fake()->phoneNumber(),
+            'work_related' => fake()->boolean,
+            'happened_at' => fake()->date(),
             'location' => fake()->address(),
-            'incident_type' => fake()->word(),
-            'descriptor' => 'Slip',
+            'incident_type' => 0,
+            'descriptor' => 'Burn',
             'description' => fake()->text(),
-            'has_injury' => fake()->boolean(),
             'status' => 0,
         ];
     }
