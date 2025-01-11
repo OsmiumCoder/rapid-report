@@ -22,9 +22,4 @@ class Incident extends Model
     {
         return $this->belongsTo(User::class, 'supervisor_id');
     }
-
-    public function witnesses()
-    {
-        return $this->belongsToMany(User::class, 'witnesses', 'incident_id', 'witness_id');
-    }
 }
