@@ -2,24 +2,21 @@
 
 namespace App\Models;
 
+use App\Enum\IncidentStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Incident extends Model
 {
-    /** @use HasFactory<\Database\Factories\IncidentFactory> */
     use HasFactory;
-
     use SoftDeletes;
 
-    public function submitter()
+    protected function casts(): array
     {
-        return $this->belongsTo(User::class, 'user_id');
-    }
-
-    public function supervisor()
-    {
-        return $this->belongsTo(User::class, 'supervisor_id');
+        return [
+            'witnesses' => 'array',
+            'status' => IncidentStatus::class,
+        ];
     }
 }
