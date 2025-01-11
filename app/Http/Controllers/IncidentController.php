@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Data\IncidentData;
-use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Incident;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
