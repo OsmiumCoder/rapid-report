@@ -8,10 +8,10 @@ use Spatie\EventSourcing\StoredEvents\ShouldBeStored;
  * StoredEvent should be inherited for all events
  * and there handle and react methods should be overloaded as needed.
  */
-class StoredEvent extends ShouldBeStored
+abstract class StoredEvent extends ShouldBeStored
 {
     /**
-     * Called by projector
+     * Called by the projector.
      *
      * @return void
      */
