@@ -15,11 +15,11 @@ return new class () extends Migration {
 
             $table->integer('role');
 
-            $table->string('last_name');
-            $table->string('first_name');
+            $table->string('last_name')->nullable();
+            $table->string('first_name')->nullable();
             $table->string('upei_id')->nullable();
-            $table->string('email');
-            $table->string('phone');
+            $table->string('email')->nullable();
+            $table->string('phone')->nullable();
 
             $table->boolean('work_related');
 

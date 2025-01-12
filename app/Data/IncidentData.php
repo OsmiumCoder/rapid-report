@@ -9,11 +9,11 @@ class IncidentData extends Data
 {
     public function __construct(
         public int $role,
-        public string $last_name,
-        public string $first_name,
+        public ?string $last_name,
+        public ?string $first_name,
         public ?string $upei_id,
-        public string $email,
-        public string $phone,
+        public ?string $email,
+        public ?string $phone,
         public bool $work_related,
         public Carbon $happened_at,
         public string $location,

@@ -1,0 +1,128 @@
+<?php
+
+namespace StoreableEvents\Incident;
+
+use App\Enum\IncidentStatus;
+use App\Models\Incident;
+use App\StorableEvents\Incident\IncidentCreated;
+use Carbon\Carbon;
+use Tests\TestCase;
+
+class IncidentCreatedTest extends TestCase
+{
+    public function test_creates_new_incident(): void
+    {
+        Carbon::setTestNow('2024-05-01 12:12:00');
+
+        $event = new IncidentCreated(
+            role: '0',
+            last_name: 'last',
+            first_name: 'first',
+            upei_id: '322',
+            email: 'john@doe.com',
+            phone: '(902) 333-4444',
+            work_related: true,
+            happened_at: now(),
+            location: 'Building A',
+            room_number: '123A',
+            reported_to: 'John Doe',
+            witnesses: [],
+            incident_type: 0,
+            descriptor: 'Burn',
+            description: 'A fire broke out in the room.',
+            injury_description: 'Minor burn',
+            first_aid_description: 'Minor burn treated',
+            reporters_email: 'jane@doe.com',
+            supervisor_name: 'John Doe',
+            status: IncidentStatus::OPEN
+        );
+
+        $this->assertDatabaseCount('incidents', 0);
+
+        $event->handle();
+
+        $this->assertDatabaseCount('incidents', 1);
+
+        $incident = Incident::first();
+
+        $this->assertEquals($event->role, $incident->role);
+        $this->assertEquals($event->last_name, $incident->last_name);
+        $this->assertEquals($event->first_name, $incident->first_name);
+        $this->assertEquals($event->upei_id, $incident->upei_id);
+        $this->assertEquals($event->email, $incident->email);
+        $this->assertEquals($event->phone, $incident->phone);
+        $this->assertEquals($event->work_related, $incident->work_related);
+        $this->assertEquals($event->happened_at, $incident->happened_at);
+        $this->assertEquals($event->location, $incident->location);
+        $this->assertEquals($event->room_number, $incident->room_number);
+        $this->assertEquals($event->reported_to, $incident->reported_to);
+        $this->assertEquals($event->witnesses, $incident->witnesses);
+        $this->assertEquals($event->incident_type, $incident->incident_type);
+        $this->assertEquals($event->descriptor, $incident->descriptor);
+        $this->assertEquals($event->description, $incident->description);
+        $this->assertEquals($event->injury_description, $incident->injury_description);
+        $this->assertEquals($event->first_aid_description, $incident->first_aid_description);
+        $this->assertEquals($event->reporters_email, $incident->reporters_email);
+        $this->assertEquals($event->supervisor_name, $incident->supervisor_name);
+        $this->assertEquals(IncidentStatus::OPEN, $incident->status);
+        $this->assertNull($incident->closed_at);
+    }
+
+    public function test_creates_new_incident_anonymous(): void
+    {
+        Carbon::setTestNow('2024-05-01 12:12:00');
+
+        $event = new IncidentCreated(
+            role: '0',
+            last_name: null,
+            first_name: null,
+            upei_id: null,
+            email: null,
+            phone: null,
+            work_related: true,
+            happened_at: now(),
+            location: 'Building A',
+            room_number: null,
+            reported_to: null,
+            witnesses: null,
+            incident_type: 0,
+            descriptor: 'Burn',
+            description: 'A fire broke out in the room.',
+            injury_description: null,
+            first_aid_description: null,
+            reporters_email: null,
+            supervisor_name: null,
+            status: IncidentStatus::OPEN
+        );
+
+        $this->assertDatabaseCount('incidents', 0);
+
+        $event->handle();
+
+        $this->assertDatabaseCount('incidents', 1);
+
+        $incident = Incident::first();
+
+        $this->assertEquals($event->role, $incident->role);
+        $this->assertNull($incident->last_name);
+        $this->assertNull($incident->first_name);
+        $this->assertNull($incident->upei_id);
+        $this->assertNull($incident->email);
+        $this->assertNull($incident->phone);
+        $this->assertEquals($event->work_related, $incident->work_related);
+        $this->assertEquals($event->happened_at, $incident->happened_at);
+        $this->assertEquals($event->location, $incident->location);
+        $this->assertNull($incident->room_number);
+        $this->assertNull($incident->reported_to);
+        $this->assertNull($incident->witnesses);
+        $this->assertEquals($event->incident_type, $incident->incident_type);
+        $this->assertEquals($event->descriptor, $incident->descriptor);
+        $this->assertEquals($event->description, $incident->description);
+        $this->assertNull($incident->injury_description);
+        $this->assertNull($incident->first_aid_description);
+        $this->assertNull($incident->reporters_email);
+        $this->assertNull($incident->supervisor_name);
+        $this->assertEquals(IncidentStatus::OPEN, $incident->status);
+        $this->assertNull($incident->closed_at);
+    }
+}
