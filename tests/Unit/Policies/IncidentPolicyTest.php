@@ -10,8 +10,6 @@ use Tests\TestCase;
 
 class IncidentPolicyTest extends TestCase
 {
-    protected string $seeder = RolesAndPermissionsSeeder::class;
-
     public function test_user_cant_view_incident_they_dont_own()
     {
         $incident = Incident::factory()->create([
