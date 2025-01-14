@@ -4,40 +4,39 @@ namespace App\Policies;
 
 use App\Models\Incident;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class IncidentPolicy
 {
     /**
-     * Perform pre-authorization checks.
-     */
-    public function before(User $user, string $ability): bool|null
-    {
-        if ($user->isAdministrator()) {
-            return true;
-        }
-
-        return null;
-    }
-
-    /**
-     * Determine whether the user can view any models.
+     * Determine whether the user can view any incidents.
      */
     public function viewAny(User $user): bool
     {
-        //
+        return $user->can('view all incidents');
     }
 
     /**
-     * Determine whether the user can view the model.
+     * Determine whether the user can view the incident.
      */
     public function view(User $user, Incident $incident): bool
     {
-        //
+        if ($user->can('view all incidents')) {
+            return true;
+        }
+
+        if ($user->can('view assigned incidents')) {
+            return $user->id == $incident->supervisor_id;
+        }
+
+        if ($user->can('view own incidents')) {
+            return $user->email == $incident->reporters_email;
+        }
+
+        return false;
     }
 
     /**
-     * Determine whether the user can create models.
+     * Determine whether the user can create incidents.
      */
     public function create(User $user): bool
     {
@@ -45,34 +44,34 @@ class IncidentPolicy
     }
 
     /**
-     * Determine whether the user can update the model.
+     * Determine whether the user can update the incident.
      */
     public function update(User $user, Incident $incident): bool
     {
-        //
+        return false;
     }
 
     /**
-     * Determine whether the user can delete the model.
+     * Determine whether the user can delete the incident.
      */
     public function delete(User $user, Incident $incident): bool
     {
-        //
+        return false;
     }
 
     /**
-     * Determine whether the user can restore the model.
+     * Determine whether the user can restore the incident.
      */
     public function restore(User $user, Incident $incident): bool
     {
-        //
+        return false;
     }
 
     /**
-     * Determine whether the user can permanently delete the model.
+     * Determine whether the user can permanently delete the incident.
      */
     public function forceDelete(User $user, Incident $incident): bool
     {
-        //
+        return false;
     }
 }
