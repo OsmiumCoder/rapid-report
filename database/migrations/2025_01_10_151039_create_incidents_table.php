@@ -43,8 +43,13 @@ return new class () extends Migration {
             $table->string('first_aid_description')->nullable();
 
             $table->string('reporters_email')->nullable();
+            $table->index('reporters_email');
 
+            // A string that will contain the supervisor that was given in the form
             $table->string('supervisor_name')->nullable();
+
+            // The currently assigned supervisor
+            $table->foreignId('supervisor_id')->nullable()->constrained('users');
 
             $table->integer('status');
 
