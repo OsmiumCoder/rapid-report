@@ -47,12 +47,4 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-
-    /**
-     * TODO: update query, based on email or if it was assigned if they are a supervisor
-     */
-    public function incidents()
-    {
-        return $this->hasMany(Incident::class);
-    }
 }
