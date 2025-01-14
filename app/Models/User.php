@@ -6,13 +6,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;
-
     use Notifiable;
+    use HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -48,11 +48,9 @@ class User extends Authenticatable
         ];
     }
 
-    public function incidents_witnessed()
-    {
-        return $this->belongsToMany(Incident::class, 'witnesses', 'user_id', 'incident_id');
-    }
-
+    /**
+     * TODO: update query, based on email or if it was assigned if they are a supervisor
+     */
     public function incidents()
     {
         return $this->hasMany(Incident::class);
