@@ -1,12 +1,12 @@
-import { PropsWithChildren, ReactNode, useState } from 'react'
-import TopBar from '@/Layouts/Partials/TopBar'
-import DesktopSidebar from '@/Layouts/Partials/DesktopSidebar'
-import MobileSidebar from '@/Layouts/Partials/MobileSidebar'
+import { PropsWithChildren, ReactNode, useState } from 'react';
+import TopBar from '@/Layouts/Partials/TopBar';
+import DesktopSidebar from '@/Layouts/Partials/DesktopSidebar';
+import MobileSidebar from '@/Layouts/Partials/MobileSidebar';
 
 export default function Authenticated({
     children,
 }: PropsWithChildren<{ header?: ReactNode }>) {
-    const [sidebarOpen, setSidebarOpen] = useState(false)
+    const [sidebarOpen, setSidebarOpen] = useState(false);
 
     return (
         <>
@@ -28,5 +28,5 @@ export default function Authenticated({
                 </div>
             </div>
         </>
-    )
+    );
 }

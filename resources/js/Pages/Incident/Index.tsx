@@ -1,6 +1,6 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
-import { Head } from '@inertiajs/react'
-import { PageProps } from '@/types'
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { Head } from '@inertiajs/react';
+import { PageProps } from '@/types';
 
 export default function Index({ incidents }: PageProps<{ incidents: any }>) {
     return (
@@ -9,5 +9,5 @@ export default function Index({ incidents }: PageProps<{ incidents: any }>) {
 
             <pre>{JSON.stringify(incidents, null, 2)}</pre>
         </AuthenticatedLayout>
-    )
+    );
 }

@@ -1,5 +1,5 @@
-import NavigationItems from '@/Layouts/Partials/NavigationItems'
-import { usePage } from '@inertiajs/react'
+import NavigationItems from '@/Layouts/Partials/NavigationItems';
+import { usePage } from '@inertiajs/react';
 
 export default function DesktopSidebar() {
     return (
@@ -20,5 +20,5 @@ export default function DesktopSidebar() {
                 </div>
             </div>
         </>
-    )
+    );
 }

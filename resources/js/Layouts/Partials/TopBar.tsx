@@ -2,19 +2,22 @@ import {
     Bars3Icon,
     BellIcon,
     UserCircleIcon,
-} from '@heroicons/react/24/outline'
-import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-import { Link, usePage } from '@inertiajs/react'
-import { Method } from '@/types/Method'
+} from '@heroicons/react/24/outline';
+import {
+    ChevronDownIcon,
+    MagnifyingGlassIcon,
+} from '@heroicons/react/20/solid';
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
+import { Link, usePage } from '@inertiajs/react';
+import { Method } from '@/types/Method';
 
 const userNavigation: { name: string; href: string; method?: Method }[] = [
     { name: 'Your profile', href: route('profile.edit') },
     { name: 'Sign out', href: route('logout'), method: 'post' },
-]
+];
 
 export default function TopBar(props: { onClick: () => void }) {
-    const user = usePage().props.auth.user
+    const user = usePage().props.auth.user;
 
     return (
         <>
@@ -106,5 +109,5 @@ export default function TopBar(props: { onClick: () => void }) {
                 </div>
             </div>
         </>
-    )
+    );
 }

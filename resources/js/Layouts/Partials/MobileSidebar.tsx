@@ -3,19 +3,19 @@ import {
     DialogBackdrop,
     DialogPanel,
     TransitionChild,
-} from '@headlessui/react'
-import { XMarkIcon } from '@heroicons/react/24/outline'
+} from '@headlessui/react';
+import { XMarkIcon } from '@heroicons/react/24/outline';
 
-import NavigationItems from '@/Layouts/Partials/NavigationItems'
+import NavigationItems from '@/Layouts/Partials/NavigationItems';
 
 function classNames(...classes: string[]) {
-    return classes.filter(Boolean).join(' ')
+    return classes.filter(Boolean).join(' ');
 }
 
 export default function MobileSidebar(props: {
-    open: boolean
-    onClose: (value: ((prevState: boolean) => boolean) | boolean) => void
-    onClick: () => void
+    open: boolean;
+    onClose: (value: ((prevState: boolean) => boolean) | boolean) => void;
+    onClick: () => void;
 }) {
     return (
         <Dialog
@@ -63,5 +63,5 @@ export default function MobileSidebar(props: {
                 </DialogPanel>
             </div>
         </Dialog>
-    )
+    );
 }

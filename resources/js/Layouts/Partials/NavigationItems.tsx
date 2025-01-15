@@ -1,19 +1,19 @@
-import { Link } from '@inertiajs/react'
+import { Link } from '@inertiajs/react';
 import {
     Cog6ToothIcon,
     FolderIcon,
     HomeIcon,
     ChevronUpIcon,
     ChevronDownIcon,
-} from '@heroicons/react/24/outline'
-import classNames from '@/Filters/classNames'
-import { ComponentType, SVGProps, useState } from 'react'
+} from '@heroicons/react/24/outline';
+import classNames from '@/Filters/classNames';
+import { ComponentType, SVGProps, useState } from 'react';
 
 interface NavigationItem {
-    name: string
-    route?: string
-    icon?: ComponentType<SVGProps<SVGSVGElement>>
-    children?: NavigationItem[]
+    name: string;
+    route?: string;
+    icon?: ComponentType<SVGProps<SVGSVGElement>>;
+    children?: NavigationItem[];
 }
 
 const navigationItems: NavigationItem[] = [
@@ -40,10 +40,10 @@ const navigationItems: NavigationItem[] = [
             },
         ],
     },
-]
+];
 
 export default function NavigationItems() {
-    const [incidentDropDownIsOpen, setIncidentDropDownIsOpen] = useState(true)
+    const [incidentDropDownIsOpen, setIncidentDropDownIsOpen] = useState(true);
 
     return (
         <nav className="flex flex-1 flex-col">
@@ -168,5 +168,5 @@ export default function NavigationItems() {
                 </li>
             </ul>
         </nav>
-    )
+    );
 }

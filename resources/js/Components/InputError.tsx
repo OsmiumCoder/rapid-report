@@ -1,4 +1,4 @@
-import { HTMLAttributes } from 'react'
+import { HTMLAttributes } from 'react';
 
 export default function InputError({
     message,
@@ -9,5 +9,5 @@ export default function InputError({
         <p {...props} className={'text-sm text-red-600 ' + className}>
             {message}
         </p>
-    ) : null
+    ) : null;
 }

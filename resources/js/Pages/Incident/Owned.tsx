@@ -1,5 +1,5 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
-import { Head } from '@inertiajs/react'
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { Head } from '@inertiajs/react';
 
 export default function Owned({ incidents }: any) {
     return (
@@ -8,5 +8,5 @@ export default function Owned({ incidents }: any) {
 
             <pre>{JSON.stringify(incidents, null, 2)}</pre>
         </AuthenticatedLayout>
-    )
+    );
 }
