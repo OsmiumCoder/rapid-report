@@ -21,11 +21,16 @@ class IndexTest extends TestCase
 
         $response->assertStatus(200);
 
-        $response->assertInertia(fn (AssertableInertia $res) => $res
+        $response->assertInertia(
+            fn (AssertableInertia $res) => $res
             ->component('Incident/Owned')
-            ->has('incidents', fn (AssertableInertia $incidents) => $incidents
+            ->has(
+                'incidents',
+                fn (AssertableInertia $incidents) => $incidents
                 ->count('data', 1)
-                ->has('data.0', fn (AssertableInertia $incident) => $incident
+                ->has(
+                    'data.0',
+                    fn (AssertableInertia $incident) => $incident
                     ->where('reporters_email', $email)
                     ->etc()
                 )
@@ -45,11 +50,16 @@ class IndexTest extends TestCase
 
         $response->assertStatus(200);
 
-        $response->assertInertia(fn (AssertableInertia $res) => $res
+        $response->assertInertia(
+            fn (AssertableInertia $res) => $res
             ->component('Incident/Assigned')
-            ->has('incidents', fn (AssertableInertia $incidents) => $incidents
+            ->has(
+                'incidents',
+                fn (AssertableInertia $incidents) => $incidents
                 ->count('data', 1)
-                ->has('data.0', fn (AssertableInertia $incident) => $incident
+                ->has(
+                    'data.0',
+                    fn (AssertableInertia $incident) => $incident
                     ->where('supervisor_id', $user->id)
                     ->etc()
                 )
