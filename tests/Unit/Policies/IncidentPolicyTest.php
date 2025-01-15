@@ -5,7 +5,6 @@ namespace Tests\Unit\Policies;
 use App\Models\Incident;
 use App\Models\User;
 use App\Policies\IncidentPolicy;
-use Database\Seeders\RolesAndPermissionsSeeder;
 use Tests\TestCase;
 
 class IncidentPolicyTest extends TestCase

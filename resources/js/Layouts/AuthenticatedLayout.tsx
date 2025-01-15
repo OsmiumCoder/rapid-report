@@ -1,4 +1,3 @@
-import {usePage} from '@inertiajs/react';
 import {PropsWithChildren, ReactNode, useState} from 'react';
 import TopBar from "@/Layouts/Partials/TopBar";
 import DesktopSidebar from "@/Layouts/Partials/DesktopSidebar";
