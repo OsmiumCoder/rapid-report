@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -15,17 +14,19 @@ class RolesAndPermissionsSeeder extends Seeder
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
         // create permissions
-        Permission::create(['name' => 'incidents.view']);
+        Permission::create(['name' => 'view all incidents']);
+        Permission::create(['name' => 'view own incidents']);
+        Permission::create(['name' => 'view assigned incidents']);
 
         // create roles and assign created permissions
         Role::create(['name' => 'admin'])
-            ->givePermissionTo(['incidents.view']);
+            ->givePermissionTo(['view all incidents']);
 
         Role::create(['name' => 'supervisor'])
-            ->givePermissionTo(['incidents.view']);
+            ->givePermissionTo(['view assigned incidents', 'view own incidents']);
 
         Role::create(['name' => 'user'])
-            ->givePermissionTo(['incidents.view']);
+            ->givePermissionTo(['view own incidents']);
 
         Role::create(['name' => 'super-admin'])
             ->givePermissionTo(Permission::all());

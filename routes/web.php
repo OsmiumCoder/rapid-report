@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\IncidentController;
+use App\Http\Controllers\Incident\IncidentController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;

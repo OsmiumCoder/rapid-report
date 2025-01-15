@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Incident;
 
 use App\Data\IncidentData;
 use App\Enum\IncidentStatus;
+use App\Http\Controllers\Controller;
 use App\Models\Incident;
 use App\StorableEvents\Incident\IncidentCreated;
 use Illuminate\Http\Request;
@@ -16,7 +17,12 @@ class IncidentController extends Controller
      */
     public function index()
     {
-        //
+        $this->authorize('viewAny', Incident::class);
+
+
+        return Inertia::render('Incident/Index', [
+            'incidents' => Incident::paginate()
+        ]);
     }
 
     /**
@@ -34,6 +40,7 @@ class IncidentController extends Controller
      */
     public function store(IncidentData $incidentData)
     {
+        // TODO: move to aggregate root
         $event = new IncidentCreated(
             role: $incidentData->role,
             last_name: $incidentData->last_name,
@@ -59,7 +66,7 @@ class IncidentController extends Controller
 
         event($event);
 
-        // TODO: update redirect, show a banner
+        // TODO: update redirect to show, show a banner
         return to_route('dashboard');
     }
 
