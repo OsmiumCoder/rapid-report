@@ -83,7 +83,8 @@ class IndexTest extends TestCase
     }
 
     public function test_show_owned_incidents(): void {
-        User::factory()->create(["email" => "email@example.com"])->assignRole("user");
+        $user = User::factory()->create(["email" => "email@example.com"])->assignRole("user");
+        $this->actingAs($user);
 
         Incident::factory()->create(["reporters_email" => "email@example.com"]);
 
@@ -97,8 +98,10 @@ class IndexTest extends TestCase
                     ->where('current_page', 1)
                     ->count('data', 1)
                     ->has('data', fn (AssertableInertia $page) =>
-                        $page->has('reporters_email', "email@example.com"))
-                );
+                        $page->each(fn (AssertableInertia $page) => $page
+                            ->where('reporters_email', 'email@example.com'))
+
+                ));
         });
 
     }

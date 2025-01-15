@@ -14,7 +14,7 @@ class AssignedIncidentsController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $assignedIncidents = Incident::where('reporters_email', $request->user()->email)->paginate(10);
+        $assignedIncidents = Incident::where('supervisor_id', $request->user()->id)->paginate(10);
 
         return Inertia::render('Incident/Index', [
             'incidents' => $assignedIncidents
