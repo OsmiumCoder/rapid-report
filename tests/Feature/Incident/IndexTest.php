@@ -23,19 +23,19 @@ class IndexTest extends TestCase
 
         $response->assertInertia(
             fn (AssertableInertia $res) => $res
-            ->component('Incident/Owned')
-            ->has(
-                'incidents',
-                fn (AssertableInertia $incidents) => $incidents
-                ->count('data', 1)
+                ->component('Incident/Owned')
                 ->has(
-                    'data.0',
-                    fn (AssertableInertia $incident) => $incident
-                    ->where('reporters_email', $email)
-                    ->etc()
+                    'incidents',
+                    fn (AssertableInertia $incidents) => $incidents
+                        ->count('data', 1)
+                        ->has(
+                            'data.0',
+                            fn (AssertableInertia $incident) => $incident
+                                ->where('reporters_email', $email)
+                                ->etc()
+                        )
+                        ->etc()
                 )
-                ->etc()
-            )
         );
     }
 
@@ -52,19 +52,19 @@ class IndexTest extends TestCase
 
         $response->assertInertia(
             fn (AssertableInertia $res) => $res
-            ->component('Incident/Assigned')
-            ->has(
-                'incidents',
-                fn (AssertableInertia $incidents) => $incidents
-                ->count('data', 1)
+                ->component('Incident/Assigned')
                 ->has(
-                    'data.0',
-                    fn (AssertableInertia $incident) => $incident
-                    ->where('supervisor_id', $user->id)
-                    ->etc()
+                    'incidents',
+                    fn (AssertableInertia $incidents) => $incidents
+                        ->count('data', 1)
+                        ->has(
+                            'data.0',
+                            fn (AssertableInertia $incident) => $incident
+                                ->where('supervisor_id', $user->id)
+                                ->etc()
+                        )
+                        ->etc()
                 )
-                ->etc()
-            )
         );
     }
 

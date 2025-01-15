@@ -1,49 +1,49 @@
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react'
 import {
     Cog6ToothIcon,
     FolderIcon,
     HomeIcon,
-    ChevronUpIcon,
-    ChevronDownIcon,
-} from '@heroicons/react/24/outline';
-import classNames from '@/Filters/classNames';
-import { ComponentType, SVGProps, useState } from 'react';
+} from '@heroicons/react/24/outline'
+import classNames from '@/Filters/classNames'
+import { useState } from 'react'
+import NavigationItem, {
+    INavigationItem,
+} from '@/Layouts/Partials/NavigationItem'
+import NavigationDropDownItem from '@/Layouts/Partials/NavigationDropDownItem'
 
-interface NavigationItem {
-    name: string;
-    route?: string;
-    icon?: ComponentType<SVGProps<SVGSVGElement>>;
-    children?: NavigationItem[];
-}
-
-const navigationItems: NavigationItem[] = [
+const navigationItems: INavigationItem[] = [
     {
         name: 'Dashboard',
         route: 'dashboard',
         icon: HomeIcon,
+        roles: ['all'],
     },
     {
         name: 'Incidents',
         icon: FolderIcon,
-        children: [
+        roles: ['all'],
+        subItems: [
             {
                 name: 'All',
                 route: 'incidents.index',
+                roles: ['super-admin', 'admin'],
             },
             {
                 name: 'Owned',
                 route: 'incidents.owned',
+                roles: ['all'],
             },
             {
                 name: 'Assigned',
                 route: 'incidents.assigned',
+                roles: ['super-admin', 'admin', 'supervisor'],
             },
         ],
     },
-];
+]
 
 export default function NavigationItems() {
-    const [incidentDropDownIsOpen, setIncidentDropDownIsOpen] = useState(true);
+    const [incidentDropDownIsOpen, setIncidentDropDownIsOpen] = useState(true)
 
     return (
         <nav className="flex flex-1 flex-col">
@@ -52,71 +52,25 @@ export default function NavigationItems() {
                     <ul role="list" className="-mx-2 space-y-1">
                         {navigationItems.map((item, index) => (
                             <>
-                                {item.children ? (
+                                {item.subItems ? (
                                     <div>
-                                        <div
-                                            className={classNames(
-                                                'flex flex-row group gap-x-3 text-gray-400 hover:bg-gray-800',
-                                                'hover:text-white rounded-md',
-                                                'p-2 text-sm/6 font-semibold'
-                                            )}
+                                        <NavigationDropDownItem
+                                            item={item}
+                                            isOpen={incidentDropDownIsOpen}
                                             onClick={() =>
                                                 setIncidentDropDownIsOpen(
                                                     (prev) => !prev
                                                 )
                                             }
-                                        >
-                                            {item.icon && (
-                                                <item.icon
-                                                    aria-hidden="true"
-                                                    className="size-6 shrink-0"
-                                                />
-                                            )}
-                                            Incidents
-                                            {incidentDropDownIsOpen ? (
-                                                <ChevronDownIcon
-                                                    aria-hidden="true"
-                                                    className="size-6 shrink-0 text-white"
-                                                />
-                                            ) : (
-                                                <ChevronUpIcon
-                                                    aria-hidden="true"
-                                                    className="size-6 shrink-0 text-white"
-                                                />
-                                            )}
-                                        </div>
+                                        />
                                         {incidentDropDownIsOpen && (
                                             <div>
-                                                {item.children.map(
+                                                {item.subItems.map(
                                                     (item, index) => (
-                                                        <li
+                                                        <NavigationItem
                                                             key={`${item.name}${index}`}
-                                                            className="my-1"
-                                                        >
-                                                            <Link
-                                                                href={route(
-                                                                    item.route as string
-                                                                )}
-                                                                className={classNames(
-                                                                    route().current(
-                                                                        item.route as string
-                                                                    )
-                                                                        ? 'bg-gray-800 text-white'
-                                                                        : 'text-gray-400 hover:bg-gray-800 hover:text-white',
-                                                                    'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold'
-                                                                )}
-                                                            >
-                                                                {item.icon && (
-                                                                    <item.icon
-                                                                        aria-hidden="true"
-                                                                        className="size-6 shrink-0"
-                                                                    />
-                                                                )}
-                                                                <span className="ml-8">
-                                                                    {item.name}
-                                                                </span>
-                                                            </Link>
-                                                        </li>
+                                                            item={item}
+                                                        />
                                                     )
                                                 )}
                                             </div>
@@ -168,5 +122,5 @@ export default function NavigationItems() {
                 </li>
             </ul>
         </nav>
-    );
+    )
 }
