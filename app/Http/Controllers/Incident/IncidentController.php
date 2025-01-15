@@ -75,7 +75,11 @@ class IncidentController extends Controller
      */
     public function show(Incident $incident)
     {
-        //
+        $this->authorize('view', $incident);
+
+        return Inertia::render('Incident/Show', [
+            'incident' => $incident
+        ]);
     }
 
     /**
