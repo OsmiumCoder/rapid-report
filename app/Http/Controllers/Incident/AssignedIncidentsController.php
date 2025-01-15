@@ -14,10 +14,10 @@ class AssignedIncidentsController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $assignedIncidents = Incident::where('supervisor_id', $request->user()->id)->paginate(10);
+        $assignedIncidents = Incident::where('supervisor_id', $request->user()->id)->paginate();
 
-        return Inertia::render('Incident/Index', [
-            'incidents' => $assignedIncidents
+        return Inertia::render('Incident/Assigned', [
+            'incidents' => $assignedIncidents,
         ]);
     }
 }
