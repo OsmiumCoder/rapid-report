@@ -2,7 +2,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 import {PageProps} from "@/types";
 
-export default function Index({incidents}: PageProps<{ incidents: object }>) {
+export default function Index({incidents}: PageProps<{ incidents: any }>) {
     return (
         <AuthenticatedLayout>
             <Head title="Incidents" />
