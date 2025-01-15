@@ -38,6 +38,10 @@ class DatabaseSeeder extends Seeder
             'email' => 'user@b.com',
         ])->assignRole('user');
 
-        Incident::factory(10)->create();
+        Incident::factory(10)->create([
+            'reporters_email' => "admin@super.com",
+            'supervisor_name' => 'Super Admin',
+            'supervisor_id' => 1
+        ]);
     }
 }

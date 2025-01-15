@@ -81,4 +81,25 @@ class IndexTest extends TestCase
                 );
         });
     }
+
+    public function test_show_owned_incidents(): void {
+        User::factory()->create(["email" => "email@example.com"])->assignRole("user");
+
+        Incident::factory()->create(["reporters_email" => "email@example.com"]);
+
+        $response = $this->get(route('incidents.owned'));
+
+        $response->assertStatus(200);
+
+        $response->assertInertia(function (AssertableInertia $page) {
+            return $page->component('Incident/Index')
+                ->has('incidents', fn (AssertableInertia $page) => $page
+                    ->where('current_page', 1)
+                    ->count('data', 1)
+                    ->has('data', fn (AssertableInertia $page) =>
+                        $page->has('reporters_email', "email@example.com"))
+                );
+        });
+
+    }
 }

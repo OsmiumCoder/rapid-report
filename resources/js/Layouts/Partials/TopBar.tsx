@@ -2,8 +2,9 @@ import {Bars3Icon, BellIcon, UserCircleIcon} from "@heroicons/react/24/outline";
 import {ChevronDownIcon, MagnifyingGlassIcon} from "@heroicons/react/20/solid";
 import {Menu, MenuButton, MenuItem, MenuItems} from "@headlessui/react";
 import {Link, usePage} from "@inertiajs/react";
+import {Method} from "@/types/Method";
 
-const userNavigation = [
+const userNavigation: {name: string, href: string, method?: Method}[] = [
     {name: 'Your profile', href: route('profile.edit')},
     {name: 'Sign out', href: route('logout'), method: 'post'},
 ];

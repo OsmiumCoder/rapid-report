@@ -1,11 +1,8 @@
 import {Dialog, DialogBackdrop, DialogPanel, TransitionChild} from "@headlessui/react";
 import {
-    Cog6ToothIcon,
     XMarkIcon
 } from "@heroicons/react/24/outline";
-import {Link} from "@inertiajs/react";
-import sidebarNavigationItems from "@/Utilities/SidebarNavigationItems";
-import {useState} from "react";
+
 import NavigationItems from "@/Layouts/Partials/NavigationItems";
 
 function classNames(...classes: string[]) {
