@@ -22,8 +22,8 @@ class IndexTest extends TestCase
     public function test_forbidden_if_supervisor(): void
     {
         $user = User::factory()->create([
-            'name' => 'Admin',
-            'email' => 'admin@b.com',
+            'name' => 'supervisor',
+            'email' => 'supervisor@b.com',
         ])->assignRole('supervisor');
 
         $this->actingAs($user);
@@ -38,8 +38,8 @@ class IndexTest extends TestCase
     public function test_forbidden_if_basic_user(): void
     {
         $user = User::factory()->create([
-            'name' => 'Admin',
-            'email' => 'admin@b.com',
+            'name' => 'user',
+            'email' => 'user@b.com',
         ])->assignRole('user');
 
         $this->actingAs($user);
