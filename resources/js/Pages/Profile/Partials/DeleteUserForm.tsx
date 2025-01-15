@@ -1,19 +1,19 @@
-import DangerButton from '@/Components/DangerButton';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import Modal from '@/Components/Modal';
-import SecondaryButton from '@/Components/SecondaryButton';
-import TextInput from '@/Components/TextInput';
-import { useForm } from '@inertiajs/react';
-import { FormEventHandler, useRef, useState } from 'react';
+import DangerButton from '@/Components/DangerButton'
+import InputError from '@/Components/InputError'
+import InputLabel from '@/Components/InputLabel'
+import Modal from '@/Components/Modal'
+import SecondaryButton from '@/Components/SecondaryButton'
+import TextInput from '@/Components/TextInput'
+import { useForm } from '@inertiajs/react'
+import { FormEventHandler, useRef, useState } from 'react'
 
 export default function DeleteUserForm({
     className = '',
 }: {
-    className?: string;
+    className?: string
 }) {
-    const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
-    const passwordInput = useRef<HTMLInputElement>(null);
+    const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false)
+    const passwordInput = useRef<HTMLInputElement>(null)
 
     const {
         data,
@@ -25,29 +25,29 @@ export default function DeleteUserForm({
         clearErrors,
     } = useForm({
         password: '',
-    });
+    })
 
     const confirmUserDeletion = () => {
-        setConfirmingUserDeletion(true);
-    };
+        setConfirmingUserDeletion(true)
+    }
 
     const deleteUser: FormEventHandler = (e) => {
-        e.preventDefault();
+        e.preventDefault()
 
         destroy(route('profile.destroy'), {
             preserveScroll: true,
             onSuccess: () => closeModal(),
             onError: () => passwordInput.current?.focus(),
             onFinish: () => reset(),
-        });
-    };
+        })
+    }
 
     const closeModal = () => {
-        setConfirmingUserDeletion(false);
+        setConfirmingUserDeletion(false)
 
-        clearErrors();
-        reset();
-    };
+        clearErrors()
+        reset()
+    }
 
     return (
         <section className={`space-y-6 ${className}`}>
@@ -120,5 +120,5 @@ export default function DeleteUserForm({
                 </form>
             </Modal>
         </section>
-    );
+    )
 }
