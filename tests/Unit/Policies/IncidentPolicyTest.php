@@ -9,6 +9,22 @@ use Tests\TestCase;
 
 class IncidentPolicyTest extends TestCase
 {
+
+    public function test_user_can_view_all_their_incidents() {
+        $user = User::factory()->create()->assignRole('user');
+
+        $this->assertTrue($this->getPolicy()->viewAnyOwned($user));
+    }
+    public function test_user_cant_view_any_assigned_incident() {
+        $user = User::factory()->create()->assignRole('user');
+
+        $this->assertFalse($this->getPolicy()->viewAnyAssigned($user));
+    }
+    public function test_supervisor_can_view_any_assigned_incident() {
+        $user = User::factory()->create()->assignRole('supervisor');
+
+        $this->assertTrue($this->getPolicy()->viewAnyAssigned($user));
+    }
     public function test_user_cant_view_incident_they_dont_own()
     {
         $incident = Incident::factory()->create([

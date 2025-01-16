@@ -39,7 +39,7 @@ Run the database migrations (**ensure database rapid_report exists and Laragon i
 
 Start the server
 ```bash
-  npm run rev
+  npm run dev
 ```
 
 You can now access the site at http://rapid-report.test
