@@ -1,11 +1,11 @@
 export interface Incident {
-    id: number;
+    id: string;
     role: number;
-    last_name: string;
-    first_name: string;
+    last_name?: string;
+    first_name?: string;
     upei_id?: string;
-    email: string;
-    phone: string;
+    email?: string;
+    phone?: string;
     work_related: boolean;
     happened_at: string;
     location: string;
@@ -17,12 +17,12 @@ export interface Incident {
     description: string;
     injury_description?: string;
     first_aid_description?: string;
-    reporters_email: string;
-    supervisor_name: string;
-    supervisor_id: number;
+    reporters_email?: string;
+    supervisor_name?: string;
+    supervisor_id?: number;
     status: number;
     closed_at?: string;
     created_at: string;
     updated_at: string;
-    deleted_at: string | null;
+    deleted_at?: string;
 }
