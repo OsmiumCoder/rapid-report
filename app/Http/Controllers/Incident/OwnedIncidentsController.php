@@ -14,7 +14,7 @@ class OwnedIncidentsController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $this->authorize('viewOwned', Incident::class);
+        $this->authorize('viewAnyOwned', Incident::class);
 
         $assignedIncidents = Incident::where('reporters_email', $request->user()->email)->paginate();
 

@@ -15,12 +15,12 @@ class IncidentPolicy
         return $user->can('view all incidents');
     }
 
-    public function viewAssigned(User $user): bool
+    public function viewAnyAssigned(User $user): bool
     {
         return $user->can('view assigned incidents');
     }
 
-    public function viewOwned(User $user): bool
+    public function viewAnyOwned(User $user): bool
     {
         return $user->can('view own incidents');
     }
