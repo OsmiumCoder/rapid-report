@@ -4,14 +4,11 @@ namespace App\Http\Controllers\Incident;
 
 use App\Aggregates\IncidentAggregateRoot;
 use App\Data\IncidentData;
-use App\Enum\IncidentStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Incident;
-use App\StorableEvents\Incident\IncidentCreated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
-use Ramsey\Uuid\Uuid;
 
 class IncidentController extends Controller
 {
