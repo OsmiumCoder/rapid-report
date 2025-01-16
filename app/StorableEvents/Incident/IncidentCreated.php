@@ -37,6 +37,8 @@ class IncidentCreated extends StoredEvent
     {
         $incident = new Incident;
 
+        $incident->id = $this->aggregateRootUuid();
+
         $incident->role = $this->role;
         $incident->last_name = $this->last_name;
         $incident->first_name = $this->first_name;

@@ -5,20 +5,13 @@ namespace Tests\Feature\Incident;
 use App\Data\IncidentData;
 use App\Enum\IncidentStatus;
 use App\Models\Incident;
-use App\StorableEvents\Incident\IncidentCreated;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
 class StoreTest extends TestCase
 {
-    public function test_fires_incident_created_event(): void
+    public function test_redirects_to_show_page(): void
     {
-        Event::fake();
-
-        Carbon::setTestNow('2025-01-24');
-
         $incidentDate = now();
 
         $incidentData = IncidentData::from([
@@ -47,39 +40,15 @@ class StoreTest extends TestCase
 
         $response = $this->post(route('incidents.store'), $incidentData->toArray());
 
-        $response->assertRedirect(route('dashboard'));
+        $this->assertDatabaseCount('incidents', 1);
 
-        Event::assertDispatched(function (IncidentCreated $event) use ($incidentData) {
-            $this->assertEquals($event->role, $incidentData->role);
-            $this->assertEquals($event->last_name, $incidentData->last_name);
-            $this->assertEquals($event->first_name, $incidentData->first_name);
-            $this->assertEquals($event->upei_id, $incidentData->upei_id);
-            $this->assertEquals($event->email, $incidentData->email);
-            $this->assertEquals($event->phone, $incidentData->phone);
-            $this->assertEquals($event->work_related, $incidentData->work_related);
-            $this->assertEquals($event->happened_at, $incidentData->happened_at);
-            $this->assertEquals($event->location, $incidentData->location);
-            $this->assertEquals($event->room_number, $incidentData->room_number);
-            $this->assertEquals($event->reported_to, $incidentData->reported_to);
-            $this->assertEquals($event->witnesses, $incidentData->witnesses);
-            $this->assertEquals($event->incident_type, $incidentData->incident_type);
-            $this->assertEquals($event->descriptor, $incidentData->descriptor);
-            $this->assertEquals($event->description, $incidentData->description);
-            $this->assertEquals($event->injury_description, $incidentData->injury_description);
-            $this->assertEquals($event->first_aid_description, $incidentData->first_aid_description);
-            $this->assertEquals($event->reporters_email, $incidentData->reporters_email);
-            $this->assertEquals($event->supervisor_name, $incidentData->supervisor_name);
-            $this->assertEquals(IncidentStatus::OPEN, $event->status);
+        $incident = Incident::first();
 
-            return true;
-        });
-
+        $response->assertRedirectToRoute('incidents.show', ['incident' => $incident->id]);
     }
 
     public function test_throws_validation_error_for_bad_data(): void
     {
-        Carbon::setTestNow('2025-01-24');
-
         $incidentDate = now();
 
         $incidentData = [
@@ -108,8 +77,6 @@ class StoreTest extends TestCase
 
     public function test_stores_anonymous_incident(): void
     {
-        Carbon::setTestNow('2025-01-24');
-
         $incidentDate = now();
 
         $incidentData = IncidentData::from([
@@ -137,8 +104,6 @@ class StoreTest extends TestCase
         $this->assertDatabaseCount('incidents', 0);
 
         $response = $this->post(route('incidents.store'), $incidentData->toArray());
-
-        $response->assertRedirect(route('dashboard'));
 
         $this->assertDatabaseCount('incidents', 1);
 
@@ -169,8 +134,6 @@ class StoreTest extends TestCase
 
     public function test_stores_incident_with_open_status(): void
     {
-        Carbon::setTestNow('2025-01-24');
-
         $incidentDate = now();
 
         $incidentData = IncidentData::from([
@@ -198,8 +161,6 @@ class StoreTest extends TestCase
         $this->assertDatabaseCount('incidents', 0);
 
         $response = $this->post(route('incidents.store'), $incidentData->toArray());
-
-        $response->assertRedirect(route('dashboard'));
 
         $this->assertDatabaseCount('incidents', 1);
 
@@ -210,8 +171,6 @@ class StoreTest extends TestCase
 
     public function test_stores_incident(): void
     {
-        Carbon::setTestNow('2025-01-24');
-
         $incidentDate = now();
 
         $incidentData = IncidentData::from([
@@ -239,8 +198,6 @@ class StoreTest extends TestCase
         $this->assertDatabaseCount('incidents', 0);
 
         $response = $this->post(route('incidents.store'), $incidentData->toArray());
-
-        $response->assertRedirect(route('dashboard'));
 
         $this->assertDatabaseCount('incidents', 1);
 
