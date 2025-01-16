@@ -14,6 +14,8 @@ class AssignedIncidentsController extends Controller
      */
     public function __invoke(Request $request)
     {
+        $this->authorize('viewAssigned', Incident::class);
+
         $assignedIncidents = Incident::where('supervisor_id', $request->user()->id)->paginate();
 
         return Inertia::render('Incident/Assigned', [

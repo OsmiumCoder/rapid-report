@@ -1,10 +1,10 @@
 import classNames from '@/Filters/classNames'
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline'
-import { INavigationItem } from '@/Layouts/Partials/NavigationItem'
+import { NavigationItemInterface } from '@/Layouts/Partials/NavigationItem'
 import { useState } from 'react'
 
 interface NavigationDropDownItemProps {
-    item: INavigationItem
+    item: NavigationItemInterface
     isOpen: boolean
     onClick: () => void
 }

@@ -2,15 +2,19 @@ import { ComponentType, SVGProps } from 'react'
 import { Link } from '@inertiajs/react'
 import classNames from '@/Filters/classNames'
 
-export interface INavigationItem {
+export interface NavigationItemInterface {
     name: string
     route?: string
     icon?: ComponentType<SVGProps<SVGSVGElement>>
     roles: string[]
-    subItems?: INavigationItem[]
+    subItems?: NavigationItemInterface[]
 }
 
-export default function NavigationItem({ item }: { item: INavigationItem }) {
+export default function NavigationItem({
+    item,
+}: {
+    item: NavigationItemInterface
+}) {
     return (
         <li className="my-1">
             <Link

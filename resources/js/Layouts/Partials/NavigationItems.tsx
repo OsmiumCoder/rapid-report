@@ -7,11 +7,11 @@ import {
 import classNames from '@/Filters/classNames'
 import { useState } from 'react'
 import NavigationItem, {
-    INavigationItem,
+    NavigationItemInterface,
 } from '@/Layouts/Partials/NavigationItem'
 import NavigationDropDownItem from '@/Layouts/Partials/NavigationDropDownItem'
 
-const navigationItems: INavigationItem[] = [
+const navigationItems: NavigationItemInterface[] = [
     {
         name: 'Dashboard',
         route: 'dashboard',
