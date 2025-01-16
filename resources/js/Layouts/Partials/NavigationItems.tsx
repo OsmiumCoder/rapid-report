@@ -43,7 +43,9 @@ const navigationItems: NavigationItemInterface[] = [
 ]
 
 export default function NavigationItems() {
-    const [incidentDropDownIsOpen, setIncidentDropDownIsOpen] = useState(true)
+    const [incidentDropDownIsOpen, setIncidentDropDownIsOpen] = useState(
+        route().current('incidents.*')
+    )
 
     return (
         <nav className="flex flex-1 flex-col">

@@ -28,12 +28,12 @@ export default function NavigationDropDownItem({
             )}
             {item.name}
             {isOpen ? (
-                <ChevronDownIcon
+                <ChevronUpIcon
                     aria-hidden="true"
                     className="size-6 shrink-0 text-white"
                 />
             ) : (
-                <ChevronUpIcon
+                <ChevronDownIcon
                     aria-hidden="true"
                     className="size-6 shrink-0 text-white"
                 />
