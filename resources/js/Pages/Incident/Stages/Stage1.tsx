@@ -1,7 +1,7 @@
 import isStage from "@/Pages/Incident/Stages/Stage";
 
 export default function Stage1(config: isStage): { boolHandle: Function, dataHandle: Function, currentData: {} }{
-
+    
     return (
         <>
         <div className="min-w-0 flex-1 text-sm/6">
@@ -15,11 +15,11 @@ export default function Stage1(config: isStage): { boolHandle: Function, dataHan
         <div className="flex h-6 shrink-0 items-center">
             <div className="group grid size-4 grid-cols-1">
                 <input
-                 id="anon"
-                 name="anon"
-                 type="checkbox"
+                        id="anon"
+                        name="anon"
+                        type="checkbox"
                  aria-describedby="anon-description"
-                 value={config.currentAnon}
+                        checked={config.currentData.anon}
                  onChange={config.boolHandle}
                  className="col-start-1 row-start-1 appearance-none rounded border border-gray-300 bg-white checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto"
                  />
@@ -47,5 +47,7 @@ export default function Stage1(config: isStage): { boolHandle: Function, dataHan
             </div>
         </>
         
-        );
+    );
+    console.log(config.currentData.anon);
 }
+
