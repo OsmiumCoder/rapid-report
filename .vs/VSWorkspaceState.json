@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\app",
+    "\\app\\Data",
+    "\\app\\Models",
+    "\\resources",
+    "\\resources\\css",
+    "\\resources\\js",
+    "\\resources\\js\\Components",
+    "\\resources\\js\\Layouts",
+    "\\resources\\js\\types"
+  ],
+  "SelectedNode": "\\app\\Data\\IncidentData.php",
+  "PreviewInSolutionExplorer": false
+}

@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+.center {
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+}
+.align_right {
+    margin-left: auto;
+    margin-right: 0;
+    padding: 10px;
+}

@@ -25,6 +25,7 @@
         "vite": "^5.0"
     },
     "dependencies": {
-        "@heroicons/react": "^2.2.0"
+        "@heroicons/react": "^2.2.0",
+        "react-phone-input-2": "^2.15.1"
     }
 }
