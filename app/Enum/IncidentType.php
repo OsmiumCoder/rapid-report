@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Enum;
+
 enum IncidentType: int
 {
     case Safety = 1;

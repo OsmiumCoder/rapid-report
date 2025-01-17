@@ -31,7 +31,8 @@ class IncidentCreated extends StoredEvent
         public ?string $reporters_email,
         public ?string $supervisor_name,
         public IncidentStatus $status,
-    ) {}
+    ) {
+    }
 
     public function handle()
     {
