@@ -4,7 +4,7 @@ namespace App\Enum;
 
 enum IncidentType: int
 {
-    case Safety = 1;
-    case Environmental = 2;
-    case Security = 3;
+    case SAFETY = 1;
+    case ENVIRONMENTAL = 2;
+    case SECURITY = 3;
 }

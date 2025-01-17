@@ -29,7 +29,7 @@ class IncidentDataTest extends TestCase
             'room_number' => '123A',
             'reported_to' => 'John Doe',
             'witnesses' => [],
-            'incident_type' => IncidentType::Safety,
+            'incident_type' => IncidentType::SAFETY,
             'descriptor' => 'Burn',
             'description' => 'A fire broke out in the room.',
             'injury_description' => 'Minor burn',
@@ -54,7 +54,7 @@ class IncidentDataTest extends TestCase
             'work_related' => true,
             'happened_at' => $incidentDate,
             'location' => '',
-            'incident_type' => IncidentType::Safety,
+            'incident_type' => IncidentType::SAFETY,
             'descriptor' => '',
             'description' => '',
         ]);

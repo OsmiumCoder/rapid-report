@@ -27,7 +27,7 @@ class IncidentFactory extends Factory
             'work_related' => fake()->boolean,
             'happened_at' => fake()->date(),
             'location' => fake()->address(),
-            'incident_type' => IncidentType::Safety,
+            'incident_type' => IncidentType::SAFETY,
             'descriptor' => 'Burn',
             'description' => fake()->text(),
             'status' => IncidentStatus::OPEN,
