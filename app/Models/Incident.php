@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enum\IncidentStatus;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use App\Enum\IncidentType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,6 +13,7 @@ class Incident extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    use HasUuids;
 
     protected function casts(): array
     {

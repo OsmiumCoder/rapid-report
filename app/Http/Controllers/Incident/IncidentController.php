@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Incident;
 
+use App\Aggregates\IncidentAggregateRoot;
 use App\Data\IncidentData;
-use App\Enum\IncidentStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Incident;
-use App\StorableEvents\Incident\IncidentCreated;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 class IncidentController extends Controller
@@ -40,34 +40,13 @@ class IncidentController extends Controller
      */
     public function store(IncidentData $incidentData)
     {
-        // TODO: move to aggregate root
-        $event = new IncidentCreated(
-            role: $incidentData->role,
-            last_name: $incidentData->last_name,
-            first_name: $incidentData->first_name,
-            upei_id: $incidentData->upei_id,
-            email: $incidentData->email,
-            phone: $incidentData->phone,
-            work_related: $incidentData->work_related,
-            happened_at: $incidentData->happened_at,
-            location: $incidentData->location,
-            room_number: $incidentData->room_number,
-            reported_to: $incidentData->reported_to,
-            witnesses: $incidentData->witnesses,
-            incident_type: $incidentData->incident_type,
-            descriptor: $incidentData->descriptor,
-            description: $incidentData->description,
-            injury_description: $incidentData->injury_description,
-            first_aid_description: $incidentData->first_aid_description,
-            reporters_email: $incidentData->reporters_email,
-            supervisor_name: $incidentData->supervisor_name,
-            status: IncidentStatus::OPEN
-        );
+        $uuid = Str::uuid()->toString();
 
-        event($event);
+        IncidentAggregateRoot::retrieve(uuid: $uuid)
+            ->createIncident($incidentData)
+            ->persist();
 
-        // TODO: update redirect to show, show a banner
-        return to_route('dashboard');
+        return to_route('incidents.show', ['incident' => $uuid]);
     }
 
     /**
