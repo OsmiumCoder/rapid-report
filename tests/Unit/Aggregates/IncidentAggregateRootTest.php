@@ -5,6 +5,7 @@ namespace Tests\Unit\Aggregates;
 use App\Aggregates\IncidentAggregateRoot;
 use App\Data\IncidentData;
 use App\Enum\IncidentStatus;
+use App\Enum\IncidentType;
 use App\Models\Incident;
 use App\StorableEvents\Incident\IncidentCreated;
 use Illuminate\Support\Str;
@@ -29,7 +30,7 @@ class IncidentAggregateRootTest extends TestCase
             'room_number' => '123A',
             'reported_to' => 'John Doe',
             'witnesses' => [],
-            'incident_type' => 0,
+            'incident_type' => IncidentType::SAFETY,
             'descriptor' => 'Burn',
             'description' => 'A fire broke out in the room.',
             'injury_description' => 'Minor burn',
@@ -86,7 +87,7 @@ class IncidentAggregateRootTest extends TestCase
             'room_number' => '123A',
             'reported_to' => 'John Doe',
             'witnesses' => [],
-            'incident_type' => 0,
+            'incident_type' => IncidentType::SAFETY,
             'descriptor' => 'Burn',
             'description' => 'A fire broke out in the room.',
             'injury_description' => 'Minor burn',
@@ -127,7 +128,7 @@ class IncidentAggregateRootTest extends TestCase
             'room_number' => '123A',
             'reported_to' => 'John Doe',
             'witnesses' => [],
-            'incident_type' => 0,
+            'incident_type' => IncidentType::SAFETY,
             'descriptor' => 'Burn',
             'description' => 'A fire broke out in the room.',
             'injury_description' => 'Minor burn',
