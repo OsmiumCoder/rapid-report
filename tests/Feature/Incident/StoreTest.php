@@ -4,6 +4,7 @@ namespace Tests\Feature\Incident;
 
 use App\Data\IncidentData;
 use App\Enum\IncidentStatus;
+use App\Enum\IncidentType;
 use App\Models\Incident;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
@@ -27,7 +28,7 @@ class StoreTest extends TestCase
             'room_number' => '123A',
             'reported_to' => 'John Doe',
             'witnesses' => [],
-            'incident_type' => 0,
+            'incident_type' => IncidentType::SAFETY,
             'descriptor' => 'Burn',
             'description' => 'A fire broke out in the room.',
             'injury_description' => 'Minor burn',
@@ -92,7 +93,7 @@ class StoreTest extends TestCase
             'room_number' => null,
             'reported_to' => null,
             'witnesses' => null,
-            'incident_type' => 0,
+            'incident_type' => IncidentType::SAFETY,
             'descriptor' => 'Burn',
             'description' => 'A fire broke out in the room.',
             'injury_description' => null,
@@ -149,7 +150,7 @@ class StoreTest extends TestCase
             'room_number' => '123A',
             'reported_to' => 'John Doe',
             'witnesses' => [],
-            'incident_type' => 0,
+            'incident_type' => IncidentType::SAFETY,
             'descriptor' => 'Burn',
             'description' => 'A fire broke out in the room.',
             'injury_description' => 'Minor burn',
@@ -186,7 +187,7 @@ class StoreTest extends TestCase
             'room_number' => '123A',
             'reported_to' => 'John Doe',
             'witnesses' => [],
-            'incident_type' => 0,
+            'incident_type' => IncidentType::SAFETY,
             'descriptor' => 'Burn',
             'description' => 'A fire broke out in the room.',
             'injury_description' => 'Minor burn',
