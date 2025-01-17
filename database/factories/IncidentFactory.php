@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Enum\IncidentStatus;
+use App\Enum\IncidentType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -26,7 +27,7 @@ class IncidentFactory extends Factory
             'work_related' => fake()->boolean,
             'happened_at' => fake()->date(),
             'location' => fake()->address(),
-            'incident_type' => 1,
+            'incident_type' => IncidentType::Safety,
             'descriptor' => 'Burn',
             'description' => fake()->text(),
             'status' => IncidentStatus::OPEN,
