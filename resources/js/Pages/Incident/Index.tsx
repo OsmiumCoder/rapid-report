@@ -67,7 +67,7 @@ export default function Index({
                                             </th>
                                             <th
                                                 scope="col"
-                                                className="hiden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 md:table-cell"
+                                                className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 md:table-cell"
                                             >
                                                 Status
                                             </th>
