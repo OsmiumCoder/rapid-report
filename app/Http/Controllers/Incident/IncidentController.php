@@ -21,7 +21,7 @@ class IncidentController extends Controller
 
 
         return Inertia::render('Incident/Index', [
-            'incidents' => Incident::paginate()
+            'incidents' => Incident::paginate($perPage = 10, $columns = ['*'], $pageName = 'incidents')
         ]);
     }
 

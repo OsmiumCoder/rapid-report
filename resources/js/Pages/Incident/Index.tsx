@@ -2,6 +2,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import {Head, Link} from '@inertiajs/react';
 import {Incident} from '@/types/Incident';
 import {PaginatedResponse} from '@/types/PaginatedResponse';
+import {ChevronLeftIcon, ChevronRightIcon} from "@heroicons/react/16/solid";
 
 const IncidentStatus = {
     OPEN: 'Open',
@@ -84,6 +85,7 @@ export default function Index({incidents}: { incidents: PaginatedResponse<Incide
                                     ))}
                                     </tbody>
                                 </table>
+
                             </div>
                         </div>
                     </div>
