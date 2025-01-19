@@ -1,10 +1,15 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
-import { PageProps } from '@/types';
+import { Head, Link } from '@inertiajs/react';
 import { Incident } from '@/types/Incident';
 import { PaginatedResponse } from '@/types/PaginatedResponse';
 
-export default function Index({ incidents }: PageProps<{ incidents: PaginatedResponse<Incident> }>) {
+// Define IncidentStatus Enum
+const IncidentStatus = {
+    OPEN: 'Open',
+    CLOSED: 'Closed',
+};
+
+export default function Index({ incidents }: { incidents: PaginatedResponse<Incident> }) {
     return (
         <AuthenticatedLayout>
             <Head title="Incidents" />
@@ -17,9 +22,7 @@ export default function Index({ incidents }: PageProps<{ incidents: PaginatedRes
                             A list of all incidents reported in the system.
                         </p>
                     </div>
-                    <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-
-                    </div>
+                    <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none"></div>
                 </div>
                 <div className="mt-8 flow-root">
                     <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -62,12 +65,15 @@ export default function Index({ incidents }: PageProps<{ incidents: PaginatedRes
                                                     : 'Unknown'}
                                             </td>
                                             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                                {incident.status === 1 ? 'Open' : 'Closed'}
+                                                {incident.status === 1 ? IncidentStatus.OPEN : IncidentStatus.CLOSED}
                                             </td>
                                             <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                                                <a href={`/incidents/${incident.id}`} className="text-indigo-600 hover:text-indigo-900">
-                                                    View<span className="sr-only">, {incident.descriptor}</span>
-                                                </a>
+                                                <Link
+                                                    href={route('incidents.show', { incident: incident.id })}
+                                                    className="text-indigo-600 hover:text-indigo-900"
+                                                >
+                                                    View
+                                                </Link>
                                             </td>
                                         </tr>
                                     ))}
