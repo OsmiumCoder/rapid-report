@@ -3,7 +3,6 @@ import { Head, Link } from '@inertiajs/react';
 import { Incident } from '@/types/Incident';
 import { PaginatedResponse } from '@/types/PaginatedResponse';
 
-// Define IncidentStatus Enum
 const IncidentStatus = {
     OPEN: 'Open',
     CLOSED: 'Closed',
