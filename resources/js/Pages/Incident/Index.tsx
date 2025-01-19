@@ -230,10 +230,9 @@ export default function Index({
 
                                                 {incidents.links.map(
                                                     (link, index) =>
-                                                        link.label ===
-                                                            '&laquo; Previous' ||
-                                                        link.label ===
-                                                            'Next &raquo;' ? null : (
+                                                        isNaN(
+                                                            Number(link.label)
+                                                        ) ? null : (
                                                             <Link
                                                                 key={index}
                                                                 href={
