@@ -1,17 +1,17 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, Link } from '@inertiajs/react';
-import { Incident } from '@/types/Incident';
-import { PaginatedResponse } from '@/types/PaginatedResponse';
+import {Head, Link} from '@inertiajs/react';
+import {Incident} from '@/types/Incident';
+import {PaginatedResponse} from '@/types/PaginatedResponse';
 
 const IncidentStatus = {
     OPEN: 'Open',
     CLOSED: 'Closed',
 };
 
-export default function Index({ incidents }: { incidents: PaginatedResponse<Incident> }) {
+export default function Index({incidents}: { incidents: PaginatedResponse<Incident> }) {
     return (
         <AuthenticatedLayout>
-            <Head title="Incidents" />
+            <Head title="Incidents"/>
 
             <div className="px-4 sm:px-6 lg:px-8">
                 <div className="sm:flex sm:items-center">
@@ -30,19 +30,24 @@ export default function Index({ incidents }: { incidents: PaginatedResponse<Inci
                                 <table className="min-w-full divide-y divide-gray-300">
                                     <thead className="bg-gray-50">
                                     <tr>
-                                        <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
+                                        <th scope="col"
+                                            className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
                                             Reporter
                                         </th>
-                                        <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                                        <th scope="col"
+                                            className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                                             Descriptor
                                         </th>
-                                        <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                                        <th scope="col"
+                                            className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                                             Location
                                         </th>
-                                        <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                                        <th scope="col"
+                                            className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                                             Date
                                         </th>
-                                        <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                                        <th scope="col"
+                                            className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                                             Status
                                         </th>
                                         <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
@@ -52,7 +57,8 @@ export default function Index({ incidents }: { incidents: PaginatedResponse<Inci
                                     </thead>
                                     <tbody className="divide-y divide-gray-200 bg-white">
                                     {incidents.data.map((incident) => (
-                                        <Link as="tr" className="cursor-pointer hover:bg-gray-50" href={route('incidents.show', { incident: incident.id })} key={incident.id}>
+                                        <Link as="tr" className="cursor-pointer hover:bg-gray-50"
+                                              href={route('incidents.show', {incident: incident.id})} key={incident.id}>
                                             <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
                                                 {incident.first_name} {incident.last_name}
                                             </td>
@@ -68,7 +74,7 @@ export default function Index({ incidents }: { incidents: PaginatedResponse<Inci
                                             </td>
                                             <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                                                 <Link
-                                                    href={route('incidents.show', { incident: incident.id })}
+                                                    href={route('incidents.show', {incident: incident.id})}
                                                     className="text-indigo-600 hover:text-indigo-900"
                                                 >
                                                     View
