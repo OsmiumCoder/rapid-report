@@ -53,7 +53,7 @@ export default function Index({ incidents }: { incidents: PaginatedResponse<Inci
                                     </thead>
                                     <tbody className="divide-y divide-gray-200 bg-white">
                                     {incidents.data.map((incident) => (
-                                        <tr key={incident.id}>
+                                        <Link as="tr" className="cursor-pointer hover:bg-gray-50" href={route('incidents.show', { incident: incident.id })} key={incident.id}>
                                             <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
                                                 {incident.first_name} {incident.last_name}
                                             </td>
@@ -75,7 +75,7 @@ export default function Index({ incidents }: { incidents: PaginatedResponse<Inci
                                                     View
                                                 </Link>
                                             </td>
-                                        </tr>
+                                        </Link>
                                     ))}
                                     </tbody>
                                 </table>
