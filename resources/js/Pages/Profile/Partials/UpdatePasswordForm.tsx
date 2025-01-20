@@ -135,9 +135,7 @@ export default function UpdatePasswordForm({
                         leave="transition ease-in-out"
                         leaveTo="opacity-0"
                     >
-                        <p className="text-sm text-gray-600">
-                            Saved.
-                        </p>
+                        <p className="text-sm text-gray-600">Saved.</p>
                     </Transition>
                 </div>
             </form>

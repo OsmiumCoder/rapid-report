@@ -18,26 +18,54 @@ class DatabaseSeeder extends Seeder
             RolesAndPermissionsSeeder::class,
         ]);
 
-        User::factory()->create([
+        $superAdmin = User::factory()->create([
             'name' => 'Super Admin',
             'email' => 'admin@super.com',
         ])->assignRole(['super-admin']);
 
-        User::factory()->create([
+        $admin = User::factory()->create([
             'name' => 'Admin',
             'email' => 'admin@b.com',
         ])->assignRole('admin');
 
-        User::factory()->create([
+        $supervisor = User::factory()->create([
             'name' => 'Supervisor',
             'email' => 'supervisor@b.com',
         ])->assignRole('supervisor');
 
-        User::factory()->create([
+        $user = User::factory()->create([
             'name' => 'User',
             'email' => 'user@b.com',
         ])->assignRole('user');
 
-        Incident::factory(10)->create();
+        Incident::factory(5)->create([
+            'reporters_email' => $user->email,
+            'supervisor_name' => $supervisor->name,
+            'supervisor_id' => $supervisor->id,
+        ]);
+
+        Incident::factory(5)->create([
+            'reporters_email' => $user->email,
+            'supervisor_name' => $admin->name,
+            'supervisor_id' => $admin->id,
+        ]);
+
+        Incident::factory(5)->create([
+            'reporters_email' => $user->email,
+            'supervisor_name' => $superAdmin->name,
+            'supervisor_id' => $superAdmin,
+        ]);
+
+        Incident::factory(5)->create([
+            'reporters_email' => $superAdmin->email,
+        ]);
+
+        Incident::factory(5)->create([
+            'reporters_email' => $admin->email,
+        ]);
+
+        Incident::factory(5)->create([
+            'reporters_email' => $supervisor->email,
+        ]);
     }
 }

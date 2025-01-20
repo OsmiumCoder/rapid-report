@@ -15,6 +15,16 @@ class IncidentPolicy
         return $user->can('view all incidents');
     }
 
+    public function viewAnyAssigned(User $user): bool
+    {
+        return $user->can('view assigned incidents');
+    }
+
+    public function viewAnyOwned(User $user): bool
+    {
+        return $user->can('view own incidents');
+    }
+
     /**
      * Determine whether the user can view the incident.
      */

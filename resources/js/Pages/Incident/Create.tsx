@@ -75,7 +75,7 @@ export default function Create({ form }: PageProps<{ form: object }>) {
                     } else {
                         newSteps[i + 1].status = "current";
                     }
-                    
+
                 }
                 break;
             }
@@ -112,7 +112,7 @@ export default function Create({ form }: PageProps<{ form: object }>) {
         console.log(intitialFormData);
     }
 
-    
+
     return (
         <GuestLayout>
             <form onSubmit={submit}>
@@ -134,7 +134,7 @@ export default function Create({ form }: PageProps<{ form: object }>) {
                             </button>
                         </div>
                     </>
-                   
+
                 )}
                 {stage === 1 && (
                     <>
@@ -161,9 +161,9 @@ export default function Create({ form }: PageProps<{ form: object }>) {
                             Next
                                 </button>
                             </div>
-                           
+
                         </div>
-                        
+
                     </>
                 )}
                 {stage === 2 && (
