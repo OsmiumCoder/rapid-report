@@ -36,7 +36,6 @@ export default function Create({ form }: PageProps<{ form: object }>) {
         { name: 'Step 2', status: 'upcoming' },
         { name: 'Step 3', status: 'upcoming' },
         { name: 'Step 4', status: 'upcoming' },
-        { name: 'Step 5', status: 'upcoming' },
     ]);
 
     const handleChange = (e) => {
@@ -218,7 +217,7 @@ export default function Create({ form }: PageProps<{ form: object }>) {
                 )}
 
             </form>
-            
+
         </GuestLayout>
     );
 }
