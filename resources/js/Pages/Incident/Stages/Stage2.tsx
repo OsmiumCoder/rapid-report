@@ -1,4 +1,4 @@
-
+import isStage from "@/Pages/Incident/Stages/Stage";
 import { ChevronDownIcon } from '@heroicons/react/16/solid'
 
 export default function Stage2(config: isStage): { boolHandle: Function, dataHandle: Function, currentData: {} } {

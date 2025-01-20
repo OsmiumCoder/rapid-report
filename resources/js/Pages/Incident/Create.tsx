@@ -5,19 +5,29 @@ import Stage1 from "@/Pages/Incident/Stages/Stage1"
 import { PageProps } from "@/types";
 import React, { useState } from 'react';
 import Stage2 from "./Stages/Stage2";
+import Stage3 from "./Stages/Stage3";
+import Stage4 from "./Stages/Stage4";
 
 export default function Create({ form }: PageProps<{ form: object }>) {
     const [intitialFormData, setFormData] = useState({
         anon: false,
-        role: 'Victim',
+        onbehalf: false,
+        onbehalf_anon: false,
+        role: '',
         first_name: '',
         last_name: '',
         phone_number: '',
-        work_related: Boolean,
+        work_related: false,
+        was_injured: false,
+        fa_applied: false,
+        injury_description: '',
+        fa_description: '',
         location: '',
         room_number: '',
         incident_type: '',
+        incident_catagory: '',
         description: '',
+        other_des: ''
 
     });
     const [stage, setStage] = useState(0);
@@ -158,23 +168,47 @@ export default function Create({ form }: PageProps<{ form: object }>) {
                 )}
                 {stage === 2 && (
                     <>
-                        <div>
-                            <ProgressBarsCircle
-                                steps={steps}
+                        <Stage
+                            s_amount={steps.length}
+                            current_s={stage}
+                        >
+                            <Stage3
+                                boolHandle={handleBoolChange}
+                                dataHandle={handleChange}
+                                currentData={intitialFormData}
                             >
-                            </ProgressBarsCircle>
-                        </div>
-
-                        <label className="flex object-center font-bold text-m/9 font-medium text-gray-900">
-                            Incident Information
-                    </label>
-                        <div className="flex p-8">
+                            </Stage3>
+                        </Stage>
+                        <div className="flex justify-center">
                         <button type="button" onClick={lastStep} className="mt-4 mx-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                             Back
                         </button>
-                        
-                        <button type="button" onClick={submit} className=" mt-4 mx-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-                            Submit
+                            <button type="button" onClick={nextStep} className="mt-4 mx-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                Next
+                            </button>
+                        </div>
+                    </>
+                )}
+                {stage === 3 && (
+                    <>
+                        <Stage
+                            s_amount={steps.length}
+                            current_s={stage}
+                        >
+                            <Stage4
+                                boolHandle={handleBoolChange}
+                                dataHandle={handleChange}
+                                currentData={intitialFormData}
+                            >
+                            </Stage4>
+                        </Stage>
+                        <div className="flex p-8">
+                            <button type="button" onClick={lastStep} className="mt-4 mx-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                Back
+                            </button>
+
+                            <button type="button" onClick={submit} className=" mt-4 mx-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                                Submit
                             </button>
                             <button type="button" onClick={nextStep} className="mt-4 mx-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                                 Next
