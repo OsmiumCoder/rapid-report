@@ -5,9 +5,6 @@ export default function VictimInformationStage({
     formData,
     setFormData,
 }: StageProps) {
-    const [hasInjury, setHasInjury] = useState<boolean>(false);
-    const [firstAidApplied, setFirstAidApplied] = useState<boolean>(false);
-
     return (
         <div className="min-w-0 flex-1 text-sm/6">
             <label className="flex justify-center font-bold text-lg text-gray-900">
@@ -25,8 +22,13 @@ export default function VictimInformationStage({
                         <input
                             type="checkbox"
                             aria-describedby="was_injured-description"
-                            checked={hasInjury}
-                            onChange={(e) => setHasInjury(e.target.checked)}
+                            checked={formData.hasInjury}
+                            onChange={(e) =>
+                                setFormData((prev) => ({
+                                    ...prev,
+                                    hasInjury: e.target.checked,
+                                }))
+                            }
                             className="col-start-1 row-start-1 appearance-none rounded border border-gray-300 bg-white checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto"
                         />
                         <svg
@@ -52,7 +54,7 @@ export default function VictimInformationStage({
                     </div>
                 </div>
             </div>
-            {hasInjury && (
+            {formData.hasInjury && (
                 <>
                     <div>
                         <div className="flex items-center justify-between">
@@ -92,9 +94,12 @@ export default function VictimInformationStage({
                                     id="fa_applied"
                                     name="fa_applied"
                                     type="checkbox"
-                                    checked={firstAidApplied ?? false}
+                                    checked={formData.firstAidApplied ?? false}
                                     onChange={(e) =>
-                                        setFirstAidApplied(e.target.checked)
+                                        setFormData((prev) => ({
+                                            ...prev,
+                                            firstAidApplied: e.target.checked,
+                                        }))
                                     }
                                     className="col-start-1 row-start-1 appearance-none rounded border border-gray-300 bg-white checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto"
                                 />
@@ -121,7 +126,7 @@ export default function VictimInformationStage({
                             </div>
                         </div>
                     </div>
-                    {firstAidApplied && (
+                    {formData.firstAidApplied && (
                         <div>
                             <div className="flex items-center justify-between">
                                 <label className="block text-xs/6 font-medium text-gray-900">
