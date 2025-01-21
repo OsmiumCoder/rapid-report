@@ -2,11 +2,15 @@ import GuestLayout from '@/Layouts/GuestLayout';
 import StageWrapper from '@/Pages/Incident/Stages/StageWrapper';
 import AnonymousStage from '@/Pages/Incident/Stages/AnonymousStage';
 import { PageProps } from '@/types';
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AffectedPartyStage from '@/Pages/Incident/Stages/AffectedPartyStage';
 import IncidentInformationStage from '@/Pages/Incident/Stages/IncidentInformationStage';
 import VictimInformationStage from '@/Pages/Incident/Stages/VictimInformationStage';
 import IncidentData from '@/types/IncidentData';
+import {
+    descriptors,
+    roles,
+} from '@/Pages/Incident/Stages/IncidentDropDownValues';
 
 export default function Create({ form }: PageProps<{ form: IncidentData }>) {
     const [formData, setFormData] = useState<IncidentData>(form);
@@ -17,20 +21,43 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
     const [completedSteps, setCompletedSteps] = useState(0);
 
     const nextStep = () => {
-        setCurrentStepNumber((prev) => prev + 1);
-        setRemainingSteps((prev) => prev - 1);
-        setCompletedSteps((prev) => prev + 1);
+        const stepCount =
+            formData?.anonymous !== undefined &&
+            formData?.anonymous &&
+            currentStepNumber === 0
+                ? 2
+                : 1;
+
+        setCurrentStepNumber((prev) => prev + stepCount);
+        setRemainingSteps((prev) => prev - stepCount);
+        setCompletedSteps((prev) => prev + stepCount);
     };
 
     const prevStep = () => {
-        setCurrentStepNumber((prev) => prev - 1);
-        setRemainingSteps((prev) => prev + 1);
-        setCompletedSteps((prev) => prev - 1);
+        const stepCount =
+            formData?.anonymous !== undefined &&
+            formData?.anonymous &&
+            currentStepNumber === 2
+                ? 2
+                : 1;
+
+        setCurrentStepNumber((prev) => prev - stepCount);
+        setRemainingSteps((prev) => prev + stepCount);
+        setCompletedSteps((prev) => prev - stepCount);
     };
 
     const submit = () => {
         console.log(formData);
     };
+
+    useEffect(() => {
+        setFormData((prev) => ({
+            ...prev,
+            role: roles[0].value,
+            incident_type: descriptors[0].value,
+            descriptor: descriptors[0].options[0],
+        }));
+    }, []);
 
     return (
         <GuestLayout>

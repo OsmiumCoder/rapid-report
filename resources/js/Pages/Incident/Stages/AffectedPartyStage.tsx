@@ -1,6 +1,7 @@
 import isStage, { StageProps } from '@/Pages/Incident/Stages/StageWrapper';
 import { ChevronDownIcon } from '@heroicons/react/16/solid';
 import IncidentData from '@/types/IncidentData';
+import { roles } from '@/Pages/Incident/Stages/IncidentDropDownValues';
 
 export default function AffectedPartyStage({
     formData,
@@ -18,24 +19,6 @@ export default function AffectedPartyStage({
         return value.slice(0, 12); // Enforce max length
     }
 
-    const roles = [
-        {
-            value: 1,
-            name: 'Employee',
-        },
-        {
-            value: 2,
-            name: 'Student',
-        },
-        {
-            value: 3,
-            name: 'Visitor',
-        },
-        {
-            value: 4,
-            name: 'Contractor',
-        },
-    ];
     return (
         <div className="min-w-0 flex-1 text-sm/6">
             <label className="flex justify-center font-bold text-lg text-gray-900">
@@ -124,20 +107,22 @@ export default function AffectedPartyStage({
                 </label>
                 <div className="mt-2 grid grid-cols-1">
                     <select
-                        defaultValue={formData.role ?? roles[0].name}
+                        value={
+                            roles.find(({ value }) => value === formData?.role)
+                                ?.name ?? roles[0].name
+                        }
                         onChange={(e) =>
                             setFormData((prev) => ({
                                 ...prev,
-                                role: e.target.value,
-                            }))}
+                                role: roles.find(
+                                    ({ name }) => name === e.target.value
+                                )?.value,
+                            }))
+                        }
                         className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                     >
-                        {roles.map(({ name, value }, index) => (
-                            <option
-                                key={index}
-                            >
-                                {name}
-                            </option>
+                        {roles.map(({ name }, index) => (
+                            <option key={index}>{name}</option>
                         ))}
                     </select>
                 </div>

@@ -1,106 +1,11 @@
-import { ChevronDownIcon } from '@heroicons/react/16/solid';
-import React, { useState, useEffect, ChangeEvent } from 'react';
+import React from 'react';
 import { StageProps } from '@/Pages/Incident/Stages/StageWrapper';
-import IncidentData from '@/types/IncidentData';
-
-const categories = [
-    {
-        name: 'Safety',
-        value: 1,
-        options: [
-            'Injury',
-            'Illness',
-            'Exposure',
-            'Animal bite/sting/scratch',
-            'Needle/sharp/puncture/cut',
-            'Slip/Trip/fall',
-            'Burn/Shock',
-            'Sexual Harassment',
-            'Personal Harassment',
-            'Discrimination',
-            'Near Miss/Hazard',
-            'Other',
-        ],
-    },
-    {
-        name: 'Security',
-        value: 2,
-        options: [
-            'Lab Bio security incident/threat',
-            'Theft/Assault',
-            'Bomb threat',
-            'Violent Threat/Harassment',
-            'Property damage/Equipment Loss',
-            'Suspicious Activity',
-            'Near Miss/Hazard',
-            'Other',
-        ],
-    },
-    {
-        name: 'Environmental',
-        value: 3,
-        options: [
-            'Spill',
-            'Hazardous Materials',
-            'Fire',
-            'Infectious Materials',
-            'Air/Water pollution',
-            'Near Miss/Hazard',
-            'Other',
-        ],
-    },
-];
+import { descriptors } from '@/Pages/Incident/Stages/IncidentDropDownValues';
 
 export default function IncidentInformationStage({
     formData,
     setFormData,
 }: StageProps) {
-    const [currentCategory, setCurrentCategory] = useState(formData.incident_type ?? categories[0].name);
-    useEffect(() => {
-
-        let selector = document.getElementById('des_select').options;
-        switch (currentCategory) {
-            case 'Safety':
-                for (const x of categories[0].options) {
-                    selector.add(new Option(x))
-                }
-                break;
-            case 'Security':
-                for (const x of categories[1].options) {
-                    selector.add(new Option(x))
-                }
-                break;
-            case 'Environmental':
-                for (const x of categories[2].options) {
-                    selector.add(new Option(x))
-                }
-                break;
-        }
-    })
-    const handleTypeChange= (e) => {
-        let selector = document.getElementById('des_select').options;
-        while (selector.length > 0) {
-            selector.remove(selector.length - 1)
-        }
-        switch (formData.incident_type) {
-            case 'Safety':
-                for (const x of categories[0].options) {
-                    selector.add(new Option(x))
-                }
-                break;
-            case 'Security':
-                for (const x of categories[1].options) {
-                    selector.add(new Option(x))
-                }
-                break;
-            case 'Environmental':
-                for (const x of categories[2].options) {
-                    selector.add(new Option(x))
-                }
-                break;
-        }
-        console.log(selector.length)
-    }
     return (
         <div className="min-w-0 flex-1 text-sm/6">
             <label className="flex justify-center font-bold text-lg text-gray-900">
@@ -210,23 +115,23 @@ export default function IncidentInformationStage({
                 </label>
                 <div className="mt-2 grid grid-cols-1">
                     <select
-                        defaultValue={currentCategory ?? categories[0].name}
+                        value={
+                            descriptors.find(
+                                ({ value }) => value === formData?.incident_type
+                            )?.name ?? descriptors[0].name
+                        }
                         className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                         onChange={(e) => {
                             setFormData((prev) => ({
                                 ...prev,
-                                incident_type: e.target.value,
+                                incident_type: descriptors.find(
+                                    ({ name }) => name === e.target.value
+                                )?.value,
                             }));
-                            setCurrentCategory(name);
-                            handleTypeChange();
                         }}
                     >
-                        {categories.map(({ name, value }, index) => (
-                            <option
-                                key={name}
-                            >
-                                {name}
-                            </option>
+                        {descriptors.map(({ name, value }, index) => (
+                            <option key={name}>{name}</option>
                         ))}
                     </select>
                 </div>
@@ -237,14 +142,8 @@ export default function IncidentInformationStage({
                 </label>
                 <div className="mt-2 grid grid-cols-1">
                     <select
-                        value={
-                            formData.descriptor ??
-                            categories.find(
-                                (category) => category.name === currentCategory
-                            )?.options[0] ??
-                            ''
-                        }
-                        id='des_select'
+                        value={formData.descriptor}
+                        id="des_select"
                         onChange={(e) =>
                             setFormData((prev) => ({
                                 ...prev,
@@ -253,15 +152,15 @@ export default function IncidentInformationStage({
                         }
                         className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                     >
-                        {/**categories.map(({ name, options }, index) =>
-                            name === currentCategory ? (
+                        {descriptors.map(({ options, value }, index) =>
+                            value === formData.incident_type ? (
                                 options.map((option) => (
                                     <option key={option}>{option}</option>
                                 ))
                             ) : (
                                 <></>
                             )
-                        )**/}
+                        )}
                     </select>
                 </div>
             </div>
