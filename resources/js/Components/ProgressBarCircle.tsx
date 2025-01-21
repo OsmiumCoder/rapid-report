@@ -26,15 +26,14 @@ export default function ProgressBarCircle({
                         >
                             <div className="h-0.5 w-full bg-indigo-600" />
                         </div>
-                        <a
-                            href="#"
-                            className="relative flex size-8 items-center justify-center rounded-full bg-indigo-600 hover:bg-indigo-900"
+                        <div
+                            className="relative flex size-8 items-center justify-center rounded-full bg-indigo-600"
                         >
                             <CheckIcon
                                 aria-hidden="true"
                                 className="size-5 text-white"
                             />
-                        </a>
+                        </div>
                         <span className="sr-only">Completed Step</span>
                     </li>
                 ))}
@@ -51,8 +50,7 @@ export default function ProgressBarCircle({
                     >
                         <div className="h-0.5 w-full bg-gray-200" />
                     </div>
-                    <a
-                        href="#"
+                    <div
                         aria-current="step"
                         className="relative flex size-8 items-center justify-center rounded-full border-2 border-indigo-600 bg-white"
                     >
@@ -61,7 +59,7 @@ export default function ProgressBarCircle({
                             className="size-2.5 rounded-full bg-indigo-600"
                         />
                         <span className="sr-only">Current</span>
-                    </a>
+                    </div>
                 </li>
 
                 {new Array(remainingSteps).fill(1).map((_, index) => (
@@ -78,16 +76,11 @@ export default function ProgressBarCircle({
                         >
                             <div className="h-0.5 w-full bg-gray-200" />
                         </div>
-                        <a
-                            href="#"
-                            className="group relative flex size-8 items-center justify-center rounded-full border-2 border-gray-300 bg-white hover:border-gray-400"
+                        <div
+                            className="group relative flex size-8 items-center justify-center rounded-full border-2 border-gray-300 bg-white"
                         >
-                            <span
-                                aria-hidden="true"
-                                className="size-2.5 rounded-full bg-transparent group-hover:bg-gray-300"
-                            />
                             <span className="sr-only">Incomplete Step</span>
-                        </a>
+                        </div>
                     </li>
                 ))}
             </ol>
