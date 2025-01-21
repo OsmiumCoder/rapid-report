@@ -55,8 +55,53 @@ export default function IncidentInformationStage({
     formData,
     setFormData,
 }: StageProps) {
-    const [currentCategory, setCurrentCategory] = useState(categories[0].name);
+    const [currentCategory, setCurrentCategory] = useState(formData.incident_type ?? categories[0].name);
+    useEffect(() => {
 
+        let selector = document.getElementById('des_select').options;
+        switch (currentCategory) {
+            case 'Safety':
+                for (const x of categories[0].options) {
+                    selector.add(new Option(x))
+                }
+                break;
+            case 'Security':
+                for (const x of categories[1].options) {
+                    selector.add(new Option(x))
+                }
+                break;
+            case 'Environmental':
+                for (const x of categories[2].options) {
+                    selector.add(new Option(x))
+                }
+                break;
+        }
+    })
+    const handleTypeChange= (e) => {
+        let selector = document.getElementById('des_select').options;
+        while (selector.length > 0) {
+            selector.remove(selector.length - 1)
+        }
+        console.log(currentCategory)
+        switch (e.target.value) {
+            case 'Safety':
+                for (const x of categories[0].options) {
+                    selector.add(new Option(x))
+                }
+                break;
+            case 'Security':
+                for (const x of categories[1].options) {
+                    selector.add(new Option(x))
+                }
+                break;
+            case 'Environmental':
+                for (const x of categories[2].options) {
+                    selector.add(new Option(x))
+                }
+                break;
+        }
+        console.log(selector.length)
+    }
     return (
         <div className="min-w-0 flex-1 text-sm/6">
             <label className="flex justify-center font-bold text-lg text-gray-900">
@@ -168,7 +213,7 @@ export default function IncidentInformationStage({
                     <select
                         defaultValue={currentCategory ?? categories[0].name}
                         className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                        onChange={() => {}}
+                        onChange={handleTypeChange}
                     >
                         {categories.map(({ name, value }, index) => (
                             <option
@@ -193,13 +238,14 @@ export default function IncidentInformationStage({
                 </label>
                 <div className="mt-2 grid grid-cols-1">
                     <select
-                        defaultValue={
+                        value={
                             formData.descriptor ??
                             categories.find(
                                 (category) => category.name === currentCategory
                             )?.options[0] ??
                             ''
                         }
+                        id='des_select'
                         onChange={(e) =>
                             setFormData((prev) => ({
                                 ...prev,
@@ -208,7 +254,7 @@ export default function IncidentInformationStage({
                         }
                         className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                     >
-                        {categories.map(({ name, options }, index) =>
+                        {/**categories.map(({ name, options }, index) =>
                             name === currentCategory ? (
                                 options.map((option) => (
                                     <option key={option}>{option}</option>
@@ -216,7 +262,7 @@ export default function IncidentInformationStage({
                             ) : (
                                 <></>
                             )
-                        )}
+                        )**/}
                     </select>
                 </div>
             </div>
