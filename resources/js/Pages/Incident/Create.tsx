@@ -24,7 +24,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
         />,
     ];
 
-    const [remainingSteps, setRemainingSteps] = useState(steps.length - 2);
+    const [remainingSteps, setRemainingSteps] = useState(steps.length - 1);
 
     const [currentStepNumber, setCurrentStepNumber] = useState(0);
 
