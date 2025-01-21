@@ -47,10 +47,7 @@ export default function NavigationItems() {
     const [incidentDropDownIsOpen, setIncidentDropDownIsOpen] = useState(
         route().current('incidents.*')
     );
-
     const { auth } = usePage().props;
-
-    console.log(auth.user.roles);
 
     const canView = (
         navigationItem: NavigationItemInterface,
