@@ -16,10 +16,11 @@ class AssignedIncidentsController extends Controller
     {
         $this->authorize('viewAnyAssigned', Incident::class);
 
-        $assignedIncidents = Incident::where('supervisor_id', $request->user()->id)->paginate();
+        $assignedIncidents = Incident::where('supervisor_id', $request->user()->id)->paginate($perPage = 10, $columns = ['*'], $pageName = 'incidents');
 
-        return Inertia::render('Incident/Assigned', [
+        return Inertia::render('Incident/Index', [
             'incidents' => $assignedIncidents,
+            'indexType' => 'assigned',
         ]);
     }
 }
