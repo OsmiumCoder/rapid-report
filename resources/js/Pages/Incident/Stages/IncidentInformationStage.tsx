@@ -82,8 +82,7 @@ export default function IncidentInformationStage({
         while (selector.length > 0) {
             selector.remove(selector.length - 1)
         }
-        console.log(currentCategory)
-        switch (e.target.value) {
+        switch (formData.incident_type) {
             case 'Safety':
                 for (const x of categories[0].options) {
                     selector.add(new Option(x))
@@ -213,18 +212,18 @@ export default function IncidentInformationStage({
                     <select
                         defaultValue={currentCategory ?? categories[0].name}
                         className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                        onChange={handleTypeChange}
+                        onChange={(e) => {
+                            setFormData((prev) => ({
+                                ...prev,
+                                incident_type: e.target.value,
+                            }));
+                            setCurrentCategory(name);
+                            handleTypeChange();
+                        }}
                     >
                         {categories.map(({ name, value }, index) => (
                             <option
                                 key={name}
-                                onClick={(_) => {
-                                    setFormData((prev) => ({
-                                        ...prev,
-                                        incident_type: value,
-                                    }));
-                                    setCurrentCategory(name);
-                                }}
                             >
                                 {name}
                             </option>
