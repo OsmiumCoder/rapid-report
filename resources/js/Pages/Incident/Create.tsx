@@ -24,6 +24,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
         const stepCount =
             formData?.anonymous !== undefined &&
             formData?.anonymous &&
+            !formData?.on_behalf &&
             currentStepNumber === 0
                 ? 2
                 : 1;
@@ -37,6 +38,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
         const stepCount =
             formData?.anonymous !== undefined &&
             formData?.anonymous &&
+            !formData?.on_behalf &&
             currentStepNumber === 2
                 ? 2
                 : 1;
