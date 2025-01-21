@@ -6,6 +6,18 @@ export default function AffectedPartyStage({
     formData,
     setFormData,
 }: StageProps) {
+    function validatePhoneInput(value: string) {
+        value = value.replace(/[^0-9-]/g, '');
+
+        if (value.length > 3 && value[3] !== '-') {
+            value = value.slice(0, 3) + '-' + value.slice(3);
+        }
+        if (value.length > 7 && value[7] !== '-') {
+            value = value.slice(0, 7) + '-' + value.slice(7);
+        }
+        return value.slice(0, 12); // Enforce max length
+    }
+
     const roles = [
         {
             value: 1,
@@ -75,11 +87,31 @@ export default function AffectedPartyStage({
                 <div className="mt-2">
                     <input
                         required
+                        type="tel"
+                        placeholder="123-456-7890"
                         value={formData.phone ?? ''}
                         onChange={(e) =>
                             setFormData((prev) => ({
                                 ...prev,
-                                phone: e.target.value,
+                                phone: validatePhoneInput(e.target.value),
+                            }))
+                        }
+                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                    />
+                </div>
+                <label className="block text-sm/6 font-medium text-gray-900">
+                    Email
+                </label>
+                <div className="mt-2">
+                    <input
+                        required
+                        type="email"
+                        placeholder="name@example.com"
+                        value={formData.email ?? ''}
+                        onChange={(e) =>
+                            setFormData((prev) => ({
+                                ...prev,
+                                email: e.target.value,
                             }))
                         }
                         className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"

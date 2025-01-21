@@ -122,6 +122,7 @@ export default function IncidentInformationStage({
                 </p>
                 <div className="mt-2">
                     <input
+                        placeholder="e.g Cass Science Hall"
                         aria-describedby="location-description"
                         required
                         value={formData.location ?? ''}
@@ -146,6 +147,7 @@ export default function IncidentInformationStage({
 
                 <div className="mt-2">
                     <input
+                        placeholder="e.g 123A"
                         required
                         value={formData.room_number ?? ''}
                         onChange={(e) =>
