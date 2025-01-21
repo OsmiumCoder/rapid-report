@@ -1,15 +1,15 @@
-import { Link, usePage } from '@inertiajs/react'
+import { Link, usePage } from '@inertiajs/react';
 import {
     Cog6ToothIcon,
     FolderIcon,
     HomeIcon,
-} from '@heroicons/react/24/outline'
-import classNames from '@/Filters/classNames'
-import { useState } from 'react'
+} from '@heroicons/react/24/outline';
+import classNames from '@/Filters/classNames';
+import { useState } from 'react';
 import NavigationItem, {
     NavigationItemInterface,
-} from '@/Layouts/Partials/NavigationItem'
-import NavigationDropDownItem from '@/Layouts/Partials/NavigationDropDownItem'
+} from '@/Layouts/Partials/NavigationItem';
+import NavigationDropDownItem from '@/Layouts/Partials/NavigationDropDownItem';
 
 const navigationItems: NavigationItemInterface[] = [
     {
@@ -40,12 +40,12 @@ const navigationItems: NavigationItemInterface[] = [
             },
         ],
     },
-]
+];
 
 export default function NavigationItems() {
     const [incidentDropDownIsOpen, setIncidentDropDownIsOpen] = useState(
         route().current('incidents.*')
-    )
+    );
 
     return (
         <nav className="flex flex-1 flex-col">
@@ -124,5 +124,5 @@ export default function NavigationItems() {
                 </li>
             </ul>
         </nav>
-    )
+    );
 }

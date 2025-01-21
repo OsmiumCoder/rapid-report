@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import PrimaryButton from "@/Components/PrimaryButton";
+import PrimaryButton from '@/Components/PrimaryButton';
 import { Head, Link } from '@inertiajs/react';
 
 export default function Dashboard() {
@@ -18,7 +18,6 @@ export default function Dashboard() {
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
                             You're logged in!
-
                         </div>
                         <Link
                             href={route('incidents.create')}
@@ -28,11 +27,9 @@ export default function Dashboard() {
                         >
                             New Incident
                         </Link>
-                        
                     </div>
                 </div>
             </div>
-                    
         </AuthenticatedLayout>
     );
 }

@@ -1,12 +1,12 @@
-import classNames from '@/Filters/classNames'
-import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline'
-import { NavigationItemInterface } from '@/Layouts/Partials/NavigationItem'
-import { useState } from 'react'
+import classNames from '@/Filters/classNames';
+import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
+import { NavigationItemInterface } from '@/Layouts/Partials/NavigationItem';
+import { useState } from 'react';
 
 interface NavigationDropDownItemProps {
-    item: NavigationItemInterface
-    isOpen: boolean
-    onClick: () => void
+    item: NavigationItemInterface;
+    isOpen: boolean;
+    onClick: () => void;
 }
 
 export default function NavigationDropDownItem({
@@ -39,5 +39,5 @@ export default function NavigationDropDownItem({
                 />
             )}
         </div>
-    )
+    );
 }
