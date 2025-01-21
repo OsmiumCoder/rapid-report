@@ -58,7 +58,8 @@ export default function AnonymousStage({ formData, setFormData }: StageProps) {
                             Reporting on behalf?
                         </label>
                         <p className="text-xs text-gray-500">
-                            Are you reporting on behalf an incident participant?
+                            Are you reporting on behalf of an incident
+                            participant?
                         </p>
                     </div>
                     <div className="flex h-6 shrink-0 items-center">

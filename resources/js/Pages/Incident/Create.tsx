@@ -11,32 +11,10 @@ import IncidentData from '@/types/IncidentData';
 export default function Create({ form }: PageProps<{ form: IncidentData }>) {
     const [formData, setFormData] = useState<IncidentData>(form);
 
-    const steps: ReactElement[] = [
-        <AnonymousStage formData={formData} setFormData={setFormData} />,
-        <AffectedPartyStage formData={formData} setFormData={setFormData} />,
-        <IncidentInformationStage
-            formData={formData}
-            setFormData={setFormData}
-        />,
-        <VictimInformationStage
-            formData={formData}
-            setFormData={setFormData}
-        />,
-    ];
-
-    const [remainingSteps, setRemainingSteps] = useState(steps.length - 1);
-
+    const numberOfSteps = 4;
+    const [remainingSteps, setRemainingSteps] = useState(numberOfSteps - 1);
     const [currentStepNumber, setCurrentStepNumber] = useState(0);
-
-    const [CurrentStep, setCurrentStep] = useState<ReactElement>(
-        steps[currentStepNumber]
-    );
-
     const [completedSteps, setCompletedSteps] = useState(0);
-
-    useEffect(() => {
-        setCurrentStep(steps[currentStepNumber]);
-    }, [currentStepNumber]);
 
     const nextStep = () => {
         setCurrentStepNumber((prev) => prev + 1);
@@ -57,47 +35,68 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
     return (
         <GuestLayout>
             <form onSubmit={submit}>
-                {
-                    <>
-                        <StageWrapper
-                            completedSteps={completedSteps}
-                            remainingSteps={remainingSteps}
-                        >
-                            {CurrentStep}
-                        </StageWrapper>
+                <>
+                    <StageWrapper
+                        completedSteps={completedSteps}
+                        remainingSteps={remainingSteps}
+                    >
+                        {currentStepNumber === 0 && (
+                            <AnonymousStage
+                                formData={formData}
+                                setFormData={setFormData}
+                            />
+                        )}
+                        {currentStepNumber === 1 && (
+                            <AffectedPartyStage
+                                formData={formData}
+                                setFormData={setFormData}
+                            />
+                        )}
+                        {currentStepNumber === 2 && (
+                            <IncidentInformationStage
+                                formData={formData}
+                                setFormData={setFormData}
+                            />
+                        )}
+                        {currentStepNumber === 3 && (
+                            <VictimInformationStage
+                                formData={formData}
+                                setFormData={setFormData}
+                            />
+                        )}
+                    </StageWrapper>
 
-                        <div className="flex p-8 items-center justify-center">
-                            {completedSteps > 0 && (
-                                <button
-                                    type="button"
-                                    onClick={prevStep}
-                                    className="mt-4 mx-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                                >
-                                    Back
-                                </button>
-                            )}
+                    <div className="flex p-8 items-center justify-center">
+                        {completedSteps > 0 && (
+                            <button
+                                type="button"
+                                onClick={prevStep}
+                                className="mt-4 mx-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                            >
+                                Back
+                            </button>
+                        )}
 
-                            {completedSteps === steps.length - 1 && (
-                                <button
-                                    type="button"
-                                    onClick={submit}
-                                    className=" mt-4 mx-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-                                >
-                                    Submit
-                                </button>
-                            )}
-                            {remainingSteps > 0 && (
-                                <button
-                                    type="button"
-                                    onClick={nextStep}
-                                    className="mt-4 mx-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                                >
-                                    Next
-                                </button>
-                            )}
-                        </div>
-                    </>
-                }
+                        {completedSteps === numberOfSteps - 1 && (
+                            <button
+                                type="button"
+                                onClick={submit}
+                                className=" mt-4 mx-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                            >
+                                Submit
+                            </button>
+                        )}
+                        {remainingSteps > 0 && (
+                            <button
+                                type="button"
+                                onClick={nextStep}
+                                className="mt-4 mx-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                            >
+                                Next
+                            </button>
+                        )}
+                    </div>
+                </>
             </form>
         </GuestLayout>
     );
