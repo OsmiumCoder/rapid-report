@@ -66,7 +66,6 @@ class IndexTest extends TestCase
                         ->etc()
                 )
                 ->where('indexType', 'owned')
-
         );
     }
 
