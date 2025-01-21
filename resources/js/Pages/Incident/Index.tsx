@@ -3,8 +3,8 @@ import { Head, Link } from '@inertiajs/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid';
 import { Incident } from '@/types/Incident';
 import { PaginatedResponse } from '@/types/PaginatedResponse';
-import { IncidentStatus } from '@/Enums/IncidentStatus';
 import { PencilIcon } from '@heroicons/react/24/outline';
+import { IncidentStatus } from '@/Enums/IncidentStatus';
 
 type IndexType = 'owned' | 'assigned' | 'all';
 
@@ -161,9 +161,10 @@ export default function Index({ incidents, indexType }: IndexProps) {
                                                     ).toLocaleDateString()}
                                                 </td>
                                                 <td className="hidden px-3 py-4 text-sm text-gray-500 md:table-cell">
-                                                    {incident.status === 1
-                                                        ? IncidentStatus.OPEN
-                                                        : IncidentStatus.CLOSED}
+                                                    {incident.status ===
+                                                    IncidentStatus.OPEN
+                                                        ? 'Open'
+                                                        : 'Closed'}
                                                 </td>
                                                 <td className="py-4 pl-3 pr-4 text-right text-sm font-medium md:pr-6">
                                                     <Link
