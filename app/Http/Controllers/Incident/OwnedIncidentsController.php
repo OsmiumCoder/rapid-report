@@ -16,10 +16,11 @@ class OwnedIncidentsController extends Controller
     {
         $this->authorize('viewAnyOwned', Incident::class);
 
-        $assignedIncidents = Incident::where('reporters_email', $request->user()->email)->paginate();
+        $ownedIncidents = Incident::where('reporters_email', $request->user()->email)->paginate($perPage = 10, $columns = ['*'], $pageName = 'incidents');
 
-        return Inertia::render('Incident/Owned', [
-            'incidents' => $assignedIncidents
+        return Inertia::render('Incident/Index', [
+            'incidents' => $ownedIncidents,
+            'indexType' => 'owned',
         ]);
     }
 }

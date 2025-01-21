@@ -11,8 +11,8 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable
 {
     use HasFactory;
-    use Notifiable;
     use HasRoles;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -46,5 +46,13 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function toArray(): array
+    {
+        $array = parent::toArray();
+        $array['roles'] = $this->roles; // Include roles in the serialized output
+
+        return $array;
     }
 }

@@ -17,14 +17,13 @@ class IndexTest extends TestCase
 
         Incident::factory()->create(['supervisor_id' => $user->id]);
 
-
         $response = $this->get(route('incidents.assigned'));
 
         $response->assertStatus(200);
 
         $response->assertInertia(
             fn (AssertableInertia $res) => $res
-                ->component('Incident/Assigned')
+                ->component('Incident/Index')
                 ->has(
                     'incidents',
                     fn (AssertableInertia $incidents) => $incidents
@@ -36,6 +35,7 @@ class IndexTest extends TestCase
                         ->count('links', 3)
                         ->etc()
                 )
+                ->where('indexType', 'assigned')
         );
     }
 
@@ -53,7 +53,7 @@ class IndexTest extends TestCase
 
         $response->assertInertia(
             fn (AssertableInertia $res) => $res
-                ->component('Incident/Owned')
+                ->component('Incident/Index')
                 ->has(
                     'incidents',
                     fn (AssertableInertia $incidents) => $incidents
@@ -65,6 +65,7 @@ class IndexTest extends TestCase
                         ->count('links', 3)
                         ->etc()
                 )
+                ->where('indexType', 'owned')
         );
     }
 
@@ -98,7 +99,7 @@ class IndexTest extends TestCase
 
         $response->assertInertia(
             fn (AssertableInertia $res) => $res
-                ->component('Incident/Owned')
+                ->component('Incident/Index')
                 ->has(
                     'incidents',
                     fn (AssertableInertia $incidents) => $incidents
@@ -117,6 +118,7 @@ class IndexTest extends TestCase
                         ->count('links', 3)
                         ->etc()
                 )
+                ->where('indexType', 'owned')
         );
     }
 
@@ -133,7 +135,7 @@ class IndexTest extends TestCase
 
         $response->assertInertia(
             fn (AssertableInertia $res) => $res
-                ->component('Incident/Assigned')
+                ->component('Incident/Index')
                 ->has(
                     'incidents',
                     fn (AssertableInertia $incidents) => $incidents
@@ -152,6 +154,7 @@ class IndexTest extends TestCase
                         ->count('links', 3)
                         ->etc()
                 )
+                ->where('indexType', 'assigned')
         );
     }
 
@@ -218,13 +221,14 @@ class IndexTest extends TestCase
                     'incidents',
                     fn (AssertableInertia $page) => $page
                         ->where('current_page', 1)
-                        ->count('data', 15)
+                        ->count('data', 10)
                         ->where('from', 1)
-                        ->where('to', 15)
+                        ->where('to', 10)
                         ->where('last_page', 2)
                         ->count('links', 4)
                         ->etc()
-                );
+                )
+            ->where('indexType', 'all');
         });
     }
 }

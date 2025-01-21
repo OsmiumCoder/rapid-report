@@ -19,9 +19,9 @@ class IncidentController extends Controller
     {
         $this->authorize('viewAny', Incident::class);
 
-
         return Inertia::render('Incident/Index', [
-            'incidents' => Incident::paginate($perPage = 10, $columns = ['*'], $pageName = 'incidents')
+            'incidents' => Incident::paginate($perPage = 10, $columns = ['*'], $pageName = 'incidents'),
+            'indexType' => 'all',
         ]);
     }
 
@@ -31,7 +31,7 @@ class IncidentController extends Controller
     public function create()
     {
         return Inertia::render('Incident/Create', [
-            'form' => IncidentData::empty()
+            'form' => IncidentData::empty(),
         ]);
     }
 
@@ -57,7 +57,7 @@ class IncidentController extends Controller
         $this->authorize('view', $incident);
 
         return Inertia::render('Incident/Show', [
-            'incident' => $incident
+            'incident' => $incident,
         ]);
     }
 

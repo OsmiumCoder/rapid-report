@@ -1,3 +1,5 @@
+import { IncidentStatus } from '@/Enums/IncidentStatus';
+
 export interface Incident {
     id: string;
     role: number;
@@ -20,7 +22,7 @@ export interface Incident {
     reporters_email?: string;
     supervisor_name?: string;
     supervisor_id?: number;
-    status: number;
+    status: IncidentStatus;
     closed_at?: string;
     created_at: string;
     updated_at: string;
