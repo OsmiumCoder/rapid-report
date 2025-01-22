@@ -3,6 +3,7 @@
 namespace Tests\Unit\Data;
 
 use App\Data\IncidentData;
+use App\Enum\IncidentType;
 use Carbon\Carbon;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
@@ -28,7 +29,7 @@ class IncidentDataTest extends TestCase
             'room_number' => '123A',
             'reported_to' => 'John Doe',
             'witnesses' => [],
-            'incident_type' => 0,
+            'incident_type' => IncidentType::SAFETY,
             'descriptor' => 'Burn',
             'description' => 'A fire broke out in the room.',
             'injury_description' => 'Minor burn',
@@ -48,12 +49,12 @@ class IncidentDataTest extends TestCase
 
         $incidentDate = now();
 
-        $incidentData = IncidentData::validateAndCreate([
+        IncidentData::validateAndCreate([
             'role' => 0,
             'work_related' => true,
             'happened_at' => $incidentDate,
             'location' => '',
-            'incident_type' => 0,
+            'incident_type' => IncidentType::SAFETY,
             'descriptor' => '',
             'description' => '',
         ]);

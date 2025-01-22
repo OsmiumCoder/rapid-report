@@ -1,15 +1,16 @@
-import { Link, usePage } from '@inertiajs/react'
+import { Link, usePage } from '@inertiajs/react';
 import {
     Cog6ToothIcon,
     FolderIcon,
     HomeIcon,
-} from '@heroicons/react/24/outline'
-import classNames from '@/Filters/classNames'
-import { useState } from 'react'
+} from '@heroicons/react/24/outline';
+import classNames from '@/Filters/classNames';
+import { useState } from 'react';
 import NavigationItem, {
     NavigationItemInterface,
-} from '@/Layouts/Partials/NavigationItem'
-import NavigationDropDownItem from '@/Layouts/Partials/NavigationDropDownItem'
+} from '@/Layouts/Partials/NavigationItem';
+import NavigationDropDownItem from '@/Layouts/Partials/NavigationDropDownItem';
+import { Role, RoleName } from '@/types';
 
 const navigationItems: NavigationItemInterface[] = [
     {
@@ -40,10 +41,20 @@ const navigationItems: NavigationItemInterface[] = [
             },
         ],
     },
-]
+];
 
 export default function NavigationItems() {
-    const [incidentDropDownIsOpen, setIncidentDropDownIsOpen] = useState(true)
+    const [incidentDropDownIsOpen, setIncidentDropDownIsOpen] = useState(
+        route().current('incidents.*')
+    );
+    const { auth } = usePage().props;
+
+    const canView = (
+        navigationItem: NavigationItemInterface,
+        userRoles: Role[]
+    ): boolean =>
+        userRoles.some(({ name }) => navigationItem.roles.includes(name)) ||
+        navigationItem.roles.includes('all');
 
     return (
         <nav className="flex flex-1 flex-col">
@@ -66,38 +77,46 @@ export default function NavigationItems() {
                                         {incidentDropDownIsOpen && (
                                             <div>
                                                 {item.subItems.map(
-                                                    (item, index) => (
-                                                        <NavigationItem
-                                                            key={`${item.name}${index}`}
-                                                            item={item}
-                                                        />
-                                                    )
+                                                    (item, index) =>
+                                                        canView(
+                                                            item,
+                                                            auth.user.roles
+                                                        ) && (
+                                                            <NavigationItem
+                                                                key={`${item.name}${index}`}
+                                                                item={item}
+                                                            />
+                                                        )
                                                 )}
                                             </div>
                                         )}
                                     </div>
                                 ) : (
-                                    <li key={`${item.name}${index}`}>
-                                        <Link
-                                            href={route(item.route as string)}
-                                            className={classNames(
-                                                route().current(
+                                    canView(item, auth.user.roles) && (
+                                        <li key={`${item.name}${index}`}>
+                                            <Link
+                                                href={route(
                                                     item.route as string
-                                                )
-                                                    ? 'bg-gray-800 text-white'
-                                                    : 'text-gray-400 hover:bg-gray-800 hover:text-white',
-                                                'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold'
-                                            )}
-                                        >
-                                            {item.icon && (
-                                                <item.icon
-                                                    aria-hidden="true"
-                                                    className="size-6 shrink-0"
-                                                />
-                                            )}
-                                            {item.name}
-                                        </Link>
-                                    </li>
+                                                )}
+                                                className={classNames(
+                                                    route().current(
+                                                        item.route as string
+                                                    )
+                                                        ? 'bg-gray-800 text-white'
+                                                        : 'text-gray-400 hover:bg-gray-800 hover:text-white',
+                                                    'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold'
+                                                )}
+                                            >
+                                                {item.icon && (
+                                                    <item.icon
+                                                        aria-hidden="true"
+                                                        className="size-6 shrink-0"
+                                                    />
+                                                )}
+                                                {item.name}
+                                            </Link>
+                                        </li>
+                                    )
                                 )}
                             </>
                         ))}
@@ -122,5 +141,5 @@ export default function NavigationItems() {
                 </li>
             </ul>
         </nav>
-    )
+    );
 }

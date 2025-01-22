@@ -1,19 +1,20 @@
-import { ComponentType, SVGProps } from 'react'
-import { Link } from '@inertiajs/react'
-import classNames from '@/Filters/classNames'
+import { ComponentType, SVGProps } from 'react';
+import { Link } from '@inertiajs/react';
+import classNames from '@/Filters/classNames';
+import { RoleName } from '@/types';
 
 export interface NavigationItemInterface {
-    name: string
-    route?: string
-    icon?: ComponentType<SVGProps<SVGSVGElement>>
-    roles: string[]
-    subItems?: NavigationItemInterface[]
+    name: string;
+    route?: string;
+    icon?: ComponentType<SVGProps<SVGSVGElement>>;
+    roles: RoleName[];
+    subItems?: NavigationItemInterface[];
 }
 
 export default function NavigationItem({
     item,
 }: {
-    item: NavigationItemInterface
+    item: NavigationItemInterface;
 }) {
     return (
         <li className="my-1">
@@ -32,5 +33,5 @@ export default function NavigationItem({
                 <span className="ml-8">{item.name}</span>
             </Link>
         </li>
-    )
+    );
 }

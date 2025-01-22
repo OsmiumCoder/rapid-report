@@ -3,6 +3,7 @@
 namespace App\StorableEvents\Incident;
 
 use App\Enum\IncidentStatus;
+use App\Enum\IncidentType;
 use App\Models\Incident;
 use App\StorableEvents\StoredEvent;
 use Carbon\Carbon;
@@ -22,7 +23,7 @@ class IncidentCreated extends StoredEvent
         public ?string $room_number,
         public ?string $reported_to,
         public ?array $witnesses,
-        public int $incident_type,
+        public IncidentType $incident_type,
         public string $descriptor,
         public string $description,
         public ?string $injury_description,
@@ -36,6 +37,8 @@ class IncidentCreated extends StoredEvent
     public function handle()
     {
         $incident = new Incident;
+
+        $incident->id = $this->aggregateRootUuid();
 
         $incident->role = $this->role;
         $incident->last_name = $this->last_name;

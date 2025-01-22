@@ -1,17 +1,76 @@
 <?php
 
-namespace Tests\Feature\Incident;
+namespace Tests\Unit\Aggregates;
 
+use App\Aggregates\IncidentAggregateRoot;
 use App\Data\IncidentData;
 use App\Enum\IncidentStatus;
 use App\Enum\IncidentType;
 use App\Models\Incident;
-use Illuminate\Validation\ValidationException;
+use App\StorableEvents\Incident\IncidentCreated;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
-class StoreTest extends TestCase
+class IncidentAggregateRootTest extends TestCase
 {
-    public function test_redirects_to_show_page(): void
+    public function test_fires_incident_created_event()
+    {
+        $incidentDate = now();
+
+        $incidentData = IncidentData::from([
+            'role' => 0,
+            'last_name' => 'last',
+            'first_name' => 'first',
+            'upei_id' => '322',
+            'email' => 'john@doe.com',
+            'phone' => '(902) 333-4444',
+            'work_related' => true,
+            'happened_at' => $incidentDate,
+            'location' => 'Building A',
+            'room_number' => '123A',
+            'reported_to' => 'John Doe',
+            'witnesses' => [],
+            'incident_type' => IncidentType::SAFETY,
+            'descriptor' => 'Burn',
+            'description' => 'A fire broke out in the room.',
+            'injury_description' => 'Minor burn',
+            'first_aid_description' => 'Minor burn treated',
+            'reporters_email' => 'jane@doe.com',
+            'supervisor_name' => 'John Doe',
+        ]);
+
+        IncidentAggregateRoot::fake(Str::uuid()->toString())
+            ->given([])
+            ->when(function (IncidentAggregateRoot $incidentAggregateRoot) use ($incidentData): void {
+                $incidentAggregateRoot->createIncident($incidentData);
+            })
+            ->assertRecorded([
+                new IncidentCreated(
+                    role: $incidentData->role,
+                    last_name: $incidentData->last_name,
+                    first_name: $incidentData->first_name,
+                    upei_id: $incidentData->upei_id,
+                    email: $incidentData->email,
+                    phone: $incidentData->phone,
+                    work_related: $incidentData->work_related,
+                    happened_at: $incidentData->happened_at,
+                    location: $incidentData->location,
+                    room_number: $incidentData->room_number,
+                    reported_to: $incidentData->reported_to,
+                    witnesses: $incidentData->witnesses,
+                    incident_type: $incidentData->incident_type,
+                    descriptor: $incidentData->descriptor,
+                    description: $incidentData->description,
+                    injury_description: $incidentData->injury_description,
+                    first_aid_description: $incidentData->first_aid_description,
+                    reporters_email: $incidentData->reporters_email,
+                    supervisor_name: $incidentData->supervisor_name,
+                    status: IncidentStatus::OPEN
+                )
+            ]);
+    }
+
+    public function test_incident_uuid_is_aggregate_uuid()
     {
         $incidentDate = now();
 
@@ -39,101 +98,20 @@ class StoreTest extends TestCase
 
         $this->assertDatabaseCount('incidents', 0);
 
-        $response = $this->post(route('incidents.store'), $incidentData->toArray());
+        $uuid = Str::uuid()->toString();
+
+        $aggregate = IncidentAggregateRoot::retrieve($uuid)
+            ->createIncident($incidentData)
+            ->persist();
 
         $this->assertDatabaseCount('incidents', 1);
 
         $incident = Incident::first();
 
-        $response->assertRedirectToRoute('incidents.show', ['incident' => $incident->id]);
+        $this->assertEquals($aggregate->uuid(), $incident->id);
     }
 
-    public function test_throws_validation_error_for_bad_data(): void
-    {
-        $incidentDate = now();
-
-        $incidentData = [
-            'role' => '',
-            'work_related' => true,
-            'happened_at' => $incidentDate,
-            'location' => '',
-            'incident_type' => '',
-            'descriptor' => '',
-            'description' => '',
-        ];
-
-        $response = $this->post(route('incidents.store'), $incidentData);
-
-        $this->assertInstanceOf(ValidationException::class, $response->exception);
-
-        $response->assertInvalid([
-            'role',
-            'location',
-            'incident_type',
-            'descriptor',
-            'description',
-        ]);
-
-    }
-
-    public function test_stores_anonymous_incident(): void
-    {
-        $incidentDate = now();
-
-        $incidentData = IncidentData::from([
-            'role' => 0,
-            'last_name' => null,
-            'first_name' => null,
-            'upei_id' => null,
-            'email' => null,
-            'phone' => null,
-            'work_related' => true,
-            'happened_at' => $incidentDate,
-            'location' => 'Building A',
-            'room_number' => null,
-            'reported_to' => null,
-            'witnesses' => null,
-            'incident_type' => IncidentType::SAFETY,
-            'descriptor' => 'Burn',
-            'description' => 'A fire broke out in the room.',
-            'injury_description' => null,
-            'first_aid_description' => null,
-            'reporters_email' => null,
-            'supervisor_name' => null,
-        ]);
-
-        $this->assertDatabaseCount('incidents', 0);
-
-        $response = $this->post(route('incidents.store'), $incidentData->toArray());
-
-        $this->assertDatabaseCount('incidents', 1);
-
-        $incident = Incident::first();
-
-        $this->assertEquals($incidentData->role, $incident->role);
-        $this->assertNull($incident->last_name);
-        $this->assertNull($incident->first_name);
-        $this->assertNull($incident->upei_id);
-        $this->assertNull($incident->email);
-        $this->assertNull($incident->phone);
-        $this->assertEquals($incidentData->work_related, $incident->work_related);
-        $this->assertEquals($incidentData->happened_at, $incident->happened_at);
-        $this->assertEquals($incidentData->location, $incident->location);
-        $this->assertNull($incident->room_number);
-        $this->assertNull($incident->reported_to);
-        $this->assertNull($incident->witnesses);
-        $this->assertEquals($incidentData->incident_type, $incident->incident_type);
-        $this->assertEquals($incidentData->descriptor, $incident->descriptor);
-        $this->assertEquals($incidentData->description, $incident->description);
-        $this->assertNull($incident->injury_description);
-        $this->assertNull($incident->first_aid_description);
-        $this->assertNull($incident->reporters_email);
-        $this->assertNull($incident->supervisor_name);
-        $this->assertEquals(IncidentStatus::OPEN, $incident->status);
-        $this->assertNull($incident->closed_at);
-    }
-
-    public function test_stores_incident_with_open_status(): void
+    public function test_stores_incident()
     {
         $incidentDate = now();
 
@@ -161,49 +139,17 @@ class StoreTest extends TestCase
 
         $this->assertDatabaseCount('incidents', 0);
 
-        $response = $this->post(route('incidents.store'), $incidentData->toArray());
+        $uuid = Str::uuid()->toString();
+
+        $aggregate = IncidentAggregateRoot::retrieve($uuid)
+            ->createIncident($incidentData)
+            ->persist();
 
         $this->assertDatabaseCount('incidents', 1);
 
         $incident = Incident::first();
 
-        $this->assertEquals(IncidentStatus::OPEN, $incident->status);
-    }
-
-    public function test_stores_incident(): void
-    {
-        $incidentDate = now();
-
-        $incidentData = IncidentData::from([
-            'role' => 0,
-            'last_name' => 'last',
-            'first_name' => 'first',
-            'upei_id' => '322',
-            'email' => 'john@doe.com',
-            'phone' => '(902) 333-4444',
-            'work_related' => true,
-            'happened_at' => $incidentDate,
-            'location' => 'Building A',
-            'room_number' => '123A',
-            'reported_to' => 'John Doe',
-            'witnesses' => [],
-            'incident_type' => IncidentType::SAFETY,
-            'descriptor' => 'Burn',
-            'description' => 'A fire broke out in the room.',
-            'injury_description' => 'Minor burn',
-            'first_aid_description' => 'Minor burn treated',
-            'reporters_email' => 'jane@doe.com',
-            'supervisor_name' => 'John Doe',
-        ]);
-
-        $this->assertDatabaseCount('incidents', 0);
-
-        $response = $this->post(route('incidents.store'), $incidentData->toArray());
-
-        $this->assertDatabaseCount('incidents', 1);
-
-        $incident = Incident::first();
-
+        $this->assertEquals($aggregate->uuid(), $incident->id);
         $this->assertEquals($incidentData->role, $incident->role);
         $this->assertEquals($incidentData->last_name, $incident->last_name);
         $this->assertEquals($incidentData->first_name, $incident->first_name);

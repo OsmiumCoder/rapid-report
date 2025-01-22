@@ -2,6 +2,7 @@
 
 namespace App\Data;
 
+use App\Enum\IncidentType;
 use Carbon\Carbon;
 use Spatie\LaravelData\Data;
 
@@ -20,7 +21,7 @@ class IncidentData extends Data
         public ?string $room_number,
         public ?string $reported_to,
         public ?array $witnesses,
-        public int $incident_type,
+        public IncidentType $incident_type,
         public string $descriptor,
         public string $description,
         public ?string $injury_description,
