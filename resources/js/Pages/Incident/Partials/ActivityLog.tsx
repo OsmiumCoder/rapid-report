@@ -1,46 +1,46 @@
-'use client'
-
-import { useState } from 'react'
+import { useState } from 'react';
 import {
-    Dialog,
-    DialogPanel,
     Label,
     Listbox,
     ListboxButton,
     ListboxOption,
     ListboxOptions,
-    Menu,
-    MenuButton,
-    MenuItem,
-    MenuItems,
-} from '@headlessui/react'
+} from '@headlessui/react';
 import {
-    Bars3Icon,
-    CalendarDaysIcon,
-    CreditCardIcon,
-    EllipsisVerticalIcon,
     FaceFrownIcon,
     FaceSmileIcon,
     FireIcon,
     HandThumbUpIcon,
     HeartIcon,
     PaperClipIcon,
-    UserCircleIcon,
     XMarkIcon as XMarkIconMini,
-} from '@heroicons/react/20/solid'
-import { BellIcon, XMarkIcon as XMarkIconOutline } from '@heroicons/react/24/outline'
-import { CheckCircleIcon } from '@heroicons/react/24/solid'
-
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import AdminActions from '@/Pages/Incident/Partials/AdminActions';
-import { Head } from '@inertiajs/react';
-import {PageProps} from "@/types";
-import classNames from "@/Filters/classNames";
+} from '@heroicons/react/20/solid';
+import { CheckCircleIcon } from '@heroicons/react/24/solid';
+import classNames from '@/Filters/classNames';
+import { Incident } from '@/types/Incident';
 
 const activity = [
-    { id: 1, type: 'created', person: { name: 'Chelsea Hagon' }, date: '7d ago', dateTime: '2023-01-23T10:32' },
-    { id: 2, type: 'edited', person: { name: 'Chelsea Hagon' }, date: '6d ago', dateTime: '2023-01-23T11:03' },
-    { id: 3, type: 'sent', person: { name: 'Chelsea Hagon' }, date: '6d ago', dateTime: '2023-01-23T11:24' },
+    {
+        id: 1,
+        type: 'created',
+        person: { name: 'Chelsea Hagon' },
+        date: '7d ago',
+        dateTime: '2023-01-23T10:32',
+    },
+    {
+        id: 2,
+        type: 'edited',
+        person: { name: 'Chelsea Hagon' },
+        date: '6d ago',
+        dateTime: '2023-01-23T11:03',
+    },
+    {
+        id: 3,
+        type: 'sent',
+        person: { name: 'Chelsea Hagon' },
+        date: '6d ago',
+        dateTime: '2023-01-23T11:24',
+    },
     {
         id: 4,
         type: 'commented',
@@ -49,41 +49,96 @@ const activity = [
             imageUrl:
                 'https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
         },
-        comment: 'Called client, they reassured me the invoice would be paid by the 25th.',
+        comment:
+            'Called client, they reassured me the invoice would be paid by the 25th.',
         date: '3d ago',
         dateTime: '2023-01-23T15:56',
     },
-    { id: 5, type: 'viewed', person: { name: 'Alex Curren' }, date: '2d ago', dateTime: '2023-01-24T09:12' },
-    { id: 6, type: 'paid', person: { name: 'Alex Curren' }, date: '1d ago', dateTime: '2023-01-24T09:20' },
-]
+    {
+        id: 5,
+        type: 'viewed',
+        person: { name: 'Alex Curren' },
+        date: '2d ago',
+        dateTime: '2023-01-24T09:12',
+    },
+    {
+        id: 6,
+        type: 'paid',
+        person: { name: 'Alex Curren' },
+        date: '1d ago',
+        dateTime: '2023-01-24T09:20',
+    },
+];
 const moods = [
-    { name: 'Excited', value: 'excited', icon: FireIcon, iconColor: 'text-white', bgColor: 'bg-red-500' },
-    { name: 'Loved', value: 'loved', icon: HeartIcon, iconColor: 'text-white', bgColor: 'bg-pink-400' },
-    { name: 'Happy', value: 'happy', icon: FaceSmileIcon, iconColor: 'text-white', bgColor: 'bg-green-400' },
-    { name: 'Sad', value: 'sad', icon: FaceFrownIcon, iconColor: 'text-white', bgColor: 'bg-yellow-400' },
-    { name: 'Thumbsy', value: 'thumbsy', icon: HandThumbUpIcon, iconColor: 'text-white', bgColor: 'bg-blue-500' },
-    { name: 'I feel nothing', value: null, icon: XMarkIconMini, iconColor: 'text-gray-400', bgColor: 'bg-transparent' },
-]
+    {
+        name: 'Excited',
+        value: 'excited',
+        icon: FireIcon,
+        iconColor: 'text-white',
+        bgColor: 'bg-red-500',
+    },
+    {
+        name: 'Loved',
+        value: 'loved',
+        icon: HeartIcon,
+        iconColor: 'text-white',
+        bgColor: 'bg-pink-400',
+    },
+    {
+        name: 'Happy',
+        value: 'happy',
+        icon: FaceSmileIcon,
+        iconColor: 'text-white',
+        bgColor: 'bg-green-400',
+    },
+    {
+        name: 'Sad',
+        value: 'sad',
+        icon: FaceFrownIcon,
+        iconColor: 'text-white',
+        bgColor: 'bg-yellow-400',
+    },
+    {
+        name: 'Thumbsy',
+        value: 'thumbsy',
+        icon: HandThumbUpIcon,
+        iconColor: 'text-white',
+        bgColor: 'bg-blue-500',
+    },
+    {
+        name: 'I feel nothing',
+        value: null,
+        icon: XMarkIconMini,
+        iconColor: 'text-gray-400',
+        bgColor: 'bg-transparent',
+    },
+];
 
-export default function ActivityLog({incident}: PageProps<{ incident: any }>) {
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-    const [selected, setSelected] = useState(moods[5])
+export default function ActivityLog({ incident }: { incident: Incident }) {
+    const [selected, setSelected] = useState(moods[5]);
 
     return (
         <>
-            <div className="lg:col-start-3">
-                {/* Activity feed (placeholder) */}
-                <h2 className="text-sm/6 font-semibold text-gray-900">Activity Log</h2>
+            <div className="lg:col-start-3 p-6 rounded-lg bg-white shadow-sm ring-1 ring-gray-900/5">
+                {/* Activity feed */}
+                <h2 className="text-sm/6 font-semibold text-gray-900">
+                    Activity
+                </h2>
                 <ul role="list" className="mt-6 space-y-6">
                     {activity.map((activityItem, activityItemIdx) => (
-                        <li key={activityItem.id} className="relative flex gap-x-4">
+                        <li
+                            key={activityItem.id}
+                            className="relative flex gap-x-4"
+                        >
                             <div
                                 className={classNames(
-                                    activityItemIdx === activity.length - 1 ? 'h-6' : '-bottom-6',
-                                    'absolute left-0 top-0 flex w-6 justify-center',
+                                    activityItemIdx === activity.length - 1
+                                        ? 'h-6'
+                                        : '-bottom-6',
+                                    'absolute left-0 top-0 flex w-6 justify-center'
                                 )}
                             >
-                                <div className="w-px bg-gray-200"/>
+                                <div className="w-px bg-gray-200" />
                             </div>
                             {activityItem.type === 'commented' ? (
                                 <>
@@ -92,40 +147,48 @@ export default function ActivityLog({incident}: PageProps<{ incident: any }>) {
                                         src={activityItem.person.imageUrl}
                                         className="relative mt-3 size-6 flex-none rounded-full bg-gray-50"
                                     />
-                                    <div
-                                        className="flex-auto rounded-md p-3 ring-1 ring-inset ring-gray-200">
+                                    <div className="flex-auto rounded-md p-3 ring-1 ring-inset ring-gray-200">
                                         <div className="flex justify-between gap-x-4">
                                             <div className="py-0.5 text-xs/5 text-gray-500">
-                                                                <span
-                                                                    className="font-medium text-gray-900">{activityItem.person.name}</span> commented
+                                                <span className="font-medium text-gray-900">
+                                                    {activityItem.person.name}
+                                                </span>{' '}
+                                                commented
                                             </div>
-                                            <time dateTime={activityItem.dateTime}
-                                                  className="flex-none py-0.5 text-xs/5 text-gray-500">
+                                            <time
+                                                dateTime={activityItem.dateTime}
+                                                className="flex-none py-0.5 text-xs/5 text-gray-500"
+                                            >
                                                 {activityItem.date}
                                             </time>
                                         </div>
-                                        <p className="text-sm/6 text-gray-500">{activityItem.comment}</p>
+                                        <p className="text-sm/6 text-gray-500">
+                                            {activityItem.comment}
+                                        </p>
                                     </div>
                                 </>
                             ) : (
                                 <>
-                                    <div
-                                        className="relative flex size-6 flex-none items-center justify-center bg-white">
+                                    <div className="relative flex size-6 flex-none items-center justify-center bg-white">
                                         {activityItem.type === 'paid' ? (
-                                            <CheckCircleIcon aria-hidden="true"
-                                                             className="size-6 text-indigo-600"/>
+                                            <CheckCircleIcon
+                                                aria-hidden="true"
+                                                className="size-6 text-indigo-600"
+                                            />
                                         ) : (
-                                            <div
-                                                className="size-1.5 rounded-full bg-gray-100 ring-1 ring-gray-300"/>
+                                            <div className="size-1.5 rounded-full bg-gray-100 ring-1 ring-gray-300" />
                                         )}
                                     </div>
                                     <p className="flex-auto py-0.5 text-xs/5 text-gray-500">
-                                                        <span
-                                                            className="font-medium text-gray-900">{activityItem.person.name}</span>{' '}
+                                        <span className="font-medium text-gray-900">
+                                            {activityItem.person.name}
+                                        </span>{' '}
                                         {activityItem.type} the invoice.
                                     </p>
-                                    <time dateTime={activityItem.dateTime}
-                                          className="flex-none py-0.5 text-xs/5 text-gray-500">
+                                    <time
+                                        dateTime={activityItem.dateTime}
+                                        className="flex-none py-0.5 text-xs/5 text-gray-500"
+                                    >
                                         {activityItem.date}
                                     </time>
                                 </>
@@ -134,7 +197,7 @@ export default function ActivityLog({incident}: PageProps<{ incident: any }>) {
                     ))}
                 </ul>
 
-                {/* New comment form (placeholder) */}
+                {/* New comment form */}
                 <div className="mt-6 flex gap-x-3">
                     <img
                         alt=""
@@ -142,8 +205,7 @@ export default function ActivityLog({incident}: PageProps<{ incident: any }>) {
                         className="size-6 flex-none rounded-full bg-gray-50"
                     />
                     <form action="#" className="relative flex-auto">
-                        <div
-                            className="overflow-hidden rounded-lg pb-12 outline outline-1 -outline-offset-1 outline-gray-300 focus-within:outline focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">
+                        <div className="overflow-hidden rounded-lg pb-12 outline outline-1 -outline-offset-1 outline-gray-300 focus-within:outline focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">
                             <label htmlFor="comment" className="sr-only">
                                 Add your comment
                             </label>
@@ -152,51 +214,67 @@ export default function ActivityLog({incident}: PageProps<{ incident: any }>) {
                                 name="comment"
                                 rows={2}
                                 placeholder="Add your comment..."
-                                className="block w-full resize-none bg-transparent px-3 py-1.5 text-base text-gray-900 placeholder:text-gray-400 focus:outline focus:outline-0 sm:text-sm/6"
+                                className="block w-full resize-none bg-transparent px-3 py-1.5 text-base text-gray-900 border-0 placeholder:text-gray-400 focus:outline focus:outline-0 sm:text-sm/6"
                                 defaultValue={''}
                             />
                         </div>
 
-                        <div
-                            className="absolute inset-x-0 bottom-0 flex justify-between py-2 pl-3 pr-2">
+                        <div className="absolute inset-x-0 bottom-0 flex justify-between py-2 pl-3 pr-2">
                             <div className="flex items-center space-x-5">
                                 <div className="flex items-center">
                                     <button
                                         type="button"
                                         className="-m-2.5 flex size-10 items-center justify-center rounded-full text-gray-400 hover:text-gray-500"
                                     >
-                                        <PaperClipIcon aria-hidden="true" className="size-5"/>
-                                        <span className="sr-only">Attach a file</span>
+                                        <PaperClipIcon
+                                            aria-hidden="true"
+                                            className="size-5"
+                                        />
+                                        <span className="sr-only">
+                                            Attach a file
+                                        </span>
                                     </button>
                                 </div>
                                 <div className="flex items-center">
-                                    <Listbox value={selected} onChange={setSelected}>
-                                        <Label className="sr-only">Your mood</Label>
+                                    <Listbox
+                                        value={selected}
+                                        onChange={setSelected}
+                                    >
+                                        <Label className="sr-only">
+                                            Your mood
+                                        </Label>
                                         <div className="relative">
-                                            <ListboxButton
-                                                className="relative -m-2.5 flex size-10 items-center justify-center rounded-full text-gray-400 hover:text-gray-500">
-                                                                  <span className="flex items-center justify-center">
-                                                                    {selected.value === null ? (
-                                                                        <span>
-                                                                        <FaceSmileIcon aria-hidden="true"
-                                                                                       className="size-5 shrink-0"/>
-                                                                        <span className="sr-only">Add your mood</span>
-                                                                      </span>
-                                                                    ) : (
-                                                                        <span>
-                                                                        <span
-                                                                            className={classNames(
-                                                                                selected.bgColor,
-                                                                                'flex size-8 items-center justify-center rounded-full',
-                                                                            )}
-                                                                        >
-                                                                          <selected.icon aria-hidden="true"
-                                                                                         className="size-5 shrink-0 text-white"/>
-                                                                        </span>
-                                                                        <span className="sr-only">{selected.name}</span>
-                                                                      </span>
-                                                                    )}
-                                                                  </span>
+                                            <ListboxButton className="relative -m-2.5 flex size-10 items-center justify-center rounded-full text-gray-400 hover:text-gray-500">
+                                                <span className="flex items-center justify-center">
+                                                    {selected.value === null ? (
+                                                        <span>
+                                                            <FaceSmileIcon
+                                                                aria-hidden="true"
+                                                                className="size-5 shrink-0"
+                                                            />
+                                                            <span className="sr-only">
+                                                                Add your mood
+                                                            </span>
+                                                        </span>
+                                                    ) : (
+                                                        <span>
+                                                            <span
+                                                                className={classNames(
+                                                                    selected.bgColor,
+                                                                    'flex size-8 items-center justify-center rounded-full'
+                                                                )}
+                                                            >
+                                                                <selected.icon
+                                                                    aria-hidden="true"
+                                                                    className="size-5 shrink-0 text-white"
+                                                                />
+                                                            </span>
+                                                            <span className="sr-only">
+                                                                {selected.name}
+                                                            </span>
+                                                        </span>
+                                                    )}
+                                                </span>
                                             </ListboxButton>
 
                                             <ListboxOptions
@@ -213,16 +291,20 @@ export default function ActivityLog({incident}: PageProps<{ incident: any }>) {
                                                             <div
                                                                 className={classNames(
                                                                     mood.bgColor,
-                                                                    'flex size-8 items-center justify-center rounded-full',
+                                                                    'flex size-8 items-center justify-center rounded-full'
                                                                 )}
                                                             >
                                                                 <mood.icon
                                                                     aria-hidden="true"
-                                                                    className={classNames(mood.iconColor, 'size-5 shrink-0')}
+                                                                    className={classNames(
+                                                                        mood.iconColor,
+                                                                        'size-5 shrink-0'
+                                                                    )}
                                                                 />
                                                             </div>
-                                                            <span
-                                                                className="ml-3 block truncate font-medium">{mood.name}</span>
+                                                            <span className="ml-3 block truncate font-medium">
+                                                                {mood.name}
+                                                            </span>
                                                         </div>
                                                     </ListboxOption>
                                                 ))}

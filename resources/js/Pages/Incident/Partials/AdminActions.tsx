@@ -1,8 +1,6 @@
-'use client'
+import {Incident} from "@/types/Incident";
 
-import {PageProps} from "@/types";
-
-export default function AdminActions({incident}: PageProps<{ incident: any }>) {
+export default function AdminActions({incident}: { incident: Incident }) {
     return (
         <>
             <div className="lg:col-start-3 lg:row-end-1">

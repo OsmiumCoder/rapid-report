@@ -1,78 +1,18 @@
-'use client'
-
-import {useState} from 'react'
 import {
-    Dialog,
-    DialogPanel,
-    Label,
-    Listbox,
-    ListboxButton,
-    ListboxOption,
-    ListboxOptions,
     Menu,
     MenuButton,
     MenuItem,
     MenuItems,
 } from '@headlessui/react'
 import {
-    Bars3Icon,
-    CalendarDaysIcon,
-    CreditCardIcon,
     EllipsisVerticalIcon,
-    FaceFrownIcon,
-    FaceSmileIcon,
-    FireIcon,
-    HandThumbUpIcon,
-    HeartIcon,
-    PaperClipIcon,
-    UserCircleIcon,
-    XMarkIcon as XMarkIconMini,
 } from '@heroicons/react/20/solid'
-import {BellIcon, XMarkIcon as XMarkIconOutline} from '@heroicons/react/24/outline'
-import {CheckCircleIcon} from '@heroicons/react/24/solid'
+import {Incident} from "@/types/Incident";
 
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import AdminActions from '@/Pages/Incident/Partials/AdminActions';
-import ActivityLog from '@/Pages/Incident/Partials/ActivityLog';
-import {Head} from '@inertiajs/react';
-import {PageProps} from "@/types";
-import classNames from "@/Filters/classNames";
-
-const activity = [
-    {id: 1, type: 'created', person: {name: 'Chelsea Hagon'}, date: '7d ago', dateTime: '2023-01-23T10:32'},
-    {id: 2, type: 'edited', person: {name: 'Chelsea Hagon'}, date: '6d ago', dateTime: '2023-01-23T11:03'},
-    {id: 3, type: 'sent', person: {name: 'Chelsea Hagon'}, date: '6d ago', dateTime: '2023-01-23T11:24'},
-    {
-        id: 4,
-        type: 'commented',
-        person: {
-            name: 'Chelsea Hagon',
-            imageUrl:
-                'https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-        },
-        comment: 'Called client, they reassured me the invoice would be paid by the 25th.',
-        date: '3d ago',
-        dateTime: '2023-01-23T15:56',
-    },
-    {id: 5, type: 'viewed', person: {name: 'Alex Curren'}, date: '2d ago', dateTime: '2023-01-24T09:12'},
-    {id: 6, type: 'paid', person: {name: 'Alex Curren'}, date: '1d ago', dateTime: '2023-01-24T09:20'},
-]
-const moods = [
-    {name: 'Excited', value: 'excited', icon: FireIcon, iconColor: 'text-white', bgColor: 'bg-red-500'},
-    {name: 'Loved', value: 'loved', icon: HeartIcon, iconColor: 'text-white', bgColor: 'bg-pink-400'},
-    {name: 'Happy', value: 'happy', icon: FaceSmileIcon, iconColor: 'text-white', bgColor: 'bg-green-400'},
-    {name: 'Sad', value: 'sad', icon: FaceFrownIcon, iconColor: 'text-white', bgColor: 'bg-yellow-400'},
-    {name: 'Thumbsy', value: 'thumbsy', icon: HandThumbUpIcon, iconColor: 'text-white', bgColor: 'bg-blue-500'},
-    {name: 'I feel nothing', value: null, icon: XMarkIconMini, iconColor: 'text-gray-400', bgColor: 'bg-transparent'},
-]
-
-export default function IncidentHeader({incident}: PageProps<{ incident: any }>) {
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-    const [selected, setSelected] = useState(moods[5])
-
+export default function IncidentHeader({incident}: { incident: Incident }) {
     return (
         <>
-            <header className="relative isolate pt-16">
+            <header className="relative isolate">
                 <div aria-hidden="true" className="absolute inset-0 -z-10 overflow-hidden">
                     <div
                         className="absolute left-16 top-full -mt-16 transform-gpu opacity-50 blur-3xl xl:left-1/2 xl:-ml-80">
