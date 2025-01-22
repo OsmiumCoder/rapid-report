@@ -1,6 +1,7 @@
 import React from 'react';
 import { StageProps } from '@/Pages/Incident/Stages/StageWrapper';
 import { descriptors } from '@/Pages/Incident/Stages/IncidentDropDownValues';
+import ToggleSwitch from "@/Components/ToggleSwitch";
 
 export default function IncidentInformationStage({
     formData,
@@ -12,63 +13,40 @@ export default function IncidentInformationStage({
                 Incident Information
             </label>
 
-            <div>
-                <div className="flex">
-                    <div className="min-w-0 flex-1 text-sm/6">
-                        <label
-                            htmlFor="work_related"
-                            className="font-medium text-gray-900"
-                        >
-                            Work Related
-                        </label>
-                        <p className="text-xs text-gray-500">
-                            Was the Incident Work related?
-                        </p>
-                    </div>
-                    <div className="flex h-6 shrink-0 items-center">
-                        <div className="group grid size-4 grid-cols-1">
-                            <input
-                                type="checkbox"
-                                aria-describedby="work_related-description"
-                                checked={formData.work_related ?? false}
-                                onChange={(e) =>
-                                    setFormData((prev) => ({
-                                        ...prev,
-                                        work_related: e.target.checked,
-                                    }))
-                                }
-                                className="col-start-1 row-start-1 appearance-none rounded border border-gray-300 bg-white checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto"
-                            />
-                            <svg
-                                fill="none"
-                                viewBox="0 0 14 14"
-                                className="pointer-events-none col-start-1 row-start-1 size-3.5 self-center justify-self-center stroke-white group-has-[:disabled]:stroke-gray-950/25"
-                            >
-                                <path
-                                    d="M3 8L6 11L11 3.5"
-                                    strokeWidth={2}
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    className="opacity-0 group-has-[:checked]:opacity-100"
-                                />
-                                <path
-                                    d="M3 7H11"
-                                    strokeWidth={2}
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    className="opacity-0 group-has-[:indeterminate]:opacity-100"
-                                />
-                            </svg>
-                        </div>
-                    </div>
+            <div className="flex">
+                <div className="min-w-0 flex-1 text-sm/6">
+                    <label
+                        htmlFor="work_related"
+                        className="font-medium text-gray-900"
+                    >
+                        Work Related
+                    </label>
+                    <p className="text-xs text-gray-500">
+                        Was the Incident Work related?
+                    </p>
                 </div>
-                <label className="block text-sm/6 font-medium text-gray-900">
-                    Location
-                </label>
-                <p className="text-xs text-gray-500">
-                    Enter the building or description of area where the incident
-                    occurred.
-                </p>
+                <ToggleSwitch
+                    checked={formData.work_related ?? false}
+                    onChange={(e) => {
+                        setFormData((prev) => ({
+                            ...prev,
+                            work_related: e.valueOf(),
+                        }));
+                    }}
+                />
+            </div>
+
+            <div className="mt-4">
+                <div>
+                    <label className="block text-sm/6 font-medium text-gray-900">
+                        Location
+                    </label>
+                    <p className="text-xs text-gray-500">
+                        Enter the building or description of area where the
+                        incident occurred.
+                    </p>
+                </div>
+
                 <div className="mt-2">
                     <input
                         placeholder="e.g Cass Science Hall"
@@ -86,13 +64,13 @@ export default function IncidentInformationStage({
                 </div>
             </div>
 
-            <div>
-                <div className="flex items-center justify-between">
+            <div className="mt-4">
+                <div>
                     <label className="block text-sm/6 font-medium text-gray-900">
                         Room Number
                     </label>
+                    <p className="text-xs text-gray-500">If Applicable.</p>
                 </div>
-                <p className="text-xs text-gray-500">If Applicable.</p>
 
                 <div className="mt-2">
                     <input
@@ -109,11 +87,14 @@ export default function IncidentInformationStage({
                     />
                 </div>
             </div>
-            <div>
-                <label className="block text-sm/6 font-medium text-gray-900">
-                    Incident Type
-                </label>
-                <div className="mt-2 grid grid-cols-1">
+
+            <div className="mt-4">
+                <div>
+                    <label className="block text-sm/6 font-medium text-gray-900">
+                        Incident Type
+                    </label>
+                </div>
+                <div className="mt-1 grid grid-cols-1">
                     <select
                         value={
                             descriptors.find(
@@ -136,14 +117,16 @@ export default function IncidentInformationStage({
                     </select>
                 </div>
             </div>
-            <div>
-                <label className="block text-sm/6 font-medium text-gray-900">
-                    Incident Descriptor
-                </label>
-                <div className="mt-2 grid grid-cols-1">
+
+            <div className="mt-4">
+                <div>
+                    <label className="block text-sm/6 font-medium text-gray-900">
+                        Incident Descriptor
+                    </label>
+                </div>
+                <div className="mt-1 grid grid-cols-1">
                     <select
                         value={formData.descriptor}
-                        id="des_select"
                         onChange={(e) =>
                             setFormData((prev) => ({
                                 ...prev,
@@ -164,14 +147,15 @@ export default function IncidentInformationStage({
                     </select>
                 </div>
             </div>
+
             {formData.descriptor === 'Other' && (
-                <div>
-                    <div className="flex items-center justify-between">
+                <div className="mt-4">
+                    <div>
                         <label className="block text-sm/6 font-medium text-gray-900">
                             Please briefly Describe:
                         </label>
                     </div>
-                    <div className="mt-2">
+                    <div className="mt-1">
                         <input
                             required
                             value={formData.other_descriptor ?? ''}

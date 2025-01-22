@@ -22,6 +22,6 @@ export default interface IncidentData {
     upei_id?: string;
     witnesses?: string[];
     work_related?: boolean;
-    hasInjury?: boolean;
-    firstAidApplied?: boolean;
+    has_injury?: boolean;
+    first_aid_applied?: boolean;
 }

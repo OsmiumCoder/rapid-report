@@ -21,31 +21,15 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
     const [completedSteps, setCompletedSteps] = useState(0);
 
     const nextStep = () => {
-        const stepCount =
-            formData?.anonymous !== undefined &&
-            formData?.anonymous &&
-            !formData?.on_behalf &&
-            currentStepNumber === 0
-                ? 2
-                : 1;
-
-        setCurrentStepNumber((prev) => prev + stepCount);
-        setRemainingSteps((prev) => prev - stepCount);
-        setCompletedSteps((prev) => prev + stepCount);
+        setCurrentStepNumber((prev) => prev + 1);
+        setRemainingSteps((prev) => prev - 1);
+        setCompletedSteps((prev) => prev + 1);
     };
 
     const prevStep = () => {
-        const stepCount =
-            formData?.anonymous !== undefined &&
-            formData?.anonymous &&
-            !formData?.on_behalf &&
-            currentStepNumber === 2
-                ? 2
-                : 1;
-
-        setCurrentStepNumber((prev) => prev - stepCount);
-        setRemainingSteps((prev) => prev + stepCount);
-        setCompletedSteps((prev) => prev - stepCount);
+        setCurrentStepNumber((prev) => prev - 1);
+        setRemainingSteps((prev) => prev + 1);
+        setCompletedSteps((prev) => prev - 1);
     };
 
     const submit = () => {
@@ -58,8 +42,37 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
             role: roles[0].value,
             incident_type: descriptors[0].value,
             descriptor: descriptors[0].options[0],
+            anonymous: true,
+            on_behalf: false,
+            on_behalf_anon: true
         }));
     }, []);
+
+    useEffect(() => {
+        if (!((!formData.anonymous && !formData.on_behalf) ||
+            (!formData.anonymous && formData.on_behalf && !formData.on_behalf_anon) ||
+            (formData.anonymous && formData.on_behalf && !formData.on_behalf_anon))) {
+            setFormData((prev) => ({
+                ...prev,
+                first_name: '',
+                last_name: '',
+                phone: '',
+                email: '',
+                role: roles[0].value,
+                upei_id: ''
+            }));
+        }
+
+
+
+    }, [formData.on_behalf, formData.on_behalf_anon]);
+
+    useEffect(() => {
+        setFormData((prev) => ({
+            ...prev,
+            reporters_email: undefined
+        }));
+    }, [formData.anonymous]);
 
     return (
         <GuestLayout>
