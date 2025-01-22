@@ -9,8 +9,11 @@ export interface User {
 }
 
 export interface Role {
-    name: string;
+    id: number;
+    name: RoleName;
 }
+
+type RoleName = 'super-admin' | 'admin' | 'supervisor' | 'user' | 'all';
 
 export type PageProps<
     T extends Record<string, unknown> = Record<string, unknown>,

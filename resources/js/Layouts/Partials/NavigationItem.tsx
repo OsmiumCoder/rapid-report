@@ -1,12 +1,13 @@
 import { ComponentType, SVGProps } from 'react';
 import { Link } from '@inertiajs/react';
 import classNames from '@/Filters/classNames';
+import { RoleName } from '@/types';
 
 export interface NavigationItemInterface {
     name: string;
     route?: string;
     icon?: ComponentType<SVGProps<SVGSVGElement>>;
-    roles: string[];
+    roles: RoleName[];
     subItems?: NavigationItemInterface[];
 }
 
