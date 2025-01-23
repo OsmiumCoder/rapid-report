@@ -21,6 +21,8 @@ export default interface IncidentData {
     role?: number;
     room_number?: string;
     supervisor_name?: string;
+    supervisor_dep?: string;
+    supervisor_email?: string;
     upei_id?: string;
     witnesses: AdditionalPerson[];
     work_related?: boolean;

@@ -1,7 +1,6 @@
 export default interface AdditionalPerson {
-    email: string,
+    email?: string,
     name: string,
-    info?: string,
     index: number,
     phone: string,
 }

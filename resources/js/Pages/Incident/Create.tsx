@@ -12,22 +12,33 @@ import {
     roles,
 } from '@/Pages/Incident/Stages/IncidentDropDownValues';
 import AdditionalPersonsStage from "@/Pages/Incident/Stages/AdditionalPersonsStage";
+import SupervisorStage from "@/Pages/Incident/Stages/SupervisorStage";
 
 export default function Create({ form }: PageProps<{ form: IncidentData }>) {
     const [formData, setFormData] = useState<IncidentData>(form);
 
-    const numberOfSteps = 5;
+    const numberOfSteps = 6;
     const [remainingSteps, setRemainingSteps] = useState(numberOfSteps - 1);
     const [currentStepNumber, setCurrentStepNumber] = useState(0);
     const [completedSteps, setCompletedSteps] = useState(0);
+    const [validStep, setValidStep] = useState(true);
+    const [failedStep, setFailedStep] = useState(false)
 
     const nextStep = () => {
-        setCurrentStepNumber((prev) => prev + 1);
-        setRemainingSteps((prev) => prev - 1);
-        setCompletedSteps((prev) => prev + 1);
+       // console.log(validStep)
+        if(validStep){
+            setCurrentStepNumber((prev) => prev + 1);
+            setRemainingSteps((prev) => prev - 1);
+            setCompletedSteps((prev) => prev + 1);
+            setFailedStep(false)
+        }else{
+            setFailedStep(true)
+        }
+
     };
 
     const prevStep = () => {
+        setFailedStep(false);
         setCurrentStepNumber((prev) => prev - 1);
         setRemainingSteps((prev) => prev + 1);
         setCompletedSteps((prev) => prev - 1);
@@ -46,7 +57,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
             anonymous: true,
             on_behalf: false,
             on_behalf_anon: true,
-            witnesses: []
+            witnesses: [],
         }));
     }, []);
 
@@ -88,30 +99,53 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
                             <AnonymousStage
                                 formData={formData}
                                 setFormData={setFormData}
-                            />
+                                validStep={validStep}
+                                setValidStep={setValidStep}
+                                failedStep={failedStep}                            />
                         )}
                         {currentStepNumber === 1 && (
                             <AffectedPartyStage
                                 formData={formData}
                                 setFormData={setFormData}
+                                validStep={validStep}
+                                setValidStep={setValidStep}
+                                failedStep={failedStep}
                             />
                         )}
                         {currentStepNumber === 2 && (
                             <IncidentInformationStage
                                 formData={formData}
                                 setFormData={setFormData}
+                                validStep={validStep}
+                                setValidStep={setValidStep}
+                                failedStep={failedStep}
                             />
                         )}
                         {currentStepNumber === 3 && (
                             <VictimInformationStage
                                 formData={formData}
                                 setFormData={setFormData}
+                                validStep={validStep}
+                                setValidStep={setValidStep}
+                                failedStep={failedStep}
                             />
                         )}
                         {currentStepNumber === 4 && (
                             <AdditionalPersonsStage
                                 formData={formData}
                                 setFormData={setFormData}
+                                validStep={validStep}
+                                setValidStep={setValidStep}
+                                failedStep={failedStep}
+                            />
+                        )}
+                        {currentStepNumber === 5 && (
+                            <SupervisorStage
+                                formData={formData}
+                                setFormData={setFormData}
+                                validStep={validStep}
+                                setValidStep={setValidStep}
+                                failedStep={failedStep}
                             />
                         )}
                     </StageWrapper>

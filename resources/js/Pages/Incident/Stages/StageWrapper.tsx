@@ -5,6 +5,9 @@ import IncidentData from '@/types/IncidentData';
 export interface StageProps extends PropsWithChildren {
     formData: IncidentData;
     setFormData: Dispatch<SetStateAction<IncidentData>>;
+    validStep: boolean;
+    setValidStep:Dispatch<SetStateAction<boolean>>;
+    failedStep: boolean;
 }
 
 interface StageWrapperProps extends PropsWithChildren {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { StageProps } from '@/Pages/Incident/Stages/StageWrapper';
 import { descriptors } from '@/Pages/Incident/Stages/IncidentDropDownValues';
 import ToggleSwitch from "@/Components/ToggleSwitch";
@@ -6,7 +6,19 @@ import ToggleSwitch from "@/Components/ToggleSwitch";
 export default function IncidentInformationStage({
     formData,
     setFormData,
+    failedStep,
+    setValidStep,
 }: StageProps) {
+    useEffect(() => {
+        handleValidStep()
+    })
+    const handleValidStep = () =>{
+        if(formData.location == ""){
+            setValidStep(false)
+        }else{
+            setValidStep(true)
+        }
+    }
     return (
         <div className="min-w-0 flex-1 text-sm/6">
             <label className="flex justify-center font-bold text-lg text-gray-900">
@@ -32,6 +44,7 @@ export default function IncidentInformationStage({
                             ...prev,
                             work_related: e.valueOf(),
                         }));
+
                     }}
                 />
             </div>
@@ -53,14 +66,21 @@ export default function IncidentInformationStage({
                         aria-describedby="location-description"
                         required
                         value={formData.location ?? ''}
-                        onChange={(e) =>
+                        onChange={(e) => {
                             setFormData((prev) => ({
                                 ...prev,
                                 location: e.target.value,
-                            }))
-                        }
+                            }));
+                            handleValidStep();
+                        }}
                         className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                     />
+                    {failedStep && formData.location=="" && (
+                        <p id="validation-error" className="mt-2 text-sm text-red-600">
+                            *Please enter the location
+                        </p>
+
+                    )}
                 </div>
             </div>
 
@@ -77,14 +97,15 @@ export default function IncidentInformationStage({
                         placeholder="e.g 123A"
                         required
                         value={formData.room_number ?? ''}
-                        onChange={(e) =>
+                        onChange={(e) => {
                             setFormData((prev) => ({
                                 ...prev,
                                 room_number: e.target.value,
-                            }))
-                        }
+                            }));
+                        }}
                         className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                     />
+
                 </div>
             </div>
 
