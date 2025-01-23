@@ -34,12 +34,12 @@ class IncidentPolicy
             return true;
         }
 
-        if ($user->can('view assigned incidents')) {
-            return $user->id == $incident->supervisor_id;
+        if ($user->can('view assigned incidents') && $user->id == $incident->supervisor_id) {
+            return true;
         }
 
-        if ($user->can('view own incidents')) {
-            return $user->email == $incident->reporters_email;
+        if ($user->can('view own incidents') && $user->email == $incident->reporters_email) {
+            return true;
         }
 
         return false;
