@@ -27,6 +27,22 @@ class IncidentPolicyTest extends TestCase
 
         $this->assertTrue($this->getPolicy()->viewAnyAssigned($user));
     }
+
+    public function test_supervisor_can_view_incident_they_own_but_arent_assigned()
+    {
+        $user = User::factory()->create([
+            'name' => 'User',
+            'email' => 'user@b.com',
+        ])->assignRole('supervisor');
+
+        $incident = Incident::factory()->create([
+            'reporters_email' => $user->email,
+        ]);
+
+        $result = $this->getPolicy()->view($user, $incident);
+        $this->assertTrue($result);
+    }
+
     public function test_user_cant_view_incident_they_dont_own()
     {
         $incident = Incident::factory()->create([
