@@ -11,11 +11,12 @@ import {
     descriptors,
     roles,
 } from '@/Pages/Incident/Stages/IncidentDropDownValues';
+import AdditionalPersonsStage from "@/Pages/Incident/Stages/AdditionalPersonsStage";
 
 export default function Create({ form }: PageProps<{ form: IncidentData }>) {
     const [formData, setFormData] = useState<IncidentData>(form);
 
-    const numberOfSteps = 4;
+    const numberOfSteps = 5;
     const [remainingSteps, setRemainingSteps] = useState(numberOfSteps - 1);
     const [currentStepNumber, setCurrentStepNumber] = useState(0);
     const [completedSteps, setCompletedSteps] = useState(0);
@@ -102,6 +103,12 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
                         )}
                         {currentStepNumber === 3 && (
                             <VictimInformationStage
+                                formData={formData}
+                                setFormData={setFormData}
+                            />
+                        )}
+                        {currentStepNumber === 4 && (
+                            <AdditionalPersonsStage
                                 formData={formData}
                                 setFormData={setFormData}
                             />
