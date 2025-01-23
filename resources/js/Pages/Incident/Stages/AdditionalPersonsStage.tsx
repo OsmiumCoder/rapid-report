@@ -1,10 +1,7 @@
 import { StageProps } from '@/Pages/Incident/Stages/StageWrapper';
 import React, { useState } from 'react';
 import AdditionalPerson from "@/types/AdditionalPerson";
-import { PlusIcon, ArrowUturnLeftIcon } from '@heroicons/react/20/solid'
-import { Switch } from '@headlessui/react'
-import IncidentData from "@/types/IncidentData";
-import ToggleSwitch from "@/Components/ToggleSwitch";
+import { PlusIcon} from '@heroicons/react/20/solid'
 import ReportPersonList from "@/Components/ReportPersonList";
 
 export default function AdditionalPersonsStage({
@@ -30,7 +27,7 @@ export default function AdditionalPersonsStage({
         }
         return value.slice(0, 12); // Enforce max length
     }
-    const [personData, setPersonData] = useState<Array<AdditionalPerson>>([]);
+    const [personData, setPersonData] = useState<Array<AdditionalPerson>>(formData.witnesses);
     const [personDataLength, setPersonDataLength] = useState(0);
     const [personInProgress, setPersonInProgress] = useState(new Witness())
     const [validationError, setValidationError] = useState(false)
@@ -41,6 +38,10 @@ export default function AdditionalPersonsStage({
         }else{
             setValidationError(false);
             setPersonData([...personData, personInProgress]);
+            setFormData( prevState => ({
+                    ...prevState,
+                    witnesses: [...formData.witnesses, personInProgress]
+            }));
             setPersonInProgress(new Witness());
             setPersonDataLength(personDataLength + 1);
             setPersonInProgress((prev) => ({
@@ -49,12 +50,19 @@ export default function AdditionalPersonsStage({
             }));
             setFormVisible(!formVisible);
         }
-
     }
+const handPersonRemove = (index: number) => {
+        setFormData(prev => ({
+          ...prev,
+          witnesses: formData.witnesses.filter((person) => (person.index!=index))
+        }))
+        console.log(index)
+
+}
     return (<>
         <div className="min-w-0 flex-1 text-sm/6 space-y-4">
             <label className="flex justify-center font-bold text-lg text-gray-900">
-                Witnesses and Supervisors
+                Witnesses
             </label>
 
         {formVisible && ( <><div>
@@ -128,16 +136,16 @@ export default function AdditionalPersonsStage({
                 <button
                     type="button"
                     onClick= {() => {setFormVisible(!formVisible)}}
-                    className=" mr-16 rounded-full bg-indigo-600 p-2 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    className="mr-16 pr-3 items-center gap-x-2 rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
-                    <ArrowUturnLeftIcon aria-hidden="true" className="size-7" />
+                    Cancel
                 </button>
             <button
             type="button"
             onClick={handlePersonAdd}
-            className="rounded-full bg-indigo-600 p-2 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            className="items-center gap-x-2 rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
-            <PlusIcon aria-hidden="true" className="size-7" />
+                Add Witness
             </button>
 
             </div>
@@ -154,7 +162,7 @@ export default function AdditionalPersonsStage({
         )}
         {!formVisible && (
             <>
-            <ReportPersonList additionalPeople={personData}/>
+            <ReportPersonList removeFunction={handPersonRemove} additionalPeople={formData.witnesses}/>
             <div
                 className="flex justify-center">
             <button

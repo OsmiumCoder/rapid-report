@@ -45,7 +45,8 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
             descriptor: descriptors[0].options[0],
             anonymous: true,
             on_behalf: false,
-            on_behalf_anon: true
+            on_behalf_anon: true,
+            witnesses: []
         }));
     }, []);
 
