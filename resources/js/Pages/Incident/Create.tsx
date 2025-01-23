@@ -115,12 +115,12 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
                         )}
                     </StageWrapper>
 
-                    <div className="flex p-8 items-center justify-center">
+                    <div className="flex p-6 justify-around">
                         {completedSteps > 0 && (
                             <button
                                 type="button"
                                 onClick={prevStep}
-                                className="mt-4 mx-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                             >
                                 Back
                             </button>
@@ -130,7 +130,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
                             <button
                                 type="button"
                                 onClick={submit}
-                                className=" mt-4 mx-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
                             >
                                 Submit
                             </button>
@@ -139,7 +139,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
                             <button
                                 type="button"
                                 onClick={nextStep}
-                                className="mt-4 mx-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                             >
                                 Next
                             </button>

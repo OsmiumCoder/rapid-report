@@ -16,7 +16,7 @@ export default function ProgressBarCircle({
     remainingSteps,
 }: ProgressBarCircleProps) {
     return (
-        <nav aria-label="Progress">
+        <nav aria-label="Progress" className="p-6">
             <ol role="list" className="flex items-center">
                 {new Array(completedSteps).fill(1).map((_, index) => (
                     <li key={index} className="pr-8 sm:pr-11 relative">

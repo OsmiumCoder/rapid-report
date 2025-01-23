@@ -25,7 +25,7 @@ export default function StageWrapper({
                     remainingSteps={remainingSteps}
                 ></ProgressBarCircle>
             </div>
-            <div className="relative flex gap-3 pb-4 pt-3.5 mt-4">
+            <div className="relative flex gap-3">
                 {children}
             </div>
         </>
