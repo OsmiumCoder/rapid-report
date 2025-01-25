@@ -1,11 +1,13 @@
 import { StageProps } from '@/Pages/Incident/Stages/StageWrapper';
 import React from 'react';
-import ToggleSwitch from "@/Components/ToggleSwitch";
+import ToggleSwitch from '@/Components/ToggleSwitch';
 
-
-
-export default function AnonymousStage({ formData, setFormData, failedStep,setValidStep}: StageProps) {
-
+export default function AnonymousStage({
+    formData,
+    setFormData,
+    failedStep,
+    setValidStep,
+}: StageProps) {
     return (
         <div className="flex-1 space-y-4 divide-y">
             <div>
@@ -23,12 +25,15 @@ export default function AnonymousStage({ formData, setFormData, failedStep,setVa
                                 ...prev,
                                 anonymous: e.valueOf(),
                             }));
-                            if((formData.reporters_email == ""||formData.reporters_email== undefined) && !e.valueOf()) {
-                                setValidStep(false)
-                            }else {
-                                setValidStep(true)
+                            if (
+                                (formData.reporters_email == '' ||
+                                    formData.reporters_email == undefined) &&
+                                !e.valueOf()
+                            ) {
+                                setValidStep(false);
+                            } else {
+                                setValidStep(true);
                             }
-
                         }}
                     />
                 </div>
@@ -49,23 +54,23 @@ export default function AnonymousStage({ formData, setFormData, failedStep,setVa
                                     setFormData((prev) => ({
                                         ...prev,
                                         reporters_email: e.target.value,
-                                    }))
-                                   if(e.target.value != ""){
-                                       setValidStep(true);
-                                   }else{
-                                       setValidStep(false);
-                                }
-                                }
-
-                            }
+                                    }));
+                                    if (e.target.value != '') {
+                                        setValidStep(true);
+                                    } else {
+                                        setValidStep(false);
+                                    }
+                                }}
                                 placeholder="example@email.com"
                                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                             />
                             {failedStep && (
-                                <p id="validation-error" className="mt-2 text-sm text-red-600">
+                                <p
+                                    id="validation-error"
+                                    className="mt-2 text-sm text-red-600"
+                                >
                                     *Please enter an Email
                                 </p>
-
                             )}
                         </div>
                     </div>

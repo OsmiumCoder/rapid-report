@@ -1,42 +1,34 @@
 import { StageProps } from '@/Pages/Incident/Stages/StageWrapper';
 import { roles } from '@/Pages/Incident/Stages/IncidentDropDownValues';
-import React, {useEffect} from 'react';
-import ToggleSwitch from "@/Components/ToggleSwitch";
+import React, { useEffect } from 'react';
+import ToggleSwitch from '@/Components/ToggleSwitch';
+import validatePhoneInput from '@/Filters/validatePhoneInput';
 
 export default function AffectedPartyStage({
     formData,
     setFormData,
     failedStep,
     setValidStep,
-    }: StageProps) {
-
-    function validatePhoneInput(value: string) {
-        value = value.replace(/[^0-9-]/g, '');
-
-        if (value.length > 3 && value[3] !== '-') {
-            value = value.slice(0, 3) + '-' + value.slice(3);
-        }
-        if (value.length > 7 && value[7] !== '-') {
-            value = value.slice(0, 7) + '-' + value.slice(7);
-        }
-        return value.slice(0, 12); // Enforce max length
-    }
+}: StageProps) {
     useEffect(() => {
-        handleValidStep()
-    })
-    const handleValidStep = () =>{
-       if(!formData.anonymous && !formData.on_behalf){
-            setValidStep(checkForm)
-        }else if(formData.on_behalf && !formData.on_behalf_anon){
-           setValidStep(checkForm)
-       }else{
-           setValidStep(true)
-       }
-    }
-    function checkForm(){
-        return( !(formData.first_name == ""||formData.last_name == "" || (formData.phone == "" && formData.email == "")))
+        handleValidStep();
+    });
+    const handleValidStep = () => {
+        if (!formData.anonymous && !formData.on_behalf) {
+            setValidStep(checkForm);
+        } else if (formData.on_behalf && !formData.on_behalf_anon) {
+            setValidStep(checkForm);
+        } else {
+            setValidStep(true);
+        }
+    };
 
-
+    function checkForm() {
+        return !(
+            formData.first_name == '' ||
+            formData.last_name == '' ||
+            (formData.phone == '' && formData.email == '')
+        );
     }
 
     return (
@@ -55,7 +47,7 @@ export default function AffectedPartyStage({
                                 ...prev,
                                 on_behalf: e.valueOf(),
                             }));
-                            if(!e.valueOf()){
+                            if (!e.valueOf()) {
                                 setFormData((prev) => ({
                                     ...prev,
                                     email: formData.reporters_email,
@@ -83,11 +75,11 @@ export default function AffectedPartyStage({
                             <ToggleSwitch
                                 checked={formData.on_behalf_anon}
                                 onChange={(e) => {
-                                    if(!e.valueOf) {
+                                    if (!e.valueOf) {
                                         setFormData((prev) => ({
                                             ...prev,
-                                                email: ""
-                                        }))
+                                            email: '',
+                                        }));
                                     }
                                     setFormData((prev) => ({
                                         ...prev,
@@ -133,11 +125,14 @@ export default function AffectedPartyStage({
                                 }}
                                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                             />
-                            {failedStep && formData.first_name=="" && (
-                                <p id="validation-error" className="mt-2 text-sm text-red-600">
-                                    *Please enter the affected individuals first name
+                            {failedStep && formData.first_name == '' && (
+                                <p
+                                    id="validation-error"
+                                    className="mt-2 text-sm text-red-600"
+                                >
+                                    *Please enter the affected individuals first
+                                    name
                                 </p>
-
                             )}
                         </div>
                     </div>
@@ -153,20 +148,23 @@ export default function AffectedPartyStage({
                             <input
                                 required
                                 value={formData.last_name ?? ''}
-                                onChange={(e) =>{
+                                onChange={(e) => {
                                     setFormData((prev) => ({
                                         ...prev,
                                         last_name: e.target.value,
-                                    }))
+                                    }));
                                     handleValidStep();
                                 }}
                                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                             />
-                            {failedStep && formData.last_name=="" && (
-                                <p id="validation-error" className="mt-2 text-sm text-red-600">
-                                    *Please enter the affected individuals last name
+                            {failedStep && formData.last_name == '' && (
+                                <p
+                                    id="validation-error"
+                                    className="mt-2 text-sm text-red-600"
+                                >
+                                    *Please enter the affected individuals last
+                                    name
                                 </p>
-
                             )}
                         </div>
                     </div>
@@ -184,14 +182,13 @@ export default function AffectedPartyStage({
                                 type="tel"
                                 placeholder="123-456-7890"
                                 value={formData.phone ?? ''}
-                                onChange={(e) =>{
+                                onChange={(e) => {
                                     setFormData((prev) => ({
                                         ...prev,
                                         phone: validatePhoneInput(
                                             e.target.value
                                         ),
-                                    }
-                                    ))
+                                    }));
                                     handleValidStep();
                                 }}
                                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
@@ -212,21 +209,26 @@ export default function AffectedPartyStage({
                                 type="email"
                                 placeholder="name@example.com"
                                 value={formData.email ?? ''}
-                                onChange={(e) =>{
+                                onChange={(e) => {
                                     setFormData((prev) => ({
                                         ...prev,
                                         email: e.target.value,
-                                    }))
+                                    }));
                                     handleValidStep();
                                 }}
                                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                             />
-                            {failedStep && (formData.phone==""&&formData.email=="") && (
-                                <p id="validation-error" className="mt-2 text-sm text-red-600">
-                                    *Please enter at least a phone number or email
-                                </p>
-
-                            )}
+                            {failedStep &&
+                                formData.phone == '' &&
+                                formData.email == '' && (
+                                    <p
+                                        id="validation-error"
+                                        className="mt-2 text-sm text-red-600"
+                                    >
+                                        *Please enter at least a phone number or
+                                        email
+                                    </p>
+                                )}
                         </div>
                     </div>
 
@@ -262,7 +264,8 @@ export default function AffectedPartyStage({
                         </div>
                     </div>
 
-                    {(formData.role === 1 || formData.role === 2) && <div className="mt-2">
+                    {(formData.role === 1 || formData.role === 2) && (
+                        <div className="mt-2">
                             <div>
                                 <label className="block text-sm/6 font-medium text-gray-900">
                                     UPEI ID
@@ -282,7 +285,8 @@ export default function AffectedPartyStage({
                                     className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                                 />
                             </div>
-                        </div>}
+                        </div>
+                    )}
                 </>
             )}
         </div>
