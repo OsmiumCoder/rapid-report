@@ -19,6 +19,9 @@ class IncidentFactory extends Factory
     public function definition(): array
     {
         return [
+            'anonymous' => false,
+            'on_behalf' => false,
+            'on_behalf_anonymous' => false,
             'role' => fake()->numberBetween(0, 5),
             'last_name' => fake()->lastName(),
             'first_name' => fake()->firstName(),
