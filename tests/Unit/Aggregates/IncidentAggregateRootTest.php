@@ -18,6 +18,9 @@ class IncidentAggregateRootTest extends TestCase
         $incidentDate = now();
 
         $incidentData = IncidentData::from([
+            'anonymous' => false,
+            'on_behalf' => false,
+            'on_behalf_anonymous' => false,
             'role' => 0,
             'last_name' => 'last',
             'first_name' => 'first',
@@ -28,7 +31,6 @@ class IncidentAggregateRootTest extends TestCase
             'happened_at' => $incidentDate,
             'location' => 'Building A',
             'room_number' => '123A',
-            'reported_to' => 'John Doe',
             'witnesses' => [],
             'incident_type' => IncidentType::SAFETY,
             'descriptor' => 'Burn',
@@ -46,6 +48,9 @@ class IncidentAggregateRootTest extends TestCase
             })
             ->assertRecorded([
                 new IncidentCreated(
+                    anonymous: $incidentData->anonymous,
+                    on_behalf: $incidentData->on_behalf,
+                    on_behalf_anonymous: $incidentData->on_behalf_anonymous,
                     role: $incidentData->role,
                     last_name: $incidentData->last_name,
                     first_name: $incidentData->first_name,
@@ -56,7 +61,6 @@ class IncidentAggregateRootTest extends TestCase
                     happened_at: $incidentData->happened_at,
                     location: $incidentData->location,
                     room_number: $incidentData->room_number,
-                    reported_to: $incidentData->reported_to,
                     witnesses: $incidentData->witnesses,
                     incident_type: $incidentData->incident_type,
                     descriptor: $incidentData->descriptor,
@@ -75,6 +79,9 @@ class IncidentAggregateRootTest extends TestCase
         $incidentDate = now();
 
         $incidentData = IncidentData::from([
+            'anonymous' => false,
+            'on_behalf' => false,
+            'on_behalf_anonymous' => false,
             'role' => 0,
             'last_name' => 'last',
             'first_name' => 'first',
@@ -85,7 +92,6 @@ class IncidentAggregateRootTest extends TestCase
             'happened_at' => $incidentDate,
             'location' => 'Building A',
             'room_number' => '123A',
-            'reported_to' => 'John Doe',
             'witnesses' => [],
             'incident_type' => IncidentType::SAFETY,
             'descriptor' => 'Burn',
@@ -116,6 +122,9 @@ class IncidentAggregateRootTest extends TestCase
         $incidentDate = now();
 
         $incidentData = IncidentData::from([
+            'anonymous' => false,
+            'on_behalf' => false,
+            'on_behalf_anonymous' => false,
             'role' => 0,
             'last_name' => 'last',
             'first_name' => 'first',
@@ -126,7 +135,6 @@ class IncidentAggregateRootTest extends TestCase
             'happened_at' => $incidentDate,
             'location' => 'Building A',
             'room_number' => '123A',
-            'reported_to' => 'John Doe',
             'witnesses' => [],
             'incident_type' => IncidentType::SAFETY,
             'descriptor' => 'Burn',
@@ -150,6 +158,9 @@ class IncidentAggregateRootTest extends TestCase
         $incident = Incident::first();
 
         $this->assertEquals($aggregate->uuid(), $incident->id);
+        $this->assertFalse($incident->anonymous);
+        $this->assertFalse($incident->on_behalf);
+        $this->assertFalse($incident->on_behalf_anonymous);
         $this->assertEquals($incidentData->role, $incident->role);
         $this->assertEquals($incidentData->last_name, $incident->last_name);
         $this->assertEquals($incidentData->first_name, $incident->first_name);
@@ -160,7 +171,6 @@ class IncidentAggregateRootTest extends TestCase
         $this->assertEquals($incidentData->happened_at, $incident->happened_at);
         $this->assertEquals($incidentData->location, $incident->location);
         $this->assertEquals($incidentData->room_number, $incident->room_number);
-        $this->assertEquals($incidentData->reported_to, $incident->reported_to);
         $this->assertEquals($incidentData->witnesses, $incident->witnesses);
         $this->assertEquals($incidentData->incident_type, $incident->incident_type);
         $this->assertEquals($incidentData->descriptor, $incident->descriptor);

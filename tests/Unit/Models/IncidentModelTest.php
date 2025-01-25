@@ -11,6 +11,10 @@ class IncidentModelTest extends TestCase
     {
         $incident = Incident::factory()->create();
 
+        $this->assertFalse($incident->anonymous);
+        $this->assertFalse($incident->on_behalf);
+        $this->assertFalse($incident->on_behalf_anonymous);
+
         $this->assertNotNull($incident->role);
         $this->assertNotNull($incident->last_name);
         $this->assertNotNull($incident->first_name);
@@ -25,7 +29,6 @@ class IncidentModelTest extends TestCase
         $this->assertNotNull($incident->status);
 
         $this->assertNull($incident->room_number);
-        $this->assertNull($incident->reported_to);
         $this->assertNull($incident->witnesses);
         $this->assertNull($incident->injury_description);
         $this->assertNull($incident->first_aid_description);
