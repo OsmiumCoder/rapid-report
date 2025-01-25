@@ -1,11 +1,6 @@
 import { CheckIcon } from '@heroicons/react/20/solid';
 import classNames from '@/Filters/classNames';
 
-export interface Step {
-    name: string;
-    status: string;
-}
-
 interface ProgressBarCircleProps {
     completedSteps: number;
     remainingSteps: number;
