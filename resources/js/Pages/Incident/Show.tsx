@@ -30,6 +30,8 @@ export default function Show({ incident }: PageProps<{ incident: any }>) {
             Jan. 18th -> 1.5 hrs
             Jan. 19th -> 1 hr
             Jan. 20th -> 1.5 hr
+            Jan. 21st -> 0.5 hr
+            Jan. 24th -> 1.5 hr
             in a div, to get info from incident, use {incident.attribute} -> the attribute is what you want like id, name, date, etc...
             */}
             <>
