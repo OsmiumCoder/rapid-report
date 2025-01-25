@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { StageProps } from '@/Pages/Incident/Stages/StageWrapper';
 import { descriptors } from '@/Pages/Incident/Stages/IncidentDropDownValues';
 import ToggleSwitch from '@/Components/ToggleSwitch';
+import dateFormat from "@/Filters/dateFormat";
 
 export default function IncidentInformationStage({
     formData,
@@ -27,7 +28,24 @@ export default function IncidentInformationStage({
                 Incident Information
             </label>
 
-            <div className="flex">
+            <div className="mt-4">
+                <label className="block text-sm/6 font-medium text-gray-900">
+                    When did this Incident occur?
+                </label>
+                <div className="mt-2">
+                    <input type="date"
+                           value={dateFormat(new Date())}
+                           onChange={(e) => {
+                               setFormData((prev) => ({
+                                   ...prev,
+                                   happened_at: e.target.value,
+                               }));
+                           }}
+                           className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"/>
+                </div>
+            </div>
+
+            <div className="flex mt-4">
                 <div className="min-w-0 flex-1 text-sm/6">
                     <label
                         htmlFor="work_related"

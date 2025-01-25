@@ -13,6 +13,7 @@ import {
 } from '@/Pages/Incident/Stages/IncidentDropDownValues';
 import AdditionalPersonsStage from '@/Pages/Incident/Stages/AdditionalPersonsStage';
 import SupervisorStage from '@/Pages/Incident/Stages/SupervisorStage';
+import dateFormat from "@/Filters/dateFormat";
 
 export default function Create({ form }: PageProps<{ form: IncidentData }>) {
     const [formData, setFormData] = useState<IncidentData>(form);
@@ -51,6 +52,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
         setFormData((prev) => ({
             ...prev,
             role: roles[0].value,
+            happened_at: dateFormat(new Date()),
             incident_type: descriptors[0].value,
             descriptor: descriptors[0].options[0],
             anonymous: true,
