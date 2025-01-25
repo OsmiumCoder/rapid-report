@@ -22,7 +22,7 @@ export default function SupervisorStage({ formData, setFormData }: StageProps) {
                 </div>
                 <div className="mt-2">
                     <input
-                        value={formData.supervisor_name}
+                        value={formData.supervisor_name ?? ''}
                         onChange={(e) => {
                             setFormData((prev) => ({
                                 ...prev,

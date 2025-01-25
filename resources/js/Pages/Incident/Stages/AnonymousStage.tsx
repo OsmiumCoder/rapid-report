@@ -19,7 +19,7 @@ export default function AnonymousStage({
                     </div>
 
                     <ToggleSwitch
-                        checked={formData.anonymous}
+                        checked={formData.anonymous ?? false}
                         onChange={(e) => {
                             setFormData((prev) => ({
                                 ...prev,
@@ -49,7 +49,7 @@ export default function AnonymousStage({
                         <div className="mt-2">
                             <input
                                 type="email"
-                                value={formData.reporters_email}
+                                value={formData.reporters_email ?? ''}
                                 onChange={(e) => {
                                     setFormData((prev) => ({
                                         ...prev,
