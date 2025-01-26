@@ -1,28 +1,13 @@
-import {Incident} from "@/types/Incident";
-import dateTimeFormat from "@/Filters/dateTimeFormat";
-import {util} from "prettier";
-import isNextLineEmpty = util.isNextLineEmpty;
+import { Incident } from '@/types/Incident';
+import dateTimeFormat from '@/Filters/dateTimeFormat';
 
-{/*
-Affected Party Information -> Div #1
--> display even if empty
-
-Incident Information -> Div #2
-
-Victim Information -> Div #3
-
-Witnesses and Supervisor -> Div #4
--> make empty section with that title
-
-General Description -> Div #5
-
-separate each div with a line
-*/}
-export default function IncidentInformation({ incident }: {incident: Incident}) {
+export default function IncidentInformation({
+    incident,
+}: {
+    incident: Incident;
+}) {
     return (
-
-        <div
-            className="bg-white -mx-4 px-4 py-8 shadow-sm ring-1 ring-gray-900/5 sm:mx-0 sm:rounded-lg sm:px-8 sm:pb-14 lg:col-span-2 lg:row-span-2 lg:row-end-2 xl:px-16 xl:pb-20 xl:pt-16">
+        <div className="bg-white -mx-4 px-4 py-8 shadow-sm ring-1 ring-gray-900/5 sm:mx-0 sm:rounded-lg sm:px-8 sm:pb-14 lg:col-span-2 lg:row-span-2 lg:row-end-2 xl:px-16 xl:pb-20 xl:pt-16">
             <h2 className="text-base font-semibold text-gray-900">Incident</h2>
 
             {/* Affected Party Information */}
@@ -31,20 +16,24 @@ export default function IncidentInformation({ incident }: {incident: Incident}) 
                     Affected Party Information
                 </dt>
                 <dd className="mt-2 text-gray-500">
-                    <span className="text-gray-900">
-                        <span className="font-semibold">Name: </span>
-                        {incident.first_name} {incident.last_name}
-                        <br/>
-                        <span className="font-semibold">UPEI ID: </span>
-                        {incident.upei_id || 'Not Applicable'}
-                        <br/>
-                        <span className="font-semibold">Email: </span>
-                        {incident.email}
-                        <br/>
-                        <span className="font-semibold">Phone: </span>
-                        {incident.phone}
-                        <br/>
-                    </span>
+                    <div className="text-gray-900">
+                        <div>
+                            <span className="font-semibold">Name: </span>
+                            {incident.first_name} {incident.last_name}
+                        </div>
+                        <div>
+                            <span className="font-semibold">UPEI ID: </span>
+                            {incident.upei_id || 'Not Applicable'}
+                        </div>
+                        <div>
+                            <span className="font-semibold">Email: </span>
+                            {incident.email}
+                        </div>
+                        <div>
+                            <span className="font-semibold">Phone: </span>
+                            {incident.phone}
+                        </div>
+                    </div>
                 </dd>
             </div>
 
@@ -55,21 +44,28 @@ export default function IncidentInformation({ incident }: {incident: Incident}) 
                 </dt>
                 <dd className="mt-2 text-gray-500">
                     <span className="text-gray-900">
-                        <span className="font-semibold">Work Related: </span>
-                        {incident.work_related}
-                        <br/>
-                        <span className="font-semibold">Happened At: </span>
-                        {incident.happened_at}
-                        <br/>
-                        <span className="font-semibold">Location: </span>
-                        {incident.location}
-                        <br/>
-                        <span className="font-semibold">Room Number: </span>
-                        {incident.room_number || 'Not provided'}
-                        <br/>
-                        <span className="font-semibold">Reported To: </span>
-                        {incident.reported_to || 'Not provided'}
-                        <br/>
+                        <div>
+                            <span className="font-semibold">
+                                Work Related:{' '}
+                            </span>
+                            {incident.work_related}
+                        </div>
+                        <div>
+                            <span className="font-semibold">Happened At: </span>
+                            {incident.happened_at}
+                        </div>
+                        <div>
+                            <span className="font-semibold">Location: </span>
+                            {incident.location}
+                        </div>
+                        <div>
+                            <span className="font-semibold">Room Number: </span>
+                            {incident.room_number || 'Not provided'}
+                        </div>
+                        <div>
+                            <span className="font-semibold">Reported To: </span>
+                            {incident.reported_to || 'Not provided'}
+                        </div>
                     </span>
                 </dd>
             </div>
@@ -81,12 +77,18 @@ export default function IncidentInformation({ incident }: {incident: Incident}) 
                 </dt>
                 <dd className="mt-2 text-gray-500">
                     <span className="text-gray-900">
-                        <span className="font-semibold">Injury Description: </span>
-                        {incident.injury_description || 'No injuries were sustained'}
-                        <br/>
-                        <span className="font-semibold">First-Aid: </span>
-                        {incident.first_aid_description || 'No first-aid was administered'}
-                        <br/>
+                        <div>
+                            <span className="font-semibold">
+                                Injury Description:{' '}
+                            </span>
+                            {incident.injury_description ||
+                                'No injuries were sustained'}
+                        </div>
+                        <div>
+                            <span className="font-semibold">First-Aid: </span>
+                            {incident.first_aid_description ||
+                                'No first-aid was administered'}
+                        </div>
                     </span>
                 </dd>
             </div>
@@ -106,27 +108,34 @@ export default function IncidentInformation({ incident }: {incident: Incident}) 
                 </dt>
                 <dd className="mt-2 text-gray-500">
                     <span className="text-gray-900">
-                        <span className="font-semibold">Type: </span>
-                        {incident.descriptor}
-                        <br/>
-                        <span className="font-semibold">Description: </span>
-                        {incident.description}
-                        <br/>
-                        <span className="font-semibold">Status: </span>
-                        {incident.status}
-                        <br/>
-                        <span className="font-semibold">Created at: </span>
-                        {incident.created_at}
-                        <br/>
-                        <span className="font-semibold">Updated at: </span>
-                        {incident.updated_at}
-                        <br/>
-                        <span className="font-semibold">Closed at: </span>
-                        {incident.closed_at || "N/A"}
-                        <br/>
-                        <span className="font-semibold">Deleted at: </span>
-                        {incident.deleted_at || 'N/A'}
-                        <br/>
+                        <div>
+                            <span className="font-semibold">Type: </span>
+                            {incident.incident_type}
+                        </div>
+                        <div>
+                            <span className="font-semibold">Descriptor: </span>
+                            {incident.descriptor}
+                        </div>
+                        <div>
+                            <span className="font-semibold">Description: </span>
+                            {incident.description}
+                        </div>
+                        <div>
+                            <span className="font-semibold">Status: </span>
+                            {incident.status}
+                        </div>
+                        <div>
+                            <span className="font-semibold">Created at: </span>
+                            {dateTimeFormat(incident.created_at)}
+                        </div>
+                        <div>
+                            <span className="font-semibold">Updated at: </span>
+                            {dateTimeFormat(incident.updated_at)}
+                        </div>
+                        <div>
+                            <span className="font-semibold">Closed at: </span>
+                            {incident.closed_at || 'N/A'}
+                        </div>
                     </span>
                 </dd>
             </div>
