@@ -17,7 +17,7 @@ export default function WitnessList({
                 <ul className="px-4 divide-y divide-gray-100">
                     {witnesses.map((person, index) => (
                         <li
-                            key={person.index}
+                            key={index}
                             className="py-2 flex justify-between gap-x-12 items-center"
                         >
                             <div>
