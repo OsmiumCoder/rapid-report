@@ -15,13 +15,12 @@ export default function ReportPersonList({
         <>
             {additionalPeople.length > 0 && (
                 <ul
-                    role="list"
-                    className="flex justify-center divide-y divide-gray-100"
+                    className="px-4 divide-y divide-gray-100"
                 >
                     {additionalPeople.map((person) => (
                         <li
                             key={person.index}
-                            className="flex gap-x-12 items-center"
+                            className="py-2 flex justify-between gap-x-12 items-center"
                         >
                             <div>
                                 <p className="text-sm/6 font-semibold text-gray-900">
