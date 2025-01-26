@@ -48,11 +48,11 @@ export default function IncidentInformation({
                             <span className="font-semibold">
                                 Work Related:{' '}
                             </span>
-                            {incident.work_related}
+                            {incident.work_related ? 'Yes' : 'No'}
                         </div>
                         <div>
                             <span className="font-semibold">Happened At: </span>
-                            {incident.happened_at}
+                            {dateTimeFormat(incident.happened_at)}
                         </div>
                         <div>
                             <span className="font-semibold">Location: </span>
@@ -61,10 +61,6 @@ export default function IncidentInformation({
                         <div>
                             <span className="font-semibold">Room Number: </span>
                             {incident.room_number || 'Not provided'}
-                        </div>
-                        <div>
-                            <span className="font-semibold">Reported To: </span>
-                            {incident.reported_to || 'Not provided'}
                         </div>
                     </span>
                 </dd>
