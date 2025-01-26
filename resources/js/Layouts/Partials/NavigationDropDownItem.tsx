@@ -1,8 +1,6 @@
 import classNames from '@/Filters/classNames';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
 import { NavigationItemInterface } from '@/Layouts/Partials/NavigationItem';
-import { useState } from 'react';
-import { usePage } from '@inertiajs/react';
 
 interface NavigationDropDownItemProps {
     item: NavigationItemInterface;

@@ -10,7 +10,7 @@ import NavigationItem, {
     NavigationItemInterface,
 } from '@/Layouts/Partials/NavigationItem';
 import NavigationDropDownItem from '@/Layouts/Partials/NavigationDropDownItem';
-import { Role, RoleName } from '@/types';
+import { Role } from '@/types';
 
 const navigationItems: NavigationItemInterface[] = [
     {
