@@ -24,9 +24,9 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
     const [completedSteps, setCompletedSteps] = useState(0);
     const [validStep, setValidStep] = useState(true);
     const [failedStep, setFailedStep] = useState(false);
+    const [showButtons, setShowButtons] = useState(true);
 
     const nextStep = () => {
-        // console.log(validStep)
         if (validStep) {
             setCurrentStepNumber((prev) => prev + 1);
             setRemainingSteps((prev) => prev - 1);
@@ -108,6 +108,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
                                 validStep={validStep}
                                 setValidStep={setValidStep}
                                 failedStep={failedStep}
+                                setShowButtons={setShowButtons}
                             />
                         )}
                         {currentStepNumber === 1 && (
@@ -117,6 +118,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
                                 validStep={validStep}
                                 setValidStep={setValidStep}
                                 failedStep={failedStep}
+                                setShowButtons={setShowButtons}
                             />
                         )}
                         {currentStepNumber === 2 && (
@@ -126,6 +128,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
                                 validStep={validStep}
                                 setValidStep={setValidStep}
                                 failedStep={failedStep}
+                                setShowButtons={setShowButtons}
                             />
                         )}
                         {currentStepNumber === 3 && (
@@ -135,6 +138,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
                                 validStep={validStep}
                                 setValidStep={setValidStep}
                                 failedStep={failedStep}
+                                setShowButtons={setShowButtons}
                             />
                         )}
                         {currentStepNumber === 4 && (
@@ -144,6 +148,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
                                 validStep={validStep}
                                 setValidStep={setValidStep}
                                 failedStep={failedStep}
+                                setShowButtons={setShowButtons}
                             />
                         )}
                         {currentStepNumber === 5 && (
@@ -153,12 +158,14 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
                                 validStep={validStep}
                                 setValidStep={setValidStep}
                                 failedStep={failedStep}
+                                setShowButtons={setShowButtons}
                             />
                         )}
                     </StageWrapper>
 
                     <div className="flex p-6 justify-around">
-                        {completedSteps > 0 && (
+
+                        {completedSteps > 0 && showButtons &&(
                             <button
                                 type="button"
                                 onClick={prevStep}
@@ -168,7 +175,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
                             </button>
                         )}
 
-                        {completedSteps === numberOfSteps - 1 && (
+                        {completedSteps === numberOfSteps - 1 && showButtons && (
                             <button
                                 type="button"
                                 onClick={submit}
@@ -177,7 +184,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
                                 Submit
                             </button>
                         )}
-                        {remainingSteps > 0 && (
+                        {remainingSteps > 0 && showButtons && (
                             <button
                                 type="button"
                                 onClick={nextStep}

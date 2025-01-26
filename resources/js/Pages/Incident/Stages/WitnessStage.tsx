@@ -12,7 +12,7 @@ const newWitness: () => Witness = () => ({
     phone: '',
 });
 
-export default function WitnessStage({ formData, setFormData }: StageProps) {
+export default function WitnessStage({ formData, setFormData, setShowButtons }: StageProps) {
     const [witnessInProgress, setWitnessInProgress] = useState(newWitness());
     const [validationError, setValidationError] = useState(false);
     const [witnessFormVisible, setWitnessFormVisible] = useState(false);
@@ -53,7 +53,7 @@ export default function WitnessStage({ formData, setFormData }: StageProps) {
             witnesses: [...formData.witnesses, witnessInProgress],
         }));
         setWitnessInProgress(newWitness());
-
+        setShowButtons((prev) => !prev);
         setWitnessFormVisible((prev) => !prev);
     };
     const removePerson = (index: number) => {
@@ -160,6 +160,7 @@ export default function WitnessStage({ formData, setFormData }: StageProps) {
                             type="button"
                             onClick={() => {
                                 setWitnessFormVisible((prev) => !prev);
+                                setShowButtons((prev) => !prev);
                             }}
                             className="mr-16 pr-3 items-center gap-x-2 rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                         >
@@ -196,6 +197,7 @@ export default function WitnessStage({ formData, setFormData }: StageProps) {
                             type="button"
                             onClick={() => {
                                 setWitnessFormVisible((prev) => !prev);
+                                setShowButtons((prev) => !prev);
                             }}
                             className="my-2 flex justify-center items-center gap-x-2 rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                         >
