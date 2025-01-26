@@ -40,7 +40,7 @@ export default function IncidentHeader({incident}: { incident: Incident }) {
                                 <div className="text-sm/6 text-gray-500">
                                     Incident <span className="text-gray-700">{incident.id}</span>
                                 </div>
-                                <div className="mt-1 text-base font-semibold text-gray-900">Tuple, Inc</div>
+                                <div className="mt-1 text-base font-semibold text-gray-900">UPEI Health & Safety</div>
                             </h1>
                         </div>
                         <div className="flex items-center gap-x-4 sm:gap-x-6">

@@ -23,7 +23,7 @@ export default function IncidentInformation({
                         </div>
                         <div>
                             <span className="font-semibold">UPEI ID: </span>
-                            {incident.upei_id || 'Not Applicable'}
+                            {incident.upei_id || 'N/A'}
                         </div>
                         <div>
                             <span className="font-semibold">Email: </span>
@@ -60,7 +60,7 @@ export default function IncidentInformation({
                         </div>
                         <div>
                             <span className="font-semibold">Room Number: </span>
-                            {incident.room_number || 'Not provided'}
+                            {incident.room_number || 'N/A'}
                         </div>
                     </span>
                 </dd>
@@ -117,20 +117,12 @@ export default function IncidentInformation({
                             {incident.description}
                         </div>
                         <div>
-                            <span className="font-semibold">Status: </span>
-                            {incident.status}
-                        </div>
-                        <div>
                             <span className="font-semibold">Created at: </span>
                             {dateTimeFormat(incident.created_at)}
                         </div>
                         <div>
                             <span className="font-semibold">Updated at: </span>
                             {dateTimeFormat(incident.updated_at)}
-                        </div>
-                        <div>
-                            <span className="font-semibold">Closed at: </span>
-                            {incident.closed_at || 'N/A'}
                         </div>
                     </span>
                 </dd>
