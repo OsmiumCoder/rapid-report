@@ -11,9 +11,9 @@ import {
     descriptors,
     roles,
 } from '@/Pages/Incident/Stages/IncidentDropDownValues';
-import AdditionalPersonsStage from '@/Pages/Incident/Stages/AdditionalPersonsStage';
+import WitnessStage from '@/Pages/Incident/Stages/WitnessStage';
 import SupervisorStage from '@/Pages/Incident/Stages/SupervisorStage';
-import dateFormat from "@/Filters/dateFormat";
+import dateFormat from '@/Filters/dateFormat';
 
 export default function Create({ form }: PageProps<{ form: IncidentData }>) {
     const [formData, setFormData] = useState<IncidentData>(form);
@@ -89,7 +89,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
     useEffect(() => {
         setFormData((prev) => ({
             ...prev,
-            reporters_email: undefined,
+            reporters_email: '',
         }));
     }, [formData.anonymous]);
 
@@ -138,7 +138,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
                             />
                         )}
                         {currentStepNumber === 4 && (
-                            <AdditionalPersonsStage
+                            <WitnessStage
                                 formData={formData}
                                 setFormData={setFormData}
                                 validStep={validStep}

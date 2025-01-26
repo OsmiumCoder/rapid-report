@@ -1,23 +1,21 @@
-import AdditionalPerson from '@/types/AdditionalPerson';
+import Witness from '@/types/Witness';
 import React from 'react';
 import { XMarkIcon } from '@heroicons/react/20/solid';
 
-interface ReportPersonListProps {
-    additionalPeople: Array<AdditionalPerson>;
-    removeFunction: Function;
+interface WitnessListProps {
+    witnesses: Array<Witness>;
+    removeWitness: (index: number) => void;
 }
 
-export default function ReportPersonList({
-    additionalPeople,
-    removeFunction,
-}: ReportPersonListProps) {
+export default function WitnessList({
+    witnesses,
+    removeWitness,
+}: WitnessListProps) {
     return (
         <>
-            {additionalPeople.length > 0 && (
-                <ul
-                    className="px-4 divide-y divide-gray-100"
-                >
-                    {additionalPeople.map((person) => (
+            {witnesses.length > 0 && (
+                <ul className="px-4 divide-y divide-gray-100">
+                    {witnesses.map((person, index) => (
                         <li
                             key={person.index}
                             className="py-2 flex justify-between gap-x-12 items-center"
@@ -37,7 +35,7 @@ export default function ReportPersonList({
                                 <button
                                     type="button"
                                     onClick={() => {
-                                        removeFunction(person.index);
+                                        removeWitness(index);
                                     }}
                                     className="rounded-full bg-red-600 p-2 text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
                                 >
@@ -51,7 +49,7 @@ export default function ReportPersonList({
                     ))}
                 </ul>
             )}
-            {additionalPeople.length === 0 && (
+            {witnesses.length === 0 && (
                 <p className=" flex justify-center text-gray-500">
                     No individuals have been added.
                 </p>
