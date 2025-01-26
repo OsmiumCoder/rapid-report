@@ -34,7 +34,7 @@ export default function IncidentInformationStage({
                 </label>
                 <div className="mt-2">
                     <input type="date"
-                           value={dateFormat(new Date())}
+                           value={formData.happened_at ?? dateFormat(new Date())}
                            onChange={(e) => {
                                setFormData((prev) => ({
                                    ...prev,
