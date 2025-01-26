@@ -11,8 +11,9 @@ import {
     descriptors,
     roles,
 } from '@/Pages/Incident/Stages/IncidentDropDownValues';
-import AdditionalPersonsStage from "@/Pages/Incident/Stages/AdditionalPersonsStage";
-import SupervisorStage from "@/Pages/Incident/Stages/SupervisorStage";
+import WitnessStage from '@/Pages/Incident/Stages/WitnessStage';
+import SupervisorStage from '@/Pages/Incident/Stages/SupervisorStage';
+import dateFormat from '@/Filters/dateFormat';
 
 export default function Create({ form }: PageProps<{ form: IncidentData }>) {
     const [formData, setFormData] = useState<IncidentData>(form);
@@ -22,19 +23,18 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
     const [currentStepNumber, setCurrentStepNumber] = useState(0);
     const [completedSteps, setCompletedSteps] = useState(0);
     const [validStep, setValidStep] = useState(true);
-    const [failedStep, setFailedStep] = useState(false)
+    const [failedStep, setFailedStep] = useState(false);
+    const [showButtons, setShowButtons] = useState(true);
 
     const nextStep = () => {
-       // console.log(validStep)
-        if(validStep){
+        if (validStep) {
             setCurrentStepNumber((prev) => prev + 1);
             setRemainingSteps((prev) => prev - 1);
             setCompletedSteps((prev) => prev + 1);
-            setFailedStep(false)
-        }else{
-            setFailedStep(true)
+            setFailedStep(false);
+        } else {
+            setFailedStep(true);
         }
-
     };
 
     const prevStep = () => {
@@ -52,6 +52,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
         setFormData((prev) => ({
             ...prev,
             role: roles[0].value,
+            happened_at: dateFormat(new Date()),
             incident_type: descriptors[0].value,
             descriptor: descriptors[0].options[0],
             anonymous: true,
@@ -62,9 +63,17 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
     }, []);
 
     useEffect(() => {
-        if (!((!formData.anonymous && !formData.on_behalf) ||
-            (!formData.anonymous && formData.on_behalf && !formData.on_behalf_anon) ||
-            (formData.anonymous && formData.on_behalf && !formData.on_behalf_anon))) {
+        if (
+            !(
+                (!formData.anonymous && !formData.on_behalf) ||
+                (!formData.anonymous &&
+                    formData.on_behalf &&
+                    !formData.on_behalf_anon) ||
+                (formData.anonymous &&
+                    formData.on_behalf &&
+                    !formData.on_behalf_anon)
+            )
+        ) {
             setFormData((prev) => ({
                 ...prev,
                 first_name: '',
@@ -72,18 +81,15 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
                 phone: '',
                 email: '',
                 role: roles[0].value,
-                upei_id: ''
+                upei_id: '',
             }));
         }
-
-
-
     }, [formData.on_behalf, formData.on_behalf_anon]);
 
     useEffect(() => {
         setFormData((prev) => ({
             ...prev,
-            reporters_email: undefined
+            reporters_email: '',
         }));
     }, [formData.anonymous]);
 
@@ -101,7 +107,9 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
                                 setFormData={setFormData}
                                 validStep={validStep}
                                 setValidStep={setValidStep}
-                                failedStep={failedStep}                            />
+                                failedStep={failedStep}
+                                setShowButtons={setShowButtons}
+                            />
                         )}
                         {currentStepNumber === 1 && (
                             <AffectedPartyStage
@@ -110,6 +118,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
                                 validStep={validStep}
                                 setValidStep={setValidStep}
                                 failedStep={failedStep}
+                                setShowButtons={setShowButtons}
                             />
                         )}
                         {currentStepNumber === 2 && (
@@ -119,6 +128,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
                                 validStep={validStep}
                                 setValidStep={setValidStep}
                                 failedStep={failedStep}
+                                setShowButtons={setShowButtons}
                             />
                         )}
                         {currentStepNumber === 3 && (
@@ -128,15 +138,17 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
                                 validStep={validStep}
                                 setValidStep={setValidStep}
                                 failedStep={failedStep}
+                                setShowButtons={setShowButtons}
                             />
                         )}
                         {currentStepNumber === 4 && (
-                            <AdditionalPersonsStage
+                            <WitnessStage
                                 formData={formData}
                                 setFormData={setFormData}
                                 validStep={validStep}
                                 setValidStep={setValidStep}
                                 failedStep={failedStep}
+                                setShowButtons={setShowButtons}
                             />
                         )}
                         {currentStepNumber === 5 && (
@@ -146,12 +158,14 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
                                 validStep={validStep}
                                 setValidStep={setValidStep}
                                 failedStep={failedStep}
+                                setShowButtons={setShowButtons}
                             />
                         )}
                     </StageWrapper>
 
                     <div className="flex p-6 justify-around">
-                        {completedSteps > 0 && (
+
+                        {completedSteps > 0 && showButtons &&(
                             <button
                                 type="button"
                                 onClick={prevStep}
@@ -161,7 +175,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
                             </button>
                         )}
 
-                        {completedSteps === numberOfSteps - 1 && (
+                        {completedSteps === numberOfSteps - 1 && showButtons && (
                             <button
                                 type="button"
                                 onClick={submit}
@@ -170,7 +184,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
                                 Submit
                             </button>
                         )}
-                        {remainingSteps > 0 && (
+                        {remainingSteps > 0 && showButtons && (
                             <button
                                 type="button"
                                 onClick={nextStep}

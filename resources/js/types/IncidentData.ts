@@ -1,4 +1,4 @@
-import AdditionalPerson from "@/types/AdditionalPerson";
+import Witness from '@/types/Witness';
 
 export default interface IncidentData {
     anonymous?: boolean;
@@ -21,7 +21,7 @@ export default interface IncidentData {
     room_number?: string;
     supervisor_name?: string;
     upei_id?: string;
-    witnesses: AdditionalPerson[];
+    witnesses: Witness[];
     work_related?: boolean;
     has_injury?: boolean;
     first_aid_applied?: boolean;

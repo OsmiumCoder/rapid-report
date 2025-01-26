@@ -37,7 +37,7 @@ const navigationItems: NavigationItemInterface[] = [
             {
                 name: 'Assigned',
                 route: 'incidents.assigned',
-                roles: ['super-admin', 'admin', 'supervisor'],
+                roles: ['supervisor'],
             },
         ],
     },

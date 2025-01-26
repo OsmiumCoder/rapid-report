@@ -39,21 +39,7 @@ class DatabaseSeeder extends Seeder
         ])->assignRole('user');
 
         Incident::factory(5)->create([
-            'reporters_email' => $user->email,
-            'supervisor_name' => $supervisor->name,
             'supervisor_id' => $supervisor->id,
-        ]);
-
-        Incident::factory(5)->create([
-            'reporters_email' => $user->email,
-            'supervisor_name' => $admin->name,
-            'supervisor_id' => $admin->id,
-        ]);
-
-        Incident::factory(5)->create([
-            'reporters_email' => $user->email,
-            'supervisor_name' => $superAdmin->name,
-            'supervisor_id' => $superAdmin,
         ]);
 
         Incident::factory(5)->create([
@@ -66,6 +52,10 @@ class DatabaseSeeder extends Seeder
 
         Incident::factory(5)->create([
             'reporters_email' => $supervisor->email,
+        ]);
+
+        Incident::factory(5)->create([
+            'reporters_email' => $user->email,
         ]);
     }
 }

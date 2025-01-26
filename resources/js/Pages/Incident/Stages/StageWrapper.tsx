@@ -8,6 +8,7 @@ export interface StageProps extends PropsWithChildren {
     validStep: boolean;
     setValidStep:Dispatch<SetStateAction<boolean>>;
     failedStep: boolean;
+    setShowButtons: Dispatch<SetStateAction<boolean>>;
 }
 
 interface StageWrapperProps extends PropsWithChildren {

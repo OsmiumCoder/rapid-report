@@ -1,6 +1,6 @@
 import { StageProps } from '@/Pages/Incident/Stages/StageWrapper';
-import React, { useState } from 'react';
-import ToggleSwitch from "@/Components/ToggleSwitch";
+import React from 'react';
+import ToggleSwitch from '@/Components/ToggleSwitch';
 
 export default function VictimInformationStage({
     formData,
@@ -34,7 +34,7 @@ export default function VictimInformationStage({
                 <div className="mt-2">
                     <div>
                         <label className="block text-sm/6 font-medium text-gray-900">
-                            Please describe the injury that occured.
+                            Please describe the injury that occurred.
                         </label>
                     </div>
                     <div className="mt-1">
