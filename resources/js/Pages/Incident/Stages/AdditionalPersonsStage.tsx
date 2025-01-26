@@ -2,7 +2,7 @@ import { StageProps } from '@/Pages/Incident/Stages/StageWrapper';
 import React, { useState } from 'react';
 import AdditionalPerson from '@/types/AdditionalPerson';
 import { PlusIcon } from '@heroicons/react/20/solid';
-import ReportPersonList from '@/Components/ReportPersonList';
+import AdditionalPersonList from '@/Components/AdditionalPersonList';
 import validatePhoneInput from '@/Filters/validatePhoneInput';
 
 class Witness implements AdditionalPerson {
@@ -159,7 +159,7 @@ export default function AdditionalPersonsStage({
                 )}
                 {!formVisible && (
                     <>
-                        <ReportPersonList
+                        <AdditionalPersonList
                             removeFunction={removePerson}
                             additionalPeople={formData.witnesses}
                         />

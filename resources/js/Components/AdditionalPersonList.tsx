@@ -7,7 +7,7 @@ interface ReportPersonListProps {
     removeFunction: Function;
 }
 
-export default function ReportPersonList({
+export default function AdditionalPersonList({
     additionalPeople,
     removeFunction,
 }: ReportPersonListProps) {
