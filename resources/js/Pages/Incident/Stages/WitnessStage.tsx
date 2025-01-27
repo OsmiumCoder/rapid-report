@@ -12,7 +12,11 @@ const newWitness: () => Witness = () => ({
     phone: '',
 });
 
-export default function WitnessStage({ formData, setFormData, setShowButtons }: StageProps) {
+export default function WitnessStage({
+    formData,
+    setFormData,
+    setShowButtons,
+}: StageProps) {
     const [witnessInProgress, setWitnessInProgress] = useState(newWitness());
     const [validationError, setValidationError] = useState(false);
     const [witnessFormVisible, setWitnessFormVisible] = useState(false);
