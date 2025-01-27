@@ -17,6 +17,9 @@ class IncidentDataTest extends TestCase
         $incidentDate = now();
 
         $incidentData = IncidentData::validateAndCreate([
+            'anonymous' => false,
+            'on_behalf' => false,
+            'on_behalf_anonymous' => false,
             'role' => 0,
             'last_name' => 'last',
             'first_name' => 'first',
@@ -27,7 +30,6 @@ class IncidentDataTest extends TestCase
             'happened_at' => $incidentDate,
             'location' => 'Building A',
             'room_number' => '123A',
-            'reported_to' => 'John Doe',
             'witnesses' => [],
             'incident_type' => IncidentType::SAFETY,
             'descriptor' => 'Burn',
@@ -41,7 +43,7 @@ class IncidentDataTest extends TestCase
         $this->assertInstanceOf(IncidentData::class, $incidentData);
     }
 
-    public function test_incident_data_throws_invalid_with_correct_values(): void
+    public function test_incident_data_throws_invalid_with_incorrect_values(): void
     {
         $this->expectException(ValidationException::class);
 
@@ -50,6 +52,9 @@ class IncidentDataTest extends TestCase
         $incidentDate = now();
 
         IncidentData::validateAndCreate([
+            'anonymous' => false,
+            'on_behalf' => false,
+            'on_behalf_anonymous' => false,
             'role' => 0,
             'work_related' => true,
             'happened_at' => $incidentDate,

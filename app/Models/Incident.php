@@ -18,6 +18,10 @@ class Incident extends Model
     protected function casts(): array
     {
         return [
+            'anonymous' => 'boolean',
+            'on_behalf' => 'boolean',
+            'on_behalf_anonymous' => 'boolean',
+            'work_related' => 'boolean',
             'witnesses' => 'array',
             'status' => IncidentStatus::class,
             'incident_type' => IncidentType::class,

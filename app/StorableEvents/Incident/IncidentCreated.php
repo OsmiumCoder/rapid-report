@@ -11,6 +11,9 @@ use Carbon\Carbon;
 class IncidentCreated extends StoredEvent
 {
     public function __construct(
+        public bool $anonymous,
+        public bool $on_behalf,
+        public bool $on_behalf_anonymous,
         public int $role,
         public ?string $last_name,
         public ?string $first_name,
@@ -21,7 +24,6 @@ class IncidentCreated extends StoredEvent
         public Carbon $happened_at,
         public string $location,
         public ?string $room_number,
-        public ?string $reported_to,
         public ?array $witnesses,
         public IncidentType $incident_type,
         public string $descriptor,
@@ -40,6 +42,10 @@ class IncidentCreated extends StoredEvent
 
         $incident->id = $this->aggregateRootUuid();
 
+        $incident->anonymous = $this->anonymous;
+        $incident->on_behalf = $this->on_behalf;
+        $incident->on_behalf_anonymous = $this->on_behalf_anonymous;
+
         $incident->role = $this->role;
         $incident->last_name = $this->last_name;
         $incident->first_name = $this->first_name;
@@ -50,7 +56,6 @@ class IncidentCreated extends StoredEvent
         $incident->happened_at = $this->happened_at;
         $incident->location = $this->location;
         $incident->room_number = $this->room_number;
-        $incident->reported_to = $this->reported_to;
         $incident->witnesses = $this->witnesses;
         $incident->incident_type = $this->incident_type;
         $incident->descriptor = $this->descriptor;

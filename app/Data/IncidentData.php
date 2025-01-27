@@ -9,6 +9,9 @@ use Spatie\LaravelData\Data;
 class IncidentData extends Data
 {
     public function __construct(
+        public bool $anonymous,
+        public bool $on_behalf,
+        public bool $on_behalf_anonymous,
         public int $role,
         public ?string $last_name,
         public ?string $first_name,
@@ -19,7 +22,6 @@ class IncidentData extends Data
         public Carbon $happened_at,
         public string $location,
         public ?string $room_number,
-        public ?string $reported_to,
         public ?array $witnesses,
         public IncidentType $incident_type,
         public string $descriptor,

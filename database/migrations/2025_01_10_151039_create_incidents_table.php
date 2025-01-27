@@ -13,6 +13,10 @@ return new class () extends Migration {
         Schema::create('incidents', function (Blueprint $table) {
             $table->uuid('id');
 
+            $table->boolean('anonymous');
+            $table->boolean('on_behalf');
+            $table->boolean('on_behalf_anonymous');
+
             $table->integer('role');
 
             $table->string('last_name')->nullable();
@@ -28,8 +32,6 @@ return new class () extends Migration {
             $table->string('location');
 
             $table->string('room_number')->nullable();
-
-            $table->string('reported_to')->nullable();
 
             $table->jsonb('witnesses')->nullable();
 

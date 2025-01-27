@@ -2,6 +2,9 @@ import { IncidentStatus } from '@/Enums/IncidentStatus';
 
 export interface Incident {
     id: string;
+    anonymous: boolean;
+    on_behalf: boolean;
+    on_behalf_anonymous: boolean;
     role: number;
     last_name?: string;
     first_name?: string;

@@ -16,6 +16,9 @@ class IncidentCreatedTest extends TestCase
         Carbon::setTestNow('2024-05-01 12:12:00');
 
         $event = new IncidentCreated(
+            anonymous: false,
+            on_behalf: false,
+            on_behalf_anonymous: false,
             role: '0',
             last_name: 'last',
             first_name: 'first',
@@ -26,7 +29,6 @@ class IncidentCreatedTest extends TestCase
             happened_at: now(),
             location: 'Building A',
             room_number: '123A',
-            reported_to: 'John Doe',
             witnesses: [],
             incident_type: IncidentType::SAFETY,
             descriptor: 'Burn',
@@ -46,17 +48,19 @@ class IncidentCreatedTest extends TestCase
 
         $incident = Incident::first();
 
+        $this->assertFalse($incident->anonymous);
+        $this->assertFalse($incident->on_behalf);
+        $this->assertFalse($incident->on_behalf_anonymous);
         $this->assertEquals($event->role, $incident->role);
         $this->assertEquals($event->last_name, $incident->last_name);
         $this->assertEquals($event->first_name, $incident->first_name);
         $this->assertEquals($event->upei_id, $incident->upei_id);
         $this->assertEquals($event->email, $incident->email);
         $this->assertEquals($event->phone, $incident->phone);
-        $this->assertEquals($event->work_related, $incident->work_related);
+        $this->assertTrue($event->work_related, $incident->work_related);
         $this->assertEquals($event->happened_at, $incident->happened_at);
         $this->assertEquals($event->location, $incident->location);
         $this->assertEquals($event->room_number, $incident->room_number);
-        $this->assertEquals($event->reported_to, $incident->reported_to);
         $this->assertEquals($event->witnesses, $incident->witnesses);
         $this->assertEquals($event->incident_type, $incident->incident_type);
         $this->assertEquals($event->descriptor, $incident->descriptor);
@@ -74,6 +78,9 @@ class IncidentCreatedTest extends TestCase
         Carbon::setTestNow('2024-05-01 12:12:00');
 
         $event = new IncidentCreated(
+            anonymous: true,
+            on_behalf: false,
+            on_behalf_anonymous: false,
             role: '0',
             last_name: null,
             first_name: null,
@@ -84,7 +91,6 @@ class IncidentCreatedTest extends TestCase
             happened_at: now(),
             location: 'Building A',
             room_number: null,
-            reported_to: null,
             witnesses: null,
             incident_type: IncidentType::SAFETY,
             descriptor: 'Burn',
@@ -104,6 +110,9 @@ class IncidentCreatedTest extends TestCase
 
         $incident = Incident::first();
 
+        $this->assertTrue($incident->anonymous);
+        $this->assertFalse($incident->on_behalf);
+        $this->assertFalse($incident->on_behalf_anonymous);
         $this->assertEquals($event->role, $incident->role);
         $this->assertNull($incident->last_name);
         $this->assertNull($incident->first_name);
@@ -114,7 +123,6 @@ class IncidentCreatedTest extends TestCase
         $this->assertEquals($event->happened_at, $incident->happened_at);
         $this->assertEquals($event->location, $incident->location);
         $this->assertNull($incident->room_number);
-        $this->assertNull($incident->reported_to);
         $this->assertNull($incident->witnesses);
         $this->assertEquals($event->incident_type, $incident->incident_type);
         $this->assertEquals($event->descriptor, $incident->descriptor);

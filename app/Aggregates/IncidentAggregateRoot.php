@@ -12,6 +12,9 @@ class IncidentAggregateRoot extends AggregateRoot
     public function createIncident(IncidentData $incidentData)
     {
         $this->recordThat(new IncidentCreated(
+            anonymous: $incidentData->anonymous,
+            on_behalf: $incidentData->on_behalf,
+            on_behalf_anonymous: $incidentData->on_behalf_anonymous,
             role: $incidentData->role,
             last_name: $incidentData->last_name,
             first_name: $incidentData->first_name,
@@ -22,7 +25,6 @@ class IncidentAggregateRoot extends AggregateRoot
             happened_at: $incidentData->happened_at,
             location: $incidentData->location,
             room_number: $incidentData->room_number,
-            reported_to: $incidentData->reported_to,
             witnesses: $incidentData->witnesses,
             incident_type: $incidentData->incident_type,
             descriptor: $incidentData->descriptor,

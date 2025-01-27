@@ -16,7 +16,6 @@ export default interface IncidentData {
     injury_description?: string;
     location?: string;
     phone?: string;
-    reported_to?: string;
     reporters_email?: string;
     role?: number;
     room_number?: string;

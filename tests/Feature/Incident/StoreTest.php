@@ -16,6 +16,9 @@ class StoreTest extends TestCase
         $incidentDate = now();
 
         $incidentData = IncidentData::from([
+            'anonymous' => false,
+            'on_behalf' => false,
+            'on_behalf_anonymous' => false,
             'role' => 0,
             'last_name' => 'last',
             'first_name' => 'first',
@@ -26,7 +29,6 @@ class StoreTest extends TestCase
             'happened_at' => $incidentDate,
             'location' => 'Building A',
             'room_number' => '123A',
-            'reported_to' => 'John Doe',
             'witnesses' => [],
             'incident_type' => IncidentType::SAFETY,
             'descriptor' => 'Burn',
@@ -53,6 +55,9 @@ class StoreTest extends TestCase
         $incidentDate = now();
 
         $incidentData = [
+            'anonymous' => false,
+            'on_behalf' => false,
+            'on_behalf_anonymous' => false,
             'role' => '',
             'work_related' => true,
             'happened_at' => $incidentDate,
@@ -81,6 +86,9 @@ class StoreTest extends TestCase
         $incidentDate = now();
 
         $incidentData = IncidentData::from([
+            'anonymous' => true,
+            'on_behalf' => false,
+            'on_behalf_anonymous' => false,
             'role' => 0,
             'last_name' => null,
             'first_name' => null,
@@ -91,7 +99,6 @@ class StoreTest extends TestCase
             'happened_at' => $incidentDate,
             'location' => 'Building A',
             'room_number' => null,
-            'reported_to' => null,
             'witnesses' => null,
             'incident_type' => IncidentType::SAFETY,
             'descriptor' => 'Burn',
@@ -110,6 +117,10 @@ class StoreTest extends TestCase
 
         $incident = Incident::first();
 
+        $this->assertTrue($incident->anonymous);
+        $this->assertFalse($incident->on_behalf);
+        $this->assertFalse($incident->on_behalf_anonymous);
+
         $this->assertEquals($incidentData->role, $incident->role);
         $this->assertNull($incident->last_name);
         $this->assertNull($incident->first_name);
@@ -120,7 +131,6 @@ class StoreTest extends TestCase
         $this->assertEquals($incidentData->happened_at, $incident->happened_at);
         $this->assertEquals($incidentData->location, $incident->location);
         $this->assertNull($incident->room_number);
-        $this->assertNull($incident->reported_to);
         $this->assertNull($incident->witnesses);
         $this->assertEquals($incidentData->incident_type, $incident->incident_type);
         $this->assertEquals($incidentData->descriptor, $incident->descriptor);
@@ -138,6 +148,9 @@ class StoreTest extends TestCase
         $incidentDate = now();
 
         $incidentData = IncidentData::from([
+            'anonymous' => false,
+            'on_behalf' => false,
+            'on_behalf_anonymous' => false,
             'role' => 0,
             'last_name' => 'last',
             'first_name' => 'first',
@@ -148,7 +161,6 @@ class StoreTest extends TestCase
             'happened_at' => $incidentDate,
             'location' => 'Building A',
             'room_number' => '123A',
-            'reported_to' => 'John Doe',
             'witnesses' => [],
             'incident_type' => IncidentType::SAFETY,
             'descriptor' => 'Burn',
@@ -175,6 +187,9 @@ class StoreTest extends TestCase
         $incidentDate = now();
 
         $incidentData = IncidentData::from([
+            'anonymous' => false,
+            'on_behalf' => true,
+            'on_behalf_anonymous' => false,
             'role' => 0,
             'last_name' => 'last',
             'first_name' => 'first',
@@ -185,7 +200,6 @@ class StoreTest extends TestCase
             'happened_at' => $incidentDate,
             'location' => 'Building A',
             'room_number' => '123A',
-            'reported_to' => 'John Doe',
             'witnesses' => [],
             'incident_type' => IncidentType::SAFETY,
             'descriptor' => 'Burn',
@@ -204,6 +218,10 @@ class StoreTest extends TestCase
 
         $incident = Incident::first();
 
+        $this->assertFalse($incident->anonymous);
+        $this->assertTrue($incident->on_behalf);
+        $this->assertFalse($incident->on_behalf_anonymous);
+
         $this->assertEquals($incidentData->role, $incident->role);
         $this->assertEquals($incidentData->last_name, $incident->last_name);
         $this->assertEquals($incidentData->first_name, $incident->first_name);
@@ -214,7 +232,6 @@ class StoreTest extends TestCase
         $this->assertEquals($incidentData->happened_at, $incident->happened_at);
         $this->assertEquals($incidentData->location, $incident->location);
         $this->assertEquals($incidentData->room_number, $incident->room_number);
-        $this->assertEquals($incidentData->reported_to, $incident->reported_to);
         $this->assertEquals($incidentData->witnesses, $incident->witnesses);
         $this->assertEquals($incidentData->incident_type, $incident->incident_type);
         $this->assertEquals($incidentData->descriptor, $incident->descriptor);
