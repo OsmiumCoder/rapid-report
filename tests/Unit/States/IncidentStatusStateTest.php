@@ -3,13 +3,12 @@
 namespace States;
 
 use App\Models\Incident;
-use App\Models\User;
 use App\States\IncidentStatus\Assigned;
 use App\States\IncidentStatus\Closed;
+use App\States\IncidentStatus\InReview;
 use App\States\IncidentStatus\Opened;
 use App\States\IncidentStatus\Reopened;
 use Tests\TestCase;
-use function PHPUnit\Framework\assertEquals;
 
 class IncidentStatusStateTest extends TestCase
 {
@@ -44,5 +43,27 @@ class IncidentStatusStateTest extends TestCase
         $this->assertEquals(Reopened::class, $incident->status::class);
     }
 
+    public function test_assigned_state_to_in_review_state() {
+        $incident = Incident::factory()->create([
+            'status' => Assigned::class
+        ]);
+        $incident->status->transitionTo(InReview::class);
+        $this->assertEquals(InReview::class, $incident->status::class);
+    }
 
+    public function test_in_review_state_to_closed_state() {
+        $incident = Incident::factory()->create([
+            'status' => InReview::class
+        ]);
+        $incident->status->transitionTo(Closed::class);
+        $this->assertEquals(Closed::class, $incident->status::class);
+    }
+
+    public function test_in_review_state_to_opened_state() {
+        $incident = Incident::factory()->create([
+            'status' => InReview::class
+        ]);
+        $incident->status->transitionTo(Opened::class);
+        $this->assertEquals(Opened::class, $incident->status::class);
+    }
 }
