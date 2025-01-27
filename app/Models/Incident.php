@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enum\IncidentStatus;
 use App\States\IncidentStatus\IncidentStatusState;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use App\Enum\IncidentType;

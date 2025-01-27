@@ -32,7 +32,6 @@ class IncidentCreated extends StoredEvent
         public ?string $first_aid_description,
         public ?string $reporters_email,
         public ?string $supervisor_name,
-        public IncidentStatus $status,
     ) {
     }
 
@@ -64,7 +63,6 @@ class IncidentCreated extends StoredEvent
         $incident->first_aid_description = $this->first_aid_description;
         $incident->reporters_email = $this->reporters_email;
         $incident->supervisor_name = $this->supervisor_name;
-        $incident->status = $this->status;
 
         $incident->save();
     }

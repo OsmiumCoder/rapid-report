@@ -2,7 +2,6 @@
 
 namespace StoreableEvents\Incident;
 
-use App\Enum\IncidentStatus;
 use App\Enum\IncidentType;
 use App\Models\Incident;
 use App\StorableEvents\Incident\IncidentCreated;
@@ -37,7 +36,6 @@ class IncidentCreatedTest extends TestCase
             first_aid_description: 'Minor burn treated',
             reporters_email: 'jane@doe.com',
             supervisor_name: 'John Doe',
-            status: IncidentStatus::OPEN
         );
 
         $this->assertDatabaseCount('incidents', 0);
@@ -69,7 +67,6 @@ class IncidentCreatedTest extends TestCase
         $this->assertEquals($event->first_aid_description, $incident->first_aid_description);
         $this->assertEquals($event->reporters_email, $incident->reporters_email);
         $this->assertEquals($event->supervisor_name, $incident->supervisor_name);
-        $this->assertEquals(IncidentStatus::OPEN, $incident->status);
         $this->assertNull($incident->closed_at);
     }
 
@@ -99,7 +96,6 @@ class IncidentCreatedTest extends TestCase
             first_aid_description: null,
             reporters_email: null,
             supervisor_name: null,
-            status: IncidentStatus::OPEN
         );
 
         $this->assertDatabaseCount('incidents', 0);
@@ -131,7 +127,6 @@ class IncidentCreatedTest extends TestCase
         $this->assertNull($incident->first_aid_description);
         $this->assertNull($incident->reporters_email);
         $this->assertNull($incident->supervisor_name);
-        $this->assertEquals(IncidentStatus::OPEN, $incident->status);
         $this->assertNull($incident->closed_at);
     }
 }

@@ -11,12 +11,14 @@ abstract class IncidentStatusState extends State
     public static function config() : StateConfig
     {
         return parent::config()->default(Opened::class)
-            ->allowTransition(Opened::class, Assigned::class, IncidentAssignedTransition::class)
+            ->allowTransition(Opened::class, Assigned::class)
             ->allowTransition(Assigned::class, InReview::class)
             ->allowTransition(InReview::class, Assigned::class)
             ->allowTransition(InReview::class, Closed::class)
             ->allowTransition(Closed::class, Reopened::class)
-            ->allowTransition(Reopened::class, Assigned::class, IncidentAssignedTransition::class)
+            ->allowTransition(Reopened::class, Assigned::class)
+            ->allowTransition(Reopened::class, Closed::class)
+            ->allowTransition(Opened::class, Closed::class)
             ;
     }
 
