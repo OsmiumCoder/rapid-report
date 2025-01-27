@@ -4,5 +4,5 @@ namespace App\States\IncidentStatus;
 
 class Reopened extends IncidentStatusState
 {
-    public static $name = 'Reopened';
+    public static $name = 'Re-Opened';
 }

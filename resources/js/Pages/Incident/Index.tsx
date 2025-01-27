@@ -4,7 +4,6 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid';
 import { Incident } from '@/types/Incident';
 import { PaginatedResponse } from '@/types/PaginatedResponse';
 import { PencilIcon } from '@heroicons/react/24/outline';
-import { IncidentStatus } from '@/Enums/IncidentStatus';
 
 type IndexType = 'owned' | 'assigned' | 'all';
 
@@ -134,10 +133,7 @@ export default function Index({ incidents, indexType }: IndexProps) {
                                                             Status
                                                         </dt>
                                                         <dd className="mt-1 truncate text-gray-500 sm:hidden">
-                                                            {incident.status ===
-                                                            IncidentStatus.OPEN
-                                                                ? 'Opened'
-                                                                : 'Closed'}
+                                                            {incident.status}
                                                         </dd>
                                                         <dt className="sr-only sm:hidden">
                                                             Date
@@ -161,10 +157,7 @@ export default function Index({ incidents, indexType }: IndexProps) {
                                                     ).toLocaleDateString()}
                                                 </td>
                                                 <td className="hidden px-3 py-4 text-sm text-gray-500 md:table-cell">
-                                                    {incident.status ===
-                                                    IncidentStatus.OPEN
-                                                        ? 'Opened'
-                                                        : 'Closed'}
+                                                    {incident.status}
                                                 </td>
                                                 <td className="py-4 pl-3 pr-4 text-right text-sm font-medium md:pr-6">
                                                     <Link

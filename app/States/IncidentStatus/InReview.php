@@ -4,5 +4,5 @@ namespace App\States\IncidentStatus;
 
 class InReview extends IncidentStatusState
 {
-    public static $name = 'InReview';
+    public static $name = 'In-Review';
 }
