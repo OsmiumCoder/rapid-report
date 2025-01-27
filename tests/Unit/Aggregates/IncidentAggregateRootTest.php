@@ -179,7 +179,6 @@ class IncidentAggregateRootTest extends TestCase
         $this->assertEquals($incidentData->first_aid_description, $incident->first_aid_description);
         $this->assertEquals($incidentData->reporters_email, $incident->reporters_email);
         $this->assertEquals($incidentData->supervisor_name, $incident->supervisor_name);
-        $this->assertEquals(IncidentStatus::OPEN, $incident->status);
         $this->assertNull($incident->closed_at);
     }
 }

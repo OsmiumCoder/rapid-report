@@ -53,7 +53,7 @@ return new class () extends Migration {
             // The currently assigned supervisor
             $table->foreignId('supervisor_id')->nullable()->constrained('users');
 
-            $table->integer('status');
+            $table->string('status');
 
             $table->timestamp('closed_at')->nullable();
 

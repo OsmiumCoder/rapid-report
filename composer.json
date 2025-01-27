@@ -13,6 +13,7 @@
         "laravel/tinker": "^2.9",
         "spatie/laravel-data": "^4.11",
         "spatie/laravel-event-sourcing": "^7.10",
+        "spatie/laravel-model-states": "^2.10",
         "spatie/laravel-permission": "^6.10",
         "tightenco/ziggy": "^2.0"
     },

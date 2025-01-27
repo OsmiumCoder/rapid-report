@@ -136,7 +136,7 @@ export default function Index({ incidents, indexType }: IndexProps) {
                                                         <dd className="mt-1 truncate text-gray-500 sm:hidden">
                                                             {incident.status ===
                                                             IncidentStatus.OPEN
-                                                                ? 'Open'
+                                                                ? 'Opened'
                                                                 : 'Closed'}
                                                         </dd>
                                                         <dt className="sr-only sm:hidden">
@@ -163,7 +163,7 @@ export default function Index({ incidents, indexType }: IndexProps) {
                                                 <td className="hidden px-3 py-4 text-sm text-gray-500 md:table-cell">
                                                     {incident.status ===
                                                     IncidentStatus.OPEN
-                                                        ? 'Open'
+                                                        ? 'Opened'
                                                         : 'Closed'}
                                                 </td>
                                                 <td className="py-4 pl-3 pr-4 text-right text-sm font-medium md:pr-6">

@@ -49,7 +49,7 @@ class IncidentFactory extends Factory
             'description' => fake()->text(),
             'injury_description' => fake()->text(),
             'first_aid_description' => fake()->text(),
-            'status' => IncidentStatus::OPEN,
+//            'status' => IncidentStatus::OPEN,
         ];
     }
 }
