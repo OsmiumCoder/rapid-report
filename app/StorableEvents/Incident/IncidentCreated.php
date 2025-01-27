@@ -2,7 +2,6 @@
 
 namespace App\StorableEvents\Incident;
 
-use App\Enum\IncidentStatus;
 use App\Enum\IncidentType;
 use App\Models\Incident;
 use App\StorableEvents\StoredEvent;

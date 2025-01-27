@@ -3,7 +3,6 @@
 namespace App\Aggregates;
 
 use App\Data\IncidentData;
-use App\Enum\IncidentStatus;
 use App\StorableEvents\Incident\IncidentCreated;
 use Spatie\EventSourcing\AggregateRoots\AggregateRoot;
 
