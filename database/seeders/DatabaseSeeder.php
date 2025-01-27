@@ -38,7 +38,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'user@b.com',
         ])->assignRole('user');
 
-        Incident::factory(5)->create([
+        Incident::factory(5)->hasComments(5)->create([
             'supervisor_id' => $supervisor->id,
         ]);
 
