@@ -1,21 +1,16 @@
-import {
-    Menu,
-    MenuButton,
-    MenuItem,
-    MenuItems,
-} from '@headlessui/react'
-import {
-    EllipsisVerticalIcon,
-} from '@heroicons/react/20/solid'
-import {Incident} from "@/types/Incident";
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
+import { EllipsisVerticalIcon } from '@heroicons/react/20/solid';
+import { Incident } from '@/types/Incident';
 
-export default function IncidentHeader({incident}: { incident: Incident }) {
+export default function IncidentHeader({ incident }: { incident: Incident }) {
     return (
         <>
             <header className="relative isolate">
-                <div aria-hidden="true" className="absolute inset-0 -z-10 overflow-hidden">
-                    <div
-                        className="absolute left-16 top-full -mt-16 transform-gpu opacity-50 blur-3xl xl:left-1/2 xl:-ml-80">
+                <div
+                    aria-hidden="true"
+                    className="absolute inset-0 -z-10 overflow-hidden"
+                >
+                    <div className="absolute left-16 top-full -mt-16 transform-gpu opacity-50 blur-3xl xl:left-1/2 xl:-ml-80">
                         <div
                             style={{
                                 clipPath:
@@ -24,12 +19,11 @@ export default function IncidentHeader({incident}: { incident: Incident }) {
                             className="aspect-[1154/678] w-[72.125rem] bg-gradient-to-br from-[#FF80B5] to-[#9089FC]"
                         />
                     </div>
-                    <div className="absolute inset-x-0 bottom-0 h-px bg-gray-900/5"/>
+                    <div className="absolute inset-x-0 bottom-0 h-px bg-gray-900/5" />
                 </div>
 
                 <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-                    <div
-                        className="mx-auto flex max-w-2xl items-center justify-between gap-x-8 lg:mx-0 lg:max-w-none">
+                    <div className="mx-auto flex max-w-2xl items-center justify-between gap-x-8 lg:mx-0 lg:max-w-none">
                         <div className="flex items-center gap-x-6">
                             <img
                                 alt=""
@@ -38,17 +32,27 @@ export default function IncidentHeader({incident}: { incident: Incident }) {
                             />
                             <h1>
                                 <div className="text-sm/6 text-gray-500">
-                                    Incident <span className="text-gray-700">{incident.id}</span>
+                                    Incident{' '}
+                                    <span className="text-gray-700">
+                                        {incident.id}
+                                    </span>
                                 </div>
-                                <div className="mt-1 text-base font-semibold text-gray-900">UPEI Health & Safety</div>
+                                <div className="mt-1 text-base font-semibold text-gray-900">
+                                    UPEI Health & Safety
+                                </div>
                             </h1>
                         </div>
                         <div className="flex items-center gap-x-4 sm:gap-x-6">
-                            <button type="button"
-                                    className="hidden text-sm/6 font-semibold text-gray-900 sm:block">
+                            <button
+                                type="button"
+                                className="hidden text-sm/6 font-semibold text-gray-900 sm:block"
+                            >
                                 Copy URL
                             </button>
-                            <a href="#" className="hidden text-sm/6 font-semibold text-gray-900 sm:block">
+                            <a
+                                href="#"
+                                className="hidden text-sm/6 font-semibold text-gray-900 sm:block"
+                            >
                                 Edit
                             </a>
                             <a
@@ -61,7 +65,10 @@ export default function IncidentHeader({incident}: { incident: Incident }) {
                             <Menu as="div" className="relative sm:hidden">
                                 <MenuButton className="-m-3 block p-3">
                                     <span className="sr-only">More</span>
-                                    <EllipsisVerticalIcon aria-hidden="true" className="size-5 text-gray-500"/>
+                                    <EllipsisVerticalIcon
+                                        aria-hidden="true"
+                                        className="size-5 text-gray-500"
+                                    />
                                 </MenuButton>
 
                                 <MenuItems

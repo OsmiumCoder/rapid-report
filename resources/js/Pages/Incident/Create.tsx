@@ -164,8 +164,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
                     </StageWrapper>
 
                     <div className="flex p-6 justify-around">
-
-                        {completedSteps > 0 && showButtons &&(
+                        {completedSteps > 0 && showButtons && (
                             <button
                                 type="button"
                                 onClick={prevStep}
@@ -175,15 +174,16 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
                             </button>
                         )}
 
-                        {completedSteps === numberOfSteps - 1 && showButtons && (
-                            <button
-                                type="button"
-                                onClick={submit}
-                                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-                            >
-                                Submit
-                            </button>
-                        )}
+                        {completedSteps === numberOfSteps - 1 &&
+                            showButtons && (
+                                <button
+                                    type="button"
+                                    onClick={submit}
+                                    className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                                >
+                                    Submit
+                                </button>
+                            )}
                         {remainingSteps > 0 && showButtons && (
                             <button
                                 type="button"
