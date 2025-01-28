@@ -31,7 +31,7 @@ class IncidentAggregateRootTest extends TestCase
             ]);
     }
 
-    public function test_assign_supervisor()
+    public function test_assign_supervisor_to_incident()
     {
         $supervisor = User::factory()->create()->assignRole('supervisor');
 
