@@ -5,6 +5,7 @@ namespace App\Aggregates;
 use App\Data\IncidentData;
 use App\Enum\IncidentStatus;
 use App\StorableEvents\Incident\IncidentCreated;
+use App\StorableEvents\Incident\SupervisorAssigned;
 use Spatie\EventSourcing\AggregateRoots\AggregateRoot;
 
 class IncidentAggregateRoot extends AggregateRoot
@@ -37,5 +38,9 @@ class IncidentAggregateRoot extends AggregateRoot
         ));
 
         return $this;
+    }
+
+    public function assignSupervisor(int $supervisorId) {
+        $this->recordThat(new SupervisorAssigned(supervisor_id: $supervisorId, incident_id: $this->uuid()));
     }
 }
