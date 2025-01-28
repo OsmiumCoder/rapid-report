@@ -18,6 +18,7 @@ export default function StatusUpdate({ incident }: { incident: Incident }) {
                     router.reload({ only: ['incident'] });
                     setIsLoading(false);
                 },
+                preserveScroll: true,
             }
         );
     };
