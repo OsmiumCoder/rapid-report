@@ -20,7 +20,7 @@ class CommentCreated extends StoredEvent
     {
         $comment = new Comment;
 
-        $comment->user_id = $this->metaData['user_id'];
+        $comment->user_id = $this->metaData['user_id'] ?? null;
         $comment->content = $this->content;
         $comment->type = $this->type;
 
