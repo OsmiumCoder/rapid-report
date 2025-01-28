@@ -8,7 +8,8 @@ use App\StorableEvents\StoredEvent;
 
 class IncidentReopened extends StoredEvent
 {
-    public function handle() {
+    public function handle()
+    {
         $incident = Incident::find($this->aggregateRootUuid());
         $incident->status->transitionTo(Reopened::class);
         $incident->supervisor_id = null;

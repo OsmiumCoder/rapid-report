@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Incident;
 use Illuminate\Http\Request;
 
-
 class IncidentStatusController extends Controller
 {
     public function closeIncident(Request $request, Incident $incident)

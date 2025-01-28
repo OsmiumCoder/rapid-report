@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Incident\AdminShowIncidentController;
 use App\Http\Controllers\Incident\AssignedIncidentsController;
 use App\Http\Controllers\Incident\IncidentController;
 use App\Http\Controllers\Incident\IncidentStatusController;
