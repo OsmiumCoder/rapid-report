@@ -9,6 +9,29 @@ use Tests\TestCase;
 
 class ShowTest extends TestCase
 {
+    public function test_incident_has_comments_loaded(): void
+    {
+        $user = User::factory()->create([
+            'name' => 'Admin',
+            'email' => 'admin@b.com',
+        ])->assignRole('admin');
+
+        $this->actingAs($user);
+
+        $incident = Incident::factory()->create();
+
+        $response = $this->get(route('incidents.show', ['incident' => $incident]));
+
+        $response->assertOk();
+
+        $response->assertInertia(function (AssertableInertia $page) use ($incident) {
+            return $page->component('Incident/Show')
+                ->has('incident')
+                ->where('incident.id', $incident->id)
+                ->has('incident.comments');
+        });
+    }
+
     public function test_must_be_auth(): void
     {
         $incident = Incident::factory()->create();

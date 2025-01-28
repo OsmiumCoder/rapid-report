@@ -57,7 +57,7 @@ class IncidentController extends Controller
         $this->authorize('view', $incident);
 
         return Inertia::render('Incident/Show', [
-            'incident' => $incident,
+            'incident' => $incident->load('comments'),
         ]);
     }
 

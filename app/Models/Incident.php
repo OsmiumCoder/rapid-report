@@ -34,4 +34,9 @@ class Incident extends Model
     {
         return $this->belongsTo(User::class, 'supervisor_id');
     }
+
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable');
+    }
 }
