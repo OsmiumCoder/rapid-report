@@ -3,12 +3,14 @@
 namespace Tests\Unit\Aggregates;
 
 use App\Aggregates\IncidentAggregateRoot;
+use App\Data\CommentData;
 use App\Data\IncidentData;
 use App\Enum\CommentType;
 use App\Enum\IncidentType;
 use App\Models\Incident;
 use App\Models\User;
 use App\States\IncidentStatus\Opened;
+use App\StorableEvents\Comment\CommentCreated;
 use App\StorableEvents\Incident\IncidentCreated;
 use App\StorableEvents\Incident\SupervisorAssigned;
 use Illuminate\Support\Str;
@@ -16,13 +18,64 @@ use Tests\TestCase;
 
 class IncidentAggregateRootTest extends TestCase
 {
+    public function test_adds_comment_to_model()
+    {
+        $user = User::factory()->create();
+
+        $incident = Incident::factory()->create();
+
+        $commentData = CommentData::validateAndCreate([
+            'content' => 'comments',
+        ]);
+
+        $this->assertDatabaseCount('comments', 0);
+
+        IncidentAggregateRoot::retrieve($incident->id)
+            ->addComment($commentData)
+            ->persist();
+
+        $this->assertDatabaseCount('comments', 1);
+
+        $incident->refresh();
+
+        $this->assertCount(1, $incident->comments);
+
+        $comment = $incident->comments()->first();
+
+        $this->assertEquals($commentData->content, $comment->content);
+        $this->assertEquals(CommentType::NOTE, $comment->type);
+        $this->assertEquals($incident->id, $comment->commentable_id);
+        $this->assertEquals(get_class($incident), $comment->commentable_type);
+    }
+
+    public function test_comment_created_event_fired()
+    {
+        $incident = Incident::factory()->create();
+
+        $commentData = CommentData::validateAndCreate([
+            'content' => 'comments',
+        ]);
+
+        IncidentAggregateRoot::fake($incident->id)
+            ->when(function (IncidentAggregateRoot $incidentAggregateRoot) use ($commentData): void {
+                $incidentAggregateRoot->addComment($commentData);
+            })
+            ->assertRecorded([
+                new CommentCreated(
+                    content: $commentData->content,
+                    type: CommentType::NOTE,
+                    commentable_id: $incident->id,
+                    commentable_type: Incident::class,
+                ),
+            ]);
+    }
+
     public function test_assigned_supervisor_event_fired()
     {
         $supervisor = User::factory()->create()->assignRole('supervisor');
         $incident = Incident::factory()->create();
 
         IncidentAggregateRoot::fake($incident->id)
-            ->given([])
             ->when(function (IncidentAggregateRoot $incidentAggregateRoot) use ($supervisor): void {
                 $incidentAggregateRoot->assignSupervisor($supervisor->id);
             })
@@ -125,7 +178,6 @@ class IncidentAggregateRootTest extends TestCase
         ]);
 
         IncidentAggregateRoot::fake(Str::uuid()->toString())
-            ->given([])
             ->when(function (IncidentAggregateRoot $incidentAggregateRoot) use ($incidentData): void {
                 $incidentAggregateRoot->createIncident($incidentData);
             })
