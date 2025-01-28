@@ -38,7 +38,9 @@ class IncidentAggregateRoot extends AggregateRoot
         return $this;
     }
 
-    public function assignSupervisor(int $supervisorId) {
+    public function assignSupervisor(int $supervisorId)
+    {
         $this->recordThat(new SupervisorAssigned(supervisor_id: $supervisorId, incident_id: $this->uuid()));
+        return $this;
     }
 }
