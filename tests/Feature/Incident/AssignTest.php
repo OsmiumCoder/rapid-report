@@ -3,14 +3,14 @@
 namespace Tests\Feature\Incident;
 
 use App\Enum\CommentType;
-use App\Exceptions\UserNotSupervisorRoleException;
+use App\Exceptions\UserNotSupervisorException;
 use App\Models\Incident;
 use App\Models\User;
 use Tests\TestCase;
 
 class AssignTest extends TestCase
 {
-    public function test_throws_user_not_supervisor_role_if_bad_id()
+    public function test_throws_user_not_supervisor_if_id_not_supervisor()
     {
         $admin = User::factory()->create()->assignRole('admin');
         $notSupervisor = User::factory()->create()->assignRole('user');
@@ -21,7 +21,7 @@ class AssignTest extends TestCase
 
         $response = $this->put(route('incidents.assign-supervisor', ['incident' => $incident->id]), ['supervisor_id' => $notSupervisor->id]);
 
-        $this->assertInstanceOf(UserNotSupervisorRoleException::class, $response->exception);
+        $this->assertInstanceOf(UserNotSupervisorException::class, $response->exception);
     }
 
     public function test_adds_assigned_comment()

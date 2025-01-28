@@ -3,7 +3,7 @@
 namespace App\Aggregates;
 
 use App\Data\IncidentData;
-use App\Exceptions\UserNotSupervisorRoleException;
+use App\Exceptions\UserNotSupervisorException;
 use App\Models\User;
 use App\StorableEvents\Incident\IncidentCreated;
 use App\StorableEvents\Incident\SupervisorAssigned;
@@ -41,14 +41,14 @@ class IncidentAggregateRoot extends AggregateRoot
     }
 
     /**
-     * @throws UserNotSupervisorRoleException
+     * @throws UserNotSupervisorException
      */
     public function assignSupervisor(int $supervisorId)
     {
         $user = User::find($supervisorId);
 
         if (!$user->hasRole('supervisor')) {
-            throw UserNotSupervisorRoleException::hasRoles($user->getRoleNames());
+            throw UserNotSupervisorException::hasRoles($user->getRoleNames());
         }
 
         $this->recordThat(new SupervisorAssigned(supervisor_id: $supervisorId));

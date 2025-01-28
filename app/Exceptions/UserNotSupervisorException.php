@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 
-class UserNotSupervisorRoleException extends Exception
+class UserNotSupervisorException extends Exception
 {
     public static function hasRoles(Collection $roles)
     {

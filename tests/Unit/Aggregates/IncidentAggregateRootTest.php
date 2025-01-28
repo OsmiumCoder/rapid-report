@@ -6,7 +6,7 @@ use App\Aggregates\IncidentAggregateRoot;
 use App\Data\IncidentData;
 use App\Enum\CommentType;
 use App\Enum\IncidentType;
-use App\Exceptions\UserNotSupervisorRoleException;
+use App\Exceptions\UserNotSupervisorException;
 use App\Models\Incident;
 use App\Models\User;
 use App\States\IncidentStatus\Opened;
@@ -17,9 +17,9 @@ use Tests\TestCase;
 
 class IncidentAggregateRootTest extends TestCase
 {
-    public function test_throws_user_not_supervisor_role_if_bad_id()
+    public function test_throws_user_not_supervisor_if_id_not_supervisor()
     {
-        $this->expectException(UserNotSupervisorRoleException::class);
+        $this->expectException(UserNotSupervisorException::class);
 
         $notSupervisor = User::factory()->create()->assignRole('admin');
 
