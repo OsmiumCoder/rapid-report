@@ -13,12 +13,8 @@ class CustomStoredEvent extends EloquentStoredEvent
 
         static::creating(function (CustomStoredEvent $storedEvent) {
 
-            if ($storedEvent->getOriginalEvent() instanceof IncidentCreated) {
-                if ($storedEvent->getOriginalEvent()->anonymous) {
-                    $storedEvent->meta_data['user_id'] = null;
-
-
-                }
+            if ($storedEvent->getOriginalEvent() instanceof IncidentCreated && $storedEvent->getOriginalEvent()->anonymous) {
+                $storedEvent->meta_data['user_id'] = null;
             } else {
                 $storedEvent->meta_data['user_id'] = auth()->user()->id ?? null;
             }
