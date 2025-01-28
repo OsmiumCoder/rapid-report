@@ -11,6 +11,8 @@ class IncidentCommentController extends Controller
 {
     public function __invoke(Incident $incident, CommentData $commentData)
     {
+        $this->authorize('addComment', $incident);
+
         IncidentAggregateRoot::retrieve($incident->id)
             ->addComment($commentData)
             ->persist();
