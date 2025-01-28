@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\StorableEvents\Incident\IncidentCreated;
 use Spatie\EventSourcing\StoredEvents\Models\EloquentStoredEvent;
 
 class CustomStoredEvent extends EloquentStoredEvent
@@ -11,7 +12,16 @@ class CustomStoredEvent extends EloquentStoredEvent
         parent::boot();
 
         static::creating(function (CustomStoredEvent $storedEvent) {
-            $storedEvent->meta_data['user_id'] = auth()->user()->id ?? null;
+
+            if ($storedEvent->getOriginalEvent() instanceof IncidentCreated) {
+                if ($storedEvent->getOriginalEvent()->anonymous) {
+                    $storedEvent->meta_data['user_id'] = null;
+
+
+                }
+            } else {
+                $storedEvent->meta_data['user_id'] = auth()->user()->id ?? null;
+            }
         });
     }
 }
