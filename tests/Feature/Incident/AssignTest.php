@@ -15,19 +15,17 @@ class AssignTest extends TestCase
 
         $this->actingAs($admin);
 
-        $this->assertDatabaseCount('incidents', 0);
-
         $incident = Incident::factory()->create();
 
-        $this->assertDatabaseCount('incidents', 1);
+        $this->assertNull($incident->supervisor_id);
 
         $response = $this->put(route('incidents.assign-supervisor', ['incident' => $incident->id]), ['supervisor_id' => $supervisor->id]);
 
         $response->assertStatus(200);
 
-        $updated_incident = Incident::first();
+        $incident->refresh();
 
-        $this->assertEquals($supervisor->id, $updated_incident->supervisor_id);
+        $this->assertEquals($supervisor->id, $incident->supervisor_id);
     }
 
     public function test_assign_supervisor_not_permitted_by_user()
@@ -37,15 +35,16 @@ class AssignTest extends TestCase
 
         $this->actingAs($user);
 
-        $this->assertDatabaseCount('incidents', 0);
-
         $incident = Incident::factory()->create();
-
-        $this->assertDatabaseCount('incidents', 1);
+        $this->assertNull($incident->supervisor_id);
 
         $response = $this->put(route('incidents.assign-supervisor', ['incident' => $incident->id]), ['supervisor_id' => $supervisor->id]);
 
         $response->assertStatus(403);
+
+        $incident->refresh();
+
+        $this->assertNull($incident->supervisor_id);
 
     }
 }
