@@ -8,6 +8,7 @@ use App\Enum\CommentType;
 use App\Models\Incident;
 use App\StorableEvents\Comment\CommentCreated;
 use App\StorableEvents\Incident\IncidentCreated;
+use App\StorableEvents\Incident\SupervisorAssigned;
 use Spatie\EventSourcing\AggregateRoots\AggregateRoot;
 
 class IncidentAggregateRoot extends AggregateRoot
@@ -38,6 +39,12 @@ class IncidentAggregateRoot extends AggregateRoot
             supervisor_name: $incidentData->supervisor_name,
         ));
 
+        return $this;
+    }
+
+    public function assignSupervisor(int $supervisorId)
+    {
+        $this->recordThat(new SupervisorAssigned(supervisor_id: $supervisorId));
         return $this;
     }
 
