@@ -29,4 +29,9 @@ class Incident extends Model
             'incident_type' => IncidentType::class,
         ];
     }
+
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable');
+    }
 }
