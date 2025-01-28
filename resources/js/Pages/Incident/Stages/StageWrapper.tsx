@@ -6,7 +6,7 @@ export interface StageProps extends PropsWithChildren {
     formData: IncidentData;
     setFormData: Dispatch<SetStateAction<IncidentData>>;
     validStep: boolean;
-    setValidStep:Dispatch<SetStateAction<boolean>>;
+    setValidStep: Dispatch<SetStateAction<boolean>>;
     failedStep: boolean;
     setShowButtons: Dispatch<SetStateAction<boolean>>;
 }
@@ -29,9 +29,7 @@ export default function StageWrapper({
                     remainingSteps={remainingSteps}
                 ></ProgressBarCircle>
             </div>
-            <div className="relative flex gap-3">
-                {children}
-            </div>
+            <div className="relative flex gap-3">{children}</div>
         </>
     );
 }

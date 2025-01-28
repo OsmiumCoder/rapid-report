@@ -3,7 +3,6 @@
 namespace App\Aggregates;
 
 use App\Data\IncidentData;
-use App\Enum\IncidentStatus;
 use App\StorableEvents\Incident\IncidentCreated;
 use App\StorableEvents\Incident\SupervisorAssigned;
 use Spatie\EventSourcing\AggregateRoots\AggregateRoot;
@@ -34,7 +33,6 @@ class IncidentAggregateRoot extends AggregateRoot
             first_aid_description: $incidentData->first_aid_description,
             reporters_email: $incidentData->reporters_email,
             supervisor_name: $incidentData->supervisor_name,
-            status: IncidentStatus::OPEN
         ));
 
         return $this;
