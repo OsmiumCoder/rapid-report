@@ -10,7 +10,8 @@ class SupervisorAssigned extends StoredEvent
 {
     public function __construct(
         public int $supervisor_id,
-    ) {}
+    ) {
+    }
 
     public function handle()
     {

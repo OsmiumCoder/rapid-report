@@ -20,7 +20,9 @@ class AssignSupervisorController extends Controller
             'supervisor_id' => 'required|exists:users,id',
         ]);
 
-        IncidentAggregateRoot::retrieve($incident->id)->assignSupervisor($form['supervisor_id'])->persist();
+        IncidentAggregateRoot::retrieve($incident->id)
+            ->assignSupervisor($form['supervisor_id'])
+            ->persist();
 
         return response()->json([
             'success' => true,
