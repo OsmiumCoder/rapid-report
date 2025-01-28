@@ -6,6 +6,7 @@ use App\Aggregates\IncidentAggregateRoot;
 use App\Data\IncidentData;
 use App\Enum\IncidentType;
 use App\Models\Incident;
+use App\States\IncidentStatus\Opened;
 use App\StorableEvents\Incident\IncidentCreated;
 use Illuminate\Support\Str;
 use Tests\TestCase;
@@ -68,7 +69,7 @@ class IncidentAggregateRootTest extends TestCase
                     first_aid_description: $incidentData->first_aid_description,
                     reporters_email: $incidentData->reporters_email,
                     supervisor_name: $incidentData->supervisor_name,
-                )
+                ),
             ]);
     }
 
@@ -178,5 +179,6 @@ class IncidentAggregateRootTest extends TestCase
         $this->assertEquals($incidentData->reporters_email, $incident->reporters_email);
         $this->assertEquals($incidentData->supervisor_name, $incident->supervisor_name);
         $this->assertNull($incident->closed_at);
+        $this->assertEquals(Opened::class, $incident->status::class);
     }
 }

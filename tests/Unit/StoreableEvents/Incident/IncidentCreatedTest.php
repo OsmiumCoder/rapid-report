@@ -4,6 +4,7 @@ namespace StoreableEvents\Incident;
 
 use App\Enum\IncidentType;
 use App\Models\Incident;
+use App\States\IncidentStatus\Opened;
 use App\StorableEvents\Incident\IncidentCreated;
 use Carbon\Carbon;
 use Tests\TestCase;
@@ -68,6 +69,7 @@ class IncidentCreatedTest extends TestCase
         $this->assertEquals($event->reporters_email, $incident->reporters_email);
         $this->assertEquals($event->supervisor_name, $incident->supervisor_name);
         $this->assertNull($incident->closed_at);
+        $this->assertEquals(Opened::class, $incident->status::class);
     }
 
     public function test_creates_new_incident_anonymous(): void
@@ -128,5 +130,6 @@ class IncidentCreatedTest extends TestCase
         $this->assertNull($incident->reporters_email);
         $this->assertNull($incident->supervisor_name);
         $this->assertNull($incident->closed_at);
+        $this->assertEquals(Opened::class, $incident->status::class);
     }
 }

@@ -5,11 +5,51 @@ namespace Tests\Feature\Incident;
 use App\Data\IncidentData;
 use App\Enum\IncidentType;
 use App\Models\Incident;
+use App\States\IncidentStatus\Opened;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
 class StoreTest extends TestCase
 {
+    public function test_stores_incident_with_open_status(): void
+    {
+        $incidentDate = now();
+
+        $incidentData = IncidentData::from([
+            'anonymous' => false,
+            'on_behalf' => false,
+            'on_behalf_anonymous' => false,
+            'role' => 0,
+            'last_name' => 'last',
+            'first_name' => 'first',
+            'upei_id' => '322',
+            'email' => 'john@doe.com',
+            'phone' => '(902) 333-4444',
+            'work_related' => true,
+            'happened_at' => $incidentDate,
+            'location' => 'Building A',
+            'room_number' => '123A',
+            'witnesses' => [],
+            'incident_type' => IncidentType::SAFETY,
+            'descriptor' => 'Burn',
+            'description' => 'A fire broke out in the room.',
+            'injury_description' => 'Minor burn',
+            'first_aid_description' => 'Minor burn treated',
+            'reporters_email' => 'jane@doe.com',
+            'supervisor_name' => 'John Doe',
+        ]);
+
+        $this->assertDatabaseCount('incidents', 0);
+
+        $response = $this->post(route('incidents.store'), $incidentData->toArray());
+
+        $this->assertDatabaseCount('incidents', 1);
+
+        $incident = Incident::first();
+
+        $this->assertEquals(Opened::class, $incident->status::class);
+    }
+
     public function test_redirects_to_show_page(): void
     {
         $incidentDate = now();
@@ -106,6 +146,7 @@ class StoreTest extends TestCase
             'first_aid_description' => null,
             'reporters_email' => null,
             'supervisor_name' => null,
+            'status' => Opened::class,
         ]);
 
         $this->assertDatabaseCount('incidents', 0);
@@ -139,6 +180,8 @@ class StoreTest extends TestCase
         $this->assertNull($incident->reporters_email);
         $this->assertNull($incident->supervisor_name);
         $this->assertNull($incident->closed_at);
+        $this->assertNotNull($incident->status);
+        $this->assertEquals(Opened::class, $incident->status::class);
     }
 
     public function test_stores_incident(): void
@@ -200,5 +243,6 @@ class StoreTest extends TestCase
         $this->assertEquals($incidentData->reporters_email, $incident->reporters_email);
         $this->assertEquals($incidentData->supervisor_name, $incident->supervisor_name);
         $this->assertNull($incident->closed_at);
+        $this->assertEquals(Opened::class, $incident->status::class);
     }
 }

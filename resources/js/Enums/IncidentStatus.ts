@@ -1,7 +1,7 @@
 export enum IncidentStatus {
-    OPENED = 'Opened',
-    CLOSED = 'Closed',
-    REOPENED = 'Re-Opened',
-    ASSIGNED = 'Assigned',
-    INREVIEW = 'In-Review',
+    OPENED = 'opened',
+    CLOSED = 'closed',
+    REOPENED = 'reopened',
+    ASSIGNED = 'assigned',
+    IN_REVIEW = 'in review',
 }
