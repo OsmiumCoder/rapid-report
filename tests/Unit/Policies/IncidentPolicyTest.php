@@ -9,6 +9,27 @@ use Tests\TestCase;
 
 class IncidentPolicyTest extends TestCase
 {
+    public function test_admin_can_perform_admin_actions_on_incidents()
+    {
+        $admin = User::factory()->create()->assignRole('admin');
+
+        $this->assertTrue($admin->can('performAdminActions', Incident::class));
+    }
+
+    public function test_supervisor_can_not_perform_admin_actions_on_incidents()
+    {
+        $supervisor = User::factory()->create()->assignRole('supervisor');
+
+        $this->assertFalse($supervisor->can('performAdminActions', Incident::class));
+    }
+
+    public function test_user_can_not_perform_admin_actions_on_incidents()
+    {
+        $user = User::factory()->create()->assignRole('user');
+
+        $this->assertFalse($user->can('performAdminActions', Incident::class));
+    }
+
     public function test_admin_can_assign_supervisor_to_incident()
     {
         $admin = User::factory()->create()->assignRole('admin');

@@ -7,12 +7,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Incident;
 use Illuminate\Http\Request;
 
-class AssignSupervisorController extends Controller
+class SupervisorAssignmentController extends Controller
 {
-    /**
-     * Handle the incoming request.
-     */
-    public function __invoke(Request $request, Incident $incident)
+    public function assignSupervisor(Request $request, Incident $incident)
     {
         $this->authorize('assignSupervisor', Incident::class);
 
@@ -24,8 +21,19 @@ class AssignSupervisorController extends Controller
             ->assignSupervisor($form['supervisor_id'])
             ->persist();
 
-        return response()->json([
-            'success' => true,
-        ]);
+        return redirect()->back();
     }
+
+    public function unassignSupervisor(Request $request, Incident $incident)
+    {
+        $this->authorize('assignSupervisor', Incident::class);
+
+
+        IncidentAggregateRoot::retrieve($incident->id)
+            ->unassignSupervisor()
+            ->persist();
+
+        return redirect()->back();
+    }
+
 }

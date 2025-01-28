@@ -9,6 +9,7 @@ use App\Models\Incident;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
+use Spatie\Permission\Models\Role;
 
 class IncidentController extends Controller
 {
@@ -56,8 +57,15 @@ class IncidentController extends Controller
     {
         $this->authorize('view', $incident);
 
+        if (auth()->user()->can('performAdminActions', Incident::class)) {
+            $supervisors = Role::where('name', 'Supervisor')->first()->users()->get();
+        } else {
+            $supervisors = [];
+        }
+
         return Inertia::render('Incident/Show', [
-            'incident' => $incident->load('comments'),
+            'incident' => $incident->load(['comments', 'supervisor']),
+            'supervisors' => $supervisors,
         ]);
     }
 

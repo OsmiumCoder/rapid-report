@@ -50,6 +50,11 @@ class IncidentPolicy
         return $user->can('assign supervisor');
     }
 
+    public function performAdminActions(User $user): bool
+    {
+        return $user->can('perform admin actions');
+    }
+
     /**
      * Determine whether the user can create incidents.
      */
