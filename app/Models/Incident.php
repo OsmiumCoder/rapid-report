@@ -27,7 +27,6 @@ class Incident extends Model
             'witnesses' => 'array',
             'status' => IncidentStatusState::class,
             'incident_type' => IncidentType::class,
-            'supervisor' => User::class,
         ];
     }
 
