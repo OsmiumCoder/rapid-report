@@ -4,9 +4,9 @@ namespace Tests\Feature\Incident;
 
 use App\Data\IncidentData;
 use App\Enum\CommentType;
-use App\Enum\IncidentStatus;
 use App\Enum\IncidentType;
 use App\Models\Incident;
+use App\States\IncidentStatus\Opened;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
@@ -177,8 +177,8 @@ class StoreTest extends TestCase
         $this->assertNull($incident->first_aid_description);
         $this->assertNull($incident->reporters_email);
         $this->assertNull($incident->supervisor_name);
-        $this->assertEquals(IncidentStatus::OPEN, $incident->status);
         $this->assertNull($incident->closed_at);
+        $this->assertEquals(Opened::class, $incident->status::class);
     }
 
     public function test_stores_incident_with_open_status(): void
@@ -215,7 +215,8 @@ class StoreTest extends TestCase
 
         $incident = Incident::first();
 
-        $this->assertEquals(IncidentStatus::OPEN, $incident->status);
+        $this->assertNotNull($incident->status);
+        $this->assertEquals(Opened::class, $incident->status::class);
     }
 
     public function test_stores_incident(): void
@@ -274,7 +275,7 @@ class StoreTest extends TestCase
         $this->assertEquals($incidentData->first_aid_description, $incident->first_aid_description);
         $this->assertEquals($incidentData->reporters_email, $incident->reporters_email);
         $this->assertEquals($incidentData->supervisor_name, $incident->supervisor_name);
-        $this->assertEquals(IncidentStatus::OPEN, $incident->status);
         $this->assertNull($incident->closed_at);
+        $this->assertEquals(Opened::class, $incident->status::class);
     }
 }

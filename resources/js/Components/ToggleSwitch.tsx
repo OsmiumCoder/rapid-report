@@ -1,12 +1,12 @@
-import {Switch} from "@headlessui/react";
-import React from "react";
+import { Switch } from '@headlessui/react';
+import React from 'react';
 
 interface ToggleSwitchProps {
     checked?: boolean;
     onChange: (e: any) => void;
 }
 
-export default function ToggleSwitch({checked, onChange}: ToggleSwitchProps) {
+export default function ToggleSwitch({ checked, onChange }: ToggleSwitchProps) {
     return (
         <Switch
             checked={checked}

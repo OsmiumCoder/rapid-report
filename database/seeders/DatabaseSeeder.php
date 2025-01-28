@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Incident;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\States\IncidentStatus\Assigned;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -40,6 +41,7 @@ class DatabaseSeeder extends Seeder
 
         Incident::factory(5)->hasComments(5)->create([
             'supervisor_id' => $supervisor->id,
+            'status' => Assigned::class,
         ]);
 
         Incident::factory(5)->create([
