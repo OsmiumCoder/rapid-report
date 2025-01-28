@@ -2,9 +2,12 @@
 
 namespace App\Aggregates;
 
+use App\Data\CommentData;
 use App\Data\IncidentData;
+use App\Enum\CommentType;
+use App\Models\Incident;
+use App\StorableEvents\Comment\CommentCreated;
 use App\StorableEvents\Incident\IncidentCreated;
-use App\StorableEvents\Incident\SupervisorAssigned;
 use Spatie\EventSourcing\AggregateRoots\AggregateRoot;
 
 class IncidentAggregateRoot extends AggregateRoot
@@ -38,9 +41,15 @@ class IncidentAggregateRoot extends AggregateRoot
         return $this;
     }
 
-    public function assignSupervisor(int $supervisorId)
+    public function addComment(CommentData $commentData)
     {
-        $this->recordThat(new SupervisorAssigned(supervisor_id: $supervisorId));
+        $this->recordThat(new CommentCreated(
+            content: $commentData->content,
+            type: CommentType::NOTE,
+            commentable_id: $this->uuid(),
+            commentable_type: Incident::class
+        ));
+
         return $this;
     }
 }
