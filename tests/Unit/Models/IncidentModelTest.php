@@ -16,6 +16,8 @@ class IncidentModelTest extends TestCase
         ]);
 
         $this->assertEquals($supervisor->id, $incident->supervisor->id);
+        $this->assertInstanceOf(User::class, $incident->supervisor);
+
     }
 
     public function test_creates_an_incident_model_with_valid_attributes()

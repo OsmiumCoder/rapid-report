@@ -26,6 +26,7 @@ class AssignTest extends TestCase
         $incident->refresh();
 
         $this->assertEquals($supervisor->id, $incident->supervisor_id);
+        $this->assertInstanceOf(User::class, $incident->supervisor);
     }
 
     public function test_assign_supervisor_not_permitted_by_user()
