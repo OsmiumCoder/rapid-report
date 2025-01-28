@@ -4,7 +4,7 @@ import ActivityLog from '@/Pages/Incident/Partials/ActivityLog';
 import IncidentHeader from '@/Pages/Incident/Partials/IncidentHeader';
 import { Head } from '@inertiajs/react';
 import { PageProps, User } from '@/types';
-import IncidentInformationCard from '@/Pages/Incident/Partials/IncidentInformationCard';
+import IncidentInformationPanel from '@/Pages/Incident/Partials/IncidentInformationPanel';
 import { Incident } from '@/types/Incident';
 
 interface ShowProps extends PageProps {
@@ -39,7 +39,7 @@ export default function Show({
                                 ></AdminActions>
                             )}
 
-                            <IncidentInformationCard incident={incident} />
+                            <IncidentInformationPanel incident={incident} />
 
                             <ActivityLog incident={incident}></ActivityLog>
                         </div>

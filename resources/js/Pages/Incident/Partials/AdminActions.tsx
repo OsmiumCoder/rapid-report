@@ -1,7 +1,7 @@
 import { Incident } from '@/types/Incident';
 import { User } from '@/types';
-import SupervisorUpdate from '@/Pages/Incident/Partials/AdminActionsPartials/SupervisorUpdate';
-import StatusUpdate from '@/Pages/Incident/Partials/AdminActionsPartials/StatusUpdate';
+import SupervisorUpdate from '@/Pages/Incident/Partials/AdminActionComponents/SupervisorUpdate';
+import StatusUpdate from '@/Pages/Incident/Partials/AdminActionComponents/StatusUpdate';
 import { IncidentStatus } from '@/Enums/IncidentStatus';
 
 interface AdminActionsProps {

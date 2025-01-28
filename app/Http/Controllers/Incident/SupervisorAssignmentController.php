@@ -28,7 +28,6 @@ class SupervisorAssignmentController extends Controller
     {
         $this->authorize('performAdminActions', Incident::class);
 
-
         IncidentAggregateRoot::retrieve($incident->id)
             ->unassignSupervisor()
             ->persist();

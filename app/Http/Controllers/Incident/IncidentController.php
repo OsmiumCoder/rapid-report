@@ -6,10 +6,10 @@ use App\Aggregates\IncidentAggregateRoot;
 use App\Data\IncidentData;
 use App\Http\Controllers\Controller;
 use App\Models\Incident;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
-use Spatie\Permission\Models\Role;
 
 class IncidentController extends Controller
 {
@@ -58,7 +58,7 @@ class IncidentController extends Controller
         $this->authorize('view', $incident);
 
         if (auth()->user()->can('performAdminActions', Incident::class)) {
-            $supervisors = Role::where('name', 'Supervisor')->first()->users()->get();
+            $supervisors = User::role('supervisor')->get();
         } else {
             $supervisors = [];
         }

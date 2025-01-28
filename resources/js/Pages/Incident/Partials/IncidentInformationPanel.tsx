@@ -2,14 +2,14 @@ import { Incident } from '@/types/Incident';
 import dateTimeFormat from '@/Filters/dateTimeFormat';
 import { uppercaseWordFormat } from '@/Filters/uppercaseWordFormat';
 import { IncidentType } from '@/Enums/IncidentType';
-import AffectedPartyInformation from '@/Pages/Incident/Partials/InformationPartials/AffectedPartyInformation';
-import GeneralDescription from '@/Pages/Incident/Partials/InformationPartials/GeneralDescription';
-import SupervisorInformation from '@/Pages/Incident/Partials/InformationPartials/SupervisorInformation';
-import VictimInformation from '@/Pages/Incident/Partials/InformationPartials/VictimInformation';
-import WitnessInformation from '@/Pages/Incident/Partials/InformationPartials/WitnessInformation';
-import IncidentInformation from '@/Pages/Incident/Partials/InformationPartials/IncidentInformation';
+import AffectedPartyInformation from '@/Pages/Incident/Partials/InformationComponents/AffectedPartyInformation';
+import GeneralDescription from '@/Pages/Incident/Partials/InformationComponents/GeneralDescription';
+import SupervisorInformation from '@/Pages/Incident/Partials/InformationComponents/SupervisorInformation';
+import VictimInformation from '@/Pages/Incident/Partials/InformationComponents/VictimInformation';
+import WitnessInformation from '@/Pages/Incident/Partials/InformationComponents/WitnessInformation';
+import IncidentInformation from '@/Pages/Incident/Partials/InformationComponents/IncidentInformation';
 
-export default function IncidentInformationCard({
+export default function IncidentInformationPanel({
     incident,
 }: {
     incident: Incident;

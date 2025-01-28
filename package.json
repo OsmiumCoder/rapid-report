@@ -27,7 +27,6 @@
     },
     "dependencies": {
         "@heroicons/react": "^2.2.0",
-        "@inertiajs/inertia": "^0.11.1",
         "dayjs": "^1.11.13"
     }
 }
