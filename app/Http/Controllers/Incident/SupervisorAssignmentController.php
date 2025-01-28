@@ -21,7 +21,7 @@ class SupervisorAssignmentController extends Controller
             ->assignSupervisor($form['supervisor_id'])
             ->persist();
 
-        return redirect()->back();
+        return back();
     }
 
     public function unassignSupervisor(Request $request, Incident $incident)
@@ -33,7 +33,7 @@ class SupervisorAssignmentController extends Controller
             ->unassignSupervisor()
             ->persist();
 
-        return redirect()->back();
+        return back();
     }
 
 }

@@ -17,7 +17,7 @@ class IncidentStatusController extends Controller
             ->closeIncident()
             ->persist();
 
-        return redirect()->back();
+        return back();
 
     }
 
@@ -29,7 +29,7 @@ class IncidentStatusController extends Controller
             ->reopenIncident()
             ->persist();
 
-        return redirect()->back();
+        return back();
 
     }
 }
