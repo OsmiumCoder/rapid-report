@@ -48,4 +48,23 @@ class AssignTest extends TestCase
         $this->assertNull($incident->supervisor_id);
 
     }
+
+    public function test_assign_supervisor_not_permitted_by_supervisor()
+    {
+        $supervisor = User::factory()->create()->assignRole('supervisor');
+
+        $this->actingAs($supervisor);
+
+        $incident = Incident::factory()->create();
+        $this->assertNull($incident->supervisor_id);
+
+        $response = $this->put(route('incidents.assign-supervisor', ['incident' => $incident->id]), ['supervisor_id' => $supervisor->id]);
+
+        $response->assertStatus(403);
+
+        $incident->refresh();
+
+        $this->assertNull($incident->supervisor_id);
+
+    }
 }
