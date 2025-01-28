@@ -21,7 +21,7 @@ class AssignTest extends TestCase
 
         $this->assertDatabaseCount('incidents', 1);
 
-        $response = $this->put(route('incidents.assign', ['incident' => $incident->id]), ['supervisor_id' => $supervisor->id]);
+        $response = $this->put(route('incidents.assign-supervisor', ['incident' => $incident->id]), ['supervisor_id' => $supervisor->id]);
 
         $response->assertStatus(200);
 
@@ -43,7 +43,7 @@ class AssignTest extends TestCase
 
         $this->assertDatabaseCount('incidents', 1);
 
-        $response = $this->put(route('incidents.assign', ['incident' => $incident->id]), ['supervisor_id' => $supervisor->id]);
+        $response = $this->put(route('incidents.assign-supervisor', ['incident' => $incident->id]), ['supervisor_id' => $supervisor->id]);
 
         $response->assertStatus(403);
 

@@ -19,5 +19,5 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/owned', OwnedIncidentsController::class)->name('incidents.owned');
     Route::get('/assigned', AssignedIncidentsController::class)->name('incidents.assigned');
-    Route::put('/incidents/{incident}/assign', AssignSupervisorController::class)->name('incidents.assign');
+    Route::put('/incidents/{incident}/assign', AssignSupervisorController::class)->name('incidents.assign-supervisor');
 });
