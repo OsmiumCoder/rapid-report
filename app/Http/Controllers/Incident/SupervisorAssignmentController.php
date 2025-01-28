@@ -11,7 +11,7 @@ class SupervisorAssignmentController extends Controller
 {
     public function assignSupervisor(Request $request, Incident $incident)
     {
-        $this->authorize('assignSupervisor', Incident::class);
+        $this->authorize('performAdminActions', Incident::class);
 
         $form = $request->validate([
             'supervisor_id' => 'required|exists:users,id',
@@ -26,7 +26,7 @@ class SupervisorAssignmentController extends Controller
 
     public function unassignSupervisor(Request $request, Incident $incident)
     {
-        $this->authorize('assignSupervisor', Incident::class);
+        $this->authorize('performAdminActions', Incident::class);
 
 
         IncidentAggregateRoot::retrieve($incident->id)

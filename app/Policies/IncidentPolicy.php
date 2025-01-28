@@ -45,11 +45,6 @@ class IncidentPolicy
         return false;
     }
 
-    public function assignSupervisor(User $user): bool
-    {
-        return $user->can('assign supervisor');
-    }
-
     public function performAdminActions(User $user): bool
     {
         return $user->can('perform admin actions');
