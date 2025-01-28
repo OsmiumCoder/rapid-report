@@ -2,6 +2,7 @@
 
 namespace StoreableEvents\Incident;
 
+use App\Enum\CommentType;
 use App\Enum\IncidentStatus;
 use App\Enum\IncidentType;
 use App\Models\Incident;
@@ -11,6 +12,52 @@ use Tests\TestCase;
 
 class IncidentCreatedTest extends TestCase
 {
+    public function test_adds_created_comment()
+    {
+        Carbon::setTestNow('2024-05-01 12:12:00');
+
+        $event = new IncidentCreated(
+            anonymous: false,
+            on_behalf: false,
+            on_behalf_anonymous: false,
+            role: '0',
+            last_name: 'last',
+            first_name: 'first',
+            upei_id: '322',
+            email: 'john@doe.com',
+            phone: '(902) 333-4444',
+            work_related: true,
+            happened_at: now(),
+            location: 'Building A',
+            room_number: '123A',
+            witnesses: [],
+            incident_type: IncidentType::SAFETY,
+            descriptor: 'Burn',
+            description: 'A fire broke out in the room.',
+            injury_description: 'Minor burn',
+            first_aid_description: 'Minor burn treated',
+            reporters_email: 'jane@doe.com',
+            supervisor_name: 'John Doe',
+            status: IncidentStatus::OPEN
+        );
+
+        $this->assertDatabaseCount('incidents', 0);
+
+        $event->handle();
+
+        $this->assertDatabaseCount('incidents', 1);
+
+        $incident = Incident::first();
+
+        $this->assertCount(1, $incident->comments);
+
+        $comment = $incident->comments->first();
+
+        $this->assertEquals(CommentType::INFO, $comment->type);
+        $this->assertStringContainsStringIgnoringCase('created', $comment->content);
+        $this->assertStringContainsStringIgnoringCase('incident', $comment->content);
+    }
+
     public function test_creates_new_incident(): void
     {
         Carbon::setTestNow('2024-05-01 12:12:00');
