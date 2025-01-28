@@ -20,8 +20,6 @@ class IncidentAggregateRootTest extends TestCase
 {
     public function test_adds_comment_to_model()
     {
-        $user = User::factory()->create();
-
         $incident = Incident::factory()->create();
 
         $commentData = CommentData::validateAndCreate([
