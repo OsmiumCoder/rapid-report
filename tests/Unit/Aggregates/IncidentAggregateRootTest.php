@@ -7,13 +7,49 @@ use App\Data\IncidentData;
 use App\Enum\CommentType;
 use App\Enum\IncidentType;
 use App\Models\Incident;
+use App\Models\User;
 use App\States\IncidentStatus\Opened;
 use App\StorableEvents\Incident\IncidentCreated;
+use App\StorableEvents\Incident\SupervisorAssigned;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class IncidentAggregateRootTest extends TestCase
 {
+    public function test_assigned_supervisor_event_fired()
+    {
+        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $incident = Incident::factory()->create();
+
+        IncidentAggregateRoot::fake($incident->id)
+            ->given([])
+            ->when(function (IncidentAggregateRoot $incidentAggregateRoot) use ($supervisor): void {
+                $incidentAggregateRoot->assignSupervisor($supervisor->id);
+            })
+            ->assertRecorded([
+                new SupervisorAssigned($supervisor->id),
+            ]);
+    }
+
+    public function test_assign_supervisor_to_incident()
+    {
+        $supervisor = User::factory()->create()->assignRole('supervisor');
+
+        $incident = Incident::factory()->create();
+
+        $this->assertNull($incident->supervisor_id);
+
+        IncidentAggregateRoot::retrieve($incident->id)
+            ->assignSupervisor($supervisor->id)
+            ->persist();
+
+        $incident->refresh();
+
+        $this->assertEquals($supervisor->id, $incident->supervisor_id);
+
+        $this->assertInstanceOf(User::class, $incident->supervisor);
+    }
+
     public function test_adds_created_comment()
     {
         $incidentData = IncidentData::from([

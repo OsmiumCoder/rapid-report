@@ -3,10 +3,23 @@
 namespace Tests\Unit\Models;
 
 use App\Models\Incident;
+use App\Models\User;
 use Tests\TestCase;
 
 class IncidentModelTest extends TestCase
 {
+    public function test_incident_with_assigned_supervisor_returns_supervisor_user()
+    {
+        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+        ]);
+
+        $this->assertEquals($supervisor->id, $incident->supervisor->id);
+        $this->assertInstanceOf(User::class, $incident->supervisor);
+
+    }
+
     public function test_creates_an_incident_model_with_valid_attributes()
     {
         $incident = Incident::factory()->create();

@@ -6,7 +6,7 @@ use Spatie\EventSourcing\StoredEvents\ShouldBeStored;
 
 /**
  * StoredEvent should be inherited for all events
- * and there handle and react methods should be overloaded as needed.
+ * and their handle and react methods should be overloaded as needed.
  */
 abstract class StoredEvent extends ShouldBeStored
 {

@@ -1,4 +1,5 @@
 import { IncidentStatus } from '@/Enums/IncidentStatus';
+import { User } from '@/types/index';
 
 export interface Incident {
     id: string;
@@ -25,6 +26,7 @@ export interface Incident {
     reporters_email?: string;
     supervisor_name?: string;
     supervisor_id?: number;
+    supervisor?: User;
     status: IncidentStatus;
     closed_at?: string;
     created_at: string;

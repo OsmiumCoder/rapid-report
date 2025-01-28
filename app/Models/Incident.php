@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use App\Enum\IncidentType;
 use App\States\IncidentStatus\IncidentStatusState;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use App\Enum\IncidentType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -13,9 +13,9 @@ use Spatie\ModelStates\HasStates;
 class Incident extends Model
 {
     use HasFactory;
-    use SoftDeletes;
-    use HasUuids;
     use HasStates;
+    use HasUuids;
+    use SoftDeletes;
 
     protected function casts(): array
     {
@@ -28,6 +28,11 @@ class Incident extends Model
             'status' => IncidentStatusState::class,
             'incident_type' => IncidentType::class,
         ];
+    }
+
+    public function supervisor()
+    {
+        return $this->belongsTo(User::class, 'supervisor_id');
     }
 
     public function comments()

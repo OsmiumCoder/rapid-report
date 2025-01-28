@@ -9,18 +9,42 @@ use Tests\TestCase;
 
 class IncidentPolicyTest extends TestCase
 {
+    public function test_admin_can_assign_supervisor_to_incident()
+    {
+        $admin = User::factory()->create()->assignRole('admin');
+
+        $this->assertTrue($this->getPolicy()->assignSupervisor($admin));
+    }
+
+    public function test_user_can_not_assign_supervisor_to_incident()
+    {
+        $user = User::factory()->create()->assignRole('user');
+
+        $this->assertFalse($this->getPolicy()->assignSupervisor($user));
+    }
+
+    public function test_supervisor_can_not_assign_supervisor_to_incident()
+    {
+        $supervisor = User::factory()->create()->assignRole('supervisor');
+
+        $this->assertFalse($this->getPolicy()->assignSupervisor($supervisor));
+    }
+
+
     public function test_user_can_view_all_their_incidents()
     {
         $user = User::factory()->create()->assignRole('user');
 
         $this->assertTrue($this->getPolicy()->viewAnyOwned($user));
     }
+
     public function test_user_cant_view_any_assigned_incident()
     {
         $user = User::factory()->create()->assignRole('user');
 
         $this->assertFalse($this->getPolicy()->viewAnyAssigned($user));
     }
+
     public function test_supervisor_can_view_any_assigned_incident()
     {
         $user = User::factory()->create()->assignRole('supervisor');
@@ -94,9 +118,8 @@ class IncidentPolicyTest extends TestCase
         ])->assignRole('supervisor');
 
         $incident = Incident::factory()->create([
-            'supervisor_id' => $user->id
+            'supervisor_id' => $user->id,
         ]);
-
 
         $result = $this->getPolicy()->view($user, $incident);
         $this->assertTrue($result);
