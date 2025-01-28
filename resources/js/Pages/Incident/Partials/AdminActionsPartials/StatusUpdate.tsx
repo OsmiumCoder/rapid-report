@@ -39,7 +39,7 @@ export default function StatusUpdate({ incident }: { incident: Incident }) {
     };
 
     return (
-        <div className="mt-6 flex w-full gap-x-4 border-t border-gray-900/5 p-6">
+        <div className="mt-6  border-t border-gray-900/5 p-6">
             {isLoading ? (
                 <LoadingIndicator />
             ) : incident.status === IncidentStatus.IN_REVIEW ? (
