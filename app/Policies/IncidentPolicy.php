@@ -45,6 +45,10 @@ class IncidentPolicy
         return false;
     }
 
+    public function assignSupervisor(User $user): bool {
+        return $user->can('assign supervisor');
+    }
+
     /**
      * Determine whether the user can create incidents.
      */
