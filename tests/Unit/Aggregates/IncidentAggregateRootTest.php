@@ -4,6 +4,7 @@ namespace Tests\Unit\Aggregates;
 
 use App\Aggregates\IncidentAggregateRoot;
 use App\Data\IncidentData;
+use App\Enum\CommentType;
 use App\Enum\IncidentType;
 use App\Models\Incident;
 use App\States\IncidentStatus\Opened;
@@ -13,10 +14,8 @@ use Tests\TestCase;
 
 class IncidentAggregateRootTest extends TestCase
 {
-    public function test_fires_incident_created_event()
+    public function test_adds_created_comment()
     {
-        $incidentDate = now();
-
         $incidentData = IncidentData::from([
             'anonymous' => false,
             'on_behalf' => false,
@@ -28,7 +27,55 @@ class IncidentAggregateRootTest extends TestCase
             'email' => 'john@doe.com',
             'phone' => '(902) 333-4444',
             'work_related' => true,
-            'happened_at' => $incidentDate,
+            'happened_at' => now(),
+            'location' => 'Building A',
+            'room_number' => '123A',
+            'witnesses' => [],
+            'incident_type' => IncidentType::SAFETY,
+            'descriptor' => 'Burn',
+            'description' => 'A fire broke out in the room.',
+            'injury_description' => 'Minor burn',
+            'first_aid_description' => 'Minor burn treated',
+            'reporters_email' => 'jane@doe.com',
+            'supervisor_name' => 'John Doe',
+        ]);
+
+        $this->assertDatabaseCount('incidents', 0);
+
+        $uuid = Str::uuid()->toString();
+
+        IncidentAggregateRoot::retrieve($uuid)
+            ->createIncident($incidentData)
+            ->persist();
+
+        $this->assertDatabaseCount('incidents', 1);
+
+        $incident = Incident::first();
+
+        $this->assertCount(1, $incident->comments);
+
+        $comment = $incident->comments->first();
+
+        $this->assertEquals(CommentType::INFO, $comment->type);
+        $this->assertStringContainsStringIgnoringCase('created', $comment->content);
+        $this->assertStringContainsStringIgnoringCase('incident', $comment->content);
+
+    }
+
+    public function test_fires_incident_created_event()
+    {
+        $incidentData = IncidentData::from([
+            'anonymous' => false,
+            'on_behalf' => false,
+            'on_behalf_anonymous' => false,
+            'role' => 0,
+            'last_name' => 'last',
+            'first_name' => 'first',
+            'upei_id' => '322',
+            'email' => 'john@doe.com',
+            'phone' => '(902) 333-4444',
+            'work_related' => true,
+            'happened_at' => now(),
             'location' => 'Building A',
             'room_number' => '123A',
             'witnesses' => [],
@@ -75,8 +122,6 @@ class IncidentAggregateRootTest extends TestCase
 
     public function test_incident_uuid_is_aggregate_uuid()
     {
-        $incidentDate = now();
-
         $incidentData = IncidentData::from([
             'anonymous' => false,
             'on_behalf' => false,
@@ -88,7 +133,7 @@ class IncidentAggregateRootTest extends TestCase
             'email' => 'john@doe.com',
             'phone' => '(902) 333-4444',
             'work_related' => true,
-            'happened_at' => $incidentDate,
+            'happened_at' => now(),
             'location' => 'Building A',
             'room_number' => '123A',
             'witnesses' => [],
@@ -118,8 +163,6 @@ class IncidentAggregateRootTest extends TestCase
 
     public function test_stores_incident()
     {
-        $incidentDate = now();
-
         $incidentData = IncidentData::from([
             'anonymous' => false,
             'on_behalf' => false,
@@ -131,7 +174,7 @@ class IncidentAggregateRootTest extends TestCase
             'email' => 'john@doe.com',
             'phone' => '(902) 333-4444',
             'work_related' => true,
-            'happened_at' => $incidentDate,
+            'happened_at' => now(),
             'location' => 'Building A',
             'room_number' => '123A',
             'witnesses' => [],

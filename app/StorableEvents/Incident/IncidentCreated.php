@@ -2,7 +2,9 @@
 
 namespace App\StorableEvents\Incident;
 
+use App\Enum\CommentType;
 use App\Enum\IncidentType;
+use App\Models\Comment;
 use App\Models\Incident;
 use App\StorableEvents\StoredEvent;
 use Carbon\Carbon;
@@ -64,5 +66,14 @@ class IncidentCreated extends StoredEvent
         $incident->supervisor_name = $this->supervisor_name;
 
         $incident->save();
+
+        $comment = new Comment;
+
+        $comment->type = CommentType::INFO;
+        $comment->content = 'Incident was created.';
+
+        $comment->commentable()->associate($incident);
+
+        $comment->save();
     }
 }
