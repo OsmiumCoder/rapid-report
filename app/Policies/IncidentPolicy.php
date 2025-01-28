@@ -50,6 +50,11 @@ class IncidentPolicy
         return $user->can('assign supervisor');
     }
 
+    public function addComment(User $user, Incident $incident): bool
+    {
+        return $this->view($user, $incident);
+    }
+
     /**
      * Determine whether the user can create incidents.
      */
