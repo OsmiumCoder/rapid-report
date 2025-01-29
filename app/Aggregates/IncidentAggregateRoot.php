@@ -2,9 +2,18 @@
 
 namespace App\Aggregates;
 
+use App\Data\CommentData;
 use App\Data\IncidentData;
+use App\Exceptions\UserNotSupervisorException;
+use App\Models\User;
+use App\Enum\CommentType;
+use App\Models\Incident;
+use App\StorableEvents\Comment\CommentCreated;
+use App\StorableEvents\Incident\IncidentClosed;
 use App\StorableEvents\Incident\IncidentCreated;
+use App\StorableEvents\Incident\IncidentReopened;
 use App\StorableEvents\Incident\SupervisorAssigned;
+use App\StorableEvents\Incident\SupervisorUnassigned;
 use Spatie\EventSourcing\AggregateRoots\AggregateRoot;
 
 class IncidentAggregateRoot extends AggregateRoot
@@ -38,9 +47,52 @@ class IncidentAggregateRoot extends AggregateRoot
         return $this;
     }
 
+    /**
+     * @throws UserNotSupervisorException
+     */
     public function assignSupervisor(int $supervisorId)
     {
+        $user = User::find($supervisorId);
+
+        if (!$user->hasRole('supervisor')) {
+            throw UserNotSupervisorException::hasRoles($user->getRoleNames());
+        }
+
         $this->recordThat(new SupervisorAssigned(supervisor_id: $supervisorId));
+
+        return $this;
+    }
+
+    public function unassignSupervisor()
+    {
+        $this->recordThat(new SupervisorUnassigned);
+
+        return $this;
+    }
+
+    public function closeIncident()
+    {
+        $this->recordThat(new IncidentClosed);
+
+        return $this;
+    }
+
+    public function reopenIncident()
+    {
+        $this->recordThat(new IncidentReopened);
+
+        return $this;
+    }
+
+    public function addComment(CommentData $commentData)
+    {
+        $this->recordThat(new CommentCreated(
+            content: $commentData->content,
+            type: CommentType::NOTE,
+            commentable_id: $this->uuid(),
+            commentable_type: Incident::class
+        ));
+
         return $this;
     }
 }

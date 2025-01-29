@@ -6,6 +6,7 @@ use App\Aggregates\IncidentAggregateRoot;
 use App\Data\IncidentData;
 use App\Http\Controllers\Controller;
 use App\Models\Incident;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
@@ -56,8 +57,15 @@ class IncidentController extends Controller
     {
         $this->authorize('view', $incident);
 
+        if (auth()->user()->can('performAdminActions', Incident::class)) {
+            $supervisors = User::role('supervisor')->get();
+        } else {
+            $supervisors = [];
+        }
+
         return Inertia::render('Incident/Show', [
-            'incident' => $incident->load('comments.user'),
+            'incident' => $incident->load(['comments.user', 'supervisor']),
+            'supervisors' => $supervisors,
         ]);
     }
 

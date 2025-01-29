@@ -9,6 +9,70 @@ use Tests\TestCase;
 
 class ShowTest extends TestCase
 {
+    public function test_show_with_admin_gives_supervisors_prop()
+    {
+        $admin = User::factory()->create()->assignRole('admin');
+        $this->actingAs($admin);
+
+        $supervisor = User::factory()->create()->assignRole('supervisor');
+
+        $incident = Incident::factory()->create();
+
+        $response = $this->get(route('incidents.show', $incident));
+
+        $response->assertOk();
+
+        $response->assertInertia(function (AssertableInertia $page) use ($supervisor, $incident) {
+            $page->component('Incident/Show')
+                ->has('incident')
+                ->where('incident.id', $incident->id)
+                ->has('supervisors', 1)
+                ->where('supervisors.0.id', $supervisor->id);
+        });
+    }
+
+    public function test_show_with_supervisor_gives_empty_supervisors_prop()
+    {
+        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $this->actingAs($supervisor);
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+        ]);
+
+        $response = $this->get(route('incidents.show', $incident));
+
+        $response->assertOk();
+
+        $response->assertInertia(function (AssertableInertia $page) use ($incident) {
+            $page->component('Incident/Show')
+                ->has('incident')
+                ->where('incident.id', $incident->id)
+                ->has('supervisors', 0);
+        });
+    }
+
+    public function test_show_with_user_gives_empty_supervisors_prop()
+    {
+        $user = User::factory()->create()->assignRole('user');
+        $this->actingAs($user);
+
+        $incident = Incident::factory()->create([
+            'reporters_email' => $user->email,
+        ]);
+
+        $response = $this->get(route('incidents.show', $incident));
+
+        $response->assertOk();
+
+        $response->assertInertia(function (AssertableInertia $page) use ($incident) {
+            $page->component('Incident/Show')
+                ->has('incident')
+                ->where('incident.id', $incident->id)
+                ->has('supervisors', 0);
+        });
+    }
+
     public function test_incident_has_comments_loaded(): void
     {
         $user = User::factory()->create([

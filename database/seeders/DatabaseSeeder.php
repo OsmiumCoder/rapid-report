@@ -6,6 +6,8 @@ use App\Models\Incident;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\States\IncidentStatus\Assigned;
+use App\States\IncidentStatus\Closed;
+use App\States\IncidentStatus\InReview;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -34,6 +36,27 @@ class DatabaseSeeder extends Seeder
             'email' => 'supervisor@b.com',
         ])->assignRole('supervisor');
 
+
+        User::factory()->create([
+            'name' => 'Supervisor A',
+            'email' => 'supervisorA@b.com',
+        ])->assignRole('supervisor');
+
+        User::factory()->create([
+            'name' => 'Supervisor B',
+            'email' => 'supervisorB@b.com',
+        ])->assignRole('supervisor');
+
+        User::factory()->create([
+            'name' => 'Supervisor C',
+            'email' => 'supervisorC@b.com',
+        ])->assignRole('supervisor');
+
+        User::factory()->create([
+            'name' => 'Supervisor D',
+            'email' => 'supervisorD@b.com',
+        ])->assignRole('supervisor');
+
         $user = User::factory()->create([
             'name' => 'User',
             'email' => 'user@b.com',
@@ -42,6 +65,16 @@ class DatabaseSeeder extends Seeder
         Incident::factory(5)->hasComments(5)->create([
             'supervisor_id' => $supervisor->id,
             'status' => Assigned::class,
+        ]);
+
+        Incident::factory(5)->hasComments(5)->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => InReview::class,
+        ]);
+
+        Incident::factory(5)->hasComments(5)->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Closed::class,
         ]);
 
         Incident::factory(5)->create([

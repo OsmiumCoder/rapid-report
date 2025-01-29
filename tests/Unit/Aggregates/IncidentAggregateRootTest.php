@@ -3,26 +3,235 @@
 namespace Tests\Unit\Aggregates;
 
 use App\Aggregates\IncidentAggregateRoot;
+use App\Data\CommentData;
 use App\Data\IncidentData;
 use App\Enum\CommentType;
 use App\Enum\IncidentType;
+use App\Exceptions\UserNotSupervisorException;
 use App\Models\Incident;
 use App\Models\User;
+use App\States\IncidentStatus\Assigned;
+use App\States\IncidentStatus\Closed;
+use App\States\IncidentStatus\InReview;
 use App\States\IncidentStatus\Opened;
+use App\StorableEvents\Comment\CommentCreated;
+use App\States\IncidentStatus\Reopened;
+use App\StorableEvents\Incident\IncidentClosed;
 use App\StorableEvents\Incident\IncidentCreated;
+use App\StorableEvents\Incident\IncidentReopened;
 use App\StorableEvents\Incident\SupervisorAssigned;
+use App\StorableEvents\Incident\SupervisorUnassigned;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class IncidentAggregateRootTest extends TestCase
 {
+    public function test_throws_user_not_supervisor_if_id_not_supervisor()
+    {
+        $this->expectException(UserNotSupervisorException::class);
+
+        $notSupervisor = User::factory()->create()->assignRole('admin');
+
+        $incident = Incident::factory()->create();
+
+        IncidentAggregateRoot::retrieve($incident->id)
+            ->assignSupervisor($notSupervisor->id)
+            ->persist();
+    }
+
+    public function test_adds_assigned_comment_on_supervisor_assigned()
+    {
+        $supervisor = User::factory()->create()->assignRole('supervisor');
+
+        $incident = Incident::factory()->create();
+
+        $this->assertCount(0, $incident->comments);
+
+        IncidentAggregateRoot::retrieve($incident->id)
+            ->assignSupervisor($supervisor->id)
+            ->persist();
+
+        $incident->refresh();
+
+        $this->assertCount(1, $incident->comments);
+
+        $comment = $incident->comments->first();
+
+        $this->assertEquals(CommentType::INFO, $comment->type);
+        $this->assertStringContainsStringIgnoringCase('assigned', $comment->content);
+        $this->assertStringContainsStringIgnoringCase('supervisor', $comment->content);
+        $this->assertStringContainsStringIgnoringCase($supervisor->name, $comment->content);
+    }
+
+    public function test_add_comment_adds_comment_to_model()
+    {
+        $incident = Incident::factory()->create();
+
+        $commentData = CommentData::validateAndCreate([
+            'content' => 'comments',
+        ]);
+
+        $this->assertDatabaseCount('comments', 0);
+
+        IncidentAggregateRoot::retrieve($incident->id)
+            ->addComment($commentData)
+            ->persist();
+
+        $this->assertDatabaseCount('comments', 1);
+
+        $incident->refresh();
+
+        $this->assertCount(1, $incident->comments);
+
+        $comment = $incident->comments()->first();
+
+        $this->assertEquals($commentData->content, $comment->content);
+        $this->assertEquals(CommentType::NOTE, $comment->type);
+        $this->assertEquals($incident->id, $comment->commentable_id);
+        $this->assertEquals(get_class($incident), $comment->commentable_type);
+    }
+
+    public function test_comment_created_event_fired()
+    {
+        $incident = Incident::factory()->create();
+
+        $commentData = CommentData::validateAndCreate([
+            'content' => 'comments',
+        ]);
+
+        IncidentAggregateRoot::fake($incident->id)
+            ->when(function (IncidentAggregateRoot $incidentAggregateRoot) use ($commentData): void {
+                $incidentAggregateRoot->addComment($commentData);
+            })
+            ->assertRecorded([
+                new CommentCreated(
+                    content: $commentData->content,
+                    type: CommentType::NOTE,
+                    commentable_id: $incident->id,
+                    commentable_type: Incident::class,
+                ),
+            ]);
+    }
+
+    public function test_closed_incident_event_fired()
+    {
+        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => InReview::class,
+        ]);
+
+        IncidentAggregateRoot::fake($incident->id)
+            ->given([])
+            ->when(function (IncidentAggregateRoot $incidentAggregateRoot): void {
+                $incidentAggregateRoot->closeIncident();
+            })
+            ->assertRecorded([
+                new IncidentClosed,
+            ]);
+    }
+
+    public function test_close_incident()
+    {
+        $supervisor = User::factory()->create()->assignRole('supervisor');
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => InReview::class,
+        ]);
+
+        IncidentAggregateRoot::retrieve($incident->id)
+            ->closeIncident()
+            ->persist();
+
+        $incident->refresh();
+
+        $this->assertEquals($supervisor->id, $incident->supervisor_id);
+
+        $this->assertEquals(Closed::class, $incident->status::class);
+    }
+
+    public function test_reopened_incident_event_fired()
+    {
+        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Closed::class,
+        ]);
+
+        IncidentAggregateRoot::fake($incident->id)
+            ->given([])
+            ->when(function (IncidentAggregateRoot $incidentAggregateRoot): void {
+                $incidentAggregateRoot->reopenIncident();
+            })
+            ->assertRecorded([
+                new IncidentReopened,
+            ]);
+    }
+
+    public function test_reopen_incident()
+    {
+        $supervisor = User::factory()->create()->assignRole('supervisor');
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Closed::class,
+        ]);
+
+        IncidentAggregateRoot::retrieve($incident->id)
+            ->reopenIncident()
+            ->persist();
+
+        $incident->refresh();
+
+        $this->assertNull($incident->supervisor_id);
+
+        $this->assertEquals(Reopened::class, $incident->status::class);
+    }
+
+    public function test_unassigned_supervisor_event_fired()
+    {
+        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Assigned::class,
+        ]);
+
+        IncidentAggregateRoot::fake($incident->id)
+            ->given([])
+            ->when(function (IncidentAggregateRoot $incidentAggregateRoot): void {
+                $incidentAggregateRoot->unassignSupervisor();
+            })
+            ->assertRecorded([
+                new SupervisorUnassigned,
+            ]);
+    }
+
+    public function test_unassign_supervisor_from_incident()
+    {
+        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Assigned::class,
+        ]);
+
+        IncidentAggregateRoot::retrieve($incident->id)
+            ->unassignSupervisor()
+            ->persist();
+
+        $incident->refresh();
+
+        $this->assertNull($incident->supervisor_id);
+
+        $this->assertEquals(Opened::class, $incident->status::class);
+    }
+
     public function test_assigned_supervisor_event_fired()
     {
         $supervisor = User::factory()->create()->assignRole('supervisor');
         $incident = Incident::factory()->create();
 
         IncidentAggregateRoot::fake($incident->id)
-            ->given([])
             ->when(function (IncidentAggregateRoot $incidentAggregateRoot) use ($supervisor): void {
                 $incidentAggregateRoot->assignSupervisor($supervisor->id);
             })
@@ -125,7 +334,6 @@ class IncidentAggregateRootTest extends TestCase
         ]);
 
         IncidentAggregateRoot::fake(Str::uuid()->toString())
-            ->given([])
             ->when(function (IncidentAggregateRoot $incidentAggregateRoot) use ($incidentData): void {
                 $incidentAggregateRoot->createIncident($incidentData);
             })
