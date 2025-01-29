@@ -7,17 +7,14 @@ import AffectedPartyStage from '@/Pages/Incident/Stages/AffectedPartyStage';
 import IncidentInformationStage from '@/Pages/Incident/Stages/IncidentInformationStage';
 import VictimInformationStage from '@/Pages/Incident/Stages/VictimInformationStage';
 import IncidentData from '@/types/IncidentData';
-import {
-    descriptors,
-    roles,
-} from '@/Pages/Incident/Stages/IncidentDropDownValues';
+import { descriptors, roles } from '@/Pages/Incident/Stages/IncidentDropDownValues';
 import WitnessStage from '@/Pages/Incident/Stages/WitnessStage';
 import SupervisorStage from '@/Pages/Incident/Stages/SupervisorStage';
 import dateFormat from '@/Filters/dateFormat';
-import {router} from "@inertiajs/react";
+import { useForm } from '@inertiajs/react';
 
 export default function Create({ form }: PageProps<{ form: IncidentData }>) {
-    const [formData, setFormData] = useState<IncidentData>(form);
+    const { data, setData, post, processing } = useForm(form);
 
     const numberOfSteps = 6;
     const [remainingSteps, setRemainingSteps] = useState(numberOfSteps - 1);
@@ -45,36 +42,14 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
         setCompletedSteps((prev) => prev - 1);
     };
 
-    const submit = () => {
-        const payload = new FormData();
-
-        Object.entries(formData).forEach(([key, value]) => {
-            if (typeof value === 'object' && !(value instanceof File)) {
-                payload.append(key, JSON.stringify(value));
-            } else {
-                payload.append(key, value as string);
-            }
-        });
-
-        router.post(
-            route('incidents.store'),
-            payload,
-            {
-                onSuccess: () => {
-                    console.log('Form submitted successfully!');
-                    router.reload({ only: ['incident'] });
-                },
-                onError: (errors) => {
-                    console.error('Form submission failed:', errors);
-                },
-                preserveScroll: true,
-            }
-        );
+    const submit = (e: React.FormEvent) => {
+        e.preventDefault();
+        post(route('incidents.store'));
     };
 
     useEffect(() => {
-        setFormData((prev) => ({
-            ...prev,
+        setData({
+            ...data,
             role: roles[0].value,
             happened_at: dateFormat(new Date()),
             incident_type: descriptors[0].value,
@@ -83,142 +58,137 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
             on_behalf: false,
             on_behalf_anon: true,
             witnesses: [],
-        }));
+        });
     }, []);
 
     useEffect(() => {
         if (
             !(
-                (!formData.anonymous && !formData.on_behalf) ||
-                (!formData.anonymous &&
-                    formData.on_behalf &&
-                    !formData.on_behalf_anon) ||
-                (formData.anonymous &&
-                    formData.on_behalf &&
-                    !formData.on_behalf_anon)
+                (!data.anonymous && !data.on_behalf) ||
+                (!data.anonymous &&
+                    data.on_behalf &&
+                    !data.on_behalf_anon) ||
+                (data.anonymous &&
+                    data.on_behalf &&
+                    !data.on_behalf_anon)
             )
         ) {
-            setFormData((prev) => ({
-                ...prev,
+            setData({
+                ...data,
                 first_name: '',
                 last_name: '',
                 phone: '',
                 email: '',
                 role: roles[0].value,
                 upei_id: '',
-            }));
+            });
         }
-    }, [formData.on_behalf, formData.on_behalf_anon]);
+    }, [data.on_behalf, data.on_behalf_anon]);
 
     useEffect(() => {
-        setFormData((prev) => ({
-            ...prev,
+        setData({
+            ...data,
             reporters_email: '',
-        }));
-    }, [formData.anonymous]);
+        });
+    }, [data.anonymous]);
 
     return (
         <GuestLayout>
             <form onSubmit={submit}>
-                <>
-                    <StageWrapper
-                        completedSteps={completedSteps}
-                        remainingSteps={remainingSteps}
-                    >
-                        {currentStepNumber === 0 && (
-                            <AnonymousStage
-                                formData={formData}
-                                setFormData={setFormData}
-                                validStep={validStep}
-                                setValidStep={setValidStep}
-                                failedStep={failedStep}
-                                setShowButtons={setShowButtons}
-                            />
-                        )}
-                        {currentStepNumber === 1 && (
-                            <AffectedPartyStage
-                                formData={formData}
-                                setFormData={setFormData}
-                                validStep={validStep}
-                                setValidStep={setValidStep}
-                                failedStep={failedStep}
-                                setShowButtons={setShowButtons}
-                            />
-                        )}
-                        {currentStepNumber === 2 && (
-                            <IncidentInformationStage
-                                formData={formData}
-                                setFormData={setFormData}
-                                validStep={validStep}
-                                setValidStep={setValidStep}
-                                failedStep={failedStep}
-                                setShowButtons={setShowButtons}
-                            />
-                        )}
-                        {currentStepNumber === 3 && (
-                            <VictimInformationStage
-                                formData={formData}
-                                setFormData={setFormData}
-                                validStep={validStep}
-                                setValidStep={setValidStep}
-                                failedStep={failedStep}
-                                setShowButtons={setShowButtons}
-                            />
-                        )}
-                        {currentStepNumber === 4 && (
-                            <WitnessStage
-                                formData={formData}
-                                setFormData={setFormData}
-                                validStep={validStep}
-                                setValidStep={setValidStep}
-                                failedStep={failedStep}
-                                setShowButtons={setShowButtons}
-                            />
-                        )}
-                        {currentStepNumber === 5 && (
-                            <SupervisorStage
-                                formData={formData}
-                                setFormData={setFormData}
-                                validStep={validStep}
-                                setValidStep={setValidStep}
-                                failedStep={failedStep}
-                                setShowButtons={setShowButtons}
-                            />
-                        )}
-                    </StageWrapper>
+                <StageWrapper completedSteps={completedSteps} remainingSteps={remainingSteps}>
+                    {currentStepNumber === 0 && (
+                        <AnonymousStage
+                            formData={data}
+                            setFormData={setData}
+                            validStep={validStep}
+                            setValidStep={setValidStep}
+                            failedStep={failedStep}
+                            setShowButtons={setShowButtons}
+                        />
+                    )}
+                    {currentStepNumber === 1 && (
+                        <AffectedPartyStage
+                            formData={data}
+                            setFormData={setData}
+                            validStep={validStep}
+                            setValidStep={setValidStep}
+                            failedStep={failedStep}
+                            setShowButtons={setShowButtons}
+                        />
+                    )}
+                    {currentStepNumber === 2 && (
+                        <IncidentInformationStage
+                            formData={data}
+                            setFormData={setData}
+                            validStep={validStep}
+                            setValidStep={setValidStep}
+                            failedStep={failedStep}
+                            setShowButtons={setShowButtons}
+                        />
+                    )}
+                    {currentStepNumber === 3 && (
+                        <VictimInformationStage
+                            formData={data}
+                            setFormData={setData}
+                            validStep={validStep}
+                            setValidStep={setValidStep}
+                            failedStep={failedStep}
+                            setShowButtons={setShowButtons}
+                        />
+                    )}
+                    {currentStepNumber === 4 && (
+                        <WitnessStage
+                            formData={data}
+                            setFormData={setData}
+                            validStep={validStep}
+                            setValidStep={setValidStep}
+                            failedStep={failedStep}
+                            setShowButtons={setShowButtons}
+                        />
+                    )}
+                    {currentStepNumber === 5 && (
+                        <SupervisorStage
+                            formData={data}
+                            setFormData={setData}
+                            validStep={validStep}
+                            setValidStep={setValidStep}
+                            failedStep={failedStep}
+                            setShowButtons={setShowButtons}
+                        />
+                    )}
+                </StageWrapper>
 
-                    <div className="flex p-6 justify-around">
-                        {completedSteps > 0 && showButtons && (
-                            <button
-                                type="button"
-                                onClick={prevStep}
-                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                            >
-                                Back
-                            </button>
-                        )}
+                <div className="flex p-6 justify-around">
+                    {completedSteps > 0 && showButtons && (
+                        <button
+                            type="button"
+                            onClick={prevStep}
+                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                        >
+                            Back
+                        </button>
+                    )}
 
-                        {completedSteps === numberOfSteps - 1 &&
-                            showButtons && (
-                                <button
-                                    type="button"
-                                    onClick={submit}
-                                    className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-                                >
-                                    Submit
-                                </button>
-                            )}
-                        {remainingSteps > 0 && showButtons && (
-                            <button
-                                type="button"
-                                onClick={nextStep}
-                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                            >
-                                Next
-                            </button>
-                        )}
-                    </div>
-                </>
+                    {completedSteps === numberOfSteps - 1 && showButtons && (
+                        <button
+                            type="submit"
+                            disabled={processing}
+                            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                        >
+                            {processing ? 'Submitting...' : 'Submit'}
+                        </button>
+                    )}
+
+                    {remainingSteps > 0 && showButtons && (
+                        <button
+                            type="button"
+                            onClick={nextStep}
+                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                        >
+                            Next
+                        </button>
+                    )}
+                </div>
             </form>
         </GuestLayout>
     );
