@@ -8,14 +8,134 @@ use App\Enum\CommentType;
 use App\Enum\IncidentType;
 use App\Models\Incident;
 use App\Models\User;
+use App\States\IncidentStatus\Assigned;
+use App\States\IncidentStatus\Closed;
+use App\States\IncidentStatus\InReview;
 use App\States\IncidentStatus\Opened;
+use App\States\IncidentStatus\Reopened;
+use App\StorableEvents\Incident\IncidentClosed;
 use App\StorableEvents\Incident\IncidentCreated;
+use App\StorableEvents\Incident\IncidentReopened;
 use App\StorableEvents\Incident\SupervisorAssigned;
+use App\StorableEvents\Incident\SupervisorUnassigned;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class IncidentAggregateRootTest extends TestCase
 {
+    public function test_closed_incident_event_fired()
+    {
+        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => InReview::class,
+        ]);
+
+        IncidentAggregateRoot::fake($incident->id)
+            ->given([])
+            ->when(function (IncidentAggregateRoot $incidentAggregateRoot): void {
+                $incidentAggregateRoot->closeIncident();
+            })
+            ->assertRecorded([
+                new IncidentClosed,
+            ]);
+    }
+
+    public function test_close_incident()
+    {
+        $supervisor = User::factory()->create()->assignRole('supervisor');
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => InReview::class,
+        ]);
+
+        IncidentAggregateRoot::retrieve($incident->id)
+            ->closeIncident()
+            ->persist();
+
+        $incident->refresh();
+
+        $this->assertEquals($supervisor->id, $incident->supervisor_id);
+
+        $this->assertEquals(Closed::class, $incident->status::class);
+    }
+
+    public function test_reopened_incident_event_fired()
+    {
+        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Closed::class,
+        ]);
+
+        IncidentAggregateRoot::fake($incident->id)
+            ->given([])
+            ->when(function (IncidentAggregateRoot $incidentAggregateRoot): void {
+                $incidentAggregateRoot->reopenIncident();
+            })
+            ->assertRecorded([
+                new IncidentReopened,
+            ]);
+    }
+
+    public function test_reopen_incident()
+    {
+        $supervisor = User::factory()->create()->assignRole('supervisor');
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Closed::class,
+        ]);
+
+        IncidentAggregateRoot::retrieve($incident->id)
+            ->reopenIncident()
+            ->persist();
+
+        $incident->refresh();
+
+        $this->assertNull($incident->supervisor_id);
+
+        $this->assertEquals(Reopened::class, $incident->status::class);
+    }
+
+    public function test_unassigned_supervisor_event_fired()
+    {
+        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Assigned::class,
+        ]);
+
+        IncidentAggregateRoot::fake($incident->id)
+            ->given([])
+            ->when(function (IncidentAggregateRoot $incidentAggregateRoot): void {
+                $incidentAggregateRoot->unassignSupervisor();
+            })
+            ->assertRecorded([
+                new SupervisorUnassigned,
+            ]);
+    }
+
+    public function test_unassign_supervisor_from_incident()
+    {
+        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Assigned::class,
+        ]);
+
+        IncidentAggregateRoot::retrieve($incident->id)
+            ->unassignSupervisor()
+            ->persist();
+
+        $incident->refresh();
+
+        $this->assertNull($incident->supervisor_id);
+
+        $this->assertEquals(Opened::class, $incident->status::class);
+    }
+
     public function test_assigned_supervisor_event_fired()
     {
         $supervisor = User::factory()->create()->assignRole('supervisor');
