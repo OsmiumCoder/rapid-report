@@ -52,7 +52,7 @@ class IncidentCreatedTest extends TestCase
 
         $comment = $incident->comments->first();
 
-        $this->assertEquals(CommentType::INFO, $comment->type);
+        $this->assertEquals(CommentType::ACTION, $comment->type);
         $this->assertStringContainsStringIgnoringCase('created', $comment->content);
         $this->assertStringContainsStringIgnoringCase('incident', $comment->content);
     }
