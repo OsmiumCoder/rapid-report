@@ -17,7 +17,7 @@ import dateFormat from '@/Filters/dateFormat';
 import {router, useForm} from "@inertiajs/react";
 
 export default function Create({ form }: PageProps<{ form: IncidentData }>) {
-    const [formData, setFormData] = useState<IncidentData>(form);
+    const {data: formData, setData, post, processing} = useForm<IncidentData>(form);
 
     const numberOfSteps = 6;
     const [remainingSteps, setRemainingSteps] = useState(numberOfSteps - 1);
@@ -26,7 +26,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
     const [validStep, setValidStep] = useState(true);
     const [failedStep, setFailedStep] = useState(false);
     const [showButtons, setShowButtons] = useState(true);
-
+    const setFormData = (key: keyof IncidentData, value: any) => setData(key,value);
     const nextStep = () => {
         if (validStep) {
             setCurrentStepNumber((prev) => prev + 1);
@@ -47,22 +47,21 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
 
 
     const submit = () => {
-        router.post(route("incidents.store"),formData)
+        post(route("incidents.store"))
     };
 
     useEffect(() => {
-        setFormData((prev) => ({
-            ...prev,
-            role: roles[0].value,
-            happened_at: dateFormat(new Date()),
-            incident_type: descriptors[0].value,
-            descriptor: descriptors[0].options[0],
-            anonymous: true,
-            on_behalf: false,
-            on_behalf_anonymous: true,
-            witnesses: [],
-            work_related: false
-        }));
+        setFormData('role', roles[0].value);
+        setFormData('happened_at', dateFormat(new Date()));
+        setFormData('incident_type', descriptors[0].value);
+        setFormData('descriptor', descriptors[0].options[0]);
+        setFormData('anonymous', true);
+        setFormData('on_behalf', false);
+        setFormData('on_behalf_anonymous', true);
+        setFormData('witnesses', []);
+        setFormData('work_related', false);
+        setFormData('location', '');
+        setFormData('description', '');
     }, []);
 
     useEffect(() => {
@@ -71,34 +70,28 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
                 (!formData.anonymous && !formData.on_behalf) ||
                 (!formData.anonymous &&
                     formData.on_behalf &&
-                    !formData.on_behalf_anon) ||
+                    !formData.on_behalf_anonymous) ||
                 (formData.anonymous &&
                     formData.on_behalf &&
-                    !formData.on_behalf_anon)
+                    !formData.on_behalf_anonymous)
             )
         ) {
-            setFormData((prev) => ({
-                ...prev,
-                first_name: '',
-                last_name: '',
-                phone: '',
-                email: '',
-                role: roles[0].value,
-                upei_id: '',
-            }));
+            setFormData('first_name', '');
+            setFormData('last_name', '');
+            setFormData('phone', '');
+            setFormData('email', '');
+            setFormData('role', roles[0].value);
+            setFormData('upei_id', '');
         }
-    }, [formData.on_behalf, formData.on_behalf_anon]);
+    }, [formData.on_behalf, formData.on_behalf_anonymous]);
 
     useEffect(() => {
-        setFormData((prev) => ({
-            ...prev,
-            reporters_email: '',
-        }));
+        setFormData('reporters_email','')
     }, [formData.anonymous]);
 
     return (
         <GuestLayout>
-            <form onSubmit={submit}>
+            <form  onSubmit={submit}>
                 <>
                     <StageWrapper
                         completedSteps={completedSteps}
@@ -181,6 +174,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
                             showButtons && (
                                 <button
                                     type="button"
+                                    disabled={processing}
                                     onClick={submit}
                                     className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
                                 >

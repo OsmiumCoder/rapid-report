@@ -4,7 +4,7 @@ import IncidentData from '@/types/IncidentData';
 
 export interface StageProps extends PropsWithChildren {
     formData: IncidentData;
-    setFormData: Dispatch<SetStateAction<IncidentData>>;
+    setFormData: (key: keyof IncidentData, value: any) => void;
     validStep: boolean;
     setValidStep: Dispatch<SetStateAction<boolean>>;
     failedStep: boolean;

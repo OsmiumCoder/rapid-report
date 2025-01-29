@@ -22,10 +22,8 @@ export default function AnonymousStage({
                     <ToggleSwitch
                         checked={formData.anonymous ?? false}
                         onChange={(e) => {
-                            setFormData((prev) => ({
-                                ...prev,
-                                anonymous: e.valueOf(),
-                            }));
+                            setFormData('anonymous', e.valueOf())
+
                             if (
                                 (formData.reporters_email === '' ||
                                     isValidEmail(
@@ -54,10 +52,7 @@ export default function AnonymousStage({
                                 type="email"
                                 value={formData.reporters_email ?? ''}
                                 onChange={(e) => {
-                                    setFormData((prev) => ({
-                                        ...prev,
-                                        reporters_email: e.target.value,
-                                    }));
+                                    setFormData('reporters_email',e.target.value)
                                     if (
                                         e.target.value != '' &&
                                         isValidEmail(e.target.value)
