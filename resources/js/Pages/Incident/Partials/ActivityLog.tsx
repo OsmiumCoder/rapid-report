@@ -18,6 +18,7 @@ import {
 import { CheckCircleIcon } from '@heroicons/react/24/solid';
 import classNames from '@/Filters/classNames';
 import { Incident } from '@/types/Incident';
+import {ChatBubbleBottomCenterTextIcon} from "@heroicons/react/16/solid";
 
 const activity = [
     {
@@ -69,58 +70,12 @@ const activity = [
         dateTime: '2023-01-24T09:20',
     },
 ];
-const moods = [
-    {
-        name: 'Excited',
-        value: 'excited',
-        icon: FireIcon,
-        iconColor: 'text-white',
-        bgColor: 'bg-red-500',
-    },
-    {
-        name: 'Loved',
-        value: 'loved',
-        icon: HeartIcon,
-        iconColor: 'text-white',
-        bgColor: 'bg-pink-400',
-    },
-    {
-        name: 'Happy',
-        value: 'happy',
-        icon: FaceSmileIcon,
-        iconColor: 'text-white',
-        bgColor: 'bg-green-400',
-    },
-    {
-        name: 'Sad',
-        value: 'sad',
-        icon: FaceFrownIcon,
-        iconColor: 'text-white',
-        bgColor: 'bg-yellow-400',
-    },
-    {
-        name: 'Thumbsy',
-        value: 'thumbsy',
-        icon: HandThumbUpIcon,
-        iconColor: 'text-white',
-        bgColor: 'bg-blue-500',
-    },
-    {
-        name: 'I feel nothing',
-        value: null,
-        icon: XMarkIconMini,
-        iconColor: 'text-gray-400',
-        bgColor: 'bg-transparent',
-    },
-];
 
-export default function ActivityLog({ incident }: { incident: Incident }) {
-    const [selected, setSelected] = useState(moods[5]);
+export default function ActivityLog({ comments }: { comments: Comment[] }) {
 
     return (
         <>
-            <div className="lg:col-start-3 p-6 rounded-lg bg-white shadow-sm ring-1 ring-gray-900/5">
-                {/* Activity feed */}
+            <div className="lg:col-start-3 p-5 rounded-lg bg-white shadow-sm ring-1 ring-gray-900/5">
                 <h2 className="text-sm/6 font-semibold text-gray-900">
                     Activity
                 </h2>
@@ -142,11 +97,8 @@ export default function ActivityLog({ incident }: { incident: Incident }) {
                             </div>
                             {activityItem.type === 'commented' ? (
                                 <>
-                                    <img
-                                        alt=""
-                                        src={activityItem.person.imageUrl}
-                                        className="relative mt-3 size-6 flex-none rounded-full bg-gray-50"
-                                    />
+                                    <ChatBubbleBottomCenterTextIcon className="text-blue-600 relative flex size-6 flex-none items-center justify-center bg-white"/>
+
                                     <div className="flex-auto rounded-md p-3 ring-1 ring-inset ring-gray-200">
                                         <div className="flex justify-between gap-x-4">
                                             <div className="py-0.5 text-xs/5 text-gray-500">
@@ -234,83 +186,6 @@ export default function ActivityLog({ incident }: { incident: Incident }) {
                                             Attach a file
                                         </span>
                                     </button>
-                                </div>
-                                <div className="flex items-center">
-                                    <Listbox
-                                        value={selected}
-                                        onChange={setSelected}
-                                    >
-                                        <Label className="sr-only">
-                                            Your mood
-                                        </Label>
-                                        <div className="relative">
-                                            <ListboxButton className="relative -m-2.5 flex size-10 items-center justify-center rounded-full text-gray-400 hover:text-gray-500">
-                                                <span className="flex items-center justify-center">
-                                                    {selected.value === null ? (
-                                                        <span>
-                                                            <FaceSmileIcon
-                                                                aria-hidden="true"
-                                                                className="size-5 shrink-0"
-                                                            />
-                                                            <span className="sr-only">
-                                                                Add your mood
-                                                            </span>
-                                                        </span>
-                                                    ) : (
-                                                        <span>
-                                                            <span
-                                                                className={classNames(
-                                                                    selected.bgColor,
-                                                                    'flex size-8 items-center justify-center rounded-full'
-                                                                )}
-                                                            >
-                                                                <selected.icon
-                                                                    aria-hidden="true"
-                                                                    className="size-5 shrink-0 text-white"
-                                                                />
-                                                            </span>
-                                                            <span className="sr-only">
-                                                                {selected.name}
-                                                            </span>
-                                                        </span>
-                                                    )}
-                                                </span>
-                                            </ListboxButton>
-
-                                            <ListboxOptions
-                                                transition
-                                                className="absolute bottom-10 z-10 -ml-6 w-60 rounded-lg bg-white py-3 text-base shadow ring-1 ring-black/5 focus:outline-none data-[closed]:data-[leave]:opacity-0 data-[leave]:transition data-[leave]:duration-100 data-[leave]:ease-in sm:ml-auto sm:w-64 sm:text-sm"
-                                            >
-                                                {moods.map((mood) => (
-                                                    <ListboxOption
-                                                        key={mood.value}
-                                                        value={mood}
-                                                        className="relative cursor-default select-none bg-white px-3 py-2 data-[focus]:bg-gray-100"
-                                                    >
-                                                        <div className="flex items-center">
-                                                            <div
-                                                                className={classNames(
-                                                                    mood.bgColor,
-                                                                    'flex size-8 items-center justify-center rounded-full'
-                                                                )}
-                                                            >
-                                                                <mood.icon
-                                                                    aria-hidden="true"
-                                                                    className={classNames(
-                                                                        mood.iconColor,
-                                                                        'size-5 shrink-0'
-                                                                    )}
-                                                                />
-                                                            </div>
-                                                            <span className="ml-3 block truncate font-medium">
-                                                                {mood.name}
-                                                            </span>
-                                                        </div>
-                                                    </ListboxOption>
-                                                ))}
-                                            </ListboxOptions>
-                                        </div>
-                                    </Listbox>
                                 </div>
                             </div>
                             <button
