@@ -5,13 +5,93 @@ namespace Tests\Feature\Incident;
 use App\Data\IncidentData;
 use App\Enum\CommentType;
 use App\Enum\IncidentType;
+use App\Models\CustomStoredEvent;
 use App\Models\Incident;
+use App\Models\User;
 use App\States\IncidentStatus\Opened;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
 class StoreTest extends TestCase
 {
+    public function test_user_id_on_event_if_not_anonymous()
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user);
+
+        $incidentData = IncidentData::from([
+            'anonymous' => false,
+            'on_behalf' => false,
+            'on_behalf_anonymous' => false,
+            'role' => 0,
+            'last_name' => null,
+            'first_name' => null,
+            'upei_id' => null,
+            'email' => null,
+            'phone' => null,
+            'work_related' => true,
+            'happened_at' => now(),
+            'location' => 'Building A',
+            'room_number' => null,
+            'witnesses' => null,
+            'incident_type' => IncidentType::SAFETY,
+            'descriptor' => 'Burn',
+            'description' => 'A fire broke out in the room.',
+            'injury_description' => null,
+            'first_aid_description' => null,
+            'reporters_email' => null,
+            'supervisor_name' => null,
+        ]);
+
+        $response = $this->post(route('incidents.store'), $incidentData->toArray());
+
+        $this->assertDatabaseCount('stored_events', 1);
+
+        $incidentCreatedEvent = CustomStoredEvent::first();
+
+        $this->assertEquals($user->id, $incidentCreatedEvent["meta_data"]["user_id"]);
+    }
+
+    public function test_user_id_removed_from_event_if_anonymous()
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user);
+
+        $incidentData = IncidentData::from([
+            'anonymous' => true,
+            'on_behalf' => false,
+            'on_behalf_anonymous' => false,
+            'role' => 0,
+            'last_name' => null,
+            'first_name' => null,
+            'upei_id' => null,
+            'email' => null,
+            'phone' => null,
+            'work_related' => true,
+            'happened_at' => now(),
+            'location' => 'Building A',
+            'room_number' => null,
+            'witnesses' => null,
+            'incident_type' => IncidentType::SAFETY,
+            'descriptor' => 'Burn',
+            'description' => 'A fire broke out in the room.',
+            'injury_description' => null,
+            'first_aid_description' => null,
+            'reporters_email' => null,
+            'supervisor_name' => null,
+        ]);
+
+        $response = $this->post(route('incidents.store'), $incidentData->toArray());
+
+        $this->assertDatabaseCount('stored_events', 1);
+
+        $incidentCreatedEvent = CustomStoredEvent::first();
+
+        $this->assertNull($incidentCreatedEvent["meta_data"]["user_id"]);
+    }
+
     public function test_adds_created_comment()
     {
         $incidentData = IncidentData::from([
