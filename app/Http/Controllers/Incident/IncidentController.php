@@ -64,7 +64,7 @@ class IncidentController extends Controller
         }
 
         return Inertia::render('Incident/Show', [
-            'incident' => $incident->load(['comments', 'supervisor']),
+            'incident' => $incident->load(['comments.user', 'supervisor']),
             'supervisors' => $supervisors,
         ]);
     }
