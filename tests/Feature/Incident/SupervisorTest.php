@@ -38,7 +38,7 @@ class SupervisorTest extends TestCase
 
         $response = $this->put(route('incidents.assign-supervisor', ['incident' => $incident->id]), ['supervisor_id' => $supervisor->id]);
 
-        $response->assertStatus(200);
+        $response->assertRedirect();
 
         $incident->refresh();
 

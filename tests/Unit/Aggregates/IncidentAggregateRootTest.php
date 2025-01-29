@@ -78,6 +78,11 @@ class IncidentAggregateRootTest extends TestCase
             ->persist();
 
         $this->assertDatabaseCount('comments', 1);
+
+        $incident->refresh();
+
+        $this->assertCount(1, $incident->comments);
+
         $comment = $incident->comments()->first();
 
         $this->assertEquals($commentData->content, $comment->content);
