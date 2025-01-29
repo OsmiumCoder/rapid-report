@@ -26,6 +26,78 @@ use Tests\TestCase;
 
 class IncidentAggregateRootTest extends TestCase
 {
+    public function test_adds_reopened_comment()
+    {
+        $supervisor = User::factory()->create()->assignRole('supervisor');
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Closed::class,
+        ]);
+
+        IncidentAggregateRoot::retrieve($incident->id)
+            ->reopenIncident()
+            ->persist();
+
+        $incident->refresh();
+
+        $this->assertCount(1, $incident->comments);
+
+        $comment = $incident->comments->first();
+
+        $this->assertEquals(CommentType::ACTION, $comment->type);
+        $this->assertStringContainsStringIgnoringCase('reopened', $comment->content);
+        $this->assertStringContainsStringIgnoringCase('incident', $comment->content);
+    }
+
+    public function test_adds_closed_comment()
+    {
+        $supervisor = User::factory()->create()->assignRole('supervisor');
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => InReview::class,
+        ]);
+
+        IncidentAggregateRoot::retrieve($incident->id)
+            ->closeIncident()
+            ->persist();
+
+        $incident->refresh();
+
+        $this->assertCount(1, $incident->comments);
+
+        $comment = $incident->comments->first();
+
+        $this->assertEquals(CommentType::ACTION, $comment->type);
+        $this->assertStringContainsStringIgnoringCase('closed', $comment->content);
+        $this->assertStringContainsStringIgnoringCase('incident', $comment->content);
+    }
+
+    public function test_adds_unassigned_comment()
+    {
+        $supervisor = User::factory()->create()->assignRole('supervisor');
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Assigned::class,
+        ]);
+
+        IncidentAggregateRoot::retrieve($incident->id)
+            ->unassignSupervisor()
+            ->persist();
+
+        $incident->refresh();
+
+        $this->assertCount(1, $incident->comments);
+
+        $comment = $incident->comments->first();
+
+        $this->assertEquals(CommentType::ACTION, $comment->type);
+        $this->assertStringContainsStringIgnoringCase('unassigned', $comment->content);
+        $this->assertStringContainsStringIgnoringCase('incident', $comment->content);
+    }
+
     public function test_throws_user_not_supervisor_if_id_not_supervisor()
     {
         $this->expectException(UserNotSupervisorException::class);

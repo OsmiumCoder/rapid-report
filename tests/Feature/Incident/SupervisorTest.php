@@ -11,6 +11,34 @@ use Tests\TestCase;
 
 class SupervisorTest extends TestCase
 {
+    public function test_adds_unassigned_comment()
+    {
+        $admin = User::factory()->create()->assignRole('admin');
+        $this->actingAs($admin);
+
+        $supervisor = User::factory()->create()->assignRole('supervisor');
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Assigned::class,
+        ]);
+
+        $response = $this->put(route('incidents.unassign-supervisor', ['incident' => $incident->id]));
+
+        $response->assertRedirect();
+
+        $incident->refresh();
+
+        $this->assertCount(1, $incident->comments);
+
+        $comment = $incident->comments->first();
+
+        $this->assertEquals(CommentType::ACTION, $comment->type);
+        $this->assertStringContainsStringIgnoringCase('unassigned', $comment->content);
+        $this->assertStringContainsStringIgnoringCase('incident', $comment->content);
+        $this->assertEquals($admin->id, $comment->user_id);
+    }
+
     public function test_throws_user_not_supervisor_if_id_not_supervisor()
     {
         $admin = User::factory()->create()->assignRole('admin');
@@ -50,6 +78,7 @@ class SupervisorTest extends TestCase
         $this->assertStringContainsStringIgnoringCase('assigned', $comment->content);
         $this->assertStringContainsStringIgnoringCase('supervisor', $comment->content);
         $this->assertStringContainsStringIgnoringCase($supervisor->name, $comment->content);
+        $this->assertEquals($admin->id, $comment->user_id);
     }
 
     public function test_unassign_supervisor_not_permitted_by_supervisor()
