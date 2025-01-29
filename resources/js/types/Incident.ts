@@ -1,6 +1,7 @@
 import { IncidentStatus } from '@/Enums/IncidentStatus';
 import { User } from '@/types/index';
 import { IncidentType } from '@/Enums/IncidentType';
+import { Comment } from '@/types/Comment';
 
 export interface Incident {
     id: string;
@@ -29,7 +30,7 @@ export interface Incident {
     supervisor_id?: number;
     supervisor?: User;
     status: IncidentStatus;
-    comments: Comment[]
+    comments: Comment[];
     closed_at?: string;
     created_at: string;
     updated_at: string;
