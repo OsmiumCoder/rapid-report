@@ -7,6 +7,7 @@ use App\Data\CommentData;
 use App\Data\IncidentData;
 use App\Enum\CommentType;
 use App\Enum\IncidentType;
+use App\Exceptions\UserNotSupervisorException;
 use App\Models\Incident;
 use App\Models\User;
 use App\States\IncidentStatus\Assigned;
@@ -25,7 +26,44 @@ use Tests\TestCase;
 
 class IncidentAggregateRootTest extends TestCase
 {
-    public function test_adds_comment_to_model()
+    public function test_throws_user_not_supervisor_if_id_not_supervisor()
+    {
+        $this->expectException(UserNotSupervisorException::class);
+
+        $notSupervisor = User::factory()->create()->assignRole('admin');
+
+        $incident = Incident::factory()->create();
+
+        IncidentAggregateRoot::retrieve($incident->id)
+            ->assignSupervisor($notSupervisor->id)
+            ->persist();
+    }
+
+    public function test_adds_assigned_comment_on_supervisor_assigned()
+    {
+        $supervisor = User::factory()->create()->assignRole('supervisor');
+
+        $incident = Incident::factory()->create();
+
+        $this->assertCount(0, $incident->comments);
+
+        IncidentAggregateRoot::retrieve($incident->id)
+            ->assignSupervisor($supervisor->id)
+            ->persist();
+
+        $incident->refresh();
+
+        $this->assertCount(1, $incident->comments);
+
+        $comment = $incident->comments->first();
+
+        $this->assertEquals(CommentType::INFO, $comment->type);
+        $this->assertStringContainsStringIgnoringCase('assigned', $comment->content);
+        $this->assertStringContainsStringIgnoringCase('supervisor', $comment->content);
+        $this->assertStringContainsStringIgnoringCase($supervisor->name, $comment->content);
+    }
+
+    public function test_add_comment_adds_comment_to_model()
     {
         $incident = Incident::factory()->create();
 

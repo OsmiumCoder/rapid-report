@@ -4,6 +4,8 @@ namespace App\Aggregates;
 
 use App\Data\CommentData;
 use App\Data\IncidentData;
+use App\Exceptions\UserNotSupervisorException;
+use App\Models\User;
 use App\Enum\CommentType;
 use App\Models\Incident;
 use App\StorableEvents\Comment\CommentCreated;
@@ -45,8 +47,17 @@ class IncidentAggregateRoot extends AggregateRoot
         return $this;
     }
 
+    /**
+     * @throws UserNotSupervisorException
+     */
     public function assignSupervisor(int $supervisorId)
     {
+        $user = User::find($supervisorId);
+
+        if (!$user->hasRole('supervisor')) {
+            throw UserNotSupervisorException::hasRoles($user->getRoleNames());
+        }
+
         $this->recordThat(new SupervisorAssigned(supervisor_id: $supervisorId));
 
         return $this;
