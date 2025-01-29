@@ -114,6 +114,7 @@ return [
         Spatie\EventSourcing\Support\ModelIdentifierNormalizer::class,
         Symfony\Component\Serializer\Normalizer\DateTimeNormalizer::class,
         Symfony\Component\Serializer\Normalizer\ArrayDenormalizer::class,
+        Symfony\Component\Serializer\Normalizer\BackedEnumNormalizer::class,
         Spatie\EventSourcing\Support\ObjectNormalizer::class,
     ],
 

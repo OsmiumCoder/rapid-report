@@ -33,7 +33,7 @@ class SupervisorAssigned extends StoredEvent
         $comment = new Comment;
 
         $comment->user_id = $this->metaData['user_id'] ?? null;
-        $comment->type = CommentType::INFO;
+        $comment->type = CommentType::ACTION;
         $comment->content = 'Incident was assigned to supervisor: ' . $this->supervisor()->name;
 
         $comment->commentable()->associate($incident);

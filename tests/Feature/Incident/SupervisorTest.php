@@ -46,7 +46,7 @@ class SupervisorTest extends TestCase
 
         $comment = $incident->comments->first();
 
-        $this->assertEquals(CommentType::INFO, $comment->type);
+        $this->assertEquals(CommentType::ACTION, $comment->type);
         $this->assertStringContainsStringIgnoringCase('assigned', $comment->content);
         $this->assertStringContainsStringIgnoringCase('supervisor', $comment->content);
         $this->assertStringContainsStringIgnoringCase($supervisor->name, $comment->content);

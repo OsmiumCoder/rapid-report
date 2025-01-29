@@ -69,7 +69,7 @@ class IncidentCreated extends StoredEvent
 
         $comment = new Comment;
 
-        $comment->type = CommentType::INFO;
+        $comment->type = CommentType::ACTION;
         $comment->content = 'Incident was created.';
 
         $comment->commentable()->associate($incident);
