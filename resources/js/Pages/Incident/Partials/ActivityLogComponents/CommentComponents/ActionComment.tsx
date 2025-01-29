@@ -1,6 +1,6 @@
-import {Comment} from "@/types/Comment";
-import {InformationCircleIcon} from "@heroicons/react/20/solid";
-import dateTimeFormat from "@/Filters/dateTimeFormat";
+import { Comment } from '@/types/Comment';
+import { InformationCircleIcon } from '@heroicons/react/20/solid';
+import dateTimeFormat from '@/Filters/dateTimeFormat';
 
 export default function ActionComment(props: { comment: Comment }) {
     return (
@@ -11,18 +11,21 @@ export default function ActionComment(props: { comment: Comment }) {
                     className="size-6 text-amber-500"
                 />
             </div>
-            <p className="flex-auto py-0.5 text-xs/5 text-gray-500">
-                <span className="font-medium text-gray-900">
-                    {props.comment.user?.name ?? 'Anonymous User'}
-                </span>{' '}
-                {props.comment.content}
-            </p>
-            <time
-                dateTime={props.comment.created_at}
-                className="flex-none py-0.5 text-xs/5 text-gray-500"
-            >
-                {dateTimeFormat(props.comment.created_at)}
-            </time>
+            <div className="flex-auto py-0.5 text-xs/5 text-gray-500">
+                <div>
+                    <span className="font-medium text-gray-900">
+                        {props.comment.user?.name ?? 'Anonymous User'}
+                    </span>{' '}
+                    {props.comment.content}
+                </div>
+
+                <time
+                    dateTime={props.comment.created_at}
+                    className="flex-none py-0.5 text-xs/5 text-gray-500"
+                >
+                    {dateTimeFormat(props.comment.created_at)}
+                </time>
+            </div>
         </>
     );
 }
