@@ -53,7 +53,7 @@ export default function SupervisorUpdate({
     };
 
     return (
-        <div className="mt-6 border-t border-gray-900/5 p-6">
+        <div className="mt-6 border-t border-gray-900/5 py-6 px-9">
             <div className="flex items-center w-full gap-x-4">
                 <div className="w-24 text-gray-900 font-medium">
                     Supervisor:

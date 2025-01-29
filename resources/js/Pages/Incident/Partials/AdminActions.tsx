@@ -17,7 +17,7 @@ export default function AdminActions({
             <div className="lg:col-start-3 lg:row-end-1 bg-white">
                 <div className="rounded-lg  shadow-sm ring-1 ring-gray-900/5">
                     <div className="flex flex-wrap flex-col items-center justify-between">
-                        <div className="mt-1 pl-6 pt-6 text-base font-semibold text-gray-900">
+                        <div className="mt-1 pt-6 text-base font-semibold text-gray-900">
                             Administrative Actions
                         </div>
                         {(incident.status === IncidentStatus.OPENED ||
