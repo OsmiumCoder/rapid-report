@@ -5,8 +5,9 @@ import IncidentHeader from '@/Pages/Incident/Partials/IncidentHeader';
 import { Head } from '@inertiajs/react';
 import { PageProps } from '@/types';
 import IncidentInformation from '@/Pages/Incident/Partials/IncidentInformation';
+import {Incident} from "@/types/Incident";
 
-export default function Show({ incident }: PageProps<{ incident: any }>) {
+export default function Show({ incident }: PageProps<{ incident: Incident }>) {
     return (
         <AuthenticatedLayout>
             <Head title="Incident" />
@@ -16,11 +17,11 @@ export default function Show({ incident }: PageProps<{ incident: any }>) {
 
                     <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
                         <div className="mx-auto grid max-w-2xl grid-cols-1 grid-rows-1 items-start gap-x-8 gap-y-8 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-                            <AdminActions incident={incident}></AdminActions>
+                            <AdminActions incident={incident}/>
 
                             <IncidentInformation incident={incident} />
 
-                            <ActivityLog incident={incident}></ActivityLog>
+                            <ActivityLog comments={incident.comments}/>
                         </div>
                     </div>
                 </main>
