@@ -14,6 +14,7 @@ import {
 import WitnessStage from '@/Pages/Incident/Stages/WitnessStage';
 import SupervisorStage from '@/Pages/Incident/Stages/SupervisorStage';
 import dateFormat from '@/Filters/dateFormat';
+import {router} from "@inertiajs/react";
 
 export default function Create({ form }: PageProps<{ form: IncidentData }>) {
     const [formData, setFormData] = useState<IncidentData>(form);
@@ -45,7 +46,30 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
     };
 
     const submit = () => {
-        console.log(formData);
+        const payload = new FormData();
+
+        Object.entries(formData).forEach(([key, value]) => {
+            if (typeof value === 'object' && !(value instanceof File)) {
+                payload.append(key, JSON.stringify(value));
+            } else {
+                payload.append(key, value as string);
+            }
+        });
+
+        router.post(
+            route('incidents.store'),
+            payload,
+            {
+                onSuccess: () => {
+                    console.log('Form submitted successfully!');
+                    router.reload({ only: ['incident'] });
+                },
+                onError: (errors) => {
+                    console.error('Form submission failed:', errors);
+                },
+                preserveScroll: true,
+            }
+        );
     };
 
     useEffect(() => {
