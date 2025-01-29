@@ -2,7 +2,11 @@
 
 namespace App\Aggregates;
 
+use App\Data\CommentData;
 use App\Data\IncidentData;
+use App\Enum\CommentType;
+use App\Models\Incident;
+use App\StorableEvents\Comment\CommentCreated;
 use App\StorableEvents\Incident\IncidentClosed;
 use App\StorableEvents\Incident\IncidentCreated;
 use App\StorableEvents\Incident\IncidentReopened;
@@ -65,6 +69,18 @@ class IncidentAggregateRoot extends AggregateRoot
     public function reopenIncident()
     {
         $this->recordThat(new IncidentReopened);
+
+        return $this;
+    }
+
+    public function addComment(CommentData $commentData)
+    {
+        $this->recordThat(new CommentCreated(
+            content: $commentData->content,
+            type: CommentType::NOTE,
+            commentable_id: $this->uuid(),
+            commentable_type: Incident::class
+        ));
 
         return $this;
     }
