@@ -7,14 +7,17 @@ import AffectedPartyStage from '@/Pages/Incident/Stages/AffectedPartyStage';
 import IncidentInformationStage from '@/Pages/Incident/Stages/IncidentInformationStage';
 import VictimInformationStage from '@/Pages/Incident/Stages/VictimInformationStage';
 import IncidentData from '@/types/IncidentData';
-import { descriptors, roles } from '@/Pages/Incident/Stages/IncidentDropDownValues';
+import {
+    descriptors,
+    roles,
+} from '@/Pages/Incident/Stages/IncidentDropDownValues';
 import WitnessStage from '@/Pages/Incident/Stages/WitnessStage';
 import SupervisorStage from '@/Pages/Incident/Stages/SupervisorStage';
 import dateFormat from '@/Filters/dateFormat';
-import { useForm } from '@inertiajs/react';
+import {router, useForm} from "@inertiajs/react";
 
 export default function Create({ form }: PageProps<{ form: IncidentData }>) {
-    const { data, setData, post, processing } = useForm(form);
+    const [formData, setFormData] = useState<IncidentData>(form);
 
     const numberOfSteps = 6;
     const [remainingSteps, setRemainingSteps] = useState(numberOfSteps - 1);
@@ -42,153 +45,159 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
         setCompletedSteps((prev) => prev - 1);
     };
 
-    const submit = (e: React.FormEvent) => {
-        e.preventDefault();
-        post(route('incidents.store'));
+
+    const submit = () => {
+        router.post(route("incidents.store"),formData)
     };
 
     useEffect(() => {
-        setData({
-            ...data,
+        setFormData((prev) => ({
+            ...prev,
             role: roles[0].value,
             happened_at: dateFormat(new Date()),
             incident_type: descriptors[0].value,
             descriptor: descriptors[0].options[0],
             anonymous: true,
             on_behalf: false,
-            on_behalf_anon: true,
+            on_behalf_anonymous: true,
             witnesses: [],
-        });
+            work_related: false
+        }));
     }, []);
 
     useEffect(() => {
         if (
             !(
-                (!data.anonymous && !data.on_behalf) ||
-                (!data.anonymous &&
-                    data.on_behalf &&
-                    !data.on_behalf_anon) ||
-                (data.anonymous &&
-                    data.on_behalf &&
-                    !data.on_behalf_anon)
+                (!formData.anonymous && !formData.on_behalf) ||
+                (!formData.anonymous &&
+                    formData.on_behalf &&
+                    !formData.on_behalf_anon) ||
+                (formData.anonymous &&
+                    formData.on_behalf &&
+                    !formData.on_behalf_anon)
             )
         ) {
-            setData({
-                ...data,
+            setFormData((prev) => ({
+                ...prev,
                 first_name: '',
                 last_name: '',
                 phone: '',
                 email: '',
                 role: roles[0].value,
                 upei_id: '',
-            });
+            }));
         }
-    }, [data.on_behalf, data.on_behalf_anon]);
+    }, [formData.on_behalf, formData.on_behalf_anon]);
 
     useEffect(() => {
-        setData({
-            ...data,
+        setFormData((prev) => ({
+            ...prev,
             reporters_email: '',
-        });
-    }, [data.anonymous]);
+        }));
+    }, [formData.anonymous]);
 
     return (
         <GuestLayout>
             <form onSubmit={submit}>
-                <StageWrapper completedSteps={completedSteps} remainingSteps={remainingSteps}>
-                    {currentStepNumber === 0 && (
-                        <AnonymousStage
-                            formData={data}
-                            setFormData={setData}
-                            validStep={validStep}
-                            setValidStep={setValidStep}
-                            failedStep={failedStep}
-                            setShowButtons={setShowButtons}
-                        />
-                    )}
-                    {currentStepNumber === 1 && (
-                        <AffectedPartyStage
-                            formData={data}
-                            setFormData={setData}
-                            validStep={validStep}
-                            setValidStep={setValidStep}
-                            failedStep={failedStep}
-                            setShowButtons={setShowButtons}
-                        />
-                    )}
-                    {currentStepNumber === 2 && (
-                        <IncidentInformationStage
-                            formData={data}
-                            setFormData={setData}
-                            validStep={validStep}
-                            setValidStep={setValidStep}
-                            failedStep={failedStep}
-                            setShowButtons={setShowButtons}
-                        />
-                    )}
-                    {currentStepNumber === 3 && (
-                        <VictimInformationStage
-                            formData={data}
-                            setFormData={setData}
-                            validStep={validStep}
-                            setValidStep={setValidStep}
-                            failedStep={failedStep}
-                            setShowButtons={setShowButtons}
-                        />
-                    )}
-                    {currentStepNumber === 4 && (
-                        <WitnessStage
-                            formData={data}
-                            setFormData={setData}
-                            validStep={validStep}
-                            setValidStep={setValidStep}
-                            failedStep={failedStep}
-                            setShowButtons={setShowButtons}
-                        />
-                    )}
-                    {currentStepNumber === 5 && (
-                        <SupervisorStage
-                            formData={data}
-                            setFormData={setData}
-                            validStep={validStep}
-                            setValidStep={setValidStep}
-                            failedStep={failedStep}
-                            setShowButtons={setShowButtons}
-                        />
-                    )}
-                </StageWrapper>
+                <>
+                    <StageWrapper
+                        completedSteps={completedSteps}
+                        remainingSteps={remainingSteps}
+                    >
+                        {currentStepNumber === 0 && (
+                            <AnonymousStage
+                                formData={formData}
+                                setFormData={setFormData}
+                                validStep={validStep}
+                                setValidStep={setValidStep}
+                                failedStep={failedStep}
+                                setShowButtons={setShowButtons}
+                            />
+                        )}
+                        {currentStepNumber === 1 && (
+                            <AffectedPartyStage
+                                formData={formData}
+                                setFormData={setFormData}
+                                validStep={validStep}
+                                setValidStep={setValidStep}
+                                failedStep={failedStep}
+                                setShowButtons={setShowButtons}
+                            />
+                        )}
+                        {currentStepNumber === 2 && (
+                            <IncidentInformationStage
+                                formData={formData}
+                                setFormData={setFormData}
+                                validStep={validStep}
+                                setValidStep={setValidStep}
+                                failedStep={failedStep}
+                                setShowButtons={setShowButtons}
+                            />
+                        )}
+                        {currentStepNumber === 3 && (
+                            <VictimInformationStage
+                                formData={formData}
+                                setFormData={setFormData}
+                                validStep={validStep}
+                                setValidStep={setValidStep}
+                                failedStep={failedStep}
+                                setShowButtons={setShowButtons}
+                            />
+                        )}
+                        {currentStepNumber === 4 && (
+                            <WitnessStage
+                                formData={formData}
+                                setFormData={setFormData}
+                                validStep={validStep}
+                                setValidStep={setValidStep}
+                                failedStep={failedStep}
+                                setShowButtons={setShowButtons}
+                            />
+                        )}
+                        {currentStepNumber === 5 && (
+                            <SupervisorStage
+                                formData={formData}
+                                setFormData={setFormData}
+                                validStep={validStep}
+                                setValidStep={setValidStep}
+                                failedStep={failedStep}
+                                setShowButtons={setShowButtons}
+                            />
+                        )}
+                    </StageWrapper>
 
-                <div className="flex p-6 justify-around">
-                    {completedSteps > 0 && showButtons && (
-                        <button
-                            type="button"
-                            onClick={prevStep}
-                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                        >
-                            Back
-                        </button>
-                    )}
+                    <div className="flex p-6 justify-around">
+                        {completedSteps > 0 && showButtons && (
+                            <button
+                                type="button"
+                                onClick={prevStep}
+                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                            >
+                                Back
+                            </button>
+                        )}
 
-                    {completedSteps === numberOfSteps - 1 && showButtons && (
-                        <button
-                            type="submit"
-                            disabled={processing}
-                            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-                        >
-                            {processing ? 'Submitting...' : 'Submit'}
-                        </button>
-                    )}
-
-                    {remainingSteps > 0 && showButtons && (
-                        <button
-                            type="button"
-                            onClick={nextStep}
-                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                        >
-                            Next
-                        </button>
-                    )}
-                </div>
+                        {completedSteps === numberOfSteps - 1 &&
+                            showButtons && (
+                                <button
+                                    type="button"
+                                    onClick={submit}
+                                    className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                                >
+                                    Submit
+                                </button>
+                            )}
+                        {remainingSteps > 0 && showButtons && (
+                            <button
+                                type="button"
+                                onClick={nextStep}
+                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                            >
+                                Next
+                            </button>
+                        )}
+                    </div>
+                </>
             </form>
         </GuestLayout>
     );
