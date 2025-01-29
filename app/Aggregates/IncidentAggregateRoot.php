@@ -7,8 +7,11 @@ use App\Data\IncidentData;
 use App\Enum\CommentType;
 use App\Models\Incident;
 use App\StorableEvents\Comment\CommentCreated;
+use App\StorableEvents\Incident\IncidentClosed;
 use App\StorableEvents\Incident\IncidentCreated;
+use App\StorableEvents\Incident\IncidentReopened;
 use App\StorableEvents\Incident\SupervisorAssigned;
+use App\StorableEvents\Incident\SupervisorUnassigned;
 use Spatie\EventSourcing\AggregateRoots\AggregateRoot;
 
 class IncidentAggregateRoot extends AggregateRoot
@@ -45,6 +48,28 @@ class IncidentAggregateRoot extends AggregateRoot
     public function assignSupervisor(int $supervisorId)
     {
         $this->recordThat(new SupervisorAssigned(supervisor_id: $supervisorId));
+
+        return $this;
+    }
+
+    public function unassignSupervisor()
+    {
+        $this->recordThat(new SupervisorUnassigned);
+
+        return $this;
+    }
+
+    public function closeIncident()
+    {
+        $this->recordThat(new IncidentClosed);
+
+        return $this;
+    }
+
+    public function reopenIncident()
+    {
+        $this->recordThat(new IncidentReopened);
+
         return $this;
     }
 
