@@ -27,9 +27,11 @@ export default function AnonymousStage({
                                 anonymous: e.valueOf(),
                             }));
                             if (
-                                formData.reporters_email === '' ||
-                                (isValidEmail(formData.reporters_email ?? '') &&
-                                    !e.valueOf())
+                                (formData.reporters_email === '' ||
+                                    isValidEmail(
+                                        formData.reporters_email ?? ''
+                                    )) &&
+                                !e.valueOf()
                             ) {
                                 setValidStep(false);
                             } else {
@@ -64,7 +66,6 @@ export default function AnonymousStage({
                                     } else {
                                         setValidStep(false);
                                     }
-                                    console.log(isValidEmail(e.target.value));
                                 }}
                                 placeholder="example@email.com"
                                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
