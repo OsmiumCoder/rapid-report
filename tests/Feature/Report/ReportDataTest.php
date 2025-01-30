@@ -11,18 +11,14 @@ class ReportDataTest extends TestCase
 {
     public function test_report_page_recieves_all_incidents(): void
     {
-        $user = User::factory()->create([
-            'name' => 'Admin',
-            'email' => 'admin@b.com',
-        ])->assignRole('admin');
-        $this->actingAs($user);
-        $incident = Incident::factory()->count(40)->create();
+        $admin = User::factory()->create()->assignRole('admin');
+        $this->actingAs($admin);
+        Incident::factory()->count(40)->create();
         $response = $this->get(route('reports.index'));
         $response->assertStatus(200);
         $response->assertInertia(function (AssertableInertia $page) {
-            $page->component('Reports/Index')
-                ->has('incidents', 40)
-                ->where('indexType', 'all');
+            $page->component('Reports/Show')
+                ->has('incidents', 40);
         });
     }
 
@@ -37,7 +33,7 @@ class ReportDataTest extends TestCase
 
         Incident::factory()->count(10)->create();
 
-        $response = $this->get(route('reports.index'));
+        $response = $this->get(route('reports.show'));
 
         $response->assertForbidden();
     }

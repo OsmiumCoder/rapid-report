@@ -1,19 +1,23 @@
 <?php
+
 namespace App\Http\Controllers\Reports;
 
 use App\Http\Controllers\Controller;
 use App\Models\Incident;
- use Inertia\Inertia;
+use App\Policies\ReportPolicy;
+use Illuminate\Auth\Access\AuthorizationException;
+use Inertia\Inertia;
 
- class ReportController extends Controller{
-    public function index()
+class ReportController extends Controller
+{
+    /**
+     * @throws AuthorizationException
+     */
+    public function index(): \Inertia\Response
     {
-        $this->authorize('viewAny', Incident::class);
-
-        return Inertia::render('Reports/Index', [
+        $this->authorize('viewAll', ReportPolicy::class);
+        return Inertia::render('Reports/Show', [
             'incidents' => Incident::all(),
-            'indexType' => 'all',
         ]);
     }
 }
-

@@ -1,11 +1,11 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 
-function Index() {
+function Show() {
     return (
         <AuthenticatedLayout
             header={
                 <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    Reports Index
+                    Reports Show
                 </h2>
             }
         >
