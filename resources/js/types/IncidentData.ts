@@ -3,7 +3,7 @@ import Witness from '@/types/Witness';
 export default interface IncidentData {
     anonymous?: boolean;
     on_behalf?: boolean;
-    on_behalf_anon?: boolean;
+    on_behalf_anonymous?: boolean;
     description?: string;
     descriptor?: string;
     other_descriptor?: string;
