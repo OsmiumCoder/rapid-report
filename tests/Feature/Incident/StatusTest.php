@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Incident;
 
+use App\Enum\CommentType;
 use App\Models\Incident;
 use App\Models\User;
 use App\States\IncidentStatus\Closed;
@@ -11,6 +12,62 @@ use Tests\TestCase;
 
 class StatusTest extends TestCase
 {
+    public function test_adds_reopened_comment()
+    {
+        $admin = User::factory()->create()->assignRole('admin');
+        $supervisor = User::factory()->create()->assignRole('supervisor');
+
+        $this->actingAs($admin);
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Closed::class,
+        ]);
+
+        $response = $this->put(route('incidents.reopen', ['incident' => $incident]));
+
+        $response->assertRedirect();
+
+        $incident->refresh();
+
+        $this->assertCount(1, $incident->comments);
+
+        $comment = $incident->comments->first();
+
+        $this->assertEquals(CommentType::ACTION, $comment->type);
+        $this->assertStringContainsStringIgnoringCase('reopened', $comment->content);
+        $this->assertStringContainsStringIgnoringCase('incident', $comment->content);
+        $this->assertEquals($admin->id, $comment->user_id);
+    }
+
+    public function test_adds_closed_comment()
+    {
+        $admin = User::factory()->create()->assignRole('admin');
+        $supervisor = User::factory()->create()->assignRole('supervisor');
+
+        $this->actingAs($admin);
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => InReview::class,
+        ]);
+
+        $response = $this->put(route('incidents.close', ['incident' => $incident]));
+
+        $response->assertRedirect();
+
+        $incident->refresh();
+
+        $this->assertCount(1, $incident->comments);
+
+        $comment = $incident->comments->first();
+
+        $this->assertEquals(CommentType::ACTION, $comment->type);
+        $this->assertStringContainsStringIgnoringCase('closed', $comment->content);
+        $this->assertStringContainsStringIgnoringCase('incident', $comment->content);
+        $this->assertEquals($admin->id, $comment->user_id);
+    }
+
     public function test_admin_can_reopen_incidents()
     {
         $admin = User::factory()->create()->assignRole('admin');
