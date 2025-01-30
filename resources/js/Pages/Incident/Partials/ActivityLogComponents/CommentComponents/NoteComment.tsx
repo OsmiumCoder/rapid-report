@@ -1,9 +1,9 @@
 import { Comment } from '@/types/Comment';
 import { ChatBubbleBottomCenterTextIcon } from '@heroicons/react/20/solid';
 import dateTimeFormat from '@/Filters/dateTimeFormat';
-import timeSince from "@/Filters/timeSince";
+import timeSince from '@/Filters/timeSince';
 
-export default function NoteComment(props: { comment: Comment }) {
+export default function NoteComment({ comment }: { comment: Comment }) {
     return (
         <>
             <ChatBubbleBottomCenterTextIcon className="text-blue-600 relative flex size-6 flex-none items-center justify-center bg-white" />
@@ -13,23 +13,21 @@ export default function NoteComment(props: { comment: Comment }) {
                     <div className="py-0.5 text-xs/5 text-gray-500">
                         <div>
                             <span className="font-medium text-gray-900">
-                                {props.comment.user?.name ?? 'Anonymous User'}
+                                {comment.user?.name ?? 'Anonymous User'}
                             </span>{' '}
                             commented
                         </div>
                         <div>
                             <time
-                                dateTime={props.comment.created_at}
+                                dateTime={comment.created_at}
                                 className="flex-none py-0.5 text-xs/5 text-gray-500"
                             >
-                                {timeSince(props.comment.created_at)}
+                                {timeSince(comment.created_at)}
                             </time>
                         </div>
                     </div>
                 </div>
-                <div className="text-sm/6 text-gray-500">
-                    {props.comment.content}
-                </div>
+                <div className="text-sm/6 text-gray-500">{comment.content}</div>
             </div>
         </>
     );

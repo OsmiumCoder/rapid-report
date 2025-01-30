@@ -4,6 +4,7 @@ namespace App\Data;
 
 use App\Enum\IncidentType;
 use Carbon\Carbon;
+use DateTime;
 use Spatie\LaravelData\Attributes\WithCast;
 use Spatie\LaravelData\Casts\DateTimeInterfaceCast;
 use Spatie\LaravelData\Data;
@@ -21,7 +22,7 @@ class IncidentData extends Data
         public ?string $email,
         public ?string $phone,
         public bool $work_related,
-        #[WithCast(DateTimeInterfaceCast::class, format: 'Y-m-d')]
+        #[WithCast(DateTimeInterfaceCast::class)]
         public Carbon $happened_at,
         public string $location,
         public ?string $room_number,
@@ -33,7 +34,5 @@ class IncidentData extends Data
         public ?string $first_aid_description,
         public ?string $reporters_email,
         public ?string $supervisor_name,
-    ) {
-    }
-
+    ) {}
 }

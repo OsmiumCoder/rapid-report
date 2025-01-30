@@ -2,7 +2,9 @@ import { Comment } from '@/types/Comment';
 import { InformationCircleIcon } from '@heroicons/react/20/solid';
 import dateTimeFormat from '@/Filters/dateTimeFormat';
 
-export default function ActionComment(props: { comment: Comment }) {
+export default function ActionComment({ comment }: { comment: Comment }) {
+    console.log(comment);
+
     return (
         <>
             <div className="relative flex size-6 flex-none items-center justify-center bg-white">
@@ -14,16 +16,16 @@ export default function ActionComment(props: { comment: Comment }) {
             <div className="flex-auto py-0.5 text-xs/5 text-gray-500">
                 <div>
                     <span className="font-medium text-gray-900">
-                        {props.comment.user?.name ?? 'Anonymous User'}
+                        {comment.user?.name ?? 'Anonymous User'}
                     </span>{' '}
-                    {props.comment.content}
+                    {comment.content}
                 </div>
 
                 <time
-                    dateTime={props.comment.created_at}
+                    dateTime={comment.created_at}
                     className="flex-none py-0.5 text-xs/5 text-gray-500"
                 >
-                    {dateTimeFormat(props.comment.created_at)}
+                    {dateTimeFormat(comment.created_at)}
                 </time>
             </div>
         </>
