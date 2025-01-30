@@ -14,10 +14,19 @@ import {
 import WitnessStage from '@/Pages/Incident/Stages/WitnessStage';
 import SupervisorStage from '@/Pages/Incident/Stages/SupervisorStage';
 import dateFormat from '@/Filters/dateFormat';
-import {router, useForm} from "@inertiajs/react";
+import { router, useForm } from '@inertiajs/react';
 
-export default function Create({ form }: PageProps<{ form: IncidentData }>) {
-    const {data: formData, setData, post, processing} = useForm<IncidentData>(form);
+export default function Create({
+    form,
+    auth,
+}: PageProps<{ form: IncidentData }>) {
+    const {
+        data: formData,
+        setData,
+        post,
+        processing,
+    } = useForm<IncidentData>(form);
+    const { user } = auth;
 
     const numberOfSteps = 6;
     const [remainingSteps, setRemainingSteps] = useState(numberOfSteps - 1);
@@ -26,7 +35,8 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
     const [validStep, setValidStep] = useState(true);
     const [failedStep, setFailedStep] = useState(false);
     const [showButtons, setShowButtons] = useState(true);
-    const setFormData = (key: keyof IncidentData, value: any) => setData(key,value);
+    const setFormData = (key: keyof IncidentData, value: any) =>
+        setData(key, value);
     const nextStep = () => {
         if (validStep) {
             setCurrentStepNumber((prev) => prev + 1);
@@ -40,14 +50,14 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
 
     const prevStep = () => {
         setFailedStep(false);
+        setValidStep(true);
         setCurrentStepNumber((prev) => prev - 1);
         setRemainingSteps((prev) => prev + 1);
         setCompletedSteps((prev) => prev - 1);
     };
 
-
     const submit = () => {
-        post(route("incidents.store"))
+        post(route('incidents.store'));
     };
 
     useEffect(() => {
@@ -86,12 +96,14 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
     }, [formData.on_behalf, formData.on_behalf_anonymous]);
 
     useEffect(() => {
-        setFormData('reporters_email','')
+        if (formData.anonymous) {
+            setFormData('reporters_email', '');
+        }
     }, [formData.anonymous]);
 
     return (
         <GuestLayout>
-            <form  onSubmit={submit}>
+            <form onSubmit={submit}>
                 <>
                     <StageWrapper
                         completedSteps={completedSteps}

@@ -3,6 +3,7 @@ import { roles } from '@/Pages/Incident/Stages/IncidentDropDownValues';
 import React, { useEffect } from 'react';
 import ToggleSwitch from '@/Components/ToggleSwitch';
 import validatePhoneInput from '@/Filters/validatePhoneInput';
+import { usePage } from '@inertiajs/react';
 
 export default function AffectedPartyStage({
     formData,
@@ -10,9 +11,17 @@ export default function AffectedPartyStage({
     failedStep,
     setValidStep,
 }: StageProps) {
+    const { auth } = usePage().props;
+
     useEffect(() => {
         handleValidStep();
     });
+
+    useEffect(() => {
+        if (!formData.on_behalf && auth.user) {
+        }
+    }, [formData.on_behalf]);
+
     const handleValidStep = () => {
         if (!formData.anonymous && !formData.on_behalf) {
             setValidStep(checkForm);
@@ -43,10 +52,10 @@ export default function AffectedPartyStage({
                     <ToggleSwitch
                         checked={formData.on_behalf}
                         onChange={(e) => {
-                            setFormData('on_behalf',e.valueOf())
+                            setFormData('on_behalf', e.valueOf());
 
                             if (!e.valueOf()) {
-                                setFormData('email',formData.reporters_email)
+                                setFormData('email', formData.reporters_email);
                             }
                             handleValidStep();
                         }}
@@ -71,9 +80,12 @@ export default function AffectedPartyStage({
                                 checked={formData.on_behalf_anonymous}
                                 onChange={(e) => {
                                     if (!e.valueOf) {
-                                        setFormData('email', '')
+                                        setFormData('email', '');
                                     }
-                                    setFormData('on_behalf_anonymous',e.valueOf())
+                                    setFormData(
+                                        'on_behalf_anonymous',
+                                        e.valueOf()
+                                    );
                                     handleValidStep();
                                 }}
                             />
@@ -106,7 +118,7 @@ export default function AffectedPartyStage({
                                 required
                                 value={formData.first_name ?? ''}
                                 onChange={(e) => {
-                                    setFormData('first_name',e.target.value)
+                                    setFormData('first_name', e.target.value);
                                     handleValidStep();
                                 }}
                                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
@@ -135,7 +147,7 @@ export default function AffectedPartyStage({
                                 required
                                 value={formData.last_name ?? ''}
                                 onChange={(e) => {
-                                    setFormData('last_name',e.target.value)
+                                    setFormData('last_name', e.target.value);
                                     handleValidStep();
                                 }}
                                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
@@ -166,7 +178,10 @@ export default function AffectedPartyStage({
                                 placeholder="123-456-7890"
                                 value={formData.phone ?? ''}
                                 onChange={(e) => {
-                                    setFormData('phone',validatePhoneInput(e.target.value))
+                                    setFormData(
+                                        'phone',
+                                        validatePhoneInput(e.target.value)
+                                    );
                                     handleValidStep();
                                 }}
                                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
@@ -188,7 +203,7 @@ export default function AffectedPartyStage({
                                 placeholder="name@example.com"
                                 value={formData.email ?? ''}
                                 onChange={(e) => {
-                                    setFormData('email',e.target.value)
+                                    setFormData('email', e.target.value);
                                     handleValidStep();
                                 }}
                                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
@@ -222,10 +237,13 @@ export default function AffectedPartyStage({
                                     )?.name ?? roles[0].name
                                 }
                                 onChange={(e) =>
-                                    setFormData('role',roles.find(
-                                        ({ name }) =>
-                                            name === e.target.value
-                                    )?.value)
+                                    setFormData(
+                                        'role',
+                                        roles.find(
+                                            ({ name }) =>
+                                                name === e.target.value
+                                        )?.value
+                                    )
                                 }
                                 className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                             >
@@ -249,7 +267,7 @@ export default function AffectedPartyStage({
                                     required
                                     value={formData.upei_id ?? ''}
                                     onChange={(e) =>
-                                        setFormData('upei_id',e.target.value)
+                                        setFormData('upei_id', e.target.value)
                                     }
                                     className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                                 />
