@@ -14,7 +14,7 @@ class ReportDataTest extends TestCase
         $admin = User::factory()->create()->assignRole('admin');
         $this->actingAs($admin);
         Incident::factory()->count(40)->create();
-        $response = $this->get(route('reports.index'));
+        $response = $this->get(route('reports.show'));
         $response->assertStatus(200);
         $response->assertInertia(function (AssertableInertia $page) {
             $page->component('Reports/Show')
@@ -30,6 +30,18 @@ class ReportDataTest extends TestCase
         ])->assignRole('user');
 
         $this->actingAs($user);
+
+        Incident::factory()->count(10)->create();
+
+        $response = $this->get(route('reports.show'));
+
+        $response->assertForbidden();
+    }
+    public function test_forbidden_if_supervisor_access_reports(): void
+    {
+        $supervisor = User::factory()->create()->assignRole('supervisor');
+
+        $this->actingAs($supervisor);
 
         Incident::factory()->count(10)->create();
 
