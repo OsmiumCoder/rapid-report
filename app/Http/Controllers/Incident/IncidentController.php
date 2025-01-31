@@ -47,7 +47,9 @@ class IncidentController extends Controller
             ->createIncident($incidentData)
             ->persist();
 
-        return to_route('incidents.show', ['incident' => $uuid]);
+        return Inertia::render('Incident/Created', [
+            'incident_id' => $uuid,
+        ]);
     }
 
     /**
