@@ -1,6 +1,6 @@
 import { StageProps } from '@/Pages/Incident/Stages/StageWrapper';
 import React, { useState } from 'react';
-import Witness from '@/types/incident/Witness';
+import { Witness } from '@/types/incident/Witness';
 import { PlusIcon } from '@heroicons/react/20/solid';
 import WitnessList from '@/Components/WitnessList';
 import validatePhoneInput from '@/Filters/validatePhoneInput';
@@ -27,7 +27,10 @@ export default function WitnessStage({
         }
 
         setValidationError(false);
-        setFormData('witnesses', [...formData.witnesses, witnessInProgress]);
+        setFormData('witnesses', [
+            ...(formData.witnesses ?? []),
+            witnessInProgress,
+        ]);
         setWitnessInProgress(newWitness());
         setShowButtons((prev) => !prev);
         setWitnessFormVisible((prev) => !prev);
@@ -35,7 +38,11 @@ export default function WitnessStage({
     const removePerson = (index: number) => {
         setFormData(
             'witnesses',
-            formData.witnesses.filter((_, personIndex) => personIndex != index)
+            formData.witnesses
+                ? formData.witnesses.filter(
+                      (_, personIndex) => personIndex != index
+                  )
+                : []
         );
     };
 
@@ -158,7 +165,7 @@ export default function WitnessStage({
                 <>
                     <WitnessList
                         removeWitness={removePerson}
-                        witnesses={formData.witnesses}
+                        witnesses={formData.witnesses ?? []}
                     />
                     <div className="flex justify-center">
                         <button
