@@ -16,7 +16,7 @@ class ReportPolicyTest extends TestCase
             'email' => 'admin@b.com',
         ])->assignRole('admin');
 
-        $result = $this->getPolicy()->viewAll($user);
+        $result = $this->getPolicy()->view($user);
         $this->assertTrue($result);
     }
 
@@ -28,7 +28,7 @@ class ReportPolicyTest extends TestCase
             'email' => 'user@b.com',
         ])->assignRole('user');
 
-        $result = $this->getPolicy()->viewAll($user);
+        $result = $this->getPolicy()->view($user);
         $this->assertFalse($result);
     }
 
@@ -39,7 +39,7 @@ class ReportPolicyTest extends TestCase
             'email' => 'supervisor@b.com',
         ])->assignRole('supervisor');
 
-        $result = $this->getPolicy()->viewAll($user);
+        $result = $this->getPolicy()->view($user);
         $this->assertFalse($result);
     }
 
