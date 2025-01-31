@@ -344,6 +344,7 @@ class IncidentAggregateRootTest extends TestCase
             'email' => 'john@doe.com',
             'phone' => '(902) 333-4444',
             'work_related' => true,
+            'workers_comp_submitted' => true,
             'happened_at' => now(),
             'location' => 'Building A',
             'room_number' => '123A',
@@ -392,6 +393,7 @@ class IncidentAggregateRootTest extends TestCase
             'email' => 'john@doe.com',
             'phone' => '(902) 333-4444',
             'work_related' => true,
+            'workers_comp_submitted' => true,
             'happened_at' => now(),
             'location' => 'Building A',
             'room_number' => '123A',
@@ -421,6 +423,7 @@ class IncidentAggregateRootTest extends TestCase
                     email: $incidentData->email,
                     phone: $incidentData->phone,
                     work_related: $incidentData->work_related,
+                    workers_comp_submitted: $incidentData->workers_comp_submitted,
                     happened_at: $incidentData->happened_at,
                     location: $incidentData->location,
                     room_number: $incidentData->room_number,
@@ -449,6 +452,7 @@ class IncidentAggregateRootTest extends TestCase
             'email' => 'john@doe.com',
             'phone' => '(902) 333-4444',
             'work_related' => true,
+            'workers_comp_submitted' => true,
             'happened_at' => now(),
             'location' => 'Building A',
             'room_number' => '123A',
@@ -490,6 +494,7 @@ class IncidentAggregateRootTest extends TestCase
             'email' => 'john@doe.com',
             'phone' => '(902) 333-4444',
             'work_related' => true,
+            'workers_comp_submitted' => true,
             'happened_at' => now(),
             'location' => 'Building A',
             'room_number' => '123A',
@@ -526,6 +531,7 @@ class IncidentAggregateRootTest extends TestCase
         $this->assertEquals($incidentData->email, $incident->email);
         $this->assertEquals($incidentData->phone, $incident->phone);
         $this->assertEquals($incidentData->work_related, $incident->work_related);
+        $this->assertEquals($incidentData->workers_comp_submitted, $incident->workers_comp_submitted);
         $this->assertEquals($incidentData->happened_at, $incident->happened_at);
         $this->assertEquals($incidentData->location, $incident->location);
         $this->assertEquals($incidentData->room_number, $incident->room_number);

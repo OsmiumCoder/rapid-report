@@ -1,10 +1,11 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid';
-import { Incident } from '@/types/Incident';
+import { Incident } from '@/types/incident/Incident';
 import { PaginatedResponse } from '@/types/PaginatedResponse';
 import { PencilIcon } from '@heroicons/react/24/outline';
 import { uppercaseWordFormat } from '@/Filters/uppercaseWordFormat';
+import { nameFilter } from '@/Filters/nameFilter';
 
 type IndexType = 'owned' | 'assigned' | 'all';
 
@@ -120,7 +121,7 @@ export default function Index({ incidents, indexType }: IndexProps) {
                                                 key={incident.id}
                                             >
                                                 <td className="w-full max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 md:w-auto md:max-w-none md:pl-6">
-                                                    {`${incident.first_name}\n${incident.last_name}`}
+                                                    {`${nameFilter(incident)[0]} ${nameFilter(incident)[1]}`}
                                                     <dl className="font-normal md:hidden">
                                                         <dt className="sr-only">
                                                             Descriptor
@@ -151,8 +152,9 @@ export default function Index({ incidents, indexType }: IndexProps) {
                                                 <td className="hidden px-3 py-4 text-sm text-gray-500 md:table-cell">
                                                     {incident.descriptor}
                                                 </td>
-                                                <td className="hidden px-3 py-4 text-sm text-gray-500 md:table-cell">
-                                                    {incident.location}
+                                                <td className="px-3 py-4 text-sm text-gray-500 md:table-cell">
+                                                    {incident.location ??
+                                                        'Not Provided'}
                                                 </td>
                                                 <td className="hidden px-3 py-4 text-sm text-gray-500 md:table-cell">
                                                     {new Date(

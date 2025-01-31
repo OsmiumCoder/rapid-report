@@ -1,6 +1,6 @@
 import { Dispatch, PropsWithChildren, SetStateAction } from 'react';
 import ProgressBarCircle from '@/Components/ProgressBarCircle';
-import IncidentData from '@/types/IncidentData';
+import IncidentData from '@/types/incident/IncidentData';
 
 export interface StageProps extends PropsWithChildren {
     formData: IncidentData;

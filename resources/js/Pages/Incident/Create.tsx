@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 import AffectedPartyStage from '@/Pages/Incident/Stages/AffectedPartyStage';
 import IncidentInformationStage from '@/Pages/Incident/Stages/IncidentInformationStage';
 import VictimInformationStage from '@/Pages/Incident/Stages/VictimInformationStage';
-import IncidentData from '@/types/IncidentData';
+import IncidentData from '@/types/incident/IncidentData';
 import {
     descriptors,
     roles,
@@ -14,10 +14,19 @@ import {
 import WitnessStage from '@/Pages/Incident/Stages/WitnessStage';
 import SupervisorStage from '@/Pages/Incident/Stages/SupervisorStage';
 import dateFormat from '@/Filters/dateFormat';
-import {router, useForm} from "@inertiajs/react";
+import { router, useForm } from '@inertiajs/react';
 
-export default function Create({ form }: PageProps<{ form: IncidentData }>) {
-    const {data: formData, setData, post, processing} = useForm<IncidentData>(form);
+export default function Create({
+    form,
+    auth,
+}: PageProps<{ form: IncidentData }>) {
+    const {
+        data: formData,
+        setData,
+        post,
+        processing,
+    } = useForm<IncidentData>(form);
+    const { user } = auth;
 
     const numberOfSteps = 6;
     const [remainingSteps, setRemainingSteps] = useState(numberOfSteps - 1);
@@ -26,7 +35,8 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
     const [validStep, setValidStep] = useState(true);
     const [failedStep, setFailedStep] = useState(false);
     const [showButtons, setShowButtons] = useState(true);
-    const setFormData = (key: keyof IncidentData, value: any) => setData(key,value);
+    const setFormData = (key: keyof IncidentData, value: any) =>
+        setData(key, value);
     const nextStep = () => {
         if (validStep) {
             setCurrentStepNumber((prev) => prev + 1);
@@ -40,14 +50,20 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
 
     const prevStep = () => {
         setFailedStep(false);
+        setValidStep(true);
         setCurrentStepNumber((prev) => prev - 1);
         setRemainingSteps((prev) => prev + 1);
         setCompletedSteps((prev) => prev - 1);
     };
 
-
     const submit = () => {
-        post(route("incidents.store"))
+        if (validStep) {
+            post(route('incidents.store'), {
+                onError: (err) => console.error(err),
+            });
+        } else {
+            setFailedStep(true);
+        }
     };
 
     useEffect(() => {
@@ -58,10 +74,10 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
         setFormData('anonymous', true);
         setFormData('on_behalf', false);
         setFormData('on_behalf_anonymous', true);
-        setFormData('witnesses', []);
         setFormData('work_related', false);
-        setFormData('location', '');
-        setFormData('description', '');
+        setFormData('has_injury', false);
+        setFormData('workers_comp_submitted', false);
+        setFormData('supervisor_name', '');
     }, []);
 
     useEffect(() => {
@@ -86,12 +102,14 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
     }, [formData.on_behalf, formData.on_behalf_anonymous]);
 
     useEffect(() => {
-        setFormData('reporters_email','')
+        if (formData.anonymous) {
+            setFormData('reporters_email', '');
+        }
     }, [formData.anonymous]);
 
     return (
         <GuestLayout>
-            <form  onSubmit={submit}>
+            <form onSubmit={submit}>
                 <>
                     <StageWrapper
                         completedSteps={completedSteps}

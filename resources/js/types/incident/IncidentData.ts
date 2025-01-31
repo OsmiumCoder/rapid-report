@@ -1,4 +1,4 @@
-import Witness from '@/types/Witness';
+import Witness from '@/types/incident/Witness';
 
 export default interface IncidentData {
     anonymous?: boolean;
@@ -24,5 +24,6 @@ export default interface IncidentData {
     witnesses: Witness[];
     work_related?: boolean;
     has_injury?: boolean;
+    workers_comp_submitted?: boolean;
     first_aid_applied?: boolean;
 }

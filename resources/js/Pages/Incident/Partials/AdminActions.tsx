@@ -1,4 +1,4 @@
-import { Incident } from '@/types/Incident';
+import { Incident } from '@/types/incident/Incident';
 import { User } from '@/types';
 import SupervisorUpdate from '@/Pages/Incident/Partials/AdminActionComponents/SupervisorUpdate';
 import StatusUpdate from '@/Pages/Incident/Partials/AdminActionComponents/StatusUpdate';

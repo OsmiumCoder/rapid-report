@@ -1,6 +1,6 @@
 import { User } from '@/types';
 import { uppercaseWordFormat } from '@/Filters/uppercaseWordFormat';
-import { Incident } from '@/types/Incident';
+import { Incident } from '@/types/incident/Incident';
 import {
     Listbox,
     ListboxButton,

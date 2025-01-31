@@ -45,6 +45,7 @@ class IncidentModelTest extends TestCase
         $this->assertNotNull($incident->witnesses);
         $this->assertNotNull($incident->injury_description);
         $this->assertNotNull($incident->first_aid_description);
+        $this->assertNotNull($incident->workers_comp_submitted);
         $this->assertNull($incident->reporters_email);
         $this->assertNull($incident->supervisor_name);
         $this->assertNull($incident->closed_at);
