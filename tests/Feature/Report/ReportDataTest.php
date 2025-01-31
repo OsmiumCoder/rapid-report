@@ -17,7 +17,7 @@ class ReportDataTest extends TestCase
 
         Incident::factory()->count(40)->create();
 
-        $response = $this->get(route('reports.index'));
+        $response = $this->get(route('report.index'));
 
         $response->assertStatus(200);
 
@@ -38,7 +38,7 @@ class ReportDataTest extends TestCase
 
         Incident::factory()->count(10)->create();
 
-        $response = $this->get(route('reports.index'));
+        $response = $this->get(route('report.index'));
 
         $response->assertForbidden();
     }
@@ -50,7 +50,7 @@ class ReportDataTest extends TestCase
 
         Incident::factory()->count(10)->create();
 
-        $response = $this->get(route('reports.index'));
+        $response = $this->get(route('report.index'));
 
         $response->assertForbidden();
     }
