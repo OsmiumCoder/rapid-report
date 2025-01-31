@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Incident;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 
@@ -47,7 +48,10 @@ class IncidentController extends Controller
             ->createIncident($incidentData)
             ->persist();
 
-        return to_route('incidents.show', ['incident' => $uuid]);
+        return Inertia::render('Incident/Created', [
+            'incident_id' => $uuid,
+            'can_view' => auth()->user()?->email == $incidentData->reporters_email,
+        ]);
     }
 
     /**

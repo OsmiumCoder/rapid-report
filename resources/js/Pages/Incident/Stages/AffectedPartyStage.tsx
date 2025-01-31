@@ -215,7 +215,7 @@ export default function AffectedPartyStage({
                             <input
                                 disabled={
                                     !formData.on_behalf &&
-                                    auth.user !== undefined &&
+                                    auth.user &&
                                     auth.user.phone !== undefined
                                 }
                                 type="tel"

@@ -16,10 +16,7 @@ import SupervisorStage from '@/Pages/Incident/Stages/SupervisorStage';
 import dateFormat from '@/Filters/dateFormat';
 import { useForm } from '@inertiajs/react';
 
-export default function Create({
-    form,
-    auth,
-}: PageProps<{ form: IncidentData }>) {
+export default function Create({ form }: PageProps<{ form: IncidentData }>) {
     const {
         data: formData,
         setData,

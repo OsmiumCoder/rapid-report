@@ -10,6 +10,7 @@ use App\Models\Incident;
 use App\Models\User;
 use App\States\IncidentStatus\Opened;
 use Illuminate\Validation\ValidationException;
+use Inertia\Testing\AssertableInertia;
 use Tests\TestCase;
 
 class StoreTest extends TestCase
@@ -51,7 +52,7 @@ class StoreTest extends TestCase
 
         $incidentCreatedEvent = CustomStoredEvent::first();
 
-        $this->assertEquals($user->id, $incidentCreatedEvent["meta_data"]["user_id"]);
+        $this->assertEquals($user->id, $incidentCreatedEvent['meta_data']['user_id']);
     }
 
     public function test_user_id_removed_from_event_if_anonymous()
@@ -138,7 +139,7 @@ class StoreTest extends TestCase
         $this->assertStringContainsStringIgnoringCase('incident', $comment->content);
     }
 
-    public function test_redirects_to_show_page(): void
+    public function test_redirects_to_created_page(): void
     {
         $incidentData = IncidentData::from([
             'anonymous' => false,
@@ -173,7 +174,11 @@ class StoreTest extends TestCase
 
         $incident = Incident::first();
 
-        $response->assertRedirectToRoute('incidents.show', ['incident' => $incident->id]);
+        $response->assertInertia(function (AssertableInertia $page) use ($incident) {
+            return $page->component('Incident/Created')
+                ->where('incident_id', $incident->id)
+                ->has('can_view');
+        });
     }
 
     public function test_throws_validation_error_for_bad_data(): void
