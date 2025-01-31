@@ -14,7 +14,7 @@ import {
 import WitnessStage from '@/Pages/Incident/Stages/WitnessStage';
 import SupervisorStage from '@/Pages/Incident/Stages/SupervisorStage';
 import dateFormat from '@/Filters/dateFormat';
-import { router, useForm } from '@inertiajs/react';
+import { useForm } from '@inertiajs/react';
 
 export default function Create({
     form,
@@ -25,8 +25,7 @@ export default function Create({
         setData,
         post,
         processing,
-    } = useForm<IncidentData>(form);
-    const { user } = auth;
+    } = useForm<Partial<IncidentData>>(form);
 
     const numberOfSteps = 6;
     const [remainingSteps, setRemainingSteps] = useState(numberOfSteps - 1);

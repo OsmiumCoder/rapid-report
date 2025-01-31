@@ -41,6 +41,9 @@ class IncidentController extends Controller
      */
     public function store(IncidentData $incidentData)
     {
+
+        dd($incidentData->witnesses);
+
         $uuid = Str::uuid()->toString();
 
         IncidentAggregateRoot::retrieve(uuid: $uuid)
