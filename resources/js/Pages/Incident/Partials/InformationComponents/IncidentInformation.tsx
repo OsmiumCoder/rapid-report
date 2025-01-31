@@ -1,5 +1,5 @@
 import dateTimeFormat from '@/Filters/dateTimeFormat';
-import { Incident } from '@/types/Incident';
+import { Incident } from '@/types/incident/Incident';
 
 export default function IncidentInformation({
     incident,
@@ -23,7 +23,7 @@ export default function IncidentInformation({
                     </div>
                     <div>
                         <span className="font-semibold">Location: </span>
-                        {incident.location}
+                        {incident.location ?? 'Not Provided'}
                     </div>
                     <div>
                         <span className="font-semibold">Room Number: </span>

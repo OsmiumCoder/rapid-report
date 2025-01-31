@@ -4,10 +4,10 @@ namespace App\Aggregates;
 
 use App\Data\CommentData;
 use App\Data\IncidentData;
-use App\Exceptions\UserNotSupervisorException;
-use App\Models\User;
 use App\Enum\CommentType;
+use App\Exceptions\UserNotSupervisorException;
 use App\Models\Incident;
+use App\Models\User;
 use App\StorableEvents\Comment\CommentCreated;
 use App\StorableEvents\Incident\IncidentClosed;
 use App\StorableEvents\Incident\IncidentCreated;
@@ -31,6 +31,7 @@ class IncidentAggregateRoot extends AggregateRoot
             email: $incidentData->email,
             phone: $incidentData->phone,
             work_related: $incidentData->work_related,
+            workers_comp: $incidentData->workers_comp,
             happened_at: $incidentData->happened_at,
             location: $incidentData->location,
             room_number: $incidentData->room_number,
@@ -54,7 +55,7 @@ class IncidentAggregateRoot extends AggregateRoot
     {
         $user = User::find($supervisorId);
 
-        if (!$user->hasRole('supervisor')) {
+        if (! $user->hasRole('supervisor')) {
             throw UserNotSupervisorException::hasRoles($user->getRoleNames());
         }
 

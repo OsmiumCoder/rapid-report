@@ -3,6 +3,7 @@ import { StageProps } from '@/Pages/Incident/Stages/StageWrapper';
 import { descriptors } from '@/Pages/Incident/Stages/IncidentDropDownValues';
 import ToggleSwitch from '@/Components/ToggleSwitch';
 import dateFormat from '@/Filters/dateFormat';
+import { usePage } from '@inertiajs/react';
 
 export default function IncidentInformationStage({
     formData,
@@ -10,18 +11,6 @@ export default function IncidentInformationStage({
     failedStep,
     setValidStep,
 }: StageProps) {
-    useEffect(() => {
-        handleValidStep();
-    });
-
-    const handleValidStep = () => {
-        if (formData.location === '') {
-            setValidStep(false);
-        } else {
-            setValidStep(true);
-        }
-    };
-
     return (
         <div className="min-w-0 flex-1 text-sm/6">
             <label className="flex justify-center font-bold text-lg text-gray-900">
@@ -37,8 +26,8 @@ export default function IncidentInformationStage({
                         type="date"
                         value={formData.happened_at ?? dateFormat(new Date())}
                         onChange={(e) => {
-                            setFormData('happened_at',e.target.value)}
-                    }
+                            setFormData('happened_at', e.target.value);
+                        }}
                         className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                     />
                 </div>
@@ -59,8 +48,8 @@ export default function IncidentInformationStage({
                 <ToggleSwitch
                     checked={formData.work_related ?? false}
                     onChange={(e) => {
-                        setFormData('work_related',e.valueOf())}
-                }
+                        setFormData('work_related', e.valueOf());
+                    }}
                 />
             </div>
 
@@ -81,20 +70,11 @@ export default function IncidentInformationStage({
                         aria-describedby="location-description"
                         required
                         value={formData.location ?? ''}
-                        onChange={(e) => {
-                            setFormData('location',e.target.value)
-                            handleValidStep();
-                        }}
+                        onChange={(e) =>
+                            setFormData('location', e.target.value)
+                        }
                         className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                     />
-                    {failedStep && formData.location === '' && (
-                        <p
-                            id="validation-error"
-                            className="mt-2 text-sm text-red-600"
-                        >
-                            *Please enter the location
-                        </p>
-                    )}
                 </div>
             </div>
 
@@ -112,8 +92,8 @@ export default function IncidentInformationStage({
                         required
                         value={formData.room_number ?? ''}
                         onChange={(e) => {
-                            setFormData('room_number',e.target.value)}
-                        }
+                            setFormData('room_number', e.target.value);
+                        }}
                         className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                     />
                 </div>
@@ -134,9 +114,12 @@ export default function IncidentInformationStage({
                         }
                         className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                         onChange={(e) => {
-                            setFormData('incident_type',descriptors.find(
-                                ({ name }) => name === e.target.value
-                            )?.value)
+                            setFormData(
+                                'incident_type',
+                                descriptors.find(
+                                    ({ name }) => name === e.target.value
+                                )?.value
+                            );
                         }}
                     >
                         {descriptors.map(({ name }, index) => (
@@ -156,7 +139,7 @@ export default function IncidentInformationStage({
                     <select
                         value={formData.descriptor}
                         onChange={(e) =>
-                            setFormData('descriptor',e.target.value)
+                            setFormData('descriptor', e.target.value)
                         }
                         className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                     >
@@ -183,7 +166,7 @@ export default function IncidentInformationStage({
                             required
                             value={formData.other_descriptor ?? ''}
                             onChange={(e) =>
-                                setFormData('other_descriptor',e.target.value)
+                                setFormData('other_descriptor', e.target.value)
                             }
                             className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                         />

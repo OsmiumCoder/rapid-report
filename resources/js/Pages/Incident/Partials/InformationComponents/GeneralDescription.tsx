@@ -1,4 +1,4 @@
-import { Incident } from '@/types/Incident';
+import { Incident } from '@/types/incident/Incident';
 import { IncidentType } from '@/Enums/IncidentType';
 import dateTimeFormat from '@/Filters/dateTimeFormat';
 
@@ -30,7 +30,7 @@ export default function GeneralDescription({
                     </div>
                     <div>
                         <span className="font-semibold">Description: </span>
-                        {incident.description}
+                        {incident.description ?? 'None Provided'}
                     </div>
                     <div>
                         <span className="font-semibold">Created at: </span>

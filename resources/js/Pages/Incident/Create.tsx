@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 import AffectedPartyStage from '@/Pages/Incident/Stages/AffectedPartyStage';
 import IncidentInformationStage from '@/Pages/Incident/Stages/IncidentInformationStage';
 import VictimInformationStage from '@/Pages/Incident/Stages/VictimInformationStage';
-import IncidentData from '@/types/IncidentData';
+import IncidentData from '@/types/incident/IncidentData';
 import {
     descriptors,
     roles,
@@ -57,7 +57,15 @@ export default function Create({
     };
 
     const submit = () => {
-        post(route('incidents.store'));
+        console.log(formData.workers_comp);
+        if (validStep) {
+            setFailedStep(false);
+            post(route('incidents.store'), {
+                onError: (err) => console.error(err),
+            });
+        } else {
+            setFailedStep(true);
+        }
     };
 
     useEffect(() => {
@@ -68,10 +76,9 @@ export default function Create({
         setFormData('anonymous', true);
         setFormData('on_behalf', false);
         setFormData('on_behalf_anonymous', true);
-        setFormData('witnesses', []);
         setFormData('work_related', false);
-        setFormData('location', '');
-        setFormData('description', '');
+        setFormData('has_injury', false);
+        setFormData('workers_comp', false);
     }, []);
 
     useEffect(() => {

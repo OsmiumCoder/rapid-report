@@ -1,6 +1,6 @@
 import { StageProps } from '@/Pages/Incident/Stages/StageWrapper';
 import React, { useState } from 'react';
-import Witness from '@/types/Witness';
+import Witness from '@/types/incident/Witness';
 import { PlusIcon } from '@heroicons/react/20/solid';
 import WitnessList from '@/Components/WitnessList';
 import validatePhoneInput from '@/Filters/validatePhoneInput';

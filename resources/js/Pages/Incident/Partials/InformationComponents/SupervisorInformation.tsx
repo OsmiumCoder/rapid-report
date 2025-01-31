@@ -1,4 +1,4 @@
-import { Incident } from '@/types/Incident';
+import { Incident } from '@/types/incident/Incident';
 
 export default function SupervisorInformation({
     incident,

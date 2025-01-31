@@ -1,4 +1,4 @@
-import Witness from '@/types/Witness';
+import Witness from '@/types/incident/Witness';
 import React from 'react';
 import { XMarkIcon } from '@heroicons/react/20/solid';
 

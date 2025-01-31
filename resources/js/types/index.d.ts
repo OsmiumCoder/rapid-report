@@ -5,6 +5,8 @@ export interface User {
     name: string;
     email: string;
     email_verified_at?: string;
+    upei_id: string;
+    phone?: string;
     roles: Role[];
 }
 

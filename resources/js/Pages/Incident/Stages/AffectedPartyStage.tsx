@@ -4,6 +4,8 @@ import React, { useEffect } from 'react';
 import ToggleSwitch from '@/Components/ToggleSwitch';
 import validatePhoneInput from '@/Filters/validatePhoneInput';
 import { usePage } from '@inertiajs/react';
+import { Incident } from '@/types/incident/Incident';
+import { User } from '@/types';
 
 export default function AffectedPartyStage({
     formData,
@@ -18,7 +20,24 @@ export default function AffectedPartyStage({
     });
 
     useEffect(() => {
+        if (auth.user && !formData.on_behalf) {
+            setFormData('email', auth.user.email);
+        }
+
         if (!formData.on_behalf && auth.user) {
+            const [firstName, lastName] = getNames();
+
+            setFormData('first_name', firstName);
+            setFormData('last_name', lastName);
+            setFormData('phone', auth.user.phone ?? '');
+            setFormData('email', auth.user.email ?? '');
+            setFormData('upei_id', auth.user.upei_id);
+        } else {
+            setFormData('first_name', '');
+            setFormData('last_name', '');
+            setFormData('email', '');
+            setFormData('phone', '');
+            setFormData('upei_id', '');
         }
     }, [formData.on_behalf]);
 
@@ -39,6 +58,13 @@ export default function AffectedPartyStage({
             (formData.phone == '' && formData.email == '')
         );
     }
+
+    const getNames = () => {
+        const names = auth.user.name.split(' ');
+        const firstName = names.length > 1 ? names[0] : auth.user.name;
+        const lastName = names.length > 1 ? names[names.length - 1] : '.';
+        return [firstName, lastName];
+    };
 
     return (
         <div className="min-w-0 flex-1 text-sm/6">
@@ -115,13 +141,20 @@ export default function AffectedPartyStage({
 
                         <div className="mt-1">
                             <input
-                                required
-                                value={formData.first_name ?? ''}
+                                disabled={
+                                    !formData.on_behalf &&
+                                    auth.user !== undefined
+                                }
+                                value={
+                                    !formData.on_behalf && auth.user
+                                        ? getNames()[0]
+                                        : formData.first_name
+                                }
                                 onChange={(e) => {
                                     setFormData('first_name', e.target.value);
                                     handleValidStep();
                                 }}
-                                className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                                className="disabled:opacity-60 block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                             />
                             {failedStep && formData.first_name == '' && (
                                 <p
@@ -144,13 +177,20 @@ export default function AffectedPartyStage({
 
                         <div className="mt-1">
                             <input
-                                required
-                                value={formData.last_name ?? ''}
+                                disabled={
+                                    !formData.on_behalf &&
+                                    auth.user !== undefined
+                                }
+                                value={
+                                    !formData.on_behalf && auth.user
+                                        ? getNames()[1]
+                                        : formData.last_name
+                                }
                                 onChange={(e) => {
                                     setFormData('last_name', e.target.value);
                                     handleValidStep();
                                 }}
-                                className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                                className="disabled:opacity-60 block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                             />
                             {failedStep && formData.last_name == '' && (
                                 <p
@@ -173,10 +213,18 @@ export default function AffectedPartyStage({
 
                         <div className="mt-1">
                             <input
-                                required
+                                disabled={
+                                    !formData.on_behalf &&
+                                    auth.user !== undefined &&
+                                    auth.user.phone !== undefined
+                                }
                                 type="tel"
                                 placeholder="123-456-7890"
-                                value={formData.phone ?? ''}
+                                value={
+                                    (!formData.on_behalf && auth.user
+                                        ? auth.user.phone
+                                        : formData.phone) ?? ''
+                                }
                                 onChange={(e) => {
                                     setFormData(
                                         'phone',
@@ -184,43 +232,44 @@ export default function AffectedPartyStage({
                                     );
                                     handleValidStep();
                                 }}
-                                className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                                className="disabled:opacity-60 block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                             />
                         </div>
                     </div>
+                    {(!auth.user || formData.on_behalf) && (
+                        <div className="mt-2">
+                            <div>
+                                <label className="block text-sm/6 font-medium text-gray-900">
+                                    Email
+                                </label>
+                            </div>
 
-                    <div className="mt-2">
-                        <div>
-                            <label className="block text-sm/6 font-medium text-gray-900">
-                                Email
-                            </label>
+                            <div className="mt-1">
+                                <input
+                                    required
+                                    type="email"
+                                    placeholder="name@example.com"
+                                    value={formData.email ?? ''}
+                                    onChange={(e) => {
+                                        setFormData('email', e.target.value);
+                                        handleValidStep();
+                                    }}
+                                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                                />
+                                {failedStep &&
+                                    formData.phone == '' &&
+                                    formData.email == '' && (
+                                        <p
+                                            id="validation-error"
+                                            className="mt-2 text-sm text-red-600"
+                                        >
+                                            *Please enter at least a phone
+                                            number or email
+                                        </p>
+                                    )}
+                            </div>
                         </div>
-
-                        <div className="mt-1">
-                            <input
-                                required
-                                type="email"
-                                placeholder="name@example.com"
-                                value={formData.email ?? ''}
-                                onChange={(e) => {
-                                    setFormData('email', e.target.value);
-                                    handleValidStep();
-                                }}
-                                className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                            />
-                            {failedStep &&
-                                formData.phone == '' &&
-                                formData.email == '' && (
-                                    <p
-                                        id="validation-error"
-                                        className="mt-2 text-sm text-red-600"
-                                    >
-                                        *Please enter at least a phone number or
-                                        email
-                                    </p>
-                                )}
-                        </div>
-                    </div>
+                    )}
 
                     <div className="mt-2">
                         <div>
@@ -264,12 +313,19 @@ export default function AffectedPartyStage({
 
                             <div className="mt-1">
                                 <input
-                                    required
-                                    value={formData.upei_id ?? ''}
+                                    disabled={
+                                        !formData.on_behalf &&
+                                        auth.user !== undefined
+                                    }
+                                    value={
+                                        !formData.on_behalf && auth.user
+                                            ? auth.user.upei_id
+                                            : formData.upei_id
+                                    }
                                     onChange={(e) =>
                                         setFormData('upei_id', e.target.value)
                                     }
-                                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                                    className="disabled:opacity-60 block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                                 />
                             </div>
                         </div>

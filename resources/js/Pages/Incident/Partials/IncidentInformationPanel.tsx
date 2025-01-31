@@ -1,4 +1,4 @@
-import { Incident } from '@/types/Incident';
+import { Incident } from '@/types/incident/Incident';
 import { uppercaseWordFormat } from '@/Filters/uppercaseWordFormat';
 import AffectedPartyInformation from '@/Pages/Incident/Partials/InformationComponents/AffectedPartyInformation';
 import GeneralDescription from '@/Pages/Incident/Partials/InformationComponents/GeneralDescription';
