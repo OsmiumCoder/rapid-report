@@ -10,9 +10,9 @@ export default function VictimInformationStage({
         if (
             !formData.work_related &&
             !formData.has_injury &&
-            formData.workers_comp
+            formData.workers_comp_submitted
         ) {
-            setFormData('workers_comp', false);
+            setFormData('workers_comp_submitted', false);
         }
     }, [formData.work_related, formData.has_injury]);
 
@@ -71,9 +71,9 @@ export default function VictimInformationStage({
                         </p>
                     </div>
                     <ToggleSwitch
-                        checked={formData.workers_comp ?? false}
+                        checked={formData.workers_comp_submitted ?? false}
                         onChange={(e) => {
-                            setFormData('workers_comp', e.valueOf());
+                            setFormData('workers_comp_submitted', e.valueOf());
                         }}
                     />
                 </div>

@@ -21,7 +21,7 @@ class IncidentData extends Data
         public ?string $email,
         public ?string $phone,
         public bool $work_related,
-        public bool $workers_comp,
+        public bool $workers_comp_submitted,
         #[WithCast(DateTimeInterfaceCast::class)]
         public ?Carbon $happened_at,
         public ?string $location,

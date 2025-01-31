@@ -24,6 +24,6 @@ export default interface IncidentData {
     witnesses: Witness[];
     work_related?: boolean;
     has_injury?: boolean;
-    workers_comp?: boolean;
+    workers_comp_submitted?: boolean;
     first_aid_applied?: boolean;
 }

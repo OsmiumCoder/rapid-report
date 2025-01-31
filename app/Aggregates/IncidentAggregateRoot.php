@@ -31,7 +31,7 @@ class IncidentAggregateRoot extends AggregateRoot
             email: $incidentData->email,
             phone: $incidentData->phone,
             work_related: $incidentData->work_related,
-            workers_comp: $incidentData->workers_comp,
+            workers_comp_submitted: $incidentData->workers_comp_submitted,
             happened_at: $incidentData->happened_at,
             location: $incidentData->location,
             room_number: $incidentData->room_number,

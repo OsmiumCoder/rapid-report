@@ -28,7 +28,7 @@ class IncidentFactory extends Factory
             'email' => fake()->email(),
             'phone' => fake()->phoneNumber(),
             'work_related' => fake()->boolean,
-            'workers_comp' => false,
+            'workers_comp_submitted' => false,
             'happened_at' => fake()->date(),
             'location' => fake()->address(),
             'room_number' => fake()->buildingNumber(),

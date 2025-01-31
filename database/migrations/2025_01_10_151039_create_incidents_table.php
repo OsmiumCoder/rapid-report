@@ -26,7 +26,7 @@ return new class () extends Migration {
             $table->string('phone')->nullable();
 
             $table->boolean('work_related');
-            $table->boolean('workers_comp');
+            $table->boolean('workers_comp_submitted');
 
             $table->datetime('happened_at')->nullable();
 

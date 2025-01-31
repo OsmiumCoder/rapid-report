@@ -22,7 +22,7 @@ class IncidentCreated extends StoredEvent
         public ?string $email,
         public ?string $phone,
         public bool $work_related,
-        public bool $workers_comp,
+        public bool $workers_comp_submitted,
         public Carbon $happened_at,
         public ?string $location,
         public ?string $room_number,
@@ -54,7 +54,7 @@ class IncidentCreated extends StoredEvent
         $incident->email = $this->email;
         $incident->phone = $this->phone;
         $incident->work_related = $this->work_related;
-        $incident->workers_comp = $this->workers_comp;
+        $incident->workers_comp_submitted = $this->workers_comp_submitted;
         $incident->happened_at = $this->happened_at;
         $incident->location = $this->location;
         $incident->room_number = $this->room_number;

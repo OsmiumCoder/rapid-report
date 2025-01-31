@@ -76,7 +76,7 @@ export default function Create({
         setFormData('on_behalf_anonymous', true);
         setFormData('work_related', false);
         setFormData('has_injury', false);
-        setFormData('workers_comp', false);
+        setFormData('workers_comp_submitted', false);
         setFormData('supervisor_name', '');
     }, []);
 

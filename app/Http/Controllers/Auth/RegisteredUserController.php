@@ -34,7 +34,8 @@ class RegisteredUserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'upei_id' => ['required']
+            'upei_id' => ['required', 'string'],
+            'phone' => ['sometimes', 'nullable', 'string'],
         ]);
 
         $user = User::create([

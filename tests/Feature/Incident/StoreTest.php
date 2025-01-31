@@ -31,7 +31,7 @@ class StoreTest extends TestCase
             'email' => null,
             'phone' => null,
             'work_related' => true,
-            'workers_comp' => true,
+            'workers_comp_submitted' => true,
             'happened_at' => now(),
             'location' => 'Building A',
             'room_number' => null,
@@ -71,7 +71,7 @@ class StoreTest extends TestCase
             'email' => null,
             'phone' => null,
             'work_related' => true,
-            'workers_comp' => true,
+            'workers_comp_submitted' => true,
             'happened_at' => now(),
             'location' => 'Building A',
             'room_number' => null,
@@ -107,7 +107,7 @@ class StoreTest extends TestCase
             'email' => 'john@doe.com',
             'phone' => '(902) 333-4444',
             'work_related' => true,
-            'workers_comp' => true,
+            'workers_comp_submitted' => true,
             'happened_at' => now(),
             'location' => 'Building A',
             'room_number' => '123A',
@@ -151,7 +151,7 @@ class StoreTest extends TestCase
             'email' => 'john@doe.com',
             'phone' => '(902) 333-4444',
             'work_related' => true,
-            'workers_comp' => true,
+            'workers_comp_submitted' => true,
             'happened_at' => now(),
             'location' => 'Building A',
             'room_number' => '123A',
@@ -184,7 +184,7 @@ class StoreTest extends TestCase
             'on_behalf_anonymous' => false,
             'role' => '',
             'work_related' => true,
-            'workers_comp' => true,
+            'workers_comp_submitted' => true,
             'happened_at' => now(),
             'incident_type' => '',
             'descriptor' => '',
@@ -215,7 +215,7 @@ class StoreTest extends TestCase
             'email' => null,
             'phone' => null,
             'work_related' => true,
-            'workers_comp' => true,
+            'workers_comp_submitted' => true,
             'happened_at' => now(),
             'location' => 'Building A',
             'room_number' => null,
@@ -276,7 +276,7 @@ class StoreTest extends TestCase
             'email' => 'john@doe.com',
             'phone' => '(902) 333-4444',
             'work_related' => true,
-            'workers_comp' => true,
+            'workers_comp_submitted' => true,
             'happened_at' => now(),
             'location' => 'Building A',
             'room_number' => '123A',
@@ -315,7 +315,7 @@ class StoreTest extends TestCase
             'email' => 'john@doe.com',
             'phone' => '(902) 333-4444',
             'work_related' => true,
-            'workers_comp' => true,
+            'workers_comp_submitted' => true,
             'happened_at' => now(),
             'location' => 'Building A',
             'room_number' => '123A',
@@ -348,7 +348,7 @@ class StoreTest extends TestCase
         $this->assertEquals($incidentData->email, $incident->email);
         $this->assertEquals($incidentData->phone, $incident->phone);
         $this->assertEquals($incidentData->work_related, $incident->work_related);
-        $this->assertEquals($incidentData->workers_comp, $incident->workers_comp);
+        $this->assertEquals($incidentData->workers_comp_submitted, $incident->workers_comp_submitted);
         $this->assertEquals($incidentData->happened_at, $incident->happened_at);
         $this->assertEquals($incidentData->location, $incident->location);
         $this->assertEquals($incidentData->room_number, $incident->room_number);

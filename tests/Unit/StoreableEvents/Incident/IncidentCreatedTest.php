@@ -27,7 +27,7 @@ class IncidentCreatedTest extends TestCase
             email: 'john@doe.com',
             phone: '(902) 333-4444',
             work_related: true,
-            workers_comp: true,
+            workers_comp_submitted: true,
             happened_at: now(),
             location: 'Building A',
             room_number: '123A',
@@ -73,7 +73,7 @@ class IncidentCreatedTest extends TestCase
             email: 'john@doe.com',
             phone: '(902) 333-4444',
             work_related: true,
-            workers_comp: true,
+            workers_comp_submitted: true,
             happened_at: now(),
             location: 'Building A',
             room_number: '123A',
@@ -105,7 +105,7 @@ class IncidentCreatedTest extends TestCase
         $this->assertEquals($event->email, $incident->email);
         $this->assertEquals($event->phone, $incident->phone);
         $this->assertTrue($event->work_related, $incident->work_related);
-        $this->assertTrue($event->workers_comp, $incident->workers_comp);
+        $this->assertTrue($event->workers_comp_submitted, $incident->workers_comp_submitted);
         $this->assertEquals($event->happened_at, $incident->happened_at);
         $this->assertEquals($event->location, $incident->location);
         $this->assertEquals($event->room_number, $incident->room_number);
@@ -136,7 +136,7 @@ class IncidentCreatedTest extends TestCase
             email: null,
             phone: null,
             work_related: true,
-            workers_comp: true,
+            workers_comp_submitted: true,
             happened_at: now(),
             location: 'Building A',
             room_number: null,
@@ -168,7 +168,7 @@ class IncidentCreatedTest extends TestCase
         $this->assertNull($incident->email);
         $this->assertNull($incident->phone);
         $this->assertEquals($event->work_related, $incident->work_related);
-        $this->assertTrue($event->workers_comp, $incident->workers_comp);
+        $this->assertTrue($event->workers_comp_submitted, $incident->workers_comp_submitted);
         $this->assertEquals($event->happened_at, $incident->happened_at);
         $this->assertEquals($event->location, $incident->location);
         $this->assertNull($incident->room_number);

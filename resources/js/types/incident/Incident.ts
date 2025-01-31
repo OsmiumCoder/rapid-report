@@ -15,7 +15,7 @@ export interface Incident {
     email?: string;
     phone?: string;
     work_related: boolean;
-    workers_comp: boolean;
+    workers_comp_submitted: boolean;
     happened_at: string;
     location?: string;
     room_number?: string;
