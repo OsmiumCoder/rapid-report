@@ -174,9 +174,10 @@ class StoreTest extends TestCase
 
         $incident = Incident::first();
 
-        $response->assertInertia(function (AssertableInertia $page) {
+        $response->assertInertia(function (AssertableInertia $page) use ($incident) {
             return $page->component('Incident/Created')
-                ->has('incident_id');
+                ->where('incident_id', $incident->id)
+                ->has('can_view');
         });
     }
 
