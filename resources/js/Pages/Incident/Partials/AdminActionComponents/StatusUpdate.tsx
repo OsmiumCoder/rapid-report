@@ -1,4 +1,4 @@
-import { Incident } from '@/types/Incident';
+import { Incident } from '@/types/incident/Incident';
 import { IncidentStatus } from '@/Enums/IncidentStatus';
 import PrimaryButton from '@/Components/PrimaryButton';
 import { router } from '@inertiajs/react';

@@ -2,6 +2,7 @@ import { StageProps } from '@/Pages/Incident/Stages/StageWrapper';
 import React from 'react';
 import ToggleSwitch from '@/Components/ToggleSwitch';
 import { isValidEmail } from '@/Filters/isValidEmail';
+import { usePage } from '@inertiajs/react';
 
 export default function AnonymousStage({
     formData,
@@ -9,6 +10,8 @@ export default function AnonymousStage({
     failedStep,
     setValidStep,
 }: StageProps) {
+    const { auth } = usePage().props;
+
     return (
         <div className="flex-1 space-y-4 divide-y">
             <div>
@@ -22,9 +25,12 @@ export default function AnonymousStage({
                     <ToggleSwitch
                         checked={formData.anonymous ?? false}
                         onChange={(e) => {
-                            setFormData('anonymous', e.valueOf())
+                            setFormData('anonymous', e.valueOf());
 
-                            if (
+                            if (!e.valueOf() && auth.user) {
+                                setFormData('reporters_email', auth.user.email);
+                                setValidStep(true);
+                            } else if (
                                 (formData.reporters_email === '' ||
                                     isValidEmail(
                                         formData.reporters_email ?? ''
@@ -50,11 +56,19 @@ export default function AnonymousStage({
                         <div className="mt-2">
                             <input
                                 type="email"
-                                value={formData.reporters_email ?? ''}
+                                disabled={auth.user !== null}
+                                value={
+                                    auth.user
+                                        ? auth.user.email
+                                        : (formData.reporters_email ?? '')
+                                }
                                 onChange={(e) => {
-                                    setFormData('reporters_email',e.target.value)
+                                    setFormData(
+                                        'reporters_email',
+                                        e.target.value
+                                    );
                                     if (
-                                        e.target.value != '' &&
+                                        e.target.value !== '' &&
                                         isValidEmail(e.target.value)
                                     ) {
                                         setValidStep(true);
@@ -63,7 +77,7 @@ export default function AnonymousStage({
                                     }
                                 }}
                                 placeholder="example@email.com"
-                                className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                                className="block disabled:opacity-60 w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                             />
                             {failedStep && (
                                 <p

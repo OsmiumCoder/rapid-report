@@ -2,11 +2,11 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import AdminActions from '@/Pages/Incident/Partials/AdminActions';
 import ActivityLog from '@/Pages/Incident/Partials/ActivityLog';
 import IncidentHeader from '@/Pages/Incident/Partials/IncidentHeader';
-import {Head, useForm} from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
 import { PageProps, User } from '@/types';
 import IncidentInformationPanel from '@/Pages/Incident/Partials/IncidentInformationPanel';
-import { Incident } from '@/types/Incident';
-import {FormEvent} from "react";
+import { Incident } from '@/types/incident/Incident';
+import { FormEvent } from 'react';
 
 interface ShowProps extends PageProps {
     incident: Incident;
@@ -21,15 +21,15 @@ export default function Show({
     const user = auth.user;
 
     const { data, setData, post, processing, reset } = useForm({
-        content: ''
-    })
+        content: '',
+    });
 
     function addComment(e: FormEvent<HTMLFormElement>) {
-        e.preventDefault()
-        post(route('incidents.comments.store', {incident: incident.id}), {
+        e.preventDefault();
+        post(route('incidents.comments.store', { incident: incident.id }), {
             preserveScroll: true,
-            onSuccess: () => reset()
-        })
+            onSuccess: () => reset(),
+        });
     }
 
     return (

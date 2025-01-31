@@ -3,8 +3,6 @@ import { InformationCircleIcon } from '@heroicons/react/20/solid';
 import dateTimeFormat from '@/Filters/dateTimeFormat';
 
 export default function ActionComment({ comment }: { comment: Comment }) {
-    console.log(comment);
-
     return (
         <>
             <div className="relative flex size-6 flex-none items-center justify-center bg-white">

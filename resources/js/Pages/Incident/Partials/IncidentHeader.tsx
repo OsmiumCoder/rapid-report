@@ -1,6 +1,6 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { EllipsisVerticalIcon } from '@heroicons/react/20/solid';
-import { Incident } from '@/types/Incident';
+import { Incident } from '@/types/incident/Incident';
 
 export default function IncidentHeader({ incident }: { incident: Incident }) {
     return (

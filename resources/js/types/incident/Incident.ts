@@ -1,5 +1,5 @@
 import { IncidentStatus } from '@/Enums/IncidentStatus';
-import { User } from '@/types/index';
+import { User } from '@/types';
 import { IncidentType } from '@/Enums/IncidentType';
 import { Comment } from '@/types/Comment';
 
@@ -15,14 +15,15 @@ export interface Incident {
     email?: string;
     phone?: string;
     work_related: boolean;
+    workers_comp_submitted: boolean;
     happened_at: string;
-    location: string;
+    location?: string;
     room_number?: string;
     reported_to?: string;
     witnesses?: string[];
     incident_type: IncidentType;
     descriptor: string;
-    description: string;
+    description?: string;
     injury_description?: string;
     first_aid_description?: string;
     reporters_email?: string;

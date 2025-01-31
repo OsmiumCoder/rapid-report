@@ -26,10 +26,11 @@ return new class () extends Migration {
             $table->string('phone')->nullable();
 
             $table->boolean('work_related');
+            $table->boolean('workers_comp_submitted');
 
-            $table->datetime('happened_at');
+            $table->datetime('happened_at')->nullable();
 
-            $table->string('location');
+            $table->string('location')->nullable();
 
             $table->string('room_number')->nullable();
 
@@ -38,7 +39,7 @@ return new class () extends Migration {
             $table->integer('incident_type');
             $table->string('descriptor');
 
-            $table->string('description');
+            $table->string('description')->nullable();
 
             $table->string('injury_description')->nullable();
 

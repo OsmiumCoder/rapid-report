@@ -1,24 +1,21 @@
 import { StageProps } from '@/Pages/Incident/Stages/StageWrapper';
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import ToggleSwitch from '@/Components/ToggleSwitch';
 
 export default function VictimInformationStage({
     formData,
     setFormData,
-    setValidStep,
-    failedStep,
 }: StageProps) {
     useEffect(() => {
-        handleValidStep();
-    });
-
-    const handleValidStep = () => {
-        if (formData.description === '') {
-            setValidStep(false);
-        } else {
-            setValidStep(true);
+        if (
+            !formData.work_related &&
+            !formData.has_injury &&
+            formData.workers_comp_submitted
+        ) {
+            setFormData('workers_comp_submitted', false);
         }
-    };
+    }, [formData.work_related, formData.has_injury]);
+
     return (
         <div className="min-w-0 flex-1 text-sm/6">
             <label className="flex justify-center font-bold text-lg text-gray-900">
@@ -35,8 +32,8 @@ export default function VictimInformationStage({
                 <ToggleSwitch
                     checked={formData.has_injury ?? false}
                     onChange={(e) => {
-                        setFormData('has_injury',e.valueOf())}
-                    }
+                        setFormData('has_injury', e.valueOf());
+                    }}
                 />
             </div>
 
@@ -52,11 +49,33 @@ export default function VictimInformationStage({
                             rows={4}
                             value={formData.injury_description ?? ''}
                             onChange={(e) =>
-                                setFormData('injury_description',e.target.value)
+                                setFormData(
+                                    'injury_description',
+                                    e.target.value
+                                )
                             }
                             className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                         />
                     </div>
+                </div>
+            )}
+
+            {formData.work_related && formData.has_injury && (
+                <div className="flex mt-2">
+                    <div className="min-w-0 flex-1 text-sm/6">
+                        <label className="font-medium text-gray-900">
+                            Workers Compensation Claim
+                        </label>
+                        <p className="text-xs text-gray-500">
+                            Has a Workers Compensation claim been submitted?
+                        </p>
+                    </div>
+                    <ToggleSwitch
+                        checked={formData.workers_comp_submitted ?? false}
+                        onChange={(e) => {
+                            setFormData('workers_comp_submitted', e.valueOf());
+                        }}
+                    />
                 </div>
             )}
 
@@ -72,8 +91,8 @@ export default function VictimInformationStage({
                 <ToggleSwitch
                     checked={formData.first_aid_applied ?? false}
                     onChange={(e) => {
-                        setFormData('first_aid_applied',e.valueOf())}
-                    }
+                        setFormData('first_aid_applied', e.valueOf());
+                    }}
                 />
             </div>
             {formData.first_aid_applied && (
@@ -88,7 +107,10 @@ export default function VictimInformationStage({
                             rows={4}
                             value={formData.first_aid_description ?? ''}
                             onChange={(e) =>
-                                setFormData('first_aid_description',e.target.value)
+                                setFormData(
+                                    'first_aid_description',
+                                    e.target.value
+                                )
                             }
                             className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                         />
@@ -108,19 +130,10 @@ export default function VictimInformationStage({
                         rows={4}
                         value={formData.description ?? ''}
                         onChange={(e) => {
-                            handleValidStep();
-                            setFormData('description',e.target.value)}
-                        }
+                            setFormData('description', e.target.value);
+                        }}
                         className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                     />
-                    {failedStep && formData.description === '' && (
-                        <p
-                            id="validation-error"
-                            className="mt-2 text-sm text-red-600"
-                        >
-                            *Please enter the description of the incident.
-                        </p>
-                    )}
                 </div>
             </div>
         </div>

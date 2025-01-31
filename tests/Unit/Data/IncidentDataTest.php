@@ -27,6 +27,7 @@ class IncidentDataTest extends TestCase
             'email' => 'john@doe.com',
             'phone' => '(902) 333-4444',
             'work_related' => true,
+            'workers_comp_submitted' => true,
             'happened_at' => $incidentDate,
             'location' => 'Building A',
             'room_number' => '123A',
@@ -57,11 +58,10 @@ class IncidentDataTest extends TestCase
             'on_behalf_anonymous' => false,
             'role' => 0,
             'work_related' => true,
+            'workers_comp_submitted' => true,
             'happened_at' => $incidentDate,
-            'location' => '',
             'incident_type' => IncidentType::SAFETY,
             'descriptor' => '',
-            'description' => '',
         ]);
     }
 }
