@@ -15,7 +15,10 @@ class ReportController extends Controller
      */
     public function index(): \Inertia\Response
     {
-        $this->authorize('viewAll', ReportPolicy::class);
+        if (!auth()->user()->can('view reports')) {
+            abort(403);
+        }
+
         return Inertia::render('Reports/Show', [
             'incidents' => Incident::all(),
         ]);
