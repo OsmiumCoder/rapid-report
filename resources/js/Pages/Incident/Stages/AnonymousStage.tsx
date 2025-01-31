@@ -12,7 +12,6 @@ export default function AnonymousStage({
 }: StageProps) {
     const { auth } = usePage().props;
 
-    console.log(auth.user);
     return (
         <div className="flex-1 space-y-4 divide-y">
             <div>

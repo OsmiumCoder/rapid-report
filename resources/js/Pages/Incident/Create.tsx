@@ -57,7 +57,6 @@ export default function Create({
     };
 
     const submit = () => {
-        console.log(formData.workers_comp);
         if (validStep) {
             setFailedStep(false);
             post(route('incidents.store'), {
