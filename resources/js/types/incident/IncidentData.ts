@@ -1,4 +1,4 @@
-import Witness from '@/types/incident/Witness';
+import { Witness } from '@/types/incident/Witness';
 
 export default interface IncidentData {
     anonymous?: boolean;

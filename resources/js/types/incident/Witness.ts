@@ -1,5 +1,5 @@
-export default interface Witness {
+export type Witness = {
     name: string;
     email: string;
     phone: string;
-}
+};

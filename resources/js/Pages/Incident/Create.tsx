@@ -14,17 +14,15 @@ import {
 import WitnessStage from '@/Pages/Incident/Stages/WitnessStage';
 import SupervisorStage from '@/Pages/Incident/Stages/SupervisorStage';
 import dateFormat from '@/Filters/dateFormat';
-import { router, useForm } from '@inertiajs/react';
+import { useForm } from '@inertiajs/react';
 
-export default function Create({
-    form,
-}: PageProps<{ form: IncidentData }>) {
+export default function Create({ form }: PageProps<{ form: IncidentData }>) {
     const {
         data: formData,
         setData,
         post,
         processing,
-    } = useForm<IncidentData>(form);
+    } = useForm<Partial<IncidentData>>(form);
 
     const numberOfSteps = 6;
     const [remainingSteps, setRemainingSteps] = useState(numberOfSteps - 1);
