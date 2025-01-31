@@ -15,8 +15,10 @@ export default function SupervisorStage({
     });
 
     const handleValidStep = () => {
-        if (auth.user && formData.supervisor_name?.length === 0) {
-            // setValidStep(false);
+        if (auth.user !== null && formData.supervisor_name?.length === 0) {
+            setValidStep(false);
+        } else {
+            setValidStep(true);
         }
     };
 
@@ -43,6 +45,7 @@ export default function SupervisorStage({
                         value={formData.supervisor_name ?? ''}
                         onChange={(e) => {
                             setFormData('supervisor_name', e.target.value);
+                            handleValidStep();
                         }}
                         className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                     />

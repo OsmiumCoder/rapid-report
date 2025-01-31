@@ -58,7 +58,6 @@ export default function Create({
 
     const submit = () => {
         if (validStep) {
-            setFailedStep(false);
             post(route('incidents.store'), {
                 onError: (err) => console.error(err),
             });
@@ -78,6 +77,7 @@ export default function Create({
         setFormData('work_related', false);
         setFormData('has_injury', false);
         setFormData('workers_comp', false);
+        setFormData('supervisor_name', '');
     }, []);
 
     useEffect(() => {
