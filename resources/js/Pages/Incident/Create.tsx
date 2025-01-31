@@ -18,7 +18,6 @@ import { router, useForm } from '@inertiajs/react';
 
 export default function Create({
     form,
-    auth,
 }: PageProps<{ form: IncidentData }>) {
     const {
         data: formData,
@@ -26,7 +25,6 @@ export default function Create({
         post,
         processing,
     } = useForm<IncidentData>(form);
-    const { user } = auth;
 
     const numberOfSteps = 6;
     const [remainingSteps, setRemainingSteps] = useState(numberOfSteps - 1);
