@@ -30,7 +30,6 @@ class IncidentPolicy
      */
     public function view(User $user, Incident $incident): bool
     {
-        dd("incident");
         if ($user->can('view all incidents')) {
             return true;
         }

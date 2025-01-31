@@ -17,7 +17,7 @@ class ReportDataTest extends TestCase
         $response = $this->get(route('reports.show'));
         $response->assertStatus(200);
         $response->assertInertia(function (AssertableInertia $page) {
-            $page->component('Reports/Show')
+            $page->component('Report/Index')
                 ->has('incidents', 40);
         });
     }
