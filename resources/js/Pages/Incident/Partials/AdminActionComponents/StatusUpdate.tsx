@@ -83,8 +83,8 @@ export default function StatusUpdate({ incident }: { incident: Incident }) {
                             <PrimaryButton
                                 onClick={() =>
                                     setModalProps({
-                                        title: 'Reassign Incident',
-                                        text: `Are you sure you want to reassign this incident to ${incident.supervisor?.name}?`,
+                                        title: 'Request Re-Investigation',
+                                        text: `Are you sure you want to request ${incident.supervisor?.name} to further investigate this incident? They will be reassigned and notified.`,
                                         action: () =>
                                             incident.supervisor_id &&
                                             assignSupervisor(
@@ -96,7 +96,7 @@ export default function StatusUpdate({ incident }: { incident: Incident }) {
                                     })
                                 }
                             >
-                                Reassign {incident.supervisor?.name}
+                                Request Re-Investigation
                             </PrimaryButton>
                         )}
                     </>

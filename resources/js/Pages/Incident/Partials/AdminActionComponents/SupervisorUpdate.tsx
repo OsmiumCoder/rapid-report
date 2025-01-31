@@ -116,7 +116,7 @@ export default function SupervisorUpdate({
                                 );
                             }}
                         >
-                            Clear
+                            Unassign
                         </SecondaryButton>
                     ) : (
                         <></>
