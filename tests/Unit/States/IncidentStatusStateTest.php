@@ -13,6 +13,22 @@ use Tests\TestCase;
 
 class IncidentStatusStateTest extends TestCase
 {
+    public function test_incident_in_open_to_closed_state()
+    {
+        $incident = Incident::factory()->create();
+        $incident->status->transitionTo(Closed::class);
+        $this->assertEquals(Closed::class, $incident->status::class);
+    }
+
+    public function test_incident_assigned_to_closed_state()
+    {
+        $incident = Incident::factory()->create([
+            'status' => Assigned::class,
+        ]);
+        $incident->status->transitionTo(Closed::class);
+        $this->assertEquals(Closed::class, $incident->status::class);
+    }
+
     public function test_incident_state_is_opened_on_creation()
     {
         $incident = Incident::factory()->create();
@@ -129,16 +145,6 @@ class IncidentStatusStateTest extends TestCase
 
         $this->expectException(TransitionNotFound::class);
         $incident->status->transitionTo(Reopened::class);
-    }
-
-    public function test_incident_assigned_to_closed_state_throws_exception()
-    {
-        $incident = Incident::factory()->create([
-            'status' => Assigned::class,
-        ]);
-
-        $this->expectException(TransitionNotFound::class);
-        $incident->status->transitionTo(Closed::class);
     }
 
     public function test_incident_in_review_to_reopened_state_throws_exception()
