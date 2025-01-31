@@ -7,12 +7,12 @@ import { usePage } from '@inertiajs/react';
 export default function AnonymousStage({
     formData,
     setFormData,
-    validStep,
+    failedStep,
     setValidStep,
 }: StageProps) {
     const { auth } = usePage().props;
 
-    console.log(validStep);
+    console.log(auth.user);
     return (
         <div className="flex-1 space-y-4 divide-y">
             <div>
@@ -57,7 +57,7 @@ export default function AnonymousStage({
                         <div className="mt-2">
                             <input
                                 type="email"
-                                disabled={auth.user !== undefined}
+                                disabled={auth.user !== null}
                                 value={
                                     auth.user
                                         ? auth.user.email
@@ -78,9 +78,9 @@ export default function AnonymousStage({
                                     }
                                 }}
                                 placeholder="example@email.com"
-                                className="block disabled:opacity-60 disabled:select-none w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                                className="block disabled:opacity-60 w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                             />
-                            {!validStep && (
+                            {failedStep && (
                                 <p
                                     id="validation-error"
                                     className="mt-2 text-sm text-red-600"
