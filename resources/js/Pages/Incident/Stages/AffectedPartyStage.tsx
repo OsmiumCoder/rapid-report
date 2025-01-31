@@ -24,7 +24,7 @@ export default function AffectedPartyStage({
             setFormData('email', auth.user.email);
         }
 
-        if (!formData.on_behalf && auth.user) {
+        if (!formData.anonymous && !formData.on_behalf && auth.user) {
             const [firstName, lastName] = getNames();
 
             setFormData('first_name', firstName);
