@@ -138,8 +138,6 @@ export default function Index({ incidents, indexType }: IndexProps) {
             )
             .flat();
 
-        console.log(processedFilters);
-
         router.get(
             route(`incidents.${indexType === 'all' ? 'index' : indexType}`),
             {

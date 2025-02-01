@@ -6,8 +6,6 @@ use App\Models\Incident;
 use App\Models\User;
 use Tests\TestCase;
 
-use function PHPUnit\Framework\assertEquals;
-
 class IncidentTest extends TestCase
 {
     public function test_incident_filter()
