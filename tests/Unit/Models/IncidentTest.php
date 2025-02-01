@@ -8,7 +8,7 @@ use Tests\TestCase;
 
 use function PHPUnit\Framework\assertEquals;
 
-class IncidentModelTest extends TestCase
+class IncidentTest extends TestCase
 {
     public function test_incident_filter()
     {
@@ -32,7 +32,7 @@ class IncidentModelTest extends TestCase
 
         $incidents = Incident::filter($filters)->get();
 
-        assertEquals($incidents->count(), 2);
+        $this->assertEquals($incidents->count(), 2);
 
         $incidents->each(fn ($incident) => assertEquals($incident->descriptor, 'a'));
     }
@@ -58,16 +58,16 @@ class IncidentModelTest extends TestCase
 
         $incidents = Incident::sort('name', 'asc')->get();
 
-        assertEquals($incidents->count(), 3);
+        $this->assertEquals($incidents->count(), 3);
 
-        assertEquals($incidents[0]->first_name, 'a');
-        assertEquals($incidents[0]->last_name, 'a');
+        $this->assertEquals($incidents[0]->first_name, 'a');
+        $this->assertEquals($incidents[0]->last_name, 'a');
 
-        assertEquals($incidents[1]->first_name, 'a');
-        assertEquals($incidents[1]->last_name, 'b');
+        $this->assertEquals($incidents[1]->first_name, 'a');
+        $this->assertEquals($incidents[1]->last_name, 'b');
 
-        assertEquals($incidents[2]->first_name, 'b');
-        assertEquals($incidents[2]->last_name, 'a');
+        $this->assertEquals($incidents[2]->first_name, 'b');
+        $this->assertEquals($incidents[2]->last_name, 'a');
     }
     public function test_incident_sort_method()
     {
@@ -87,8 +87,8 @@ class IncidentModelTest extends TestCase
 
         $incidents = Incident::sort('descriptor', 'asc')->get();
 
-        assertEquals($incidents->count(), 3);
-        assertEquals($incidents->first()->descriptor, 'a');
+        $this->assertEquals($incidents->count(), 3);
+        $this->assertEquals($incidents->first()->descriptor, 'a');
     }
     public function test_incident_with_assigned_supervisor_returns_supervisor_user()
     {
