@@ -9,6 +9,214 @@ use Tests\TestCase;
 
 class IndexTest extends TestCase
 {
+    public function test_owned_route_filters_incidents()
+    {
+        $email = 'a@b.com';
+        $user = User::factory()->create(['email' => $email])->assignRole('user');
+        $this->actingAs($user);
+
+        Incident::factory()->create(['descriptor' => 'a', 'reporters_email' => $email]);
+        Incident::factory()->create(['descriptor' => 'b', 'reporters_email' => $email]);
+
+        $this->assertDatabaseCount('incidents', 2);
+
+        $response = $this->get(route(
+            'incidents.owned',
+            ['filters' => urlencode(json_encode(
+                [
+                    ['column' => 'descriptor', 'value' => 'a', 'comparator' => '=' ]
+                ]
+            ))
+            ]
+        ));
+
+        $response->assertOk();
+
+        $response->assertInertia(
+            fn (AssertableInertia $page) => $page
+                ->component('Incident/Index')
+                ->has(
+                    'incidents',
+                    fn (AssertableInertia $incidents) => $incidents
+                        ->has('data', 1)
+                        ->has(
+                            'data.0',
+                            fn (AssertableInertia $incident) => $incident
+                                ->where('descriptor', 'a')
+                                ->whereNot('descriptor', 'b')
+                                ->etc()
+                        )->etc()
+                )
+        );
+    }
+    public function test_assigned_route_filters_incidents()
+    {
+        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $this->actingAs($supervisor);
+
+        Incident::factory()->create(['descriptor' => 'a', 'supervisor_id' => $supervisor->id]);
+        Incident::factory()->create(['descriptor' => 'b', 'supervisor_id' => $supervisor->id]);
+
+        $this->assertDatabaseCount('incidents', 2);
+
+        $response = $this->get(route(
+            'incidents.assigned',
+            ['filters' => urlencode(json_encode(
+                [
+                    ['column' => 'descriptor', 'value' => 'a', 'comparator' => '=' ]
+                ]
+            ))
+            ]
+        ));
+
+        $response->assertOk();
+
+        $response->assertInertia(
+            fn (AssertableInertia $page) => $page
+                ->component('Incident/Index')
+                ->has(
+                    'incidents',
+                    fn (AssertableInertia $incidents) => $incidents
+                        ->has('data', 1)
+                        ->has(
+                            'data.0',
+                            fn (AssertableInertia $incident) => $incident
+                                ->where('descriptor', 'a')
+                                ->whereNot('descriptor', 'b')
+                                ->etc()
+                        )->etc()
+                )
+        );
+    }
+    public function test_index_route_filters_incidents()
+    {
+        $admin = User::factory()->create()->assignRole('admin');
+        $this->actingAs($admin);
+
+        Incident::factory()->create(['descriptor' => 'a']);
+        Incident::factory()->create(['descriptor' => 'b']);
+
+        $this->assertDatabaseCount('incidents', 2);
+
+        $response = $this->get(route(
+            'incidents.index',
+            ['filters' => urlencode(json_encode(
+                [
+                    ['column' => 'descriptor', 'value' => 'a', 'comparator' => '=' ]
+                ]
+            ))
+            ]
+        ));
+
+        $response->assertOk();
+
+        $response->assertInertia(
+            fn (AssertableInertia $page) => $page
+                ->component('Incident/Index')
+                ->has(
+                    'incidents',
+                    fn (AssertableInertia $incidents) => $incidents
+                        ->has('data', 1)
+                        ->has(
+                            'data.0',
+                            fn (AssertableInertia $incident) => $incident
+                                ->where('descriptor', 'a')
+                                ->whereNot('descriptor', 'b')
+                                ->etc()
+                        )->etc()
+                )
+        );
+    }
+    public function test_assigned_route_sorts_incidents()
+    {
+        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $this->actingAs($supervisor);
+
+        Incident::factory()->create(['descriptor' => 'a', 'supervisor_id' => $supervisor->id]);
+        Incident::factory()->create(['descriptor' => 'b', 'supervisor_id' => $supervisor->id]);
+
+        $this->assertDatabaseCount('incidents', 2);
+
+        $response = $this->get(route('incidents.assigned', ['sortBy' => 'descriptor', 'sortDirection' => 'asc']));
+
+        $response->assertOk();
+
+        $response->assertInertia(
+            fn (AssertableInertia $page) => $page
+                ->component('Incident/Index')
+                ->has(
+                    'incidents',
+                    fn (AssertableInertia $incidents) => $incidents
+                        ->has(
+                            'data.0',
+                            fn (AssertableInertia $incident) => $incident
+                                ->where('descriptor', 'a')
+                                ->etc()
+                        )->etc()
+                )
+        );
+    }
+    public function test_owned_route_sorts_incidents()
+    {
+        $email = 'a@b.com';
+        $user = User::factory()->create(['email' => $email])->assignRole('user');
+        $this->actingAs($user);
+
+        Incident::factory()->create(['descriptor' => 'a', 'reporters_email' => $email]);
+        Incident::factory()->create(['descriptor' => 'b', 'reporters_email' => $email]);
+
+        $this->assertDatabaseCount('incidents', 2);
+
+        $response = $this->get(route('incidents.owned', ['sortBy' => 'descriptor', 'sortDirection' => 'asc']));
+
+        $response->assertOk();
+
+        $response->assertInertia(
+            fn (AssertableInertia $page) => $page
+                ->component('Incident/Index')
+                ->has(
+                    'incidents',
+                    fn (AssertableInertia $incidents) => $incidents
+                        ->has(
+                            'data.0',
+                            fn (AssertableInertia $incident) => $incident
+                                ->where('descriptor', 'a')
+                                ->etc()
+                        )->etc()
+                )
+        );
+    }
+    public function test_index_route_sorts_incidents()
+    {
+        $admin = User::factory()->create()->assignRole('admin');
+        $this->actingAs($admin);
+
+        Incident::factory()->create(['descriptor' => 'a']);
+        Incident::factory()->create(['descriptor' => 'b']);
+
+        $this->assertDatabaseCount('incidents', 2);
+
+        $response = $this->get(route('incidents.index', ['sortBy' => 'descriptor', 'sortDirection' => 'asc']));
+
+        $response->assertOk();
+
+        $response->assertInertia(
+            fn (AssertableInertia $page) => $page
+                ->component('Incident/Index')
+                ->has(
+                    'incidents',
+                    fn (AssertableInertia $incidents) => $incidents
+                        ->has(
+                            'data.0',
+                            fn (AssertableInertia $incident) => $incident
+                            ->where('descriptor', 'a')
+                            ->etc()
+                        )->etc()
+                )
+        );
+
+    }
+
     public function test_assigned_incidents_is_paginated()
     {
         $email = 'email@b.com';

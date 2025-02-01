@@ -21,25 +21,12 @@ class IncidentController extends Controller
         $this->authorize('viewAny', Incident::class);
 
         $filters = json_decode(urldecode($request->query('filters')), true);
+
         $sortBy = $request->query('sort_by', 'created_at');
         $sortDirection = $request->query('sort_direction', 'desc');
 
-        if ($sortBy == 'name') {
-            $incidents = Incident::orderBy('first_name', $sortDirection)->orderBy('last_name', $sortDirection);
-        } else {
-            $incidents = Incident::orderBy($sortBy, $sortDirection);
-        }
-
-        if ($filters != null) {
-            for ($i = 0; $i < count($filters); $i++) {
-                if ($i == 0 || $filters[$i]['column'] == 'descriptor') {
-                    $incidents->where($filters[$i]['column'], '=', $filters[$i]['value']);
-                } else {
-                    $incidents->orWhere($filters[$i]['column'], '=', $filters[$i]['value']);
-                }
-            }
-        }
-
+        $incidents = Incident::sort($sortBy, $sortDirection)
+            ->filter($filters);
 
         return Inertia::render('Incident/Index', [
             'incidents' => $incidents->paginate($perPage = 10, $columns = ['*'], $pageName = 'incidents')->appends($request->query()),

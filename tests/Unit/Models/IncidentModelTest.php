@@ -6,8 +6,90 @@ use App\Models\Incident;
 use App\Models\User;
 use Tests\TestCase;
 
+use function PHPUnit\Framework\assertEquals;
+
 class IncidentModelTest extends TestCase
 {
+    public function test_incident_filter()
+    {
+        Incident::factory()->count(2)->create([
+            'descriptor' => 'a',
+        ]);
+
+        Incident::factory()->create([
+            'descriptor' => 'b',
+        ]);
+
+        $this->assertDatabaseCount('incidents', 3);
+
+        $filters = [
+           0 => [
+               'column' => 'descriptor',
+               'value' => 'a',
+               'comparator' => '='
+           ]
+        ];
+
+        $incidents = Incident::filter($filters)->get();
+
+        assertEquals($incidents->count(), 2);
+
+        $incidents->each(fn ($incident) => assertEquals($incident->descriptor, 'a'));
+    }
+
+    public function test_incident_sort_method_sorts_by_first_name_then_last_name()
+    {
+        Incident::factory()->create([
+            'first_name' => 'a',
+            'last_name' => 'a',
+        ]);
+
+        Incident::factory()->create([
+            'first_name' => 'a',
+            'last_name' => 'b',
+        ]);
+
+        Incident::factory()->create([
+            'first_name' => 'b',
+            'last_name' => 'a',
+        ]);
+
+        $this->assertDatabaseCount('incidents', 3);
+
+        $incidents = Incident::sort('name', 'asc')->get();
+
+        assertEquals($incidents->count(), 3);
+
+        assertEquals($incidents[0]->first_name, 'a');
+        assertEquals($incidents[0]->last_name, 'a');
+
+        assertEquals($incidents[1]->first_name, 'a');
+        assertEquals($incidents[1]->last_name, 'b');
+
+        assertEquals($incidents[2]->first_name, 'b');
+        assertEquals($incidents[2]->last_name, 'a');
+    }
+    public function test_incident_sort_method()
+    {
+        Incident::factory()->create([
+            'descriptor' => 'c',
+        ]);
+
+        Incident::factory()->create([
+            'descriptor' => 'a',
+        ]);
+
+        Incident::factory()->create([
+            'descriptor' => 'b',
+        ]);
+
+        $this->assertDatabaseCount('incidents', 3);
+
+        $incidents = Incident::sort('descriptor', 'asc')->get();
+
+        assertEquals($incidents->count(), 3);
+        assertEquals($incidents->first()->descriptor, 'a');
+    }
     public function test_incident_with_assigned_supervisor_returns_supervisor_user()
     {
         $supervisor = User::factory()->create()->assignRole('supervisor');

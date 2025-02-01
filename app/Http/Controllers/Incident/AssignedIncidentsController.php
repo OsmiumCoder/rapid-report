@@ -20,20 +20,10 @@ class AssignedIncidentsController extends Controller
         $sortBy = $request->query('sort_by', 'created_at');
         $sortDirection = $request->query('sort_direction', 'desc');
 
-        if ($sortBy == 'name') {
-            $assignedIncidents = Incident::orderBy('first_name', $sortDirection)
-                ->orderBy('last_name', $sortDirection)
-                ->where('supervisor_id', $request->user()->id);
-        } else {
-            $assignedIncidents = Incident::orderBy($sortBy, $sortDirection)
-                ->where('supervisor_id', $request->user()->id);
-        }
+        $assignedIncidents = Incident::sort($sortBy, $sortDirection)
+            ->filter($filters)
+            ->where('supervisor_id', $request->user()->id);
 
-        if ($filters != null) {
-            foreach ($filters as $filter) {
-                $assignedIncidents->where($filter['column'], '=', $filter['value']);
-            }
-        }
 
         return Inertia::render('Incident/Index', [
             'incidents' => $assignedIncidents->paginate($perPage = 10, $columns = ['*'], $pageName = 'incidents')->appends($request->query()),

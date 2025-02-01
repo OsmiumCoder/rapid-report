@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, Link, router } from '@inertiajs/react';
+import { Head, Link, router, usePage } from '@inertiajs/react';
 import {
     ChevronDownIcon,
     ChevronUpIcon,
@@ -16,15 +16,19 @@ import { useEffect, useRef, useState } from 'react';
 import classNames from '@/Filters/classNames';
 import { descriptors } from '@/Pages/Incident/Stages/IncidentDropDownValues';
 import { IncidentStatus } from '@/Enums/IncidentStatus';
+import dateFormat from '@/Filters/dateFormat';
 
 type IndexType = 'owned' | 'assigned' | 'all';
 
-export type FilterValue = 'descriptor' | 'incident_type' | 'status';
+export type FilterValue = 'descriptor' | 'incident_type' | 'status' | 'created_at';
+
+type Comparator = '<' | '>' | '<=' | '>=' | '=';
 
 export interface Filter {
     value: string;
     label: string;
     checked: boolean;
+    comparator: Comparator;
 }
 
 interface IndexProps {
@@ -56,6 +60,7 @@ const getInitialFilters: () => Record<FilterValue, Filter[]> = () => ({
         label: name,
         value: value.toString(),
         checked: false,
+        comparator: '=',
     })),
     descriptor: descriptors
         .flatMap((item) => item.options)
@@ -63,24 +68,38 @@ const getInitialFilters: () => Record<FilterValue, Filter[]> = () => ({
             label: descriptor,
             value: descriptor,
             checked: false,
+            comparator: '=',
         }))
         // Keep only the first occurrence of each descriptor
         .filter(
-            (value, index, self) =>
-                self.findIndex((item) => item.value === value.value) === index
-        ),
+            (value, index, self) => self.findIndex((item) => item.value === value.value) === index
+        ) as Filter[],
     status: Object.entries(IncidentStatus).map(([value, label]) => ({
         label: uppercaseWordFormat(label),
-        value: value.toString(),
+        value: value,
         checked: false,
+        comparator: '=',
     })),
+    created_at: [
+        {
+            label: 'From',
+            value: '',
+            checked: false,
+            comparator: '>=',
+        },
+        {
+            label: 'To',
+            value: '',
+            checked: false,
+            comparator: '<=',
+        },
+    ],
 });
 
 export default function Index({ incidents, indexType }: IndexProps) {
     const hasMounted = useRef(false);
 
-    const [filters, setFilters] =
-        useState<Record<FilterValue, Filter[]>>(getInitialFilters());
+    const [filters, setFilters] = useState<Record<FilterValue, Filter[]>>(getInitialFilters());
 
     const [sortedBy, setSortedBy] = useState<SortBy>('created_at');
     const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
@@ -88,15 +107,17 @@ export default function Index({ incidents, indexType }: IndexProps) {
     const resetFilters = () => setFilters(getInitialFilters());
 
     const handleSort = (sortBy: SortBy) => {
-        if (sortedBy == sortBy && sortDirection === 'asc') {
+        if (sortBy !== sortedBy || sortDirection === 'asc') {
             setSortDirection('desc');
         } else {
-            setSortedBy(sortBy);
             setSortDirection('asc');
         }
+
+        setSortedBy(sortBy);
     };
 
     useEffect(() => {
+        // Do not sort and filter on initial render
         if (hasMounted.current) {
             handleSortAndFilter();
         } else {
@@ -112,9 +133,12 @@ export default function Index({ incidents, indexType }: IndexProps) {
                     .map((filter) => ({
                         column: key,
                         value: filter.value,
+                        comparator: filter.comparator,
                     }))
             )
             .flat();
+
+        console.log(processedFilters);
 
         router.get(
             route(`incidents.${indexType === 'all' ? 'index' : indexType}`),
@@ -183,18 +207,14 @@ export default function Index({ incidents, indexType }: IndexProps) {
                                                     </div>
                                                     <div
                                                         className="ml-2 rounded text-gray-400 group-hover:visible group-focus:visible"
-                                                        onClick={() =>
-                                                            handleSort('name')
-                                                        }
+                                                        onClick={() => handleSort('name')}
                                                     >
                                                         <ChevronUpIcon
                                                             aria-hidden="true"
                                                             className={classNames(
                                                                 'size-5 hover:cursor-pointer pt-1',
-                                                                sortDirection ===
-                                                                    'asc' &&
-                                                                    sortedBy ===
-                                                                        'name'
+                                                                sortDirection === 'asc' &&
+                                                                    sortedBy === 'name'
                                                                     ? 'text-gray-900'
                                                                     : 'text-gray-400'
                                                             )}
@@ -203,10 +223,8 @@ export default function Index({ incidents, indexType }: IndexProps) {
                                                             aria-hidden="true"
                                                             className={classNames(
                                                                 'size-5 hover:cursor-pointer pb-1',
-                                                                sortDirection ===
-                                                                    'desc' &&
-                                                                    sortedBy ===
-                                                                        'name'
+                                                                sortDirection === 'desc' &&
+                                                                    sortedBy === 'name'
                                                                     ? 'text-gray-900'
                                                                     : 'text-gray-400'
                                                             )}
@@ -222,20 +240,14 @@ export default function Index({ incidents, indexType }: IndexProps) {
                                                     Descriptor
                                                     <div
                                                         className="ml-2 rounded text-gray-400 group-hover:visible group-focus:visible"
-                                                        onClick={() =>
-                                                            handleSort(
-                                                                'descriptor'
-                                                            )
-                                                        }
+                                                        onClick={() => handleSort('descriptor')}
                                                     >
                                                         <ChevronUpIcon
                                                             aria-hidden="true"
                                                             className={classNames(
                                                                 'size-5 hover:cursor-pointer pt-1',
-                                                                sortDirection ===
-                                                                    'asc' &&
-                                                                    sortedBy ===
-                                                                        'descriptor'
+                                                                sortDirection === 'asc' &&
+                                                                    sortedBy === 'descriptor'
                                                                     ? 'text-gray-900'
                                                                     : 'text-gray-400'
                                                             )}
@@ -244,10 +256,8 @@ export default function Index({ incidents, indexType }: IndexProps) {
                                                             aria-hidden="true"
                                                             className={classNames(
                                                                 'size-5 hover:cursor-pointer pb-1',
-                                                                sortDirection ===
-                                                                    'desc' &&
-                                                                    sortedBy ===
-                                                                        'descriptor'
+                                                                sortDirection === 'desc' &&
+                                                                    sortedBy === 'descriptor'
                                                                     ? 'text-gray-900'
                                                                     : 'text-gray-400'
                                                             )}
@@ -263,20 +273,14 @@ export default function Index({ incidents, indexType }: IndexProps) {
                                                     Location
                                                     <div
                                                         className="ml-2 rounded text-gray-400 group-hover:visible group-focus:visible"
-                                                        onClick={() =>
-                                                            handleSort(
-                                                                'location'
-                                                            )
-                                                        }
+                                                        onClick={() => handleSort('location')}
                                                     >
                                                         <ChevronUpIcon
                                                             aria-hidden="true"
                                                             className={classNames(
                                                                 'size-5 hover:cursor-pointer pt-1',
-                                                                sortDirection ===
-                                                                    'asc' &&
-                                                                    sortedBy ===
-                                                                        'location'
+                                                                sortDirection === 'asc' &&
+                                                                    sortedBy === 'location'
                                                                     ? 'text-gray-900'
                                                                     : 'text-gray-400'
                                                             )}
@@ -285,10 +289,8 @@ export default function Index({ incidents, indexType }: IndexProps) {
                                                             aria-hidden="true"
                                                             className={classNames(
                                                                 'size-5 hover:cursor-pointer pb-1',
-                                                                sortDirection ===
-                                                                    'desc' &&
-                                                                    sortedBy ===
-                                                                        'location'
+                                                                sortDirection === 'desc' &&
+                                                                    sortedBy === 'location'
                                                                     ? 'text-gray-900'
                                                                     : 'text-gray-400'
                                                             )}
@@ -304,20 +306,14 @@ export default function Index({ incidents, indexType }: IndexProps) {
                                                     Submitted On
                                                     <div
                                                         className="ml-2 rounded text-gray-400 group-hover:visible group-focus:visible"
-                                                        onClick={() =>
-                                                            handleSort(
-                                                                'created_at'
-                                                            )
-                                                        }
+                                                        onClick={() => handleSort('created_at')}
                                                     >
                                                         <ChevronUpIcon
                                                             aria-hidden="true"
                                                             className={classNames(
                                                                 'size-5 hover:cursor-pointer pt-1',
-                                                                sortDirection ===
-                                                                    'asc' &&
-                                                                    sortedBy ===
-                                                                        'created_at'
+                                                                sortDirection === 'asc' &&
+                                                                    sortedBy === 'created_at'
                                                                     ? 'text-gray-900'
                                                                     : 'text-gray-400'
                                                             )}
@@ -326,10 +322,8 @@ export default function Index({ incidents, indexType }: IndexProps) {
                                                             aria-hidden="true"
                                                             className={classNames(
                                                                 'size-5 hover:cursor-pointer pb-1',
-                                                                sortDirection ===
-                                                                    'desc' &&
-                                                                    sortedBy ===
-                                                                        'created_at'
+                                                                sortDirection === 'desc' &&
+                                                                    sortedBy === 'created_at'
                                                                     ? 'text-gray-900'
                                                                     : 'text-gray-400'
                                                             )}
@@ -345,18 +339,14 @@ export default function Index({ incidents, indexType }: IndexProps) {
                                                     Status
                                                     <div
                                                         className="ml-2 rounded text-gray-400 group-hover:visible group-focus:visible"
-                                                        onClick={() =>
-                                                            handleSort('status')
-                                                        }
+                                                        onClick={() => handleSort('status')}
                                                     >
                                                         <ChevronUpIcon
                                                             aria-hidden="true"
                                                             className={classNames(
                                                                 'size-5 hover:cursor-pointer pt-1',
-                                                                sortDirection ===
-                                                                    'asc' &&
-                                                                    sortedBy ===
-                                                                        'status'
+                                                                sortDirection === 'asc' &&
+                                                                    sortedBy === 'status'
                                                                     ? 'text-gray-900'
                                                                     : 'text-gray-400'
                                                             )}
@@ -365,10 +355,8 @@ export default function Index({ incidents, indexType }: IndexProps) {
                                                             aria-hidden="true"
                                                             className={classNames(
                                                                 'size-5 hover:cursor-pointer pb-1',
-                                                                sortDirection ===
-                                                                    'desc' &&
-                                                                    sortedBy ===
-                                                                        'status'
+                                                                sortDirection === 'desc' &&
+                                                                    sortedBy === 'status'
                                                                     ? 'text-gray-900'
                                                                     : 'text-gray-400'
                                                             )}
@@ -380,9 +368,7 @@ export default function Index({ incidents, indexType }: IndexProps) {
                                                 scope="col"
                                                 className="relative py-3.5 pl-3 pr-4 md:pr-6"
                                             >
-                                                <span className="sr-only">
-                                                    View
-                                                </span>
+                                                <span className="sr-only">View</span>
                                             </th>
                                         </tr>
                                     </thead>
@@ -399,25 +385,17 @@ export default function Index({ incidents, indexType }: IndexProps) {
                                                 <td className="w-full max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 md:w-auto md:max-w-none md:pl-6">
                                                     {`${nameFilter(incident)[0]} ${nameFilter(incident)[1]}`}
                                                     <dl className="font-normal md:hidden">
-                                                        <dt className="sr-only">
-                                                            Descriptor
-                                                        </dt>
+                                                        <dt className="sr-only">Descriptor</dt>
                                                         <dd className="mt-1 truncate text-gray-700 sm:hidden">
-                                                            {
-                                                                incident.descriptor
-                                                            }
+                                                            {incident.descriptor}
                                                         </dd>
                                                         <dt className="sr-only sm:hidden">
                                                             Status
                                                         </dt>
                                                         <dd className="mt-1 truncate text-gray-500 sm:hidden">
-                                                            {uppercaseWordFormat(
-                                                                incident.status
-                                                            )}
+                                                            {uppercaseWordFormat(incident.status)}
                                                         </dd>
-                                                        <dt className="sr-only sm:hidden">
-                                                            Date
-                                                        </dt>
+                                                        <dt className="sr-only sm:hidden">Date</dt>
                                                         <dd className="mt-1 truncate text-gray-500 sm:hidden">
                                                             {new Date(
                                                                 incident.created_at
@@ -429,8 +407,7 @@ export default function Index({ incidents, indexType }: IndexProps) {
                                                     {incident.descriptor}
                                                 </td>
                                                 <td className="px-3 py-4 text-sm text-gray-500 md:table-cell">
-                                                    {incident.location ??
-                                                        'Not Provided'}
+                                                    {incident.location ?? 'Not Provided'}
                                                 </td>
                                                 <td className="hidden px-3 py-4 text-sm text-gray-500 md:table-cell">
                                                     {new Date(
@@ -438,27 +415,18 @@ export default function Index({ incidents, indexType }: IndexProps) {
                                                     ).toLocaleDateString()}
                                                 </td>
                                                 <td className="hidden px-3 py-4 text-sm text-gray-500 md:table-cell">
-                                                    {uppercaseWordFormat(
-                                                        incident.status
-                                                    )}
+                                                    {uppercaseWordFormat(incident.status)}
                                                 </td>
                                                 <td className="py-4 pl-3 pr-4 text-right text-sm font-medium md:pr-6">
                                                     <Link
-                                                        href={route(
-                                                            'incidents.show',
-                                                            {
-                                                                incident:
-                                                                    incident.id,
-                                                            }
-                                                        )}
+                                                        href={route('incidents.show', {
+                                                            incident: incident.id,
+                                                        })}
                                                         className="text-indigo-600 hover:text-indigo-900"
                                                     >
                                                         View
                                                         <span className="sr-only">
-                                                            ,{' '}
-                                                            {
-                                                                incident.descriptor
-                                                            }
+                                                            , {incident.descriptor}
                                                         </span>
                                                     </Link>
                                                 </td>
@@ -469,9 +437,7 @@ export default function Index({ incidents, indexType }: IndexProps) {
                                 <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 md:px-6">
                                     <div className="flex flex-1 justify-between sm:hidden">
                                         <Link
-                                            href={
-                                                incidents.prev_page_url || '#'
-                                            }
+                                            href={incidents.prev_page_url || '#'}
                                             className={`relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 ${
                                                 !incidents.prev_page_url
                                                     ? 'cursor-not-allowed opacity-50'
@@ -481,9 +447,7 @@ export default function Index({ incidents, indexType }: IndexProps) {
                                             Previous
                                         </Link>
                                         <Link
-                                            href={
-                                                incidents.next_page_url || '#'
-                                            }
+                                            href={incidents.next_page_url || '#'}
                                             className={`relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 ${
                                                 !incidents.next_page_url
                                                     ? 'cursor-not-allowed opacity-50'
@@ -501,9 +465,7 @@ export default function Index({ incidents, indexType }: IndexProps) {
                                                     {incidents.from}
                                                 </span>{' '}
                                                 to{' '}
-                                                <span className="font-medium">
-                                                    {incidents.to}
-                                                </span>{' '}
+                                                <span className="font-medium">{incidents.to}</span>{' '}
                                                 of{' '}
                                                 <span className="font-medium">
                                                     {incidents.total}
@@ -517,10 +479,7 @@ export default function Index({ incidents, indexType }: IndexProps) {
                                                 className="isolate inline-flex -space-x-px rounded-md shadow-sm"
                                             >
                                                 <Link
-                                                    href={
-                                                        incidents.prev_page_url ||
-                                                        '#'
-                                                    }
+                                                    href={incidents.prev_page_url || '#'}
                                                     className={`relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 ${
                                                         !incidents.prev_page_url
                                                             ? 'cursor-not-allowed opacity-50'
@@ -533,35 +492,24 @@ export default function Index({ incidents, indexType }: IndexProps) {
                                                     />
                                                 </Link>
 
-                                                {incidents.links.map(
-                                                    (link, index) =>
-                                                        isNaN(
-                                                            Number(link.label)
-                                                        ) ? null : (
-                                                            <Link
-                                                                key={index}
-                                                                href={
-                                                                    link.url ||
-                                                                    '#'
-                                                                }
-                                                                className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold ${
-                                                                    link.active
-                                                                        ? 'z-10 bg-indigo-600 text-white focus:z-20 focus:outline-offset-0'
-                                                                        : 'text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0'
-                                                                }`}
-                                                                preserveState={
-                                                                    true
-                                                                }
-                                                            >
-                                                                {link.label}
-                                                            </Link>
-                                                        )
+                                                {incidents.links.map((link, index) =>
+                                                    isNaN(Number(link.label)) ? null : (
+                                                        <Link
+                                                            key={index}
+                                                            href={link.url || '#'}
+                                                            className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold ${
+                                                                link.active
+                                                                    ? 'z-10 bg-indigo-600 text-white focus:z-20 focus:outline-offset-0'
+                                                                    : 'text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0'
+                                                            }`}
+                                                            preserveState={true}
+                                                        >
+                                                            {link.label}
+                                                        </Link>
+                                                    )
                                                 )}
                                                 <Link
-                                                    href={
-                                                        incidents.next_page_url ||
-                                                        '#'
-                                                    }
+                                                    href={incidents.next_page_url || '#'}
                                                     className={`relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 ${
                                                         !incidents.next_page_url
                                                             ? 'cursor-not-allowed opacity-50'

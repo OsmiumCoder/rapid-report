@@ -34,5 +34,6 @@ class IncidentData extends Data
         public ?string $first_aid_description,
         public ?string $reporters_email,
         public ?string $supervisor_name,
-    ) {}
+    ) {
+    }
 }
