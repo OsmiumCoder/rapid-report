@@ -22,8 +22,8 @@ class IncidentController extends Controller
 
         $filters = json_decode(urldecode($request->query('filters')), true);
 
-        $sortBy = $request->query('sort_by', 'created_at');
-        $sortDirection = $request->query('sort_direction', 'desc');
+        $sortBy = $request->string('sort_by', 'created_at');
+        $sortDirection = $request->string('sort_direction', 'desc');
 
         $incidents = Incident::sort($sortBy, $sortDirection)
             ->filter($filters)
