@@ -20,7 +20,11 @@ return new class () extends Migration {
             $table->integer('role');
 
             $table->string('last_name')->nullable();
+            $table->index('last_name');
+
             $table->string('first_name')->nullable();
+            $table->index('first_name');
+
             $table->string('upei_id')->nullable();
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
@@ -31,13 +35,17 @@ return new class () extends Migration {
             $table->datetime('happened_at')->nullable();
 
             $table->string('location')->nullable();
+            $table->index('location');
 
             $table->string('room_number')->nullable();
 
             $table->jsonb('witnesses')->nullable();
 
             $table->integer('incident_type');
+            $table->index('incident_type');
+
             $table->string('descriptor');
+            $table->index('descriptor');
 
             $table->string('description')->nullable();
 
@@ -55,10 +63,13 @@ return new class () extends Migration {
             $table->foreignId('supervisor_id')->nullable()->constrained('users');
 
             $table->string('status');
+            $table->index('status');
 
             $table->timestamp('closed_at')->nullable();
 
             $table->timestamps();
+            $table->index('created_at');
+
             $table->softDeletes();
         });
     }

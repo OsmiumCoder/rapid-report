@@ -8,7 +8,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Incident;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 
@@ -17,12 +16,22 @@ class IncidentController extends Controller
     /**
      * Display a listing of the Incident.
      */
-    public function index()
+    public function index(Request $request)
     {
         $this->authorize('viewAny', Incident::class);
 
+        $filters = json_decode(urldecode($request->query('filters')), true);
+
+        $sortBy = $request->string('sort_by', 'created_at');
+        $sortDirection = $request->string('sort_direction', 'desc');
+
+        $incidents = Incident::sort($sortBy, $sortDirection)
+            ->filter($filters)
+            ->paginate($perPage = 10, $columns = ['*'], $pageName = 'incidents')
+            ->appends($request->query());
+
         return Inertia::render('Incident/Index', [
-            'incidents' => Incident::paginate($perPage = 10, $columns = ['*'], $pageName = 'incidents'),
+            'incidents' => $incidents,
             'indexType' => 'all',
         ]);
     }

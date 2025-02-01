@@ -9,6 +9,8 @@ const config = {
     tabWidth: 4,
     semi: true,
     singleQuote: true,
-}
+    printWidth: 100,
+    editorConfig: true,
+};
 
-export default config
+export default config;
