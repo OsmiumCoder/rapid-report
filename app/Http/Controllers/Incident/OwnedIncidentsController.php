@@ -17,8 +17,9 @@ class OwnedIncidentsController extends Controller
         $this->authorize('viewAnyOwned', Incident::class);
 
         $filters = json_decode(urldecode($request->query('filters')), true);
-        $sortBy = $request->query('sort_by', 'created_at');
-        $sortDirection = $request->query('sort_direction', 'desc');
+
+        $sortBy = $request->string('sort_by', 'created_at');
+        $sortDirection = $request->string('sort_direction', 'desc');
 
         $ownedIncidents = Incident::sort($sortBy, $sortDirection)
             ->where('reporters_email', $request->user()->email)
