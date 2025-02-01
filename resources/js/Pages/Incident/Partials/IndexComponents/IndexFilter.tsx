@@ -101,7 +101,7 @@ export default function IndexFilter({ filters, setFilters, resetFilters }: Index
                                 <>
                                     <fieldset
                                         key={filterIndex + filterName}
-                                        className="space-y-4 max-h-64 overflow-x-scroll"
+                                        className="space-y-4 max-h-64 overflow-y-scroll transparent-scrollbar"
                                     >
                                         <legend className="block font-medium text-lg">
                                             {uppercaseWordFormat(filterName)}
@@ -217,7 +217,6 @@ export default function IndexFilter({ filters, setFilters, resetFilters }: Index
                                     </fieldset>
                                 </>
                             ))}
-                            <fieldset className="space-y-4 max-h-48 sm:max-h-64 overflow-x-scroll"></fieldset>
                         </div>
                     </div>
                 </DisclosurePanel>

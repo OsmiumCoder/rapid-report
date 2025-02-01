@@ -194,6 +194,39 @@ export default function Index({ incidents, indexType }: IndexProps) {
                                         <tr>
                                             <th
                                                 scope="col"
+                                                className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 md:table-cell"
+                                            >
+                                                <div className="flex items-center">
+                                                    Submitted On
+                                                    <div
+                                                        className="ml-2 rounded text-gray-400 group-hover:visible group-focus:visible"
+                                                        onClick={() => handleSort('created_at')}
+                                                    >
+                                                        <ChevronUpIcon
+                                                            aria-hidden="true"
+                                                            className={classNames(
+                                                                'size-5 hover:cursor-pointer pt-1',
+                                                                sortDirection === 'asc' &&
+                                                                    sortedBy === 'created_at'
+                                                                    ? 'text-gray-900'
+                                                                    : 'text-gray-400'
+                                                            )}
+                                                        />
+                                                        <ChevronDownIcon
+                                                            aria-hidden="true"
+                                                            className={classNames(
+                                                                'size-5 hover:cursor-pointer pb-1',
+                                                                sortDirection === 'desc' &&
+                                                                    sortedBy === 'created_at'
+                                                                    ? 'text-gray-900'
+                                                                    : 'text-gray-400'
+                                                            )}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </th>
+                                            <th
+                                                scope="col"
                                                 className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
                                             >
                                                 <div className="flex items-center">
@@ -298,39 +331,7 @@ export default function Index({ incidents, indexType }: IndexProps) {
                                                     </div>
                                                 </div>
                                             </th>
-                                            <th
-                                                scope="col"
-                                                className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 md:table-cell"
-                                            >
-                                                <div className="flex items-center">
-                                                    Submitted On
-                                                    <div
-                                                        className="ml-2 rounded text-gray-400 group-hover:visible group-focus:visible"
-                                                        onClick={() => handleSort('created_at')}
-                                                    >
-                                                        <ChevronUpIcon
-                                                            aria-hidden="true"
-                                                            className={classNames(
-                                                                'size-5 hover:cursor-pointer pt-1',
-                                                                sortDirection === 'asc' &&
-                                                                    sortedBy === 'created_at'
-                                                                    ? 'text-gray-900'
-                                                                    : 'text-gray-400'
-                                                            )}
-                                                        />
-                                                        <ChevronDownIcon
-                                                            aria-hidden="true"
-                                                            className={classNames(
-                                                                'size-5 hover:cursor-pointer pb-1',
-                                                                sortDirection === 'desc' &&
-                                                                    sortedBy === 'created_at'
-                                                                    ? 'text-gray-900'
-                                                                    : 'text-gray-400'
-                                                            )}
-                                                        />
-                                                    </div>
-                                                </div>
-                                            </th>
+
                                             <th
                                                 scope="col"
                                                 className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 md:table-cell"
@@ -382,6 +383,11 @@ export default function Index({ incidents, indexType }: IndexProps) {
                                                 })}
                                                 key={incident.id}
                                             >
+                                                <td className="hidden px-3 py-4 text-sm text-gray-500 md:table-cell">
+                                                    {new Date(
+                                                        incident.created_at
+                                                    ).toLocaleDateString()}
+                                                </td>
                                                 <td className="w-full max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 md:w-auto md:max-w-none md:pl-6">
                                                     {`${nameFilter(incident)[0]} ${nameFilter(incident)[1]}`}
                                                     <dl className="font-normal md:hidden">
@@ -408,11 +414,6 @@ export default function Index({ incidents, indexType }: IndexProps) {
                                                 </td>
                                                 <td className="px-3 py-4 text-sm text-gray-500 md:table-cell">
                                                     {incident.location ?? 'Not Provided'}
-                                                </td>
-                                                <td className="hidden px-3 py-4 text-sm text-gray-500 md:table-cell">
-                                                    {new Date(
-                                                        incident.created_at
-                                                    ).toLocaleDateString()}
                                                 </td>
                                                 <td className="hidden px-3 py-4 text-sm text-gray-500 md:table-cell">
                                                     {uppercaseWordFormat(incident.status)}
