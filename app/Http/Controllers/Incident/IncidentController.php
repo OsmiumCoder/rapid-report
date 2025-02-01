@@ -8,7 +8,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Incident;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 
@@ -17,12 +16,33 @@ class IncidentController extends Controller
     /**
      * Display a listing of the Incident.
      */
-    public function index()
+    public function index(Request $request)
     {
         $this->authorize('viewAny', Incident::class);
 
+        $filters = json_decode(urldecode($request->query('filters')), true);
+        $sortBy = $request->query('sort_by', 'created_at');
+        $sortDirection = $request->query('sort_direction', 'desc');
+
+        if ($sortBy == 'name') {
+            $incidents = Incident::orderBy('first_name', $sortDirection)->orderBy('last_name', $sortDirection);
+        } else {
+            $incidents = Incident::orderBy($sortBy, $sortDirection);
+        }
+
+        if ($filters != null) {
+            for ($i = 0; $i < count($filters); $i++) {
+                if ($i == 0 || $filters[$i]['column'] == 'descriptor') {
+                    $incidents->where($filters[$i]['column'], '=', $filters[$i]['value']);
+                } else {
+                    $incidents->orWhere($filters[$i]['column'], '=', $filters[$i]['value']);
+                }
+            }
+        }
+
+
         return Inertia::render('Incident/Index', [
-            'incidents' => Incident::paginate($perPage = 10, $columns = ['*'], $pageName = 'incidents'),
+            'incidents' => $incidents->paginate($perPage = 10, $columns = ['*'], $pageName = 'incidents')->appends($request->query()),
             'indexType' => 'all',
         ]);
     }

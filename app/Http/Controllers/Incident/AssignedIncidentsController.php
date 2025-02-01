@@ -16,10 +16,27 @@ class AssignedIncidentsController extends Controller
     {
         $this->authorize('viewAnyAssigned', Incident::class);
 
-        $assignedIncidents = Incident::where('supervisor_id', $request->user()->id)->paginate($perPage = 10, $columns = ['*'], $pageName = 'incidents');
+        $filters = json_decode(urldecode($request->query('filters')), true);
+        $sortBy = $request->query('sort_by', 'created_at');
+        $sortDirection = $request->query('sort_direction', 'desc');
+
+        if ($sortBy == 'name') {
+            $assignedIncidents = Incident::orderBy('first_name', $sortDirection)
+                ->orderBy('last_name', $sortDirection)
+                ->where('supervisor_id', $request->user()->id);
+        } else {
+            $assignedIncidents = Incident::orderBy($sortBy, $sortDirection)
+                ->where('supervisor_id', $request->user()->id);
+        }
+
+        if ($filters != null) {
+            foreach ($filters as $filter) {
+                $assignedIncidents->where($filter['column'], '=', $filter['value']);
+            }
+        }
 
         return Inertia::render('Incident/Index', [
-            'incidents' => $assignedIncidents,
+            'incidents' => $assignedIncidents->paginate($perPage = 10, $columns = ['*'], $pageName = 'incidents')->appends($request->query()),
             'indexType' => 'assigned',
         ]);
     }

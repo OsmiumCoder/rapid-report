@@ -1,35 +1,133 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, Link } from '@inertiajs/react';
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid';
+import { Head, Link, router } from '@inertiajs/react';
+import {
+    ChevronDownIcon,
+    ChevronUpIcon,
+    ChevronLeftIcon,
+    ChevronRightIcon,
+} from '@heroicons/react/20/solid';
 import { Incident } from '@/types/incident/Incident';
 import { PaginatedResponse } from '@/types/PaginatedResponse';
 import { PencilIcon } from '@heroicons/react/24/outline';
 import { uppercaseWordFormat } from '@/Filters/uppercaseWordFormat';
 import { nameFilter } from '@/Filters/nameFilter';
+import IndexFilter from '@/Pages/Incident/Partials/IndexComponents/IndexFilter';
+import { useEffect, useRef, useState } from 'react';
+import classNames from '@/Filters/classNames';
+import { descriptors } from '@/Pages/Incident/Stages/IncidentDropDownValues';
+import { IncidentStatus } from '@/Enums/IncidentStatus';
 
 type IndexType = 'owned' | 'assigned' | 'all';
+
+export type FilterValue = 'descriptor' | 'incident_type' | 'status';
+
+export interface Filter {
+    value: string;
+    label: string;
+    checked: boolean;
+}
 
 interface IndexProps {
     incidents: PaginatedResponse<Incident>;
     indexType: IndexType;
 }
+const pageDescriptions: {
+    [K in IndexType]: { title: string; description: string };
+} = {
+    all: {
+        title: 'All Incidents',
+        description: 'A list of all incidents reported in the system.',
+    },
+    assigned: {
+        title: 'Assigned Incidents',
+        description: 'A list of all incidents assigned to you for review.',
+    },
+    owned: {
+        title: 'Owned Incidents',
+        description: 'A list of all incidents submitted by you.',
+    },
+};
+
+type SortDirection = 'asc' | 'desc';
+type SortBy = 'name' | 'descriptor' | 'location' | 'created_at' | 'status';
+
+const getInitialFilters: () => Record<FilterValue, Filter[]> = () => ({
+    incident_type: descriptors.map(({ name, value }) => ({
+        label: name,
+        value: value.toString(),
+        checked: false,
+    })),
+    descriptor: descriptors
+        .flatMap((item) => item.options)
+        .map((descriptor) => ({
+            label: descriptor,
+            value: descriptor,
+            checked: false,
+        }))
+        // Keep only the first occurrence of each descriptor
+        .filter(
+            (value, index, self) =>
+                self.findIndex((item) => item.value === value.value) === index
+        ),
+    status: Object.entries(IncidentStatus).map(([value, label]) => ({
+        label: uppercaseWordFormat(label),
+        value: value.toString(),
+        checked: false,
+    })),
+});
 
 export default function Index({ incidents, indexType }: IndexProps) {
-    const pageDescriptions: {
-        [K in IndexType]: { title: string; description: string };
-    } = {
-        all: {
-            title: 'All Incidents',
-            description: 'A list of all incidents reported in the system.',
-        },
-        assigned: {
-            title: 'Assigned Incidents',
-            description: 'A list of all incidents assigned to you for review.',
-        },
-        owned: {
-            title: 'Owned Incidents',
-            description: 'A list of all incidents submitted by you.',
-        },
+    const hasMounted = useRef(false);
+
+    const [filters, setFilters] =
+        useState<Record<FilterValue, Filter[]>>(getInitialFilters());
+
+    const [sortedBy, setSortedBy] = useState<SortBy>('created_at');
+    const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
+
+    const resetFilters = () => setFilters(getInitialFilters());
+
+    const handleSort = (sortBy: SortBy) => {
+        if (sortedBy == sortBy && sortDirection === 'asc') {
+            setSortDirection('desc');
+        } else {
+            setSortedBy(sortBy);
+            setSortDirection('asc');
+        }
+    };
+
+    useEffect(() => {
+        if (hasMounted.current) {
+            handleSortAndFilter();
+        } else {
+            hasMounted.current = true;
+        }
+    }, [filters, sortDirection, sortedBy]);
+
+    const handleSortAndFilter = () => {
+        const processedFilters = Object.entries(filters)
+            .map(([key, value]) =>
+                value
+                    .filter((filter) => filter.checked)
+                    .map((filter) => ({
+                        column: key,
+                        value: filter.value,
+                    }))
+            )
+            .flat();
+
+        router.get(
+            route(`incidents.${indexType === 'all' ? 'index' : indexType}`),
+            {
+                filters: encodeURIComponent(JSON.stringify(processedFilters)),
+                sort_by: sortedBy,
+                sort_direction: sortDirection,
+            },
+            {
+                preserveState: true,
+                only: ['incidents'],
+            }
+        );
     };
 
     return (
@@ -58,7 +156,12 @@ export default function Index({ incidents, indexType }: IndexProps) {
                         </div>
                     )}
                 </div>
-                <div className="mt-8 flow-root">
+                <IndexFilter
+                    filters={filters}
+                    setFilters={setFilters}
+                    resetFilters={resetFilters}
+                />
+                <div className="flow-root">
                     <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                         <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
                             <div className="overflow-hidden shadow ring-1 ring-black/5 sm:rounded-lg">
@@ -69,36 +172,209 @@ export default function Index({ incidents, indexType }: IndexProps) {
                                                 scope="col"
                                                 className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
                                             >
-                                                <span className="sm:block md:hidden">
-                                                    Incident
-                                                </span>
-                                                <span className="hidden md:inline-block">
-                                                    Reporter
-                                                </span>
+                                                <div className="flex items-center">
+                                                    <div>
+                                                        <span className="sm:block md:hidden">
+                                                            Incident
+                                                        </span>
+                                                        <span className="hidden md:inline-block">
+                                                            Reporter
+                                                        </span>
+                                                    </div>
+                                                    <div
+                                                        className="ml-2 rounded text-gray-400 group-hover:visible group-focus:visible"
+                                                        onClick={() =>
+                                                            handleSort('name')
+                                                        }
+                                                    >
+                                                        <ChevronUpIcon
+                                                            aria-hidden="true"
+                                                            className={classNames(
+                                                                'size-5 hover:cursor-pointer pt-1',
+                                                                sortDirection ===
+                                                                    'asc' &&
+                                                                    sortedBy ===
+                                                                        'name'
+                                                                    ? 'text-gray-900'
+                                                                    : 'text-gray-400'
+                                                            )}
+                                                        />
+                                                        <ChevronDownIcon
+                                                            aria-hidden="true"
+                                                            className={classNames(
+                                                                'size-5 hover:cursor-pointer pb-1',
+                                                                sortDirection ===
+                                                                    'desc' &&
+                                                                    sortedBy ===
+                                                                        'name'
+                                                                    ? 'text-gray-900'
+                                                                    : 'text-gray-400'
+                                                            )}
+                                                        />
+                                                    </div>
+                                                </div>
                                             </th>
                                             <th
                                                 scope="col"
                                                 className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 md:table-cell"
                                             >
-                                                Descriptor
+                                                <div className="flex items-center">
+                                                    Descriptor
+                                                    <div
+                                                        className="ml-2 rounded text-gray-400 group-hover:visible group-focus:visible"
+                                                        onClick={() =>
+                                                            handleSort(
+                                                                'descriptor'
+                                                            )
+                                                        }
+                                                    >
+                                                        <ChevronUpIcon
+                                                            aria-hidden="true"
+                                                            className={classNames(
+                                                                'size-5 hover:cursor-pointer pt-1',
+                                                                sortDirection ===
+                                                                    'asc' &&
+                                                                    sortedBy ===
+                                                                        'descriptor'
+                                                                    ? 'text-gray-900'
+                                                                    : 'text-gray-400'
+                                                            )}
+                                                        />
+                                                        <ChevronDownIcon
+                                                            aria-hidden="true"
+                                                            className={classNames(
+                                                                'size-5 hover:cursor-pointer pb-1',
+                                                                sortDirection ===
+                                                                    'desc' &&
+                                                                    sortedBy ===
+                                                                        'descriptor'
+                                                                    ? 'text-gray-900'
+                                                                    : 'text-gray-400'
+                                                            )}
+                                                        />
+                                                    </div>
+                                                </div>
                                             </th>
                                             <th
                                                 scope="col"
                                                 className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 md:table-cell"
                                             >
-                                                Location
+                                                <div className="flex items-center">
+                                                    Location
+                                                    <div
+                                                        className="ml-2 rounded text-gray-400 group-hover:visible group-focus:visible"
+                                                        onClick={() =>
+                                                            handleSort(
+                                                                'location'
+                                                            )
+                                                        }
+                                                    >
+                                                        <ChevronUpIcon
+                                                            aria-hidden="true"
+                                                            className={classNames(
+                                                                'size-5 hover:cursor-pointer pt-1',
+                                                                sortDirection ===
+                                                                    'asc' &&
+                                                                    sortedBy ===
+                                                                        'location'
+                                                                    ? 'text-gray-900'
+                                                                    : 'text-gray-400'
+                                                            )}
+                                                        />
+                                                        <ChevronDownIcon
+                                                            aria-hidden="true"
+                                                            className={classNames(
+                                                                'size-5 hover:cursor-pointer pb-1',
+                                                                sortDirection ===
+                                                                    'desc' &&
+                                                                    sortedBy ===
+                                                                        'location'
+                                                                    ? 'text-gray-900'
+                                                                    : 'text-gray-400'
+                                                            )}
+                                                        />
+                                                    </div>
+                                                </div>
                                             </th>
                                             <th
                                                 scope="col"
                                                 className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 md:table-cell"
                                             >
-                                                Date
+                                                <div className="flex items-center">
+                                                    Submitted On
+                                                    <div
+                                                        className="ml-2 rounded text-gray-400 group-hover:visible group-focus:visible"
+                                                        onClick={() =>
+                                                            handleSort(
+                                                                'created_at'
+                                                            )
+                                                        }
+                                                    >
+                                                        <ChevronUpIcon
+                                                            aria-hidden="true"
+                                                            className={classNames(
+                                                                'size-5 hover:cursor-pointer pt-1',
+                                                                sortDirection ===
+                                                                    'asc' &&
+                                                                    sortedBy ===
+                                                                        'created_at'
+                                                                    ? 'text-gray-900'
+                                                                    : 'text-gray-400'
+                                                            )}
+                                                        />
+                                                        <ChevronDownIcon
+                                                            aria-hidden="true"
+                                                            className={classNames(
+                                                                'size-5 hover:cursor-pointer pb-1',
+                                                                sortDirection ===
+                                                                    'desc' &&
+                                                                    sortedBy ===
+                                                                        'created_at'
+                                                                    ? 'text-gray-900'
+                                                                    : 'text-gray-400'
+                                                            )}
+                                                        />
+                                                    </div>
+                                                </div>
                                             </th>
                                             <th
                                                 scope="col"
                                                 className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 md:table-cell"
                                             >
-                                                Status
+                                                <div className="flex items-center">
+                                                    Status
+                                                    <div
+                                                        className="ml-2 rounded text-gray-400 group-hover:visible group-focus:visible"
+                                                        onClick={() =>
+                                                            handleSort('status')
+                                                        }
+                                                    >
+                                                        <ChevronUpIcon
+                                                            aria-hidden="true"
+                                                            className={classNames(
+                                                                'size-5 hover:cursor-pointer pt-1',
+                                                                sortDirection ===
+                                                                    'asc' &&
+                                                                    sortedBy ===
+                                                                        'status'
+                                                                    ? 'text-gray-900'
+                                                                    : 'text-gray-400'
+                                                            )}
+                                                        />
+                                                        <ChevronDownIcon
+                                                            aria-hidden="true"
+                                                            className={classNames(
+                                                                'size-5 hover:cursor-pointer pb-1',
+                                                                sortDirection ===
+                                                                    'desc' &&
+                                                                    sortedBy ===
+                                                                        'status'
+                                                                    ? 'text-gray-900'
+                                                                    : 'text-gray-400'
+                                                            )}
+                                                        />
+                                                    </div>
+                                                </div>
                                             </th>
                                             <th
                                                 scope="col"
@@ -144,7 +420,7 @@ export default function Index({ incidents, indexType }: IndexProps) {
                                                         </dt>
                                                         <dd className="mt-1 truncate text-gray-500 sm:hidden">
                                                             {new Date(
-                                                                incident.happened_at
+                                                                incident.created_at
                                                             ).toLocaleDateString()}
                                                         </dd>
                                                     </dl>
@@ -158,7 +434,7 @@ export default function Index({ incidents, indexType }: IndexProps) {
                                                 </td>
                                                 <td className="hidden px-3 py-4 text-sm text-gray-500 md:table-cell">
                                                     {new Date(
-                                                        incident.happened_at
+                                                        incident.created_at
                                                     ).toLocaleDateString()}
                                                 </td>
                                                 <td className="hidden px-3 py-4 text-sm text-gray-500 md:table-cell">
@@ -273,6 +549,9 @@ export default function Index({ incidents, indexType }: IndexProps) {
                                                                         ? 'z-10 bg-indigo-600 text-white focus:z-20 focus:outline-offset-0'
                                                                         : 'text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0'
                                                                 }`}
+                                                                preserveState={
+                                                                    true
+                                                                }
                                                             >
                                                                 {link.label}
                                                             </Link>
