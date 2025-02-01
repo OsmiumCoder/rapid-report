@@ -24,7 +24,7 @@ class IndexTest extends TestCase
             'incidents.owned',
             ['filters' => urlencode(json_encode(
                 [
-                    ['column' => 'descriptor', 'value' => 'a', 'comparator' => '=' ]
+                    ['column' => 'descriptor', 'value' => 'a', 'comparator' => '=']
                 ]
             ))
             ]
@@ -49,6 +49,7 @@ class IndexTest extends TestCase
                 )
         );
     }
+
     public function test_assigned_route_filters_incidents()
     {
         $supervisor = User::factory()->create()->assignRole('supervisor');
@@ -63,7 +64,7 @@ class IndexTest extends TestCase
             'incidents.assigned',
             ['filters' => urlencode(json_encode(
                 [
-                    ['column' => 'descriptor', 'value' => 'a', 'comparator' => '=' ]
+                    ['column' => 'descriptor', 'value' => 'a', 'comparator' => '=']
                 ]
             ))
             ]
@@ -88,6 +89,7 @@ class IndexTest extends TestCase
                 )
         );
     }
+
     public function test_index_route_filters_incidents()
     {
         $admin = User::factory()->create()->assignRole('admin');
@@ -102,7 +104,7 @@ class IndexTest extends TestCase
             'incidents.index',
             ['filters' => urlencode(json_encode(
                 [
-                    ['column' => 'descriptor', 'value' => 'a', 'comparator' => '=' ]
+                    ['column' => 'descriptor', 'value' => 'a', 'comparator' => '=']
                 ]
             ))
             ]
@@ -127,6 +129,7 @@ class IndexTest extends TestCase
                 )
         );
     }
+
     public function test_assigned_route_sorts_incidents()
     {
         $supervisor = User::factory()->create()->assignRole('supervisor');
@@ -137,7 +140,7 @@ class IndexTest extends TestCase
 
         $this->assertDatabaseCount('incidents', 2);
 
-        $response = $this->get(route('incidents.assigned', ['sortBy' => 'descriptor', 'sortDirection' => 'asc']));
+        $response = $this->get(route('incidents.assigned', ['sortBy' => 'descriptor', 'sort_direction' => 'asc']));
 
         $response->assertOk();
 
@@ -156,6 +159,7 @@ class IndexTest extends TestCase
                 )
         );
     }
+
     public function test_owned_route_sorts_incidents()
     {
         $email = 'a@b.com';
@@ -167,7 +171,7 @@ class IndexTest extends TestCase
 
         $this->assertDatabaseCount('incidents', 2);
 
-        $response = $this->get(route('incidents.owned', ['sortBy' => 'descriptor', 'sortDirection' => 'asc']));
+        $response = $this->get(route('incidents.owned', ['sortBy' => 'descriptor', 'sort_direction' => 'asc']));
 
         $response->assertOk();
 
@@ -186,6 +190,7 @@ class IndexTest extends TestCase
                 )
         );
     }
+
     public function test_index_route_sorts_incidents()
     {
         $admin = User::factory()->create()->assignRole('admin');
@@ -196,7 +201,7 @@ class IndexTest extends TestCase
 
         $this->assertDatabaseCount('incidents', 2);
 
-        $response = $this->get(route('incidents.index', ['sortBy' => 'descriptor', 'sortDirection' => 'asc']));
+        $response = $this->get(route('incidents.index', ['sortBy' => 'descriptor', 'sort_direction' => 'asc']));
 
         $response->assertOk();
 
@@ -209,8 +214,8 @@ class IndexTest extends TestCase
                         ->has(
                             'data.0',
                             fn (AssertableInertia $incident) => $incident
-                            ->where('descriptor', 'a')
-                            ->etc()
+                                ->where('descriptor', 'a')
+                                ->etc()
                         )->etc()
                 )
         );
@@ -436,7 +441,7 @@ class IndexTest extends TestCase
                         ->count('links', 4)
                         ->etc()
                 )
-            ->where('indexType', 'all');
+                ->where('indexType', 'all');
         });
     }
 }

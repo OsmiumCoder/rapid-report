@@ -22,11 +22,13 @@ class AssignedIncidentsController extends Controller
 
         $assignedIncidents = Incident::sort($sortBy, $sortDirection)
             ->filter($filters)
-            ->where('supervisor_id', $request->user()->id);
+            ->where('supervisor_id', $request->user()->id)
+            ->paginate($perPage = 10, $columns = ['*'], $pageName = 'incidents')
+            ->appends($request->query());
 
 
         return Inertia::render('Incident/Index', [
-            'incidents' => $assignedIncidents->paginate($perPage = 10, $columns = ['*'], $pageName = 'incidents')->appends($request->query()),
+            'incidents' => $assignedIncidents,
             'indexType' => 'assigned',
         ]);
     }

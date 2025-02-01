@@ -26,10 +26,12 @@ class IncidentController extends Controller
         $sortDirection = $request->query('sort_direction', 'desc');
 
         $incidents = Incident::sort($sortBy, $sortDirection)
-            ->filter($filters);
+            ->filter($filters)
+            ->paginate($perPage = 10, $columns = ['*'], $pageName = 'incidents')
+            ->appends($request->query());
 
         return Inertia::render('Incident/Index', [
-            'incidents' => $incidents->paginate($perPage = 10, $columns = ['*'], $pageName = 'incidents')->appends($request->query()),
+            'incidents' => $incidents,
             'indexType' => 'all',
         ]);
     }

@@ -22,10 +22,12 @@ class OwnedIncidentsController extends Controller
 
         $ownedIncidents = Incident::sort($sortBy, $sortDirection)
             ->where('reporters_email', $request->user()->email)
-            ->filter($filters);
+            ->filter($filters)
+            ->paginate($perPage = 10, $columns = ['*'], $pageName = 'incidents')
+            ->appends($request->query());
 
         return Inertia::render('Incident/Index', [
-            'incidents' => $ownedIncidents->paginate($perPage = 10, $columns = ['*'], $pageName = 'incidents')->appends($request->query()),
+            'incidents' => $ownedIncidents,
             'indexType' => 'owned',
         ]);
     }
