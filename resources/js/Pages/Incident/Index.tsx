@@ -192,7 +192,7 @@ export default function Index({ incidents, indexType }: IndexProps) {
                                         <tr>
                                             <th
                                                 scope="col"
-                                                className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 md:table-cell"
+                                                className="hidden px-6 py-3.5 text-left text-sm font-semibold text-gray-900 md:table-cell"
                                             >
                                                 <div className="flex items-center">
                                                     Submitted On
@@ -381,7 +381,7 @@ export default function Index({ incidents, indexType }: IndexProps) {
                                                 })}
                                                 key={incident.id}
                                             >
-                                                <td className="hidden px-3 py-4 text-sm text-gray-500 md:table-cell">
+                                                <td className="hidden px-6 py-4 text-sm text-gray-500 md:table-cell">
                                                     {new Date(
                                                         incident.created_at
                                                     ).toLocaleDateString()}
