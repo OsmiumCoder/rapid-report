@@ -37,7 +37,6 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
-    private mixed $phone;
 
     /**
      * Get the attributes that should be cast.
