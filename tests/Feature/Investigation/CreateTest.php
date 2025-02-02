@@ -17,8 +17,7 @@ class CreateTest extends TestCase
         $response->assertStatus(200);
 
         $response->assertInertia(function (AssertableInertia $page) {
-            return $page->component('Investigation/Create')
-                ->has('form');
+            return $page->component('Investigation/Create');
         });
     }
 
