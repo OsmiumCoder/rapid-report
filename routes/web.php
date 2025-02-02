@@ -4,6 +4,11 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\InvestigationController;
+
+Route::resource('investigations', InvestigationController::class);
+Route::get('/investigations/create', [InvestigationController::class, 'create'])->name('investigations.create');
+Route::post('/investigations', [InvestigationController::class, 'store'])->name('investigations.store');
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
