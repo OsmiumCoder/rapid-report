@@ -19,7 +19,7 @@ class InvestigationController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Investigations/Create');
+        return Inertia::render('Investigation/Create');
 
     }
 
