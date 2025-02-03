@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class InvestigationFactory extends Factory
 {
-    protected $model = Investigation::class;
 
     public function definition()
     {
