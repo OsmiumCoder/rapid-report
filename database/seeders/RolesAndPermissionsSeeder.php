@@ -22,15 +22,15 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // create roles and assign created permissions
         Role::firstOrCreate(['name' => 'admin'])
-            ->givePermissionTo(['view all incidents', 'view own incidents', 'perform admin actions', 'view reports']);
+            ->syncPermissions(['view all incidents', 'view own incidents', 'perform admin actions', 'view reports']);
 
         Role::firstOrCreate(['name' => 'supervisor'])
-            ->givePermissionTo(['view assigned incidents', 'view own incidents']);
+            ->syncPermissions(['view assigned incidents', 'view own incidents']);
 
         Role::firstOrCreate(['name' => 'user'])
-            ->givePermissionTo(['view own incidents']);
+            ->syncPermissions(['view own incidents']);
 
         Role::firstOrCreate(['name' => 'super-admin'])
-            ->givePermissionTo(Permission::all());
+            ->syncPermissions(Permission::all());
     }
 }
