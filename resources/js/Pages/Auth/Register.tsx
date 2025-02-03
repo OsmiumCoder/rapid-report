@@ -12,6 +12,8 @@ export default function Register() {
         email: '',
         password: '',
         password_confirmation: '',
+        upei_id: '',
+        phone: ''
     });
 
     const submit: FormEventHandler = (e) => {
@@ -101,6 +103,38 @@ export default function Register() {
                         message={errors.password_confirmation}
                         className="mt-2"
                     />
+                </div>
+
+                <div className="mt-4">
+                    <InputLabel htmlFor="upei_id" value="UPEI ID" />
+
+                    <TextInput
+                        id="upei_id"
+                        name="upei_id"
+                        value={data.upei_id}
+                        className="mt-1 block w-full"
+                        onChange={(e) => setData('upei_id', e.target.value)}
+                        required
+                    />
+
+                    <InputError message={errors.upei_id} className="mt-2" />
+                </div>
+
+                <div className="mt-4">
+                    <InputLabel htmlFor="phone" value="Phone Number" />
+
+                    <TextInput
+                        id="phone"
+                        name="phone"
+                        type="tel"
+                        value={data.phone}
+                        className="mt-1 block w-full"
+                        autoComplete="phone"
+                        onChange={(e) => setData('phone', e.target.value)}
+                        required
+                    />
+
+                    <InputError message={errors.phone} className="mt-2" />
                 </div>
 
                 <div className="mt-4 flex items-center justify-end">
