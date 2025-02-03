@@ -10,7 +10,6 @@
         "guzzlehttp/guzzle": "^7.9",
         "inertiajs/inertia-laravel": "^2.0",
         "laravel/framework": "^11.31",
-        "laravel/nexmo-notification-channel": "^3.3",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "laravel/vonage-notification-channel": "^3.3",
