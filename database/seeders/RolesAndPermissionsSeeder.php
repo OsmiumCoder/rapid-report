@@ -19,7 +19,7 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name' => 'view assigned incidents']);
         Permission::create(['name' => 'perform admin actions']);
         Permission::create(['name' => 'view reports']);
-        Permission::create(['name' => 'provide investigation']);
+        Permission::create(['name' => 'provide investigations']);
 
         // create roles and assign created permissions
         Role::create(['name' => 'admin'])
