@@ -131,7 +131,6 @@ export default function Register() {
                         className="mt-1 block w-full"
                         autoComplete="phone"
                         onChange={(e) => setData('phone', e.target.value)}
-                        required
                     />
 
                     <InputError message={errors.phone} className="mt-2" />
