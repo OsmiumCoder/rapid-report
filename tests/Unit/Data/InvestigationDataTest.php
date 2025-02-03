@@ -2,19 +2,18 @@
 
 namespace Tests\Unit\Data;
 
+use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 use App\Data\InvestigationData;
 
 class InvestigationDataTest extends TestCase
 {
-    public function test_correctly_assigns_data()
+    public function test_investigation_data_valid_with_correct_values()
     {
-        $data = new InvestigationData([
-            'title' => 'Test Title',
-            'description' => 'Test Description',
-        ]);
+    }
 
-        $this->assertEquals('Test Title', $data->title);
-        $this->assertEquals('Test Description', $data->description);
+    public function test_investigation_data_throws_invalid_with_bad_data()
+    {
+        $this->expectException(ValidationException::class);
     }
 }

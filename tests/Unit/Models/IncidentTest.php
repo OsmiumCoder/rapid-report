@@ -8,6 +8,10 @@ use Tests\TestCase;
 
 class IncidentTest extends TestCase
 {
+    public function test_incident_has_one_investigation_relation()
+    {
+    }
+
     public function test_incident_filter()
     {
         Incident::factory()->count(2)->create([

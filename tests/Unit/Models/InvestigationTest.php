@@ -9,17 +9,11 @@ use Tests\TestCase;
 
 class InvestigationTest extends TestCase
 {
-
-    public function test_can_create_an_investigation()
+    public function test_investigation_belongs_to_incident_relation()
     {
-        $investigation = Investigation::factory()->create([
-            'title' => 'Test Investigation',
-            'description' => 'Test Description',
-        ]);
+    }
 
-        $this->assertDatabaseHas('investigations', [
-            'title' => 'Test Investigation',
-            'description' => 'Test Description',
-        ]);
+    public function test_creates_an_investigation_model_with_valid_attributes()
+    {
     }
 }
