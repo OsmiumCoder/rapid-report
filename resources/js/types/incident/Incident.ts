@@ -2,6 +2,7 @@ import { IncidentStatus } from '@/Enums/IncidentStatus';
 import { User } from '@/types';
 import { IncidentType } from '@/Enums/IncidentType';
 import { Comment } from '@/types/Comment';
+import {Witness} from "@/types/incident/Witness";
 
 export interface Incident {
     id: string;
@@ -20,7 +21,7 @@ export interface Incident {
     location?: string;
     room_number?: string;
     reported_to?: string;
-    witnesses?: string[];
+    witnesses?: Witness[];
     incident_type: IncidentType;
     descriptor: string;
     description?: string;

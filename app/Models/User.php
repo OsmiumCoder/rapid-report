@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Notifications\Notification;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
@@ -56,5 +57,13 @@ class User extends Authenticatable
         $array['roles'] = $this->roles; // Include roles in the serialized output
 
         return $array;
+    }
+
+    /**
+     * Route notifications for the Vonage channel.
+     */
+    public function routeNotificationForVonage(Notification $notification): string
+    {
+        return $this->phone;
     }
 }
