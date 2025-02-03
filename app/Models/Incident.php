@@ -30,6 +30,11 @@ class Incident extends Model
         ];
     }
 
+    public function investigation()
+    {
+        return $this->hasOne(Investigation::class, 'incident_id');
+    }
+
     public function supervisor()
     {
         return $this->belongsTo(User::class, 'supervisor_id');
