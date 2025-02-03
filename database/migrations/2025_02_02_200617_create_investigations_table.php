@@ -22,7 +22,6 @@ return new class () extends Migration {
 
             $table->jsonb('resulted_in');
 
-
             $table->timestamps();
             $table->softDeletes();
         });
