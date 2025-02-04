@@ -11,10 +11,6 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [ 18.x ]
-
     steps:
     - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
       with:
@@ -31,7 +27,7 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: 18.x
 
     - name: Install npm dependencies
       run: npm install
@@ -55,3 +51,6 @@ jobs:
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
       run: php artisan test
+
+    - name: Execute lint test
+      run: ./vendor/bin/pint --test
