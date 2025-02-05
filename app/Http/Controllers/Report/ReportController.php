@@ -11,7 +11,7 @@ class ReportController extends Controller
 {
     public function index()
     {
-       # Gate::authorize('view-report-page');
+         Gate::authorize('view-report-page');
 
         return Inertia::render('Report/Index', [
             'incidents' => Incident::all(),

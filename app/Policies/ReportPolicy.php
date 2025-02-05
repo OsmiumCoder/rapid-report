@@ -8,6 +8,6 @@ class ReportPolicy
 {
     public function view(User $user): bool
     {
-        return $user->can('view report');
+        return $user->can('view reports');
     }
 }
