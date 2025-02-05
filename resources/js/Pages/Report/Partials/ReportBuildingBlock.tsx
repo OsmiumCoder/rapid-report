@@ -1,23 +1,46 @@
 import React, { useEffect, useState } from 'react';
-import Witness from "@/types/incident/Witness";
 import {ReportBuildingBlockProps} from "@/Pages/Report/Partials/ReportBuilder"
+import ReportData from "@/types/report/ReportData";
 
-export default function ReportBuildingBlock({key,formData, setFormData}:ReportBuildingBlockProps){
+export default function ReportBuildingBlock({kee,formData, setFormData}:ReportBuildingBlockProps){
+    useEffect(() => {
+        console.log(kee);
+    }, []);
+    const pretty_labels = {
+        closed_at: "Closed At",
+        created_at: "Created At",
+        deleted_at: "Deleted At",
+        description: "Description",
+        descriptor: "Descriptor",
+        first_aid_description: "First Aid Description",
+        happened_at: "Happened At",
+        incident_type: "Incident Type",
+        injury_description: "Injury Description",
+        location: "Location",
+        room_number: "Room Number",
+        updated_at: "Updated At",
+        work_related: "Work Related",
+        workers_comp_submitted: "Workers Comp Submitted"
+    };
     return(
         <>
-            <div className="grid grid-cols-3 rounded-xl border-2 m-4">
-                <div className="col-span-2">
-                    {key.valueOf()}
+            <div className="flex grid-cols-2 rounded-xl border-2 m-3 p-2">
+                <div className="mr-3 text-pretty font-medium text-gray-500">
+
+                    {pretty_labels[kee]}
                 </div>
                 <div className="flex h-6 shrink-0 items-center">
                     <div className="group grid size-4 grid-cols-1">
                         <input
-                            checked={formData[key]}
+                            checked={formData[kee]}
                             type="checkbox"
                             aria-describedby="comments-description"
                             className="col-start-1 row-start-1 appearance-none rounded border border-gray-300 bg-white checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto"
                             onChange={(e) =>{
-                                setFormData(key,e.valueOf())
+                                setFormData((prev) => ({
+                                    ...prev,
+                                    [kee]: e.target.checked
+                                }))
                             }}
                         />
                         <svg
