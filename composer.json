@@ -66,6 +66,11 @@
         ],
         "lint": [
             "vendor/bin/pint"
+        ],
+        "update-typehint": [
+            "sail artisan ide-helper:generate",
+            "sail artisan ide-helper:meta",
+            "sail artisan ide-helper:models -N"
         ]
     },
     "extra": {
