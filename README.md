@@ -68,11 +68,21 @@ Start the server
 
 You can now access the site at http://localhost (Port 80)
 
-## Running Tests
+### Running Tests
 
 To run tests, run the following command
 ```bash
   sail artisan test
+```
+
+### Running Linter
+```bash
+ composer lint
+```
+
+### Running Typehint Generation
+```bash
+ composer generate-typehints
 ```
 
 ## Tech Stack
