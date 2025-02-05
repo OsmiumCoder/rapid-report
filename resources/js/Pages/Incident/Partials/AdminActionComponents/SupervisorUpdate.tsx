@@ -37,7 +37,7 @@ export default function SupervisorUpdate({
     const [isLoading, setIsLoading] = useState(false);
     const [modalProps, setModalProps] = useConfirmationModalProps();
     const [query, setQuery] = useState('');
-    const [defaultText, setDefaultText] = useState('Unassigned');
+    const [defaultText, setDefaultText] = useState<'Unassigned' | ''>('Unassigned');
 
     const filteredSupervisors =
         query === ''
