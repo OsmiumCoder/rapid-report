@@ -1,6 +1,6 @@
 import { StageProps } from '@/Pages/Incident/Stages/StageWrapper';
 import React, { useState } from 'react';
-import Witness from '@/types/incident/Witness';
+import { Witness } from '@/types/incident/Witness';
 import { PlusIcon } from '@heroicons/react/20/solid';
 import WitnessList from '@/Components/WitnessList';
 import validatePhoneInput from '@/Filters/validatePhoneInput';
@@ -27,15 +27,22 @@ export default function WitnessStage({
         }
 
         setValidationError(false);
-        setFormData('witnesses', [...formData.witnesses, witnessInProgress]);
+        setFormData('witnesses', [
+            ...(formData.witnesses ?? []),
+            witnessInProgress,
+        ]);
         setWitnessInProgress(newWitness());
-        setShowButtons((prev) => !prev);
+        setShowButtons?.((prev) => !prev);
         setWitnessFormVisible((prev) => !prev);
     };
     const removePerson = (index: number) => {
         setFormData(
             'witnesses',
-            formData.witnesses.filter((_, personIndex) => personIndex != index)
+            formData.witnesses
+                ? formData.witnesses.filter(
+                      (_, personIndex) => personIndex != index
+                  )
+                : []
         );
     };
 
@@ -133,7 +140,7 @@ export default function WitnessStage({
                             type="button"
                             onClick={() => {
                                 setWitnessFormVisible((prev) => !prev);
-                                setShowButtons((prev) => !prev);
+                                setShowButtons?.((prev) => !prev);
                             }}
                             className="mr-16 pr-3 items-center gap-x-2 rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                         >
@@ -158,14 +165,14 @@ export default function WitnessStage({
                 <>
                     <WitnessList
                         removeWitness={removePerson}
-                        witnesses={formData.witnesses}
+                        witnesses={formData.witnesses ?? []}
                     />
                     <div className="flex justify-center">
                         <button
                             type="button"
                             onClick={() => {
                                 setWitnessFormVisible((prev) => !prev);
-                                setShowButtons((prev) => !prev);
+                                setShowButtons?.((prev) => !prev);
                             }}
                             className="my-2 flex justify-center items-center gap-x-2 rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                         >

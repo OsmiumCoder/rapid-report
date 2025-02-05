@@ -22,16 +22,14 @@ export default function AdminActions({
                         </div>
                         {(incident.status === IncidentStatus.OPENED ||
                             incident.status === IncidentStatus.ASSIGNED ||
-                            incident.status === IncidentStatus.REOPENED) && (
+                            incident.status === IncidentStatus.REOPENED ||
+                            incident.status === IncidentStatus.IN_REVIEW) && (
                             <SupervisorUpdate
                                 incident={incident}
                                 supervisors={supervisors}
                             />
                         )}
-                        {(incident.status === IncidentStatus.CLOSED ||
-                            incident.status === IncidentStatus.IN_REVIEW) && (
-                            <StatusUpdate incident={incident} />
-                        )}
+                        <StatusUpdate incident={incident} />
                     </div>
                 </div>
             </div>

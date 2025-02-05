@@ -16,7 +16,16 @@ class OwnedIncidentsController extends Controller
     {
         $this->authorize('viewAnyOwned', Incident::class);
 
-        $ownedIncidents = Incident::where('reporters_email', $request->user()->email)->paginate($perPage = 10, $columns = ['*'], $pageName = 'incidents');
+        $filters = json_decode(urldecode($request->query('filters')), true);
+
+        $sortBy = $request->string('sort_by', 'created_at');
+        $sortDirection = $request->string('sort_direction', 'desc');
+
+        $ownedIncidents = Incident::sort($sortBy, $sortDirection)
+            ->where('reporters_email', $request->user()->email)
+            ->filter($filters)
+            ->paginate($perPage = 10, $columns = ['*'], $pageName = 'incidents')
+            ->appends($request->query());
 
         return Inertia::render('Incident/Index', [
             'incidents' => $ownedIncidents,

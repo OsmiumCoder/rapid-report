@@ -16,7 +16,17 @@ class AssignedIncidentsController extends Controller
     {
         $this->authorize('viewAnyAssigned', Incident::class);
 
-        $assignedIncidents = Incident::where('supervisor_id', $request->user()->id)->paginate($perPage = 10, $columns = ['*'], $pageName = 'incidents');
+        $filters = json_decode(urldecode($request->query('filters')), true);
+
+        $sortBy = $request->string('sort_by', 'created_at');
+        $sortDirection = $request->string('sort_direction', 'desc');
+
+        $assignedIncidents = Incident::sort($sortBy, $sortDirection)
+            ->filter($filters)
+            ->where('supervisor_id', $request->user()->id)
+            ->paginate($perPage = 10, $columns = ['*'], $pageName = 'incidents')
+            ->appends($request->query());
+
 
         return Inertia::render('Incident/Index', [
             'incidents' => $assignedIncidents,

@@ -39,4 +39,30 @@ class Incident extends Model
     {
         return $this->morphMany(Comment::class, 'commentable');
     }
+
+    public function scopeFilter($query, ?array $filters)
+    {
+        if ($filters == null) {
+            return;
+        }
+
+        $query->where(function ($innerQuery) use ($filters) {
+            for ($i = 0; $i < count($filters); $i++) {
+                if ($i == 0 || $filters[$i]['column'] == 'descriptor') {
+                    $innerQuery->where($filters[$i]['column'], $filters[$i]['comparator'], $filters[$i]['value']);
+                } else {
+                    $innerQuery->where($filters[$i]['column'], $filters[$i]['comparator'], $filters[$i]['value']);
+                }
+            }
+        });
+    }
+
+    public function scopeSort($query, $sortBy, $sortDirection): void
+    {
+        if ($sortBy == 'name') {
+            $query->orderBy('first_name', $sortDirection)->orderBy('last_name', $sortDirection);
+        } else {
+            $query->orderBy($sortBy, $sortDirection);
+        }
+    }
 }

@@ -3,12 +3,12 @@ import ProgressBarCircle from '@/Components/ProgressBarCircle';
 import IncidentData from '@/types/incident/IncidentData';
 
 export interface StageProps extends PropsWithChildren {
-    formData: IncidentData;
+    formData: Partial<IncidentData>;
     setFormData: (key: keyof IncidentData, value: any) => void;
     validStep: boolean;
     setValidStep: Dispatch<SetStateAction<boolean>>;
     failedStep: boolean;
-    setShowButtons: Dispatch<SetStateAction<boolean>>;
+    setShowButtons?: Dispatch<SetStateAction<boolean>>;
 }
 
 interface StageWrapperProps extends PropsWithChildren {
