@@ -236,7 +236,7 @@ export default function Searchbar({ open, setOpen }: CommandPaletteProps) {
                                         }
                                     >
                                         <div className="flex justify-between items-center mx-1">
-                                            <div className="max-w-[85%]">
+                                            <div className="max-w-[80%]">
                                                 <span>{dateFormat(incident.created_at)}</span>
                                                 <span> | </span>
                                                 <span>
