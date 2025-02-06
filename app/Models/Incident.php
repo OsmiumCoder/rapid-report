@@ -46,6 +46,8 @@ class Incident extends Model
         return array_merge($array, [
             'id' => (string) $this->id,
             'upei_id' => (string) $this->upei_id,
+            'supervisor' => $this->supervisor ? $this->supervisor->name : null,
+            'supervisor_id' => (int) $this->supervisor_id,
             'created_at' => $this->created_at->timestamp,
         ]);
     }

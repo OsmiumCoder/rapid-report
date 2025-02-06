@@ -18,7 +18,7 @@ return [
     |
     */
 
-    'driver' => env('SCOUT_DRIVER', 'algolia'),
+    'driver' => env('SCOUT_DRIVER', 'typesense'),
 
     /*
     |--------------------------------------------------------------------------
@@ -44,7 +44,10 @@ return [
     |
     */
 
-    'queue' => env('SCOUT_QUEUE', false),
+    'queue' => [
+        'connection' => env('SCOUT_QUEUE_CONNECTION', 'database'),
+        'queue' => env('SCOUT_QUEUE_NAME', 'scout')
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -216,6 +219,16 @@ return [
                              'optional' => true,
                          ],
                          [
+                             'name' => 'status',
+                             'type' => 'string',
+                             'optional' => true,
+                         ],
+                         [
+                             'name' => 'descriptor',
+                             'type' => 'string',
+                             'optional' => true,
+                         ],
+                         [
                              'name' => 'description',
                              'type' => 'string',
                              'optional' => true,
@@ -236,7 +249,17 @@ return [
                              'optional' => true,
                          ],
                          [
-                             'name' => 'supervisors_name',
+                             'name' => 'supervisor_name',
+                             'type' => 'string',
+                             'optional' => true,
+                         ],
+                         [
+                             'name' => 'supervisor_id',
+                             'type' => 'int32',
+                             'optional' => true,
+                         ],
+                         [
+                             'name' => 'supervisor',
                              'type' => 'string',
                              'optional' => true,
                          ],

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f4f864efebb5a1b1560db5b7d763487f",
+    "content-hash": "7f74cd3dcdbf363836789f892115e73e",
     "packages": [
         {
             "name": "amphp/amp",
@@ -12434,6 +12434,77 @@
             "time": "2024-10-20T05:08:20+00:00"
         },
         {
+            "name": "sti3bas/laravel-scout-array-driver",
+            "version": "v4.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Sti3bas/laravel-scout-array-driver.git",
+                "reference": "774ec432217fdbe1d8e21fb226af5292555dc938"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Sti3bas/laravel-scout-array-driver/zipball/774ec432217fdbe1d8e21fb226af5292555dc938",
+                "reference": "774ec432217fdbe1d8e21fb226af5292555dc938",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/bus": "^9.0 || ^10.0 || ^11.0",
+                "illuminate/contracts": "^9.0 || ^10.0 || ^11.0",
+                "illuminate/database": "^9.0 || ^10.0 || ^11.0",
+                "illuminate/http": "^9.0 || ^10.0 || ^11.0",
+                "illuminate/pagination": "^9.0 || ^10.0 || ^11.0",
+                "illuminate/queue": "^9.0 || ^10.0 || ^11.0",
+                "illuminate/support": "^9.0 || ^10.0 || ^11.0",
+                "laravel/scout": "^10.0",
+                "php": "^8.0 || ^8.1 || ^8.2"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.0",
+                "mockery/mockery": "^1.5.1",
+                "orchestra/testbench": "^7.0 || ^8.0 || ^9.0",
+                "phpunit/phpunit": "^9.0 || ^10.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Sti3bas\\ScoutArray\\ScoutArrayEngineServiceProvider"
+                    ]
+                },
+                "branch-alias": {
+                    "dev-master": "11.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Sti3bas\\ScoutArray\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Laurynas Geigalas",
+                    "email": "sti3bas@gmail.com"
+                }
+            ],
+            "description": "Array driver for Laravel Scout",
+            "keywords": [
+                "array",
+                "driver",
+                "laravel",
+                "scout",
+                "testing"
+            ],
+            "support": {
+                "issues": "https://github.com/Sti3bas/laravel-scout-array-driver/issues",
+                "source": "https://github.com/Sti3bas/laravel-scout-array-driver/tree/v4.1"
+            },
+            "time": "2024-09-23T11:32:15+00:00"
+        },
+        {
             "name": "symfony/yaml",
             "version": "v7.2.3",
             "source": {
@@ -12558,12 +12629,12 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": "^8.2"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "plugin-api-version": "2.6.0"
 }
