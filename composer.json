@@ -11,13 +11,15 @@
         "inertiajs/inertia-laravel": "^2.0",
         "laravel/framework": "^11.31",
         "laravel/sanctum": "^4.0",
+        "laravel/scout": "^10.12",
         "laravel/tinker": "^2.9",
         "laravel/vonage-notification-channel": "^3.3",
         "spatie/laravel-data": "^4.11",
         "spatie/laravel-event-sourcing": "^7.10",
         "spatie/laravel-model-states": "^2.10",
         "spatie/laravel-permission": "^6.10",
-        "tightenco/ziggy": "^2.0"
+        "tightenco/ziggy": "^2.0",
+        "typesense/typesense-php": "^4.9"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.14",
@@ -30,7 +32,8 @@
         "laravel/sail": "^1.26",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.1",
-        "phpunit/phpunit": "^11.0.1"
+        "phpunit/phpunit": "^11.0.1",
+        "sti3bas/laravel-scout-array-driver": "^4.1"
     },
     "autoload": {
         "psr-4": {

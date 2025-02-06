@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\Incident;
 use App\Models\User;
+use Laravel\Scout\Builder;
 
 class IncidentPolicy
 {
@@ -53,6 +54,15 @@ class IncidentPolicy
     public function addComment(User $user, Incident $incident): bool
     {
         return $this->view($user, $incident);
+    }
+
+    public function searchIncidents(User $user, Builder $incidentQuery): bool
+    {
+        if (! $user->can('view all incidents') && $user->can('view assigned incidents')) {
+            $incidentQuery->where('supervisor_id', $user->id);
+            return true;
+        }
+        return $user->can('view all incidents');
     }
 
     /**
