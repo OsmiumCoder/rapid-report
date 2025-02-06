@@ -1,4 +1,5 @@
 import React, { InputHTMLAttributes } from 'react';
+import classNames from '@/Filters/classNames';
 
 interface LabeledCheckBoxProps extends InputHTMLAttributes<HTMLInputElement> {
     label: string;
@@ -36,7 +37,14 @@ export default function LabeledCheckbox({ label, ...props }: LabeledCheckBoxProp
                     </svg>
                 </div>
             </div>
-            <label className="text-base text-gray-600 sm:text-sm">{label}</label>
+            <label
+                className={classNames(
+                    'text-base text-gray-600 sm:text-sm',
+                    props.disabled ? 'opacity-50' : ''
+                )}
+            >
+                {label}
+            </label>
         </div>
     );
 }

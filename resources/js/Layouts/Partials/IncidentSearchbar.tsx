@@ -82,6 +82,7 @@ export default function IncidentSearchbar({ open, setOpen }: CommandPaletteProps
     const [incidents, setIncidents] = useState<Incident[]>([]);
     const [sortByMenuOpen, setSortByMenuOpen] = useState(false);
     const [labels, setLabels] = useState(defaultLabels);
+    const [allLabelsChecked, setAllLabelsChecked] = useState(false);
     const [searchBy, setSearchBy] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
@@ -104,7 +105,7 @@ export default function IncidentSearchbar({ open, setOpen }: CommandPaletteProps
         setIsLoading(true);
         try {
             const response = await axios.get<Incident[]>(
-                route('incidents.search', { query, search_by: searchBy })
+                route('incidents.search', { search: query, search_by: searchBy })
             );
             setIncidents(response.data);
         } catch (err) {
@@ -114,14 +115,12 @@ export default function IncidentSearchbar({ open, setOpen }: CommandPaletteProps
         }
     };
 
-    console.log(incidents);
     return (
         <Dialog
-            className="relative z-10"
+            className="z-10"
             open={open}
             onClose={() => {
                 setOpen(false);
-                setQuery('');
             }}
         >
             <DialogBackdrop
@@ -129,7 +128,7 @@ export default function IncidentSearchbar({ open, setOpen }: CommandPaletteProps
                 className="fixed inset-0 bg-gray-500/25 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in"
             />
 
-            <div className="fixed inset-0 z-10 w-screen overflow-y-auto p-4 sm:p-6 md:p-20">
+            <div className="fixed inset-0 z-10 w-full overflow-y-auto p-4 sm:p-6 md:p-20">
                 <DialogPanel
                     transition
                     className="mx-auto max-w-xl transform overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black/5 transition-all data-[closed]:scale-95 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in"
@@ -143,11 +142,17 @@ export default function IncidentSearchbar({ open, setOpen }: CommandPaletteProps
                     </button>
                     {sortByMenuOpen && (
                         <div className="grid grid-cols-3 mx-6 mb-4">
+                            <LabeledCheckbox
+                                checked={allLabelsChecked}
+                                label="All"
+                                onChange={(e) => setAllLabelsChecked(e.target.checked)}
+                            />
                             {labels.map((label, index) => (
                                 <LabeledCheckbox
                                     key={index + label.label}
                                     checked={label.checked}
                                     label={label.label}
+                                    disabled={allLabelsChecked}
                                     onChange={(e) =>
                                         setLabels((prev) => {
                                             prev[index].checked = e.target.checked;
