@@ -235,20 +235,27 @@ export default function Searchbar({ open, setOpen }: CommandPaletteProps) {
                                             )
                                         }
                                     >
-                                        <div className="mb-2">
-                                            <span>{dateFormat(incident.created_at)}</span>
-                                            <span> | </span>
-                                            <span>
-                                                {nameFilter(incident)[0]} {nameFilter(incident)[1]}
-                                            </span>
-                                            <span> | </span>
-                                            <span>{incident.descriptor}</span>
-                                            {incident.location && <div>{incident.location}</div>}
+                                        <div className="flex justify-between items-center mx-1">
+                                            <div className="max-w-[85%]">
+                                                <span>{dateFormat(incident.created_at)}</span>
+                                                <span> | </span>
+                                                <span>
+                                                    {nameFilter(incident)[0]}{' '}
+                                                    {nameFilter(incident)[1]}
+                                                </span>
+                                                <span> | </span>
+                                                <span>{incident.descriptor}</span>
+                                                {incident.location && (
+                                                    <div className="truncate">
+                                                        {incident.location}
+                                                    </div>
+                                                )}
+                                            </div>
+                                            <Badge
+                                                color={incidentBadgeColor(incident)}
+                                                text={uppercaseWordFormat(incident.status)}
+                                            />
                                         </div>
-                                        <Badge
-                                            color={incidentBadgeColor(incident)}
-                                            text={uppercaseWordFormat(incident.status)}
-                                        />
                                     </ComboboxOption>
                                 ))}
                             </ComboboxOptions>
