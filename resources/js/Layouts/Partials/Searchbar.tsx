@@ -18,6 +18,7 @@ import dateFormat from '@/Filters/dateFormat';
 import Badge from '@/Components/Badge';
 import { uppercaseWordFormat } from '@/Filters/uppercaseWordFormat';
 import { incidentBadgeColor } from '@/Filters/incidentBadgeColor';
+import { nameFilter } from '@/Filters/nameFilter';
 
 interface CommandPaletteProps {
     open: boolean;
@@ -238,7 +239,7 @@ export default function Searchbar({ open, setOpen }: CommandPaletteProps) {
                                             <span>{dateFormat(incident.created_at)}</span>
                                             <span> | </span>
                                             <span>
-                                                {incident.first_name} {incident.last_name}
+                                                {nameFilter(incident)[0]} {nameFilter(incident)[1]}
                                             </span>
                                             <span> | </span>
                                             <span>{incident.descriptor}</span>
