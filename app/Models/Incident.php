@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Scout\Searchable;
 use Spatie\ModelStates\HasStates;
 
 class Incident extends Model
@@ -16,6 +17,7 @@ class Incident extends Model
     use HasStates;
     use HasUuids;
     use SoftDeletes;
+    use Searchable;
 
     protected function casts(): array
     {
@@ -28,6 +30,23 @@ class Incident extends Model
             'status' => IncidentStatusState::class,
             'incident_type' => IncidentType::class,
         ];
+    }
+
+    public function toSearchableArray()
+    {
+        $array = $this->toArray();
+
+        // Convert all boolean fields to integers
+        foreach ($array as $key => $value) {
+            if (is_bool($value)) {
+                $array[$key] = (int) $value;
+            }
+        }
+
+        return array_merge($array, [
+            'id' => (string) $this->id,
+            'created_at' => $this->created_at->timestamp,
+        ]);
     }
 
     public function supervisor()

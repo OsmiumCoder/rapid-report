@@ -1,15 +1,10 @@
-import {
-    Bars3Icon,
-    BellIcon,
-    UserCircleIcon,
-} from '@heroicons/react/24/outline';
-import {
-    ChevronDownIcon,
-    MagnifyingGlassIcon,
-} from '@heroicons/react/20/solid';
+import { Bars3Icon, BellIcon, UserCircleIcon } from '@heroicons/react/24/outline';
+import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { Link, usePage } from '@inertiajs/react';
 import { Method } from '@/types/Method';
+import { useState } from 'react';
+import IncidentSearchbar from '@/Layouts/Partials/IncidentSearchbar';
 
 const userNavigation: { name: string; href: string; method?: Method }[] = [
     { name: 'Your profile', href: route('profile.edit') },
@@ -18,6 +13,8 @@ const userNavigation: { name: string; href: string; method?: Method }[] = [
 
 export default function TopBar(props: { onClick: () => void }) {
     const user = usePage().props.auth.user;
+
+    const [searchOpen, setSearchOpen] = useState(false);
 
     return (
         <>
@@ -32,29 +29,23 @@ export default function TopBar(props: { onClick: () => void }) {
                 </button>
 
                 {/* Separator */}
-                <div
-                    aria-hidden="true"
-                    className="h-6 w-px bg-gray-900/10 lg:hidden"
-                />
+                <div aria-hidden="true" className="h-6 w-px bg-gray-900/10 lg:hidden" />
 
-                <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
-                    <form
-                        action="#"
-                        method="GET"
-                        className="grid flex-1 grid-cols-1"
-                    >
-                        <input
-                            name="search"
-                            type="search"
-                            placeholder="Search"
-                            aria-label="Search"
-                            className="col-start-1 row-start-1 block size-full bg-white pl-8 text-base text-gray-900 outline-none border-0 placeholder:text-gray-400 sm:text-sm/6"
-                        />
-                        <MagnifyingGlassIcon
-                            aria-hidden="true"
-                            className="pointer-events-none col-start-1 row-start-1 size-5 self-center text-gray-400"
-                        />
-                    </form>
+                <div className="flex flex-1 gap-x-4 self-stretch justify-end lg:gap-x-6">
+                    {(user.roles.some((role) => role.name === 'admin') ||
+                        user.roles.some((role) => role.name === 'super-admin')) && (
+                        <button
+                            type="button"
+                            className="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500"
+                            onClick={() => setSearchOpen(true)}
+                        >
+                            <MagnifyingGlassIcon
+                                aria-hidden="true"
+                                className="pointer-events-none col-start-1 row-start-1 size-5 self-center"
+                            />
+                        </button>
+                    )}
+
                     <div className="flex items-center gap-x-4 lg:gap-x-6">
                         <button
                             type="button"
@@ -108,6 +99,7 @@ export default function TopBar(props: { onClick: () => void }) {
                     </div>
                 </div>
             </div>
+            <IncidentSearchbar open={searchOpen} setOpen={setSearchOpen} />
         </>
     );
 }
