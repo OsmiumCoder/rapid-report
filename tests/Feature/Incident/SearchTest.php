@@ -40,7 +40,7 @@ class SearchTest extends TestCase
         $this->actingAs($supervisor);
 
         $incidentA = Incident::factory()->create(['description' => 'description a', 'supervisor_id' => $supervisor->id]);
-        $incidentB = Incident::factory()->create(['description' => 'description b']);
+        $incidentB = Incident::factory()->create(['description' => 'description a']);
 
         Search::fakeRecord($incidentA, [
             'description' => 'description a',
