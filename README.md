@@ -2,7 +2,16 @@
 
 An incident reporting platform for health and safety departments.
 
-## Run Locally
+## Local Setup
+
+### Prerequsites
+- [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) (For Windoze users)
+- [Docker](https://docs.docker.com/get-started/get-docker/)
+- PHP & Extensions: `sudo apt install php php-mbstring php-xml php-zip php-curl php-xdebug`
+- [PHP Composer](https://getcomposer.org/)
+- [Node.js](https://nodejs.org/en)
+
+### Installation
 
 Clone the project
 ```bash
@@ -27,14 +36,29 @@ Copy the example env file and make the required configuration changes in the .en
   cp .env.example .env
 ```
 
-Generate a new application key
+Paste the following into your shell configuration file (Typically `~/.bashrc`)
 ```bash
-  php artisan key:generate
+ alias sail='sh $([ -f sail ] && echo sail || echo vendor/bin/sail)
 ```
 
-Run the database migrations (**ensure database rapid_report exists and Laragon is running**)
+Restart your shell or enter:
 ```bash
-  php artisan migrate:fresh --seed
+ source ~/.bashrc
+```
+
+Start Docker containers
+```bash
+ sail up -d
+```
+
+Generate a new application key
+```bash
+  sail artisan key:generate
+```
+
+Run the database migrations (**ensure database rapid_report exists and Docker containers are running**)
+```bash
+  sail artisan migrate:fresh --seed
 ```
 
 Start the server
@@ -42,20 +66,30 @@ Start the server
   npm run dev
 ```
 
-You can now access the site at http://rapid-report.test
+You can now access the site at http://localhost (Port 80)
 
-## Running Tests
+### Running Tests
 
 To run tests, run the following command
 ```bash
-  php artisan test
+  sail artisan test
+```
+
+### Running Linter
+```bash
+ composer lint
+```
+
+### Running Typehint Generation
+```bash
+ composer generate-typehints
 ```
 
 ## Tech Stack
 
-**Client:** React, TailwindCSS
+**Client:** [React](https://react.dev/), [Typescript](https://www.typescriptlang.org/), [TailwindCSS](https://tailwindcss.com/)
 
-**Server:** Laravel
+**Server:** [Laravel](https://laravel.com/)
 
 ## License
 TBD

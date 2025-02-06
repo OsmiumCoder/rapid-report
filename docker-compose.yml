@@ -1,11 +1,11 @@
 services:
     app:
         build:
-            context: './vendor/laravel/sail/runtimes/8.3'
+            context: ./vendor/laravel/sail/runtimes/8.3
             dockerfile: Dockerfile
             args:
                 WWWGROUP: '${WWWGROUP}'
-        image: 'sail-8.3/app'
+        image: sail-8.3/app
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         ports:
@@ -23,6 +23,8 @@ services:
             - sail
         depends_on:
             - mysql
+            - typesense
+            - redis
     mysql:
         image: 'mysql/mysql-server:8.0'
         ports:
@@ -47,9 +49,49 @@ services:
                 - '-p${DB_PASSWORD}'
             retries: 3
             timeout: 5s
+    typesense:
+        image: 'typesense/typesense:27.1'
+        ports:
+            - '${FORWARD_TYPESENSE_PORT:-8108}:8108'
+        environment:
+            TYPESENSE_DATA_DIR: '${TYPESENSE_DATA_DIR:-/typesense-data}'
+            TYPESENSE_API_KEY: '${TYPESENSE_API_KEY}'
+            TYPESENSE_ENABLE_CORS: '${TYPESENSE_ENABLE_CORS:-true}'
+        volumes:
+            - 'sail-typesense:/typesense-data'
+        networks:
+            - sail
+        healthcheck:
+            test:
+                - CMD
+                - wget
+                - '--no-verbose'
+                - '--spider'
+                - 'http://localhost:8108/health'
+            retries: 5
+            timeout: 7s
+    redis:
+        image: 'redis:alpine'
+        ports:
+            - '${FORWARD_REDIS_PORT:-6379}:6379'
+        volumes:
+            - 'sail-redis:/data'
+        networks:
+            - sail
+        healthcheck:
+            test:
+                - CMD
+                - redis-cli
+                - ping
+            retries: 3
+            timeout: 5s
 networks:
     sail:
         driver: bridge
 volumes:
     sail-mysql:
+        driver: local
+    sail-typesense:
+        driver: local
+    sail-redis:
         driver: local
