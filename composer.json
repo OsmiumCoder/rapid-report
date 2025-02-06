@@ -74,9 +74,6 @@
             "sail artisan ide-helper:generate",
             "sail artisan ide-helper:meta",
             "sail artisan ide-helper:models -N"
-        ],
-        "run-queues": [
-            "sail artisan queue:work --queue=default,scout"
         ]
     },
     "extra": {
