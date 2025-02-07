@@ -1,5 +1,4 @@
 import { User } from '@/types';
-import { uppercaseWordFormat } from '@/Filters/uppercaseWordFormat';
 import { Incident } from '@/types/incident/Incident';
 import {
     Combobox,
@@ -7,25 +6,18 @@ import {
     ComboboxInput,
     ComboboxOption,
     ComboboxOptions,
-    Label,
-    Listbox,
-    ListboxButton,
-    ListboxOption,
-    ListboxOptions,
 } from '@headlessui/react';
 import { ChevronUpDownIcon } from '@heroicons/react/16/solid';
 import { useState } from 'react';
 import LoadingIndicator from '@/Components/LoadingIndicator';
 import SecondaryButton from '@/Components/SecondaryButton';
-import {
-    assignSupervisor,
-    unassignSupervisor,
-} from '@/Pages/Incident/Partials/AdminActionComponents/supervisorActions';
 import ConfirmationModal, {
     ConfirmationModalProps,
     useConfirmationModalProps,
 } from '@/Components/ConfirmationModal';
 import { CheckIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid';
+import { assignSupervisor, unassignSupervisor } from '@/Helpers/Incident/statusUpdates';
+import { router } from '@inertiajs/react';
 
 export default function SupervisorUpdate({
     incident,
@@ -73,7 +65,10 @@ export default function SupervisorUpdate({
                             ...prev,
                             title: 'Assign Supervisor',
                             text: `Are you sure you want to assign ${supervisor?.name} to this incident?\n${supervisor?.name} will be notified.`,
-                            action: () => assignSupervisor(parseInt(id), incident, setIsLoading),
+                            action: () =>
+                                assignSupervisor(parseInt(id), incident, setIsLoading, () =>
+                                    router.reload({ only: ['incident'] })
+                                ),
                             show: true,
                         }));
                     }}
@@ -133,7 +128,10 @@ export default function SupervisorUpdate({
                                 ...prev,
                                 title: 'Unassign Supervisor',
                                 text: `Are you sure you want to unassign ${incident?.supervisor?.name} from this incident?`,
-                                action: () => unassignSupervisor(incident, setIsLoading),
+                                action: () =>
+                                    unassignSupervisor(incident, setIsLoading, () =>
+                                        router.reload({ only: ['incident'] })
+                                    ),
                                 show: true,
                             }))
                         }
@@ -144,13 +142,7 @@ export default function SupervisorUpdate({
                     <></>
                 )}
             </div>
-            <ConfirmationModal
-                title={modalProps.title}
-                text={modalProps.text}
-                action={modalProps.action}
-                show={modalProps.show}
-                setShow={modalProps.setShow}
-            />
+            <ConfirmationModal modalProps={modalProps} />
         </>
     );
 }

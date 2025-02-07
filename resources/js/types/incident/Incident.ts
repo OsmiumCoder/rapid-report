@@ -2,7 +2,8 @@ import { IncidentStatus } from '@/Enums/IncidentStatus';
 import { User } from '@/types';
 import { IncidentType } from '@/Enums/IncidentType';
 import { Comment } from '@/types/Comment';
-import {Witness} from "@/types/incident/Witness";
+import { Witness } from '@/types/incident/Witness';
+import { Investigation } from '@/types/Investigation/Investigation';
 
 export interface Incident {
     id: string;
@@ -33,6 +34,7 @@ export interface Incident {
     supervisor?: User;
     status: IncidentStatus;
     comments: Comment[];
+    investigation: Investigation;
     closed_at?: string;
     created_at: string;
     updated_at: string;

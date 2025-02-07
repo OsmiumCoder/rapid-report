@@ -10,7 +10,7 @@ export default function DesktopSidebar() {
                         <img
                             alt="UPEI Health & Saftey"
                             src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=500"
-                            className="h-8 w-auto"
+                            className="h-8 w-auto text-gray-400"
                         />
                     </div>
 

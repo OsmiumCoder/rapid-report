@@ -34,9 +34,13 @@ class InvestigationController extends Controller
     /**
      * Display the specified investigation.
      */
-    public function show(Investigation $investigation)
+    public function show(Incident $incident, Investigation $investigation)
     {
-        //
+        $this->authorize('view', [Investigation::class, $incident]);
+
+        $investigation->load('incident');
+
+        return Inertia::render('Investigation/Show', ['investigation' => $investigation->load(['incident'])]);
     }
 
     /**

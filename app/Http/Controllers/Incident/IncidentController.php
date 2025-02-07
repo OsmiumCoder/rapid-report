@@ -6,6 +6,7 @@ use App\Aggregates\IncidentAggregateRoot;
 use App\Data\IncidentData;
 use App\Http\Controllers\Controller;
 use App\Models\Incident;
+use App\Models\Investigation;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -74,6 +75,10 @@ class IncidentController extends Controller
             $supervisors = User::role('supervisor')->get();
         } else {
             $supervisors = [];
+        }
+
+        if (auth()->user()->can('view', [Investigation::class, $incident])) {
+            $incident->load('investigation');
         }
 
         return Inertia::render('Incident/Show', [

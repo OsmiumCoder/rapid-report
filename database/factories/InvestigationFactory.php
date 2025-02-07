@@ -17,7 +17,7 @@ class InvestigationFactory extends Factory
             'prevention' => fake()->paragraph,
             'hazard_class' => fake()->randomLetter,
             'risk_rank' => fake()->numberBetween(1, 9),
-            'resulted_in' => [],
+            'resulted_in' => fake()->randomElements(['Injury', 'Illness', 'Property Damage', 'Near Miss', 'First aid', 'Medical aid', 'Recurrence'], rand(1, 7)),
         ];
     }
 }

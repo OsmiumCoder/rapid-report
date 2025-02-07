@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Incident;
 use App\Models\Investigation;
 use App\Models\User;
 
@@ -18,9 +19,9 @@ class InvestigationPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Investigation $investigation): bool
+    public function view(User $user, Incident $incident): bool
     {
-        return false;
+        return $user->can('view any investigation') || $incident->supervisor_id == $user->id;
     }
 
     /**
