@@ -14,11 +14,13 @@ use App\States\IncidentStatus\Assigned;
 use App\States\IncidentStatus\Closed;
 use App\States\IncidentStatus\InReview;
 use App\States\IncidentStatus\Opened;
+use App\States\IncidentStatus\Returned;
 use App\StorableEvents\Comment\CommentCreated;
 use App\States\IncidentStatus\Reopened;
 use App\StorableEvents\Incident\IncidentClosed;
 use App\StorableEvents\Incident\IncidentCreated;
 use App\StorableEvents\Incident\IncidentReopened;
+use App\StorableEvents\Incident\InvestigationReturned;
 use App\StorableEvents\Incident\SupervisorAssigned;
 use App\StorableEvents\Incident\SupervisorUnassigned;
 use Illuminate\Support\Str;
@@ -26,6 +28,57 @@ use Tests\TestCase;
 
 class IncidentAggregateRootTest extends TestCase
 {
+    public function test_sets_returned_status()
+    {
+        $incident = Incident::factory()->create([
+            'status' => InReview::class,
+        ]);
+
+        IncidentAggregateRoot::retrieve($incident->id)
+            ->returnInvestigation()
+            ->persist();
+
+        $incident->refresh();
+
+        $this->assertEquals(Returned::class, $incident->status::class);
+    }
+
+    public function test_adds_returned_comment()
+    {
+        $incident = Incident::factory()->create([
+            'status' => InReview::class,
+        ]);
+
+        IncidentAggregateRoot::retrieve($incident->id)
+            ->returnInvestigation()
+            ->persist();
+
+        $incident->refresh();
+
+        $this->assertCount(1, $incident->comments);
+
+        $comment = $incident->comments->first();
+
+        $this->assertEquals(CommentType::ACTION, $comment->type);
+        $this->assertStringContainsStringIgnoringCase('returned', $comment->content);
+        $this->assertStringContainsStringIgnoringCase('incident', $comment->content);
+    }
+
+    public function test_fires_investigation_returned_event()
+    {
+        $incident = Incident::factory()->create([
+            'status' => InReview::class,
+        ]);
+
+        IncidentAggregateRoot::fake($incident->id)
+            ->when(function (IncidentAggregateRoot $incidentAggregateRoot): void {
+                $incidentAggregateRoot->returnInvestigation();
+            })
+            ->assertRecorded([
+                new InvestigationReturned,
+            ]);
+    }
+
     public function test_adds_reopened_comment()
     {
         $supervisor = User::factory()->create()->assignRole('supervisor');

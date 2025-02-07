@@ -8,10 +8,92 @@ use App\Models\User;
 use App\States\IncidentStatus\Closed;
 use App\States\IncidentStatus\InReview;
 use App\States\IncidentStatus\Reopened;
+use App\States\IncidentStatus\Returned;
 use Tests\TestCase;
 
 class StatusTest extends TestCase
 {
+    public function test_adds_returned_comment()
+    {
+        $admin = User::factory()->create()->assignRole('admin');
+
+        $this->actingAs($admin);
+
+        $incident = Incident::factory()->create([
+            'status' => InReview::class,
+        ]);
+
+        $response = $this->put(route('incidents.return-investigation', ['incident' => $incident]));
+
+        $response->assertRedirect();
+
+        $incident->refresh();
+
+        $this->assertCount(1, $incident->comments);
+
+        $comment = $incident->comments->first();
+
+        $this->assertEquals(CommentType::ACTION, $comment->type);
+        $this->assertStringContainsStringIgnoringCase('returned', $comment->content);
+        $this->assertStringContainsStringIgnoringCase('incident', $comment->content);
+        $this->assertEquals($admin->id, $comment->user_id);
+    }
+
+    public function test_admin_can_return_incidents()
+    {
+        $admin = User::factory()->create()->assignRole('admin');
+
+        $this->actingAs($admin);
+
+        $incident = Incident::factory()->create([
+            'status' => InReview::class,
+        ]);
+
+        $response = $this->put(route('incidents.return-investigation', ['incident' => $incident]));
+
+        $response->assertStatus(302);
+
+        $incident->refresh();
+
+        $this->assertEquals(Returned::class, $incident->status::class);
+    }
+
+    public function test_user_can_not_return_incidents()
+    {
+        $user = User::factory()->create()->assignRole('user');
+
+        $this->actingAs($user);
+
+        $incident = Incident::factory()->create([
+            'status' => InReview::class,
+        ]);
+
+        $response = $this->put(route('incidents.return-investigation', ['incident' => $incident]));
+
+        $response->assertStatus(403);
+
+        $incident->refresh();
+
+        $this->assertEquals(InReview::class, $incident->status::class);
+    }
+
+    public function test_supervisor_can_not_return_incidents()
+    {
+        $supervisor = User::factory()->create()->assignRole('supervisor');
+
+        $this->actingAs($supervisor);
+
+        $incident = Incident::factory()->create([
+            'status' => InReview::class,
+        ]);
+
+        $response = $this->put(route('incidents.return-investigation', ['incident' => $incident]));
+
+        $response->assertStatus(403);
+
+        $this->assertEquals(InReview::class, $incident->status::class);
+    }
+
     public function test_adds_reopened_comment()
     {
         $admin = User::factory()->create()->assignRole('admin');
