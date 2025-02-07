@@ -2,6 +2,7 @@
 
 namespace Policies;
 
+use App\Models\User;
 use App\Policies\InvestigationPolicy;
 use Tests\TestCase;
 
