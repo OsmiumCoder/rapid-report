@@ -21,8 +21,8 @@ export default function StatusUpdate({ incident }: { incident: Incident }) {
             {
                 onSuccess: (_) => {
                     router.reload({ only: ['incident'] });
-                    setIsLoading(false);
                 },
+                onFinish: (_) => setIsLoading(false),
                 preserveScroll: true,
             }
         );
@@ -36,8 +36,8 @@ export default function StatusUpdate({ incident }: { incident: Incident }) {
             {
                 onSuccess: (_) => {
                     router.reload({ only: ['incident'] });
-                    setIsLoading(false);
                 },
+                onFinish: (_) => setIsLoading(false),
                 preserveScroll: true,
             }
         );
@@ -51,8 +51,8 @@ export default function StatusUpdate({ incident }: { incident: Incident }) {
             {
                 onSuccess: (_) => {
                     router.reload({ only: ['incident'] });
-                    setIsLoading(false);
                 },
+                onFinish: (_) => setIsLoading(false),
                 preserveScroll: true,
             }
         );

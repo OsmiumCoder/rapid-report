@@ -14,8 +14,8 @@ export const assignSupervisor = (
         {
             onSuccess: (_) => {
                 router.reload({ only: ['incident'] });
-                setIsLoading(false);
             },
+            onFinish: (_) => setIsLoading(false),
             preserveScroll: true,
         }
     );
@@ -32,8 +32,8 @@ export const unassignSupervisor = (
         {
             onSuccess: (_) => {
                 router.reload({ only: ['incident'] });
-                setIsLoading(false);
             },
+            onFinish: (_) => setIsLoading(false),
             preserveScroll: true,
         }
     );
