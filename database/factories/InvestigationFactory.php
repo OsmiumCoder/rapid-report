@@ -3,12 +3,10 @@
 namespace Database\Factories;
 
 use App\Models\Incident;
-use App\Models\Investigation;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class InvestigationFactory extends Factory
 {
-
     public function definition()
     {
         return [

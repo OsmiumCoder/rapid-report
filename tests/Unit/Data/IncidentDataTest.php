@@ -4,7 +4,6 @@ namespace Tests\Unit\Data;
 
 use App\Data\IncidentData;
 use App\Enum\IncidentType;
-use Carbon\Carbon;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
