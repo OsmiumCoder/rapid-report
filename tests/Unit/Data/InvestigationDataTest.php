@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Data;
 
-use App\Models\Incident;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 use App\Data\InvestigationData;
