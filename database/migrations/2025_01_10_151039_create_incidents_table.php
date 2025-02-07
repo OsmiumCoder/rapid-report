@@ -61,6 +61,7 @@ return new class () extends Migration {
 
             // The currently assigned supervisor
             $table->foreignId('supervisor_id')->nullable()->constrained('users');
+            $table->foreignUuid('investigation_id')->nullable();
 
             $table->string('status');
             $table->index('status');

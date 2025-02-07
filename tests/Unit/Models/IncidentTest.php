@@ -3,13 +3,26 @@
 namespace Tests\Unit\Models;
 
 use App\Models\Incident;
+use App\Models\Investigation;
 use App\Models\User;
 use Tests\TestCase;
 
 class IncidentTest extends TestCase
 {
+    public function test_incident_has_one_supervisor_relation()
+    {
+        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $incident = Incident::factory()->create(['supervisor_id' => $supervisor->id]);
+
+        $this->assertEquals($supervisor->id, $incident->supervisor->id);
+    }
+
     public function test_incident_has_one_investigation_relation()
     {
+        $incident = Incident::factory()->create();
+        $investigation = Investigation::factory()->create(['incident_id' => $incident->id]);
+
+        $this->assertEquals($investigation->id, $incident->investigation->id);
     }
 
     public function test_incident_filter()

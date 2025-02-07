@@ -10,7 +10,7 @@ class InvestigationPolicyTest extends TestCase
 {
     public function test_admin_can_not_create_investigation()
     {
-        $admin = User::factory()->create(['role' => 'admin']);
+        $admin = User::factory()->create()->assignRole('admin');
         $policy = $this->getPolicy();
 
         $this->assertFalse($policy->create($admin));
@@ -18,7 +18,7 @@ class InvestigationPolicyTest extends TestCase
 
     public function test_supervisor_can_create_investigation()
     {
-        $supervisor = User::factory()->create(['role' => 'supervisor']);
+        $supervisor = User::factory()->create()->assignRole('supervisor');
         $policy = $this->getPolicy();
 
         $this->assertTrue($policy->create($supervisor));
@@ -26,7 +26,7 @@ class InvestigationPolicyTest extends TestCase
 
     public function test_user_can_not_create_investigation()
     {
-        $user = User::factory()->create(['role' => 'user']);
+        $user = User::factory()->create()->assignRole('user');
         $policy = $this->getPolicy();
 
         $this->assertFalse($policy->create($user));

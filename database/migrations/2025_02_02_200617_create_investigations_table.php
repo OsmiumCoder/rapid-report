@@ -8,7 +8,7 @@ return new class () extends Migration {
     public function up()
     {
         Schema::create('investigations', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id');
 
             $table->foreignUuid('incident_id');
 
