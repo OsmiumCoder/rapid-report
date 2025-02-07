@@ -21,8 +21,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::put('/incidents/{incident}/assign', [IncidentStatusController::class, 'assignSupervisor'])->name('incidents.assign-supervisor');
     Route::put('/incidents/{incident}/unassign', [IncidentStatusController::class, 'unassignSupervisor'])->name('incidents.unassign-supervisor');
-    Route::put('/incidents/{incident}/reopen', [IncidentStatusController::class, 'reopenIncident'])->name('incidents.reopen');
+    Route::put('/incidents/{incident}/return', [IncidentStatusController::class, 'returnInvestigation'])->name('incidents.return-investigation');
     Route::put('/incidents/{incident}/close', [IncidentStatusController::class, 'closeIncident'])->name('incidents.close');
+    Route::put('/incidents/{incident}/reopen', [IncidentStatusController::class, 'reopenIncident'])->name('incidents.reopen');
 
     Route::resource('incidents', IncidentController::class)->except([
         'create',

@@ -16,9 +16,11 @@ abstract class IncidentStatusState extends State
         return parent::config()->default(Opened::class)
             ->allowTransition(Assigned::class, Opened::class)
             ->allowTransition(Assigned::class, InReview::class)
+            ->allowTransition(InReview::class, Returned::class)
+            ->allowTransition(Returned::class, InReview::class)
             ->allowTransition(Closed::class, Reopened::class)
             ->allowTransition(Reopened::class, Assigned::class)
-            ->allowTransition([Opened::class, Assigned::class, Reopened::class, InReview::class], Closed::class)
-            ->allowTransition([Opened::class, Assigned::class, InReview::class], Assigned::class);
+            ->allowTransition([Opened::class, Assigned::class, Reopened::class, InReview::class, Returned::class], Closed::class)
+            ->allowTransition([Opened::class, Assigned::class], Assigned::class);
     }
 }
