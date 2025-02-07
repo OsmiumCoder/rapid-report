@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Investigation;
 
 use App\Data\InvestigationData;
 use App\Http\Controllers\Controller;
+use App\Models\Incident;
 use App\Models\Investigation;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class InvestigationController extends Controller
@@ -12,7 +14,7 @@ class InvestigationController extends Controller
     /**
      * Show the form for creating a new investigation.
      */
-    public function create()
+    public function create(Incident $incident)
     {
         $this->authorize('create', Investigation::class);
 
