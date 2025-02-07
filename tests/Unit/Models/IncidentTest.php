@@ -3,11 +3,28 @@
 namespace Tests\Unit\Models;
 
 use App\Models\Incident;
+use App\Models\Investigation;
 use App\Models\User;
 use Tests\TestCase;
 
 class IncidentTest extends TestCase
 {
+    public function test_incident_has_one_supervisor_relation()
+    {
+        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $incident = Incident::factory()->create(['supervisor_id' => $supervisor->id]);
+
+        $this->assertEquals($supervisor->id, $incident->supervisor->id);
+    }
+
+    public function test_incident_has_one_investigation_relation()
+    {
+        $incident = Incident::factory()->create();
+        $investigation = Investigation::factory()->create(['incident_id' => $incident->id]);
+
+        $this->assertEquals($investigation->id, $incident->investigation->id);
+    }
+
     public function test_incident_filter()
     {
         Incident::factory()->count(2)->create([
@@ -21,18 +38,18 @@ class IncidentTest extends TestCase
         $this->assertDatabaseCount('incidents', 3);
 
         $filters = [
-           0 => [
-               'column' => 'descriptor',
-               'value' => 'a',
-               'comparator' => '='
-           ]
+            0 => [
+                'column' => 'descriptor',
+                'value' => 'a',
+                'comparator' => '=',
+            ],
         ];
 
         $incidents = Incident::filter($filters)->get();
 
-        $this->assertEquals($incidents->count(), 2);
+        $this->assertCount(2, $incidents);
 
-        $incidents->each(fn ($incident) => assertEquals($incident->descriptor, 'a'));
+        $incidents->each(fn ($incident) => $this->assertEquals('a', $incident->descriptor));
     }
 
     public function test_incident_sort_method_sorts_by_first_name_then_last_name()
@@ -56,17 +73,18 @@ class IncidentTest extends TestCase
 
         $incidents = Incident::sort('name', 'asc')->get();
 
-        $this->assertEquals($incidents->count(), 3);
+        $this->assertEquals(3, $incidents->count());
 
-        $this->assertEquals($incidents[0]->first_name, 'a');
-        $this->assertEquals($incidents[0]->last_name, 'a');
+        $this->assertEquals('a', $incidents[0]->first_name);
+        $this->assertEquals('a', $incidents[0]->last_name);
 
-        $this->assertEquals($incidents[1]->first_name, 'a');
-        $this->assertEquals($incidents[1]->last_name, 'b');
+        $this->assertEquals('a', $incidents[1]->first_name);
+        $this->assertEquals('b', $incidents[1]->last_name);
 
-        $this->assertEquals($incidents[2]->first_name, 'b');
-        $this->assertEquals($incidents[2]->last_name, 'a');
+        $this->assertEquals('b', $incidents[2]->first_name);
+        $this->assertEquals('a', $incidents[2]->last_name);
     }
+
     public function test_incident_sort_method()
     {
         Incident::factory()->create([
@@ -85,9 +103,10 @@ class IncidentTest extends TestCase
 
         $incidents = Incident::sort('descriptor', 'asc')->get();
 
-        $this->assertEquals($incidents->count(), 3);
-        $this->assertEquals($incidents->first()->descriptor, 'a');
+        $this->assertEquals(3, $incidents->count());
+        $this->assertEquals('a', $incidents->first()->descriptor);
     }
+
     public function test_incident_with_assigned_supervisor_returns_supervisor_user()
     {
         $supervisor = User::factory()->create()->assignRole('supervisor');

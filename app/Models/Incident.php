@@ -54,12 +54,17 @@ class Incident extends Model
 
     public function supervisor()
     {
-        return $this->belongsTo(User::class, 'supervisor_id');
+        return $this->hasOne(User::class, 'id', 'supervisor_id');
     }
 
     public function comments()
     {
         return $this->morphMany(Comment::class, 'commentable');
+    }
+
+    public function investigation()
+    {
+        return $this->hasOne(Investigation::class);
     }
 
     public function scopeFilter($query, ?array $filters)
