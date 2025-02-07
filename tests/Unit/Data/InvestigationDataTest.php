@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Data;
 
-use App\Models\Incident;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 use App\Data\InvestigationData;
@@ -11,10 +10,7 @@ class InvestigationDataTest extends TestCase
 {
     public function test_investigation_data_valid_with_correct_values()
     {
-        $incident = Incident::factory()->create();
-
         $investigationData = InvestigationData::validateAndCreate([
-            'incident_id' => $incident->id,
             'immediate_causes' => 'Slippery floor',
             'basic_causes' => 'Lack of warning signs',
             'remedial_actions' => 'Install warning signs and non-slip mats',
@@ -33,7 +29,6 @@ class InvestigationDataTest extends TestCase
         $this->expectException(ValidationException::class);
 
         InvestigationData::validateAndCreate([
-            'incident_id' => '',
             'immediate_causes' => '',
             'basic_causes' => '',
             'remedial_actions' => '',

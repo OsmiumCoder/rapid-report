@@ -13,6 +13,21 @@ export default function StatusUpdate({ incident }: { incident: Incident }) {
     const [isLoading, setIsLoading] = useState(false);
     const [modalProps, setModalProps] = useConfirmationModalProps();
 
+    const returnInvestigation = () => {
+        setIsLoading(true);
+        router.put(
+            route('incidents.return-investigation', { incident: incident.id }),
+            undefined,
+            {
+                onSuccess: (_) => {
+                    router.reload({ only: ['incident'] });
+                },
+                onFinish: (_) => setIsLoading(false),
+                preserveScroll: true,
+            }
+        );
+    };
+
     const closeIncident = () => {
         setIsLoading(true);
         router.put(
@@ -21,8 +36,8 @@ export default function StatusUpdate({ incident }: { incident: Incident }) {
             {
                 onSuccess: (_) => {
                     router.reload({ only: ['incident'] });
-                    setIsLoading(false);
                 },
+                onFinish: (_) => setIsLoading(false),
                 preserveScroll: true,
             }
         );
@@ -36,8 +51,8 @@ export default function StatusUpdate({ incident }: { incident: Incident }) {
             {
                 onSuccess: (_) => {
                     router.reload({ only: ['incident'] });
-                    setIsLoading(false);
                 },
+                onFinish: (_) => setIsLoading(false),
                 preserveScroll: true,
             }
         );
@@ -84,14 +99,10 @@ export default function StatusUpdate({ incident }: { incident: Incident }) {
                                 onClick={() =>
                                     setModalProps({
                                         title: 'Request Re-Investigation',
-                                        text: `Are you sure you want to request ${incident.supervisor?.name} to further investigate this incident? They will be reassigned and notified.`,
+                                        text: `Are you sure you want to request ${incident.supervisor?.name} to further investigate this incident? They will be and notified.`,
                                         action: () =>
                                             incident.supervisor_id &&
-                                            assignSupervisor(
-                                                incident.supervisor_id,
-                                                incident,
-                                                setIsLoading
-                                            ),
+                                            returnInvestigation(),
                                         show: true,
                                     })
                                 }

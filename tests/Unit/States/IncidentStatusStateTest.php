@@ -8,11 +8,69 @@ use App\States\IncidentStatus\Closed;
 use App\States\IncidentStatus\InReview;
 use App\States\IncidentStatus\Opened;
 use App\States\IncidentStatus\Reopened;
+use App\States\IncidentStatus\Returned;
 use Spatie\ModelStates\Exceptions\TransitionNotFound;
 use Tests\TestCase;
 
 class IncidentStatusStateTest extends TestCase
 {
+    public function test_incident_returned_to_reopened_state_throws_exception()
+    {
+        $incident = Incident::factory()->create([
+            'status' => Returned::class,
+        ]);
+
+        $this->expectException(TransitionNotFound::class);
+        $incident->status->transitionTo(Reopened::class);
+    }
+
+    public function test_incident_returned_to_assigned_state_throws_exception()
+    {
+        $incident = Incident::factory()->create([
+            'status' => Returned::class,
+        ]);
+
+        $this->expectException(TransitionNotFound::class);
+        $incident->status->transitionTo(Assigned::class);
+    }
+
+    public function test_incident_returned_to_opened_state_throws_exception()
+    {
+        $incident = Incident::factory()->create([
+            'status' => Returned::class,
+        ]);
+
+        $this->expectException(TransitionNotFound::class);
+        $incident->status->transitionTo(Opened::class);
+    }
+
+    public function test_incident_returned_to_closed_state()
+    {
+        $incident = Incident::factory()->create([
+            'status' => Returned::class,
+        ]);
+        $incident->status->transitionTo(Closed::class);
+        $this->assertEquals(Closed::class, $incident->status::class);
+    }
+
+    public function test_incident_returned_to_in_review_state()
+    {
+        $incident = Incident::factory()->create([
+            'status' => Returned::class,
+        ]);
+        $incident->status->transitionTo(InReview::class);
+        $this->assertEquals(InReview::class, $incident->status::class);
+    }
+
+    public function test_incident_in_review_to_returned_state()
+    {
+        $incident = Incident::factory()->create([
+            'status' => InReview::class,
+        ]);
+        $incident->status->transitionTo(Returned::class);
+        $this->assertEquals(Returned::class, $incident->status::class);
+    }
+
     public function test_incident_in_open_to_closed_state()
     {
         $incident = Incident::factory()->create();
@@ -79,8 +137,9 @@ class IncidentStatusStateTest extends TestCase
         $incident = Incident::factory()->create([
             'status' => InReview::class,
         ]);
+
+        $this->expectException(TransitionNotFound::class);
         $incident->status->transitionTo(Assigned::class);
-        $this->assertEquals(Assigned::class, $incident->status::class);
     }
 
     public function test_incident_in_review_to_closed_state()
