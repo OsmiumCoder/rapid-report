@@ -67,14 +67,12 @@ class DatabaseSeeder extends Seeder
             'status' => Assigned::class,
         ]);
 
-        $inReviewIncidents = Incident::factory(5)->hasComments(5)->create([
+        Incident::factory(5)->hasComments(5)->create([
             'supervisor_id' => $supervisor->id,
             'status' => InReview::class,
-        ]);
-
-        foreach ($inReviewIncidents as $incident) {
+        ])->each(function (Incident $incident) {
             Investigation::factory()->create(['incident_id' => $incident->id]);
-        }
+        });
 
         Incident::factory(5)->hasComments(5)->create([
             'supervisor_id' => $supervisor->id,
