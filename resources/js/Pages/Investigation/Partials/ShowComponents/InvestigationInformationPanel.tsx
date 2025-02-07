@@ -27,10 +27,6 @@ export default function InvestigationInformationPanel({
                         <span className="font-semibold">Risk Rank: </span>
                         <span>{investigation.risk_rank}</span>
                     </div>
-                    <div>
-                        <span className="font-semibold">Prevention: </span>
-                        <span>{investigation.prevention}</span>
-                    </div>
                 </div>
                 <div className="space-y-2">
                     <div className="font-semibold text-xl">Root Causes</div>
@@ -46,6 +42,10 @@ export default function InvestigationInformationPanel({
                         <span className="font-semibold">Remedial Causes: </span>
                         <span>{investigation.immediate_causes}</span>
                     </div>
+                </div>
+                <div>
+                    <div className="font-semibold text-xl">Prevention</div>
+                    <span>{investigation.prevention}</span>
                 </div>
             </div>
         </div>
