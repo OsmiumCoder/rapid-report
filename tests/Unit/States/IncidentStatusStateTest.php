@@ -138,8 +138,9 @@ class IncidentStatusStateTest extends TestCase
             'status' => InReview::class,
         ]);
 
-        $this->expectException(TransitionNotFound::class);
         $incident->status->transitionTo(Assigned::class);
+
+        $this->assertEquals(Assigned::class, $incident->status::class);
     }
 
     public function test_incident_in_review_to_closed_state()

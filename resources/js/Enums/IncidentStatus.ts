@@ -4,4 +4,5 @@ export enum IncidentStatus {
     IN_REVIEW = 'in review',
     CLOSED = 'closed',
     REOPENED = 'reopened',
+    RETURNED = 'returned',
 }

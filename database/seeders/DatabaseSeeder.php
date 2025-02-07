@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Incident;
+use App\Models\Investigation;
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\States\IncidentStatus\Assigned;
 use App\States\IncidentStatus\Closed;
 use App\States\IncidentStatus\InReview;
@@ -70,7 +70,9 @@ class DatabaseSeeder extends Seeder
         Incident::factory(5)->hasComments(5)->create([
             'supervisor_id' => $supervisor->id,
             'status' => InReview::class,
-        ]);
+        ])->each(function (Incident $incident) {
+            Investigation::factory()->create(['incident_id' => $incident->id]);
+        });
 
         Incident::factory(5)->hasComments(5)->create([
             'supervisor_id' => $supervisor->id,

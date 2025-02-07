@@ -1,14 +1,72 @@
 <?php
 
-namespace Incident;
+namespace Feature\Incident;
 
 use App\Models\Incident;
+use App\Models\Investigation;
 use App\Models\User;
 use Inertia\Testing\AssertableInertia;
 use Tests\TestCase;
 
 class ShowTest extends TestCase
 {
+    public function test_show_incident_loads_investigation_for_admins()
+    {
+        $admin = User::factory()->create()->assignRole('admin');
+        $this->actingAs($admin);
+
+        $incident = Incident::factory()->create();
+        $investigation = Investigation::factory()->create(['incident_id' => $incident->id]);
+
+        $response = $this->get(route('incidents.show', ['incident' => $incident->id]));
+
+        $response->assertOk();
+
+        $response->assertInertia(function (AssertableInertia $page) use ($investigation) {
+            $page->component('Incident/Show')
+                ->has('incident.investigation')
+                ->where('incident.investigation.id', $investigation->id);
+        });
+
+    }
+
+    public function test_show_incident_loads_investigation_for_supervisors()
+    {
+        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $this->actingAs($supervisor);
+
+        $incident = Incident::factory()->create(['supervisor_id' => $supervisor->id]);
+        $investigation = Investigation::factory()->create(['incident_id' => $incident->id]);
+
+        $response = $this->get(route('incidents.show', ['incident' => $incident->id]));
+
+        $response->assertOk();
+
+        $response->assertInertia(function (AssertableInertia $page) use ($investigation) {
+            $page->component('Incident/Show')
+                ->has('incident.investigation')
+                ->where('incident.investigation.id', $investigation->id);
+        });
+
+    }
+
+    public function test_show_incident_does_not_load_investigation_for_users()
+    {
+        $user = User::factory()->create()->assignRole('user');
+        $this->actingAs($user);
+
+        $incident = Incident::factory()->create(['reporters_email' => $user->email]);
+        Investigation::factory()->create(['incident_id' => $incident->id]);
+
+        $response = $this->get(route('incidents.show', ['incident' => $incident->id]));
+
+        $response->assertOk();
+
+        $response->assertInertia(function (AssertableInertia $page) {
+            $page->component('Incident/Show')
+                ->missing('incident.investigation');
+        });
+    }
     public function test_show_with_admin_gives_supervisors_prop()
     {
         $admin = User::factory()->create()->assignRole('admin');

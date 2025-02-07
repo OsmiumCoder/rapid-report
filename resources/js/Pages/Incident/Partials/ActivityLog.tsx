@@ -15,10 +15,7 @@ interface ActivityLogProps {
                 content: string;
             }
         ) => void) &
-        (<K extends keyof { content: string }>(
-            key: K,
-            value: { content: string }[K]
-        ) => void);
+        (<K extends keyof { content: string }>(key: K, value: { content: string }[K]) => void);
     processing: boolean;
     data: { content: string };
 }
@@ -33,17 +30,13 @@ export default function ActivityLog({
     return (
         <>
             <div className="lg:col-start-3 p-5 rounded-lg bg-white shadow-sm ring-1 ring-gray-900/5">
-                <h2 className="text-sm/6 font-semibold text-gray-900">
-                    Activity
-                </h2>
+                <h2 className="text-sm/6 font-semibold text-gray-900">Activity</h2>
                 <ul role="list" className="mt-6 space-y-6">
                     {comments.map((comment, index) => (
                         <li key={index} className="relative flex gap-x-4">
                             <div
                                 className={classNames(
-                                    index === comments.length - 1
-                                        ? 'h-6'
-                                        : '-bottom-6',
+                                    index === comments.length - 1 ? 'h-6' : '-bottom-6',
                                     'absolute left-0 top-0 flex w-6 justify-center'
                                 )}
                             >

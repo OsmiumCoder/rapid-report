@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import AdminActions from '@/Pages/Incident/Partials/AdminActions';
+import IncidentAdminActions from '@/Pages/Incident/Partials/IncidentAdminActions';
 import ActivityLog from '@/Pages/Incident/Partials/ActivityLog';
 import IncidentHeader from '@/Pages/Incident/Partials/IncidentHeader';
 import { Head, useForm } from '@inertiajs/react';
@@ -19,6 +19,8 @@ export default function Show({ auth, incident, supervisors }: PageProps<ShowProp
     const { data, setData, post, processing, reset } = useForm({
         content: '',
     });
+
+    console.log(incident.investigation);
 
     function addComment(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -40,10 +42,10 @@ export default function Show({ auth, incident, supervisors }: PageProps<ShowProp
                             {user.roles.some(
                                 (role) => role.name === 'admin' || role.name === 'super-admin'
                             ) && (
-                                <AdminActions
+                                <IncidentAdminActions
                                     incident={incident}
                                     supervisors={supervisors}
-                                ></AdminActions>
+                                ></IncidentAdminActions>
                             )}
 
                             <IncidentInformationPanel incident={incident} />
