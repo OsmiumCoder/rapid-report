@@ -34,6 +34,9 @@ class IncidentController extends Controller
         return Inertia::render('Incident/Index', [
             'incidents' => $incidents,
             'indexType' => 'all',
+            'currentFilters' => $filters,
+            'currentSortBy' => $sortBy,
+            'currentSortDirection' => $sortDirection,
         ]);
     }
 

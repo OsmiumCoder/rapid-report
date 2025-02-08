@@ -17,6 +17,7 @@ import classNames from '@/Filters/classNames';
 import { descriptors } from '@/Pages/Incident/Stages/IncidentDropDownValues';
 import { IncidentStatus } from '@/Enums/IncidentStatus';
 import dateFormat from '@/Filters/dateFormat';
+import _ from 'underscore';
 
 type IndexType = 'owned' | 'assigned' | 'all';
 
@@ -31,10 +32,20 @@ export interface Filter {
     comparator: Comparator;
 }
 
+interface ProcessedFilter {
+    column: FilterValue;
+    value: string;
+    comparator: Comparator;
+}
+
 interface IndexProps {
     incidents: PaginatedResponse<Incident>;
     indexType: IndexType;
+    currentFilters?: ProcessedFilter[];
+    currentSortBy?: SortBy;
+    currentSortDirection?: SortDirection;
 }
+
 const pageDescriptions: {
     [K in IndexType]: { title: string; description: string };
 } = {
@@ -55,7 +66,7 @@ const pageDescriptions: {
 type SortDirection = 'asc' | 'desc';
 type SortBy = 'name' | 'descriptor' | 'location' | 'created_at' | 'status';
 
-const getInitialFilters: () => Record<FilterValue, Filter[]> = () => ({
+const initialFilters = {
     incident_type: descriptors.map(({ name, value }) => ({
         label: name,
         value: value.toString(),
@@ -74,9 +85,9 @@ const getInitialFilters: () => Record<FilterValue, Filter[]> = () => ({
         .filter(
             (value, index, self) => self.findIndex((item) => item.value === value.value) === index
         ) as Filter[],
-    status: Object.entries(IncidentStatus).map(([value, label]) => ({
-        label: uppercaseWordFormat(label),
-        value: value,
+    status: Object.values(IncidentStatus).map((status) => ({
+        label: uppercaseWordFormat(status.toString()),
+        value: status.toString(),
         checked: false,
         comparator: '=',
     })),
@@ -94,17 +105,42 @@ const getInitialFilters: () => Record<FilterValue, Filter[]> = () => ({
             comparator: '<=',
         },
     ],
-});
+} as Record<FilterValue, Filter[]>;
 
-export default function Index({ incidents, indexType }: IndexProps) {
+const getInitialFilters: (currentFilters: ProcessedFilter[]) => Record<FilterValue, Filter[]> = (
+    currentFilters
+) => {
+    const newFilters = structuredClone(initialFilters) as Record<FilterValue, Filter[]>;
+
+    currentFilters.forEach((filter) => {
+        newFilters[filter.column] = newFilters[filter.column].map((newFilter) =>
+            newFilter.value === filter.value ? { ...newFilter, checked: true } : newFilter
+        );
+    });
+
+    return newFilters;
+};
+
+export default function Index({
+    incidents,
+    indexType,
+    currentFilters,
+    currentSortBy,
+    currentSortDirection,
+}: IndexProps) {
     const hasMounted = useRef(false);
 
-    const [filters, setFilters] = useState<Record<FilterValue, Filter[]>>(getInitialFilters());
+    const [filters, setFilters] = useState<Record<FilterValue, Filter[]>>(
+        getInitialFilters(currentFilters ?? [])
+    );
 
-    const [sortedBy, setSortedBy] = useState<SortBy>('created_at');
-    const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
+    const [sortedBy, setSortedBy] = useState<SortBy>(currentSortBy ?? 'created_at');
 
-    const resetFilters = () => setFilters(getInitialFilters());
+    const [sortDirection, setSortDirection] = useState<SortDirection>(
+        currentSortDirection ?? 'desc'
+    );
+
+    const resetFilters = () => setFilters(initialFilters);
 
     const handleSort = (sortBy: SortBy) => {
         if (sortBy !== sortedBy || sortDirection === 'asc') {

@@ -31,6 +31,9 @@ class AssignedIncidentsController extends Controller
         return Inertia::render('Incident/Index', [
             'incidents' => $assignedIncidents,
             'indexType' => 'assigned',
+            'currentFilters' => $filters,
+            'currentSortBy' => $sortBy,
+            'currentSortDirection' => $sortDirection,
         ]);
     }
 }

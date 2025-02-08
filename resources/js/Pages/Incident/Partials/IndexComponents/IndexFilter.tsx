@@ -166,6 +166,7 @@ export default function IndexFilter({ filters, setFilters, resetFilters }: Index
                                                             ) && (
                                                                 <LabeledCheckbox
                                                                     key={innerIndex + value}
+                                                                    checked={checked}
                                                                     label={label}
                                                                     onChange={(e) =>
                                                                         handleSelectFilter(

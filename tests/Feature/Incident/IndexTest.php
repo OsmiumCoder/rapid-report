@@ -9,6 +9,42 @@ use Tests\TestCase;
 
 class IndexTest extends TestCase
 {
+    public function test_incident_index_passes_current_filters_and_sort_props()
+    {
+        $email = 'a@b.com';
+        $user = User::factory()->create(['email' => $email])->assignRole('user');
+        $this->actingAs($user);
+
+        Incident::factory()->create(['descriptor' => 'a', 'reporters_email' => $email]);
+        Incident::factory()->create(['descriptor' => 'b', 'reporters_email' => $email]);
+
+        $this->assertDatabaseCount('incidents', 2);
+
+        $response = $this->get(route(
+            'incidents.owned',
+            ['filters' => urlencode(json_encode(
+                [
+                    ['column' => 'descriptor', 'value' => 'a', 'comparator' => '=']
+                ]
+            )),
+                'sort_by' => 'descriptor',
+                'sort_direction' => 'asc'
+            ]
+        ));
+
+        $response->assertOk();
+
+        $response->assertInertia(fn(AssertableInertia $page) => $page->component('Incident/Index')
+            ->has('currentSortBy')
+            ->where('currentSortBy', 'descriptor')
+            ->has('currentSortDirection')
+            ->where('currentSortDirection', 'asc')
+            ->has('currentFilters', 1)
+            ->where('currentFilters.0.column', 'descriptor')
+            ->where('currentFilters.0.value', 'a')
+            ->where('currentFilters.0.comparator', '=')
+        );
+    }
     public function test_owned_route_filters_incidents()
     {
         $email = 'a@b.com';
