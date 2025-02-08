@@ -34,7 +34,8 @@ class IndexTest extends TestCase
 
         $response->assertOk();
 
-        $response->assertInertia(fn(AssertableInertia $page) => $page->component('Incident/Index')
+        $response->assertInertia(
+            fn (AssertableInertia $page) => $page->component('Incident/Index')
             ->has('currentSortBy')
             ->where('currentSortBy', 'descriptor')
             ->has('currentSortDirection')

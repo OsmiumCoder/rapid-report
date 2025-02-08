@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, Link, router, usePage } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import {
     ChevronDownIcon,
     ChevronUpIcon,
@@ -16,8 +16,6 @@ import { useEffect, useRef, useState } from 'react';
 import classNames from '@/Filters/classNames';
 import { descriptors } from '@/Pages/Incident/Stages/IncidentDropDownValues';
 import { IncidentStatus } from '@/Enums/IncidentStatus';
-import dateFormat from '@/Filters/dateFormat';
-import _ from 'underscore';
 
 type IndexType = 'owned' | 'assigned' | 'all';
 
