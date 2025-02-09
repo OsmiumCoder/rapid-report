@@ -24,4 +24,9 @@ class Investigation extends Model
     {
         return $this->belongsTo(Incident::class);
     }
+
+    public function supervisor()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature\Investigation;
+namespace Tests\Feature\Investigation;
 
 use App\Models\Incident;
 use App\Models\Investigation;
@@ -23,20 +23,20 @@ class ShowTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_supervisor_can_view_investigation_show_page_on_assigned_incident()
+    public function test_supervisor_can_view_investigation_show_page_if_they_made_investigation()
     {
         $supervisor = User::factory()->create()->assignRole('supervisor');
         $this->actingAs($supervisor);
 
         $incident = Incident::factory()->create(['supervisor_id' => $supervisor->id]);
-        $investigation = Investigation::factory()->create(['incident_id' => $incident->id]);
+        $investigation = Investigation::factory()->create(['supervisor_id' => $supervisor->id]);
 
         $response = $this->get(route('incidents.investigations.show', ['incident' => $incident->id, 'investigation'  => $investigation->id]));
 
         $response->assertOk();
     }
 
-    public function test_supervisor_can_not_view_investigation_show_page_on_assigned_incident()
+    public function test_supervisor_can_not_view_investigation_show_page_if_they_did_not_make_investigation()
     {
         $supervisor = User::factory()->create()->assignRole('supervisor');
         $this->actingAs($supervisor);

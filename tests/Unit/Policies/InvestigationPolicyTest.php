@@ -3,6 +3,7 @@
 namespace Policies;
 
 use App\Models\Incident;
+use App\Models\Investigation;
 use App\Models\User;
 use App\Policies\InvestigationPolicy;
 use Tests\TestCase;
@@ -13,65 +14,69 @@ class InvestigationPolicyTest extends TestCase
     {
         $admin = User::factory()->create()->assignRole('admin');
 
-        $incident = Incident::factory()->create();
+        $investigation = Investigation::factory()->create();
 
-        $policy = $this->getPolicy();
-        $this->assertTrue($policy->view($admin, $incident));
+        $this->assertTrue($this->getPolicy()->view($admin, $investigation));
     }
 
-    public function test_supervisor_can_view_investigation_on_assigned_incident()
+    public function test_supervisor_can_view_investigation_they_made()
     {
         $supervisor = User::factory()->create()->assignRole('supervisor');
 
-        $incident = Incident::factory()->create(['supervisor_id' => $supervisor->id]);
+        $investigation = Investigation::factory()->create(['supervisor_id' => $supervisor->id]);
 
-        $policy = $this->getPolicy();
-        $this->assertTrue($policy->view($supervisor, $incident));
+        $this->assertTrue($this->getPolicy()->view($supervisor, $investigation));
     }
 
-    public function test_supervisor_can_not_view_investigation_on_unassigned_incident()
+    public function test_supervisor_can_not_view_investigation_they_did_not_make()
     {
         $supervisor = User::factory()->create()->assignRole('supervisor');
 
-        $incident = Incident::factory()->create();
+        $investigation = Investigation::factory()->create();
 
-        $policy = $this->getPolicy();
-        $this->assertFalse($policy->view($supervisor, $incident));
+        $this->assertFalse($this->getPolicy()->view($supervisor, $investigation));
     }
 
     public function test_user_can_not_view_investigations()
     {
         $user = User::factory()->create()->assignRole('user');
 
-        $incident = Incident::factory()->create();
+        $investigation = Investigation::factory()->create();
 
-        $policy = $this->getPolicy();
-        $this->assertFalse($policy->view($user, $incident));
+        $this->assertFalse($this->getPolicy()->view($user, $investigation));
     }
 
 
     public function test_admin_can_not_create_investigation()
     {
         $admin = User::factory()->create()->assignRole('admin');
-        $policy = $this->getPolicy();
+        $incident = Incident::factory()->create();
 
-        $this->assertFalse($policy->create($admin));
+        $this->assertFalse($this->getPolicy()->create($admin, $incident));
     }
 
-    public function test_supervisor_can_create_investigation()
+    public function test_supervisor_can_create_investigation_if_currently_assigned()
     {
         $supervisor = User::factory()->create()->assignRole('supervisor');
-        $policy = $this->getPolicy();
+        $incident = Incident::factory()->create(['supervisor_id' => $supervisor->id]);
 
-        $this->assertTrue($policy->create($supervisor));
+        $this->assertTrue($this->getPolicy()->create($supervisor, $incident));
+    }
+
+    public function test_supervisor_can_not_create_investigation_if_not_currently_assigned()
+    {
+        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $incident = Incident::factory()->create();
+
+        $this->assertFalse($this->getPolicy()->create($supervisor, $incident));
     }
 
     public function test_user_can_not_create_investigation()
     {
         $user = User::factory()->create()->assignRole('user');
-        $policy = $this->getPolicy();
+        $incident = Incident::factory()->create();
 
-        $this->assertFalse($policy->create($user));
+        $this->assertFalse($this->getPolicy()->create($user, $incident));
     }
 
     protected function getPolicy()

@@ -12,11 +12,11 @@ class CreateTest extends TestCase
 {
     public function test_shows_create_page_and_has_empty_form(): void
     {
-        $incident = Incident::factory()->create();
+        $supervisor = User::factory()->create()->assignRole('supervisor');
 
-        $user = User::factory()->create()->assignRole('supervisor');
+        $incident = Incident::factory()->create(['supervisor_id' => $supervisor->id]);
 
-        $response = $this->actingAs($user)->get(route('incidents.investigations.create', ['incident' => $incident->id]));
+        $response = $this->actingAs($supervisor)->get(route('incidents.investigations.create', ['incident' => $incident->id]));
 
         $response->assertStatus(200);
 

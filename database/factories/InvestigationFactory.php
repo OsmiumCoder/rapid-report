@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Incident;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class InvestigationFactory extends Factory
@@ -10,6 +11,7 @@ class InvestigationFactory extends Factory
     public function definition()
     {
         return [
+            'supervisor_id' => User::factory(),
             'incident_id' => Incident::factory(),
             'immediate_causes' => fake()->paragraph,
             'basic_causes' => fake()->paragraph,
