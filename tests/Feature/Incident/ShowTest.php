@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature\Incident;
+namespace Incident;
 
 use App\Models\Incident;
 use App\Models\Investigation;
@@ -10,7 +10,7 @@ use Tests\TestCase;
 
 class ShowTest extends TestCase
 {
-    public function test_show_incident_loads_investigation_for_admins()
+    public function test_show_incident_loads_investigations_for_admins()
     {
         $admin = User::factory()->create()->assignRole('admin');
         $this->actingAs($admin);
@@ -24,13 +24,13 @@ class ShowTest extends TestCase
 
         $response->assertInertia(function (AssertableInertia $page) use ($investigation) {
             $page->component('Incident/Show')
-                ->has('incident.investigation')
-                ->where('incident.investigation.id', $investigation->id);
+                ->has('incident.investigations')
+                ->where('incident.investigations.0.id', $investigation->id);
         });
 
     }
 
-    public function test_show_incident_loads_investigation_for_supervisors()
+    public function test_show_incident_loads_investigations_for_supervisors()
     {
         $supervisor = User::factory()->create()->assignRole('supervisor');
         $this->actingAs($supervisor);
@@ -44,13 +44,13 @@ class ShowTest extends TestCase
 
         $response->assertInertia(function (AssertableInertia $page) use ($investigation) {
             $page->component('Incident/Show')
-                ->has('incident.investigation')
-                ->where('incident.investigation.id', $investigation->id);
+                ->has('incident.investigations')
+                ->where('incident.investigations.0.id', $investigation->id);
         });
 
     }
 
-    public function test_show_incident_does_not_load_investigation_for_users()
+    public function test_show_incident_does_not_load_investigations_for_users()
     {
         $user = User::factory()->create()->assignRole('user');
         $this->actingAs($user);
@@ -64,7 +64,7 @@ class ShowTest extends TestCase
 
         $response->assertInertia(function (AssertableInertia $page) {
             $page->component('Incident/Show')
-                ->missing('incident.investigation');
+                ->missing('incident.investigations');
         });
     }
     public function test_show_with_admin_gives_supervisors_prop()

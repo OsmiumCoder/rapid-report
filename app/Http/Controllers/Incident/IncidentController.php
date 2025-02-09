@@ -81,7 +81,7 @@ class IncidentController extends Controller
         }
 
         if (auth()->user()->can('view', [Investigation::class, $incident])) {
-            $incident->load('investigation');
+            $incident->load('investigations');
         }
 
         return Inertia::render('Incident/Show', [

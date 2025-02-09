@@ -17,12 +17,14 @@ class IncidentTest extends TestCase
         $this->assertEquals($supervisor->id, $incident->supervisor->id);
     }
 
-    public function test_incident_has_one_investigation_relation()
+    public function test_incident_has_many_investigation_relation()
     {
         $incident = Incident::factory()->create();
         $investigation = Investigation::factory()->create(['incident_id' => $incident->id]);
 
-        $this->assertEquals($investigation->id, $incident->investigation->id);
+        $this->assertCount(1, $incident->investigations);
+
+        $this->assertEquals($investigation->id, $incident->investigations->first()->id);
     }
 
     public function test_incident_filter()
