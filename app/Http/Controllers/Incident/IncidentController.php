@@ -82,10 +82,10 @@ class IncidentController extends Controller
         }
 
         if ($user->can('view any investigation')) {
-            $incident->load('investigations');
+            $incident->load('investigations.supervisor');
         } else {
             $incident->load(['investigations' => function ($query) use ($user, $incident) {
-                $query->where('supervisor_id', $user->id);
+                $query->where('supervisor_id', $user->id)->with('supervisor');
             }]);
         }
 
