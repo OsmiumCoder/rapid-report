@@ -1,7 +1,7 @@
 import { Incident } from '@/types/incident/Incident';
 import { IncidentStatus } from '@/Enums/IncidentStatus';
 import PrimaryButton from '@/Components/PrimaryButton';
-import { router } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import { useState } from 'react';
 import LoadingIndicator from '@/Components/LoadingIndicator';
 import ConfirmationModal, { useConfirmationModalProps } from '@/Components/ConfirmationModal';
@@ -11,13 +11,14 @@ import {
     reopenIncident,
     returnInvestigation,
 } from '@/Helpers/Incident/statusUpdates';
+import dateTimeFormat from '@/Filters/dateTimeFormat';
 
 export default function StatusUpdate({ incident }: { incident: Incident }) {
     const [isLoading, setIsLoading] = useState(false);
     const [modalProps, setModalProps] = useConfirmationModalProps();
     return (
         <>
-            <div className="grid grid-cols-2 gap-6 w-full mt-6 border-t border-gray-900/5 p-6">
+            <div className="flex flex-col gap-y-6 w-full mt-6 border-t border-gray-900/5 p-6">
                 {isLoading ? (
                     <LoadingIndicator />
                 ) : (
@@ -43,18 +44,24 @@ export default function StatusUpdate({ incident }: { incident: Incident }) {
 
                         {incident.status === IncidentStatus.IN_REVIEW && (
                             <>
-                                <PrimaryButton
-                                    onClick={() =>
-                                        router.get(
-                                            route('incidents.investigations.show', {
-                                                incident: incident.id,
-                                                investigation: incident.investigation.id,
-                                            })
-                                        )
-                                    }
-                                >
-                                    View Investigation
-                                </PrimaryButton>
+                                <div className="font-semibold">
+                                    Investigations
+                                    {incident.investigations.map((investigation, index) => (
+                                        <div className="font-normal">
+                                            <Link
+                                                className="text-sm cursor-pointer text-blue-500 hover:text-blue-400"
+                                                href={route('incidents.investigations.show', {
+                                                    incident: incident.id,
+                                                    investigation: investigation.id,
+                                                })}
+                                            >
+                                                {investigation.supervisor.name}:{' '}
+                                                {dateTimeFormat(investigation.created_at)}
+                                            </Link>
+                                        </div>
+                                    ))}
+                                </div>
+
                                 <PrimaryButton
                                     onClick={() =>
                                         setModalProps({

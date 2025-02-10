@@ -20,8 +20,6 @@ export default function Show({ auth, incident, supervisors }: PageProps<ShowProp
         content: '',
     });
 
-    console.log(incident.investigation);
-
     function addComment(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
         post(route('incidents.comments.store', { incident: incident.id }), {
