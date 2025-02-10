@@ -8,6 +8,7 @@ use App\Models\Incident;
 use App\Models\Investigation;
 use App\Models\User;
 use App\Notifications\Investigation\InvestigationSubmitted;
+use App\States\IncidentStatus\InReview;
 use App\StorableEvents\StoredEvent;
 use Illuminate\Support\Facades\Notification;
 
@@ -27,11 +28,13 @@ class InvestigationCreated extends StoredEvent
 
     public function handle()
     {
+        $incident = Incident::find($this->incident_id);
+
         $investigation = new Investigation;
 
         $investigation->id = $this->aggregateRootUuid();
 
-        $investigation->incident_id = $this->incident_id;
+        $investigation->incident_id = $incident->id;
         $investigation->supervisor_id = $this->metaData['user_id'];
         $investigation->immediate_causes = $this->immediate_causes;
         $investigation->basic_causes = $this->basic_causes;
@@ -43,14 +46,15 @@ class InvestigationCreated extends StoredEvent
 
         $investigation->save();
 
+        $incident->status->transitionTo(InReview::class);
+
         $comment = new Comment;
 
         $comment->user_id = $this->metaData['user_id'];
         $comment->type = CommentType::ACTION;
         $comment->content = 'Investigation was created.';
 
-        $comment->commentable_id = $this->incident_id;
-        $comment->commentable_type = Incident::class;
+        $comment->commentable()->associate($incident);
 
         $comment->save();
     }
