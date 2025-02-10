@@ -62,9 +62,9 @@ class Incident extends Model
         return $this->morphMany(Comment::class, 'commentable');
     }
 
-    public function investigation()
+    public function investigations()
     {
-        return $this->hasOne(Investigation::class);
+        return $this->hasMany(Investigation::class);
     }
 
     public function scopeFilter($query, ?array $filters)

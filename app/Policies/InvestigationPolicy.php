@@ -19,17 +19,29 @@ class InvestigationPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Incident $incident): bool
+    public function view(User $user, Investigation $investigation): bool
     {
-        return $user->can('view any investigation') || $incident->supervisor_id == $user->id;
+        if ($user->can('view any investigation')) {
+            return true;
+        }
+
+        if ($investigation->supervisor_id == $user->id) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
+    public function create(User $user, Incident $incident): bool
     {
-        return $user->can('provide investigations');
+        if ($user->can('provide investigations') && $incident->supervisor_id == $user->id) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

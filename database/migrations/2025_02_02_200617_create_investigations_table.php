@@ -11,6 +11,7 @@ return new class () extends Migration {
             $table->uuid('id')->primary();
 
             $table->foreignUuid('incident_id')->constrained('incidents');
+            $table->foreignId('supervisor_id')->constrained('users');
 
             $table->text('immediate_causes');
             $table->text('basic_causes');
