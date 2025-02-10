@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Investigation;
 
+use App\Aggregates\InvestigationAggregateRoot;
 use App\Data\InvestigationData;
 use App\Http\Controllers\Controller;
 use App\Models\Incident;
 use App\Models\Investigation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 class InvestigationController extends Controller
@@ -16,7 +18,7 @@ class InvestigationController extends Controller
      */
     public function create(Incident $incident)
     {
-        $this->authorize('create', Investigation::class);
+        $this->authorize('create', [Investigation::class, $incident]);
 
         return Inertia::render('Investigation/Create', [
             'form' => InvestigationData::empty()
@@ -26,9 +28,17 @@ class InvestigationController extends Controller
     /**
      * Store a newly created investigation in storage.
      */
-    public function store(InvestigationData $investigationData)
+    public function store(Incident $incident, InvestigationData $investigationData)
     {
+        $this->authorize('create', [Investigation::class, $incident]);
 
+        $uuid = Str::uuid()->toString();
+
+        InvestigationAggregateRoot::retrieve(uuid: $uuid)
+            ->createInvestigation($investigationData, $incident)
+            ->persist();
+
+        return to_route('incidents.investigations.show', ['incident' => $incident->id, 'investigation' => $uuid]);
     }
 
     /**
@@ -36,7 +46,7 @@ class InvestigationController extends Controller
      */
     public function show(Incident $incident, Investigation $investigation)
     {
-        $this->authorize('view', [Investigation::class, $incident]);
+        $this->authorize('view', $investigation);
 
         $investigation->load('incident');
 
