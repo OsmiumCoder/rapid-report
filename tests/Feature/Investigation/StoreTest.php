@@ -10,7 +10,6 @@ use App\Models\User;
 use App\Notifications\Investigation\InvestigationSubmitted;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\ValidationException;
-use Inertia\Testing\AssertableInertia;
 use Tests\TestCase;
 
 class StoreTest extends TestCase
