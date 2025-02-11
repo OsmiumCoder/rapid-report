@@ -6,6 +6,8 @@ import validatePhoneInput from '@/Filters/validatePhoneInput';
 import { usePage } from '@inertiajs/react';
 import { Incident } from '@/types/incident/Incident';
 import { User } from '@/types';
+import TextInput from '@/Components/TextInput';
+import SelectInput from '@/Components/SelectInput';
 
 export default function AffectedPartyStage({
     formData,
@@ -98,8 +100,8 @@ export default function AffectedPartyStage({
                                     htmlFor="onbehalf_anon"
                                     className="font-medium text-gray-900"
                                 >
-                                    Would the person you are reporting on behalf
-                                    of like to remain anonymous?
+                                    Would the person you are reporting on behalf of like to remain
+                                    anonymous?
                                 </label>
                             </div>
                             <ToggleSwitch
@@ -108,10 +110,7 @@ export default function AffectedPartyStage({
                                     if (!e.valueOf) {
                                         setFormData('email', '');
                                     }
-                                    setFormData(
-                                        'on_behalf_anonymous',
-                                        e.valueOf()
-                                    );
+                                    setFormData('on_behalf_anonymous', e.valueOf());
                                     handleValidStep();
                                 }}
                             />
@@ -121,12 +120,8 @@ export default function AffectedPartyStage({
             )}
 
             {((!formData.anonymous && !formData.on_behalf) ||
-                (!formData.anonymous &&
-                    formData.on_behalf &&
-                    !formData.on_behalf_anonymous) ||
-                (formData.anonymous &&
-                    formData.on_behalf &&
-                    !formData.on_behalf_anonymous)) && (
+                (!formData.anonymous && formData.on_behalf && !formData.on_behalf_anonymous) ||
+                (formData.anonymous && formData.on_behalf && !formData.on_behalf_anonymous)) && (
                 <>
                     <label className="flex justify-center font-bold text-lg text-gray-900">
                         Affected Party Information
@@ -140,11 +135,8 @@ export default function AffectedPartyStage({
                         </div>
 
                         <div className="mt-1">
-                            <input
-                                disabled={
-                                    !formData.on_behalf &&
-                                    auth.user !== undefined
-                                }
+                            <TextInput
+                                disabled={!formData.on_behalf && auth.user !== undefined}
                                 value={
                                     !formData.on_behalf && auth.user
                                         ? getNames()[0]
@@ -154,15 +146,10 @@ export default function AffectedPartyStage({
                                     setFormData('first_name', e.target.value);
                                     handleValidStep();
                                 }}
-                                className="disabled:opacity-60 block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                             />
                             {failedStep && formData.first_name == '' && (
-                                <p
-                                    id="validation-error"
-                                    className="mt-2 text-sm text-red-600"
-                                >
-                                    *Please enter the affected individuals first
-                                    name
+                                <p id="validation-error" className="mt-2 text-sm text-red-600">
+                                    *Please enter the affected individuals first name
                                 </p>
                             )}
                         </div>
@@ -176,11 +163,8 @@ export default function AffectedPartyStage({
                         </div>
 
                         <div className="mt-1">
-                            <input
-                                disabled={
-                                    !formData.on_behalf &&
-                                    auth.user !== undefined
-                                }
+                            <TextInput
+                                disabled={!formData.on_behalf && auth.user !== undefined}
                                 value={
                                     !formData.on_behalf && auth.user
                                         ? getNames()[1]
@@ -190,15 +174,10 @@ export default function AffectedPartyStage({
                                     setFormData('last_name', e.target.value);
                                     handleValidStep();
                                 }}
-                                className="disabled:opacity-60 block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                             />
                             {failedStep && formData.last_name == '' && (
-                                <p
-                                    id="validation-error"
-                                    className="mt-2 text-sm text-red-600"
-                                >
-                                    *Please enter the affected individuals last
-                                    name
+                                <p id="validation-error" className="mt-2 text-sm text-red-600">
+                                    *Please enter the affected individuals last name
                                 </p>
                             )}
                         </div>
@@ -212,7 +191,7 @@ export default function AffectedPartyStage({
                         </div>
 
                         <div className="mt-1">
-                            <input
+                            <TextInput
                                 disabled={
                                     !formData.on_behalf &&
                                     auth.user &&
@@ -226,13 +205,9 @@ export default function AffectedPartyStage({
                                         : formData.phone) ?? ''
                                 }
                                 onChange={(e) => {
-                                    setFormData(
-                                        'phone',
-                                        validatePhoneInput(e.target.value)
-                                    );
+                                    setFormData('phone', validatePhoneInput(e.target.value));
                                     handleValidStep();
                                 }}
-                                className="disabled:opacity-60 block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                             />
                         </div>
                     </div>
@@ -245,7 +220,7 @@ export default function AffectedPartyStage({
                             </div>
 
                             <div className="mt-1">
-                                <input
+                                <TextInput
                                     required
                                     type="email"
                                     placeholder="name@example.com"
@@ -254,19 +229,12 @@ export default function AffectedPartyStage({
                                         setFormData('email', e.target.value);
                                         handleValidStep();
                                     }}
-                                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                                 />
-                                {failedStep &&
-                                    formData.phone == '' &&
-                                    formData.email == '' && (
-                                        <p
-                                            id="validation-error"
-                                            className="mt-2 text-sm text-red-600"
-                                        >
-                                            *Please enter at least a phone
-                                            number or email
-                                        </p>
-                                    )}
+                                {failedStep && formData.phone == '' && formData.email == '' && (
+                                    <p id="validation-error" className="mt-2 text-sm text-red-600">
+                                        *Please enter at least a phone number or email
+                                    </p>
+                                )}
                             </div>
                         </div>
                     )}
@@ -279,27 +247,22 @@ export default function AffectedPartyStage({
                         </div>
 
                         <div className="mt-1 grid grid-cols-1">
-                            <select
+                            <SelectInput
                                 value={
-                                    roles.find(
-                                        ({ value }) => value === formData?.role
-                                    )?.name ?? roles[0].name
+                                    roles.find(({ value }) => value === formData?.role)?.name ??
+                                    roles[0].name
                                 }
                                 onChange={(e) =>
                                     setFormData(
                                         'role',
-                                        roles.find(
-                                            ({ name }) =>
-                                                name === e.target.value
-                                        )?.value
+                                        roles.find(({ name }) => name === e.target.value)?.value
                                     )
                                 }
-                                className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                             >
                                 {roles.map(({ name }, index) => (
                                     <option key={index}>{name}</option>
                                 ))}
-                            </select>
+                            </SelectInput>
                         </div>
                     </div>
 
@@ -312,20 +275,14 @@ export default function AffectedPartyStage({
                             </div>
 
                             <div className="mt-1">
-                                <input
-                                    disabled={
-                                        !formData.on_behalf &&
-                                        auth.user !== undefined
-                                    }
+                                <TextInput
+                                    disabled={!formData.on_behalf && auth.user !== undefined}
                                     value={
                                         !formData.on_behalf && auth.user
                                             ? auth.user.upei_id
                                             : formData.upei_id
                                     }
-                                    onChange={(e) =>
-                                        setFormData('upei_id', e.target.value)
-                                    }
-                                    className="disabled:opacity-60 block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                                    onChange={(e) => setFormData('upei_id', e.target.value)}
                                 />
                             </div>
                         </div>

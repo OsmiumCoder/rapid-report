@@ -75,7 +75,10 @@ export default function SupervisorUpdate({
                 >
                     <div className="relative">
                         <ComboboxInput
-                            className="block w-full rounded-md bg-white py-1.5 pl-3 pr-12 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                            className="block w-full rounded-md bg-white py-1.5 pl-3 pr-12 text-base text-gray-900 outline outline-1 -outline-offset-1
+                                        outline-gray-300 placeholder:text-gray-400
+                                       focus:outline-none focus:ring-0 focus:shadow-none focus-visible:ring-0 focus-visible:ring-offset-0
+                                       focus:border-upei-green-600 focus:ring-upei-green-600 sm:text-sm/6"
                             onChange={(event) => setQuery(event.target.value)}
                             onClick={() => setDefaultText('')}
                             onBlur={() => {
@@ -97,19 +100,19 @@ export default function SupervisorUpdate({
                                     <ComboboxOption
                                         key={supervisor.id}
                                         value={supervisor.id}
-                                        className="group relative cursor-default select-none py-2 pl-3 pr-9 text-gray-900 data-[focus]:bg-indigo-600 data-[focus]:text-white data-[focus]:outline-none"
+                                        className="group relative cursor-default select-none py-2 pl-3 pr-9 text-gray-900 data-[focus]:bg-upei-green-500 data-[focus]:text-white data-[focus]:outline-none"
                                     >
                                         <div className="">
                                             <div className="group-data-[selected]:font-semibold">
                                                 {supervisor.name}
                                             </div>
-                                            <div className="text-gray-500 group-data-[focus]:text-indigo-200">
+                                            <div className="text-gray-500 group-data-[focus]:text-white">
                                                 {supervisor.email}
                                             </div>
                                         </div>
 
                                         {supervisor.id === incident.supervisor_id && (
-                                            <span className="absolute flex inset-y-0 right-0 items-center pr-4 text-indigo-600 group-data-[focus]:text-white">
+                                            <span className="absolute flex inset-y-0 right-0 items-center pr-4 text-upei-green-500 group-data-[focus]:text-white">
                                                 <CheckIcon className="size-5" aria-hidden="true" />
                                             </span>
                                         )}

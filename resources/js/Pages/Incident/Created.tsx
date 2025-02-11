@@ -14,9 +14,7 @@ export default function Created({
                 <div>
                     <CheckCircleIcon className="size-16 text-green-500" />
                 </div>
-                <div className="text-xl my-2">
-                    Thank you for submitting an Incident report.
-                </div>
+                <div className="text-xl my-2">Thank you for submitting an Incident report.</div>
                 <div className="my-2">
                     Your incident will be reviewed and investigated in due process.
                 </div>
@@ -27,7 +25,7 @@ export default function Created({
                                 incident: incident_id,
                             })}
                             as="button"
-                            className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                            className="rounded-md bg-upei-green-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-upei-green-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-upei-green-600"
                         >
                             View Incident
                         </Link>

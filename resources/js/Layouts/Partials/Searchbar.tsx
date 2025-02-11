@@ -228,7 +228,9 @@ export default function Searchbar({ open, setOpen }: CommandPaletteProps) {
                                     <ComboboxOption
                                         key={incident.id}
                                         value={incident.id}
-                                        className="select-none px-4 py-2 hover:bg-indigo-600 hover:text-white hover:cursor-pointer"
+                                        className="select-none px-4 py-2
+                                       hover:bg-upei-green-500 hover:text-white hover:cursor-pointer
+                                       focus:outline-none focus:ring-0 focus:shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
                                         onClick={() =>
                                             router.get(
                                                 route('incidents.show', { incident: incident.id })
