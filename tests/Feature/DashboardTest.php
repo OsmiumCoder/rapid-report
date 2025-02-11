@@ -4,6 +4,7 @@ namespace Feature;
 
 use App\Models\Incident;
 use App\Models\User;
+use App\States\IncidentStatus\Assigned;
 use App\States\IncidentStatus\Closed;
 use Inertia\Testing\AssertableInertia;
 use Tests\TestCase;
@@ -89,7 +90,7 @@ class DashboardTest extends TestCase
         $this->actingAs($supervisor);
 
         Incident::factory(5)->create();
-        Incident::factory(10)->create(['supervisor_id' => $supervisor->id]);
+        Incident::factory(10)->create(['supervisor_id' => $supervisor->id, 'status' => Assigned::class]);
 
         $response = $this->get(route('dashboard.supervisor'));
 
