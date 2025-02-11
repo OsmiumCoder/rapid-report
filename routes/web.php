@@ -21,11 +21,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard/admin', [DashboardController::class, 'adminOverview'])->name('dashboard.admin');
     Route::get('/dashboard/supervisor', [DashboardController::class, 'supervisorOverview'])->name('dashboard.supervisor');
     Route::get('/dashboard/user-management', [DashboardController::class, 'userManagement'])->name('dashboard.user-management');
-
-
 });
-
-Route::get('/dashboard', [DashboardController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
 
 
 Route::middleware('auth')->group(function () {
