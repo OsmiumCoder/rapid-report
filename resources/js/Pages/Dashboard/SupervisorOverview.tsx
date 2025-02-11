@@ -22,7 +22,7 @@ export default function SupervisorOverview({
             <Head title="Supervisor Overview" />
             <div className="px-4 sm:px-6 lg:px-8">
                 {/* Index Summary */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-center">
                     {/* Incident Count Card */}
                     <div className="bg-white p-6 rounded-lg shadow-lg">
                         <h3 className="text-lg font-semibold text-gray-700">
