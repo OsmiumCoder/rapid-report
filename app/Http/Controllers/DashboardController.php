@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Incident;
+use App\States\IncidentStatus\Assigned;
 use App\States\IncidentStatus\Closed;
 use Illuminate\Support\Facades\Gate;
 
@@ -46,7 +47,12 @@ class DashboardController extends Controller
 
         $user = auth()->user();
 
-        $unresolvedIncidents = Incident::latest()->where('supervisor_id', $user->id)->whereNot('status', Closed::$name)->take(5)->get();
+        $unresolvedIncidents = Incident::latest()
+            ->where('supervisor_id', $user->id)
+            ->where('status', Assigned::$name)
+            ->take(5)
+            ->get();
+
         $incidentCount = Incident::where('supervisor_id', $user->id)->count();
         $closedCount = Incident::where('status', Closed::$name)->where('supervisor_id', $user->id)->count();
         $unresolvedCount = $incidentCount - $closedCount;
