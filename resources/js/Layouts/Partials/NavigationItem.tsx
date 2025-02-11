@@ -17,7 +17,7 @@ export default function NavigationItem({ item }: { item: NavigationItemInterface
             <Link
                 href={route(item.route as string)}
                 className={classNames(
-                    route().current(item.route as string)
+                    route().current(item.route + '*')
                         ? 'bg-upei-red-700 text-white'
                         : 'text-gray-300 hover:bg-upei-red-700 hover:text-white',
                     'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold'
