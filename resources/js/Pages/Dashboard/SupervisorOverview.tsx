@@ -17,7 +17,7 @@ export default function SupervisorOverview({
 }: SupervisorDashboardProps) {
     return (
         <Authenticated>
-            <div className="container mx-auto py-8">
+            <div className="px-4 sm:px-6 lg:px-8">
                 {/* Index Summary */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {/* Incident Count Card */}
@@ -28,20 +28,20 @@ export default function SupervisorOverview({
                         <p className="text-3xl font-bold text-upei-green-600">{incidentCount}</p>
                     </div>
 
-                    {/* Resolved Incidents Card */}
-                    <div className="bg-white p-6 rounded-lg shadow-lg">
-                        <h3 className="text-lg font-semibold text-gray-700">
-                            Resolved Assigned Incidents
-                        </h3>
-                        <p className="text-3xl font-bold text-green-500">{closedCount}</p>
-                    </div>
-
                     {/* Unresolved Incidents Card */}
                     <div className="bg-white p-6 rounded-lg shadow-lg">
                         <h3 className="text-lg font-semibold text-gray-700">
                             Unresolved Assigned Incidents
                         </h3>
                         <p className="text-3xl font-bold text-red-500">{unresolvedCount}</p>
+                    </div>
+
+                    {/* Resolved Incidents Card */}
+                    <div className="bg-white p-6 rounded-lg shadow-lg">
+                        <h3 className="text-lg font-semibold text-gray-700">
+                            Resolved Assigned Incidents
+                        </h3>
+                        <p className="text-3xl font-bold text-green-500">{closedCount}</p>
                     </div>
                 </div>
 

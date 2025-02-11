@@ -5,6 +5,7 @@ import { incidentBadgeColor } from '@/Filters/incidentBadgeColor';
 import { uppercaseWordFormat } from '@/Filters/uppercaseWordFormat';
 import dateFormat from '@/Filters/dateFormat';
 import Authenticated from '@/Layouts/AuthenticatedLayout';
+import {PencilIcon} from "@heroicons/react/24/outline";
 
 interface UserDashboardProps {
     incidents: Incident[];
@@ -20,7 +21,7 @@ export default function UserDashboard({
     const { user } = usePage().props.auth;
     return (
         <Authenticated>
-            <div className="container mx-auto py-8">
+            <div className="px-4 sm:px-6 lg:px-8">
                 <div className="bg-white p-6 rounded-lg shadow-lg mb-8">
                     <h2 className="text-2xl font-semibold text-gray-700">Welcome, {user.name}!</h2>
                     <p className="mt-2 text-lg text-gray-600">
@@ -30,15 +31,19 @@ export default function UserDashboard({
                 {/* Dashboard Summary */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Incident Count Card */}
-                    <div className="bg-white p-6 rounded-lg shadow-lg">
-                        <h3 className="text-lg font-semibold text-gray-700">
-                            Your Submitted Incidents
-                        </h3>
-                        <p className="text-3xl font-bold text-upei-green-600">{incidentCount}</p>
-                        <h3 className="text-lg font-semibold text-gray-700">
-                            Your Unresolved Incidents
-                        </h3>
-                        <p className="text-3xl font-bold text-red-500">{unresolvedCount}</p>
+                    <div className="flex justify-around bg-white p-6 rounded-lg shadow-lg">
+                        <div className="flex flex-col items-center justify-center text-center">
+                            <h3 className="text-lg font-semibold text-gray-700">
+                                Your Submitted Incidents
+                            </h3>
+                            <p className="text-3xl font-bold text-upei-green-600">{incidentCount}</p>
+                        </div>
+                        <div className="flex flex-col items-center justify-center text-center">
+                            <h3 className="text-lg font-semibold text-gray-700">
+                                Your Unresolved Incidents
+                            </h3>
+                            <p className="text-3xl font-bold text-red-500">{unresolvedCount}</p>
+                        </div>
                     </div>
 
                     {/* Report New Incident Card */}
@@ -53,13 +58,16 @@ export default function UserDashboard({
                         <div className="flex justify-evenly mt-6">
                             <Link
                                 href={route('incidents.create')}
-                                className="mt-4 inline-block text-upei-green-600 hover:text-upei-green-800"
+                                as="button"
+                                className="flex items-center rounded-md bg-upei-green-500 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-upei-green-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-upei-green-600"
                             >
+                                <PencilIcon className="h-4 w-4 mr-2" />
                                 Submit Incident
                             </Link>
                             <Link
                                 href={route('incidents.owned')}
-                                className="mt-4 inline-block text-upei-green-600 hover:text-upei-green-800"
+                                as="button"
+                                className="flex items-center rounded-md bg-upei-green-500 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-upei-green-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-upei-green-600"
                             >
                                 View Submitted Incidents
                             </Link>
