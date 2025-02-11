@@ -13,7 +13,7 @@ export default function Created({
             <Head title="Submitted Incident" />
             <div className="flex flex-col items-center w-full">
                 <div>
-                    <CheckCircleIcon className="size-16 text-green-500" />
+                    <CheckCircleIcon className="size-16 text-upei-green-500" />
                 </div>
                 <div className="text-xl my-2">Thank you for submitting an Incident report.</div>
                 <div className="my-2">
