@@ -7,7 +7,6 @@ import { usePage } from '@inertiajs/react';
 
 export default function Authenticated({ children }: PropsWithChildren<{ header?: ReactNode }>) {
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const { user } = usePage().props.auth;
 
     return (
         <>
