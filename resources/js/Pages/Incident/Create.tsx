@@ -14,7 +14,7 @@ import {
 import WitnessStage from '@/Pages/Incident/Stages/WitnessStage';
 import SupervisorStage from '@/Pages/Incident/Stages/SupervisorStage';
 import dateFormat from '@/Filters/dateFormat';
-import { useForm } from '@inertiajs/react';
+import {Head, useForm} from '@inertiajs/react';
 import ReviewStage from "@/Pages/Incident/Stages/ReviewStage";
 import {Incident} from "@/types/incident/Incident";
 
@@ -113,6 +113,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
 
     return (
         <GuestLayout>
+            <Head title="Submit Incident" />
             <form onSubmit={submit}>
                 <>
                     <StageWrapper

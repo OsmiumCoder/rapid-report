@@ -1,6 +1,6 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import React, { FormEvent } from 'react';
-import {useForm} from "@inertiajs/react";
+import {Head, useForm} from "@inertiajs/react";
 import IncidentData from "@/types/incident/IncidentData";
 
 export default function Create() {
@@ -14,6 +14,7 @@ export default function Create() {
 
     return (
         <AuthenticatedLayout>
+            <Head title="Submit Investigation" />
             <div style={{ maxWidth: '400px', margin: '50px auto', padding: '20px', fontFamily: 'Arial, sans-serif' }}>
                 <h1 style={{ textAlign: 'center' }}>Create Investigation</h1>
                 <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>

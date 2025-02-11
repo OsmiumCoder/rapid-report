@@ -2,7 +2,7 @@ import GuestLayout from '@/Layouts/GuestLayout';
 import { PageProps } from '@/types';
 import React from 'react';
 import { CheckCircleIcon } from '@heroicons/react/24/outline';
-import { Link } from '@inertiajs/react';
+import {Head, Link} from '@inertiajs/react';
 
 export default function Created({
     can_view,
@@ -10,6 +10,7 @@ export default function Created({
 }: PageProps<{ can_view: boolean; incident_id: string }>) {
     return (
         <GuestLayout>
+            <Head title="Submitted Incident" />
             <div className="flex flex-col items-center w-full">
                 <div>
                     <CheckCircleIcon className="size-16 text-green-500" />
