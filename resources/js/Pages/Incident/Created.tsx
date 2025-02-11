@@ -20,29 +20,32 @@ export default function Created({
                 <div className="my-2">
                     Your incident will be reviewed and investigated in due process.
                 </div>
-                {can_view && (
-                    <div className="my-2">
+                <div className="flex justify-around w-3/4 my-2">
+                    <div>
                         <Link
-                            href={route('incidents.show', {
-                                incident: incident_id,
-                            })}
+                            href={route('login')}
                             as="button"
                             className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                         >
-                            View Incident
+                            Return Home
                         </Link>
                     </div>
-                )}
 
-                <div className="my-2">
-                    <Link
-                        href={route('login')}
-                        as="button"
-                        className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                    >
-                        Home
-                    </Link>
+                    {can_view && (
+                        <div>
+                            <Link
+                                href={route('incidents.show', {
+                                    incident: incident_id,
+                                })}
+                                as="button"
+                                className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                            >
+                                View Incident
+                            </Link>
+                        </div>
+                    )}
                 </div>
+
             </div>
         </GuestLayout>
     );
