@@ -46,13 +46,13 @@ class DashboardController extends Controller
 
         $user = auth()->user();
 
-        $incidents = Incident::latest()->where('supervisor_id', $user->id)->take(5)->get();
+        $unresolvedIncidents = Incident::latest()->where('supervisor_id', $user->id)->whereNot('status', Closed::$name)->take(5)->get();
         $incidentCount = Incident::where('supervisor_id', $user->id)->count();
         $closedCount = Incident::where('status', Closed::$name)->where('supervisor_id', $user->id)->count();
         $unresolvedCount = $incidentCount - $closedCount;
 
         return inertia('Dashboard/SupervisorOverview', [
-            'incidents' => $incidents,
+            'unresolvedIncidents' => $unresolvedIncidents,
             'incidentCount' => $incidentCount,
             'closedCount' => $closedCount,
             'unresolvedCount' => $unresolvedCount,

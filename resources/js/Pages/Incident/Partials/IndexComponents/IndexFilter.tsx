@@ -127,6 +127,11 @@ export default function IndexFilter({ filters, setFilters, resetFilters }: Index
                                                                     : undefined
                                                             }
                                                             onChange={(e) => {
+                                                                const selectedDate = new Date(
+                                                                    e.target.value
+                                                                );
+                                                                selectedDate.setHours(23, 59, 0, 0);
+
                                                                 setFilters((prev) => ({
                                                                     ...prev,
                                                                     created_at: prev.created_at.map(

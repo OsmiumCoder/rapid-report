@@ -16,6 +16,8 @@ import { useEffect, useRef, useState } from 'react';
 import classNames from '@/Filters/classNames';
 import { descriptors } from '@/Pages/Incident/Stages/IncidentDropDownValues';
 import { IncidentStatus } from '@/Enums/IncidentStatus';
+import Badge from '@/Components/Badge';
+import { incidentBadgeColor } from '@/Filters/incidentBadgeColor';
 
 type IndexType = 'owned' | 'assigned' | 'all';
 
@@ -32,8 +34,7 @@ export interface Filter {
 
 interface ProcessedFilter {
     column: FilterValue;
-    value: string;
-    comparator: Comparator;
+    values: { value: string; comparator: Comparator }[];
 }
 
 interface IndexProps {
@@ -111,9 +112,13 @@ const getInitialFilters: (currentFilters: ProcessedFilter[]) => Record<FilterVal
     const newFilters = structuredClone(initialFilters) as Record<FilterValue, Filter[]>;
 
     currentFilters.forEach((filter) => {
-        newFilters[filter.column] = newFilters[filter.column].map((newFilter) =>
-            newFilter.value === filter.value ? { ...newFilter, checked: true } : newFilter
-        );
+        if (newFilters[filter.column]) {
+            newFilters[filter.column] = newFilters[filter.column].map((newFilter) =>
+                filter.values.some(({ value }) => value === newFilter.value)
+                    ? { ...newFilter, checked: true }
+                    : newFilter
+            );
+        }
     });
 
     return newFilters;
@@ -160,17 +165,25 @@ export default function Index({
     }, [filters, sortDirection, sortedBy]);
 
     const handleSortAndFilter = () => {
-        const processedFilters = Object.entries(filters)
-            .map(([key, value]) =>
-                value
+        const processedFilters = Object.entries(filters).reduce<ProcessedFilter[]>(
+            (acc, [key, value]) => {
+                const checkedValues = value
                     .filter((filter) => filter.checked)
                     .map((filter) => ({
-                        column: key,
                         value: filter.value,
                         comparator: filter.comparator,
-                    }))
-            )
-            .flat();
+                    }));
+
+                if (checkedValues.length > 0) {
+                    acc.push({
+                        column: key as FilterValue,
+                        values: checkedValues,
+                    });
+                }
+                return acc;
+            },
+            []
+        );
 
         router.get(
             route(`incidents.${indexType === 'all' ? 'index' : indexType}`),
@@ -447,8 +460,11 @@ export default function Index({
                                                 <td className="px-3 py-4 text-sm text-gray-500 md:table-cell">
                                                     {incident.location ?? 'Not Provided'}
                                                 </td>
-                                                <td className="hidden px-3 py-4 text-sm text-gray-500 md:table-cell">
-                                                    {uppercaseWordFormat(incident.status)}
+                                                <td className="hidden px-3 py-4 text-sm md:table-cell">
+                                                    <Badge
+                                                        color={incidentBadgeColor(incident)}
+                                                        text={uppercaseWordFormat(incident.status)}
+                                                    />
                                                 </td>
                                                 <td className="py-4 pl-3 pr-4 text-right text-sm font-medium md:pr-6">
                                                     <Link

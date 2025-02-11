@@ -97,12 +97,12 @@ class DashboardTest extends TestCase
 
         $response->assertInertia(function (AssertableInertia $page) use ($supervisor) {
             $page->component('Dashboard/SupervisorOverview')
-                ->has('incidents', 5)
-                ->where('incidents.0.supervisor_id', $supervisor->id)
-                ->where('incidents.1.supervisor_id', $supervisor->id)
-                ->where('incidents.2.supervisor_id', $supervisor->id)
-                ->where('incidents.3.supervisor_id', $supervisor->id)
-                ->where('incidents.4.supervisor_id', $supervisor->id)
+                ->has('unresolvedIncidents', 5)
+                ->where('unresolvedIncidents.0.supervisor_id', $supervisor->id)
+                ->where('unresolvedIncidents.1.supervisor_id', $supervisor->id)
+                ->where('unresolvedIncidents.2.supervisor_id', $supervisor->id)
+                ->where('unresolvedIncidents.3.supervisor_id', $supervisor->id)
+                ->where('unresolvedIncidents.4.supervisor_id', $supervisor->id)
             ;
         });
     }
