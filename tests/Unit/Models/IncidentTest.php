@@ -42,8 +42,10 @@ class IncidentTest extends TestCase
         $filters = [
             0 => [
                 'column' => 'descriptor',
-                'value' => 'a',
-                'comparator' => '=',
+                'values' => [
+                    ['value' => 'a', 'comparator' => '=']
+                ]
+                ,
             ],
         ];
 

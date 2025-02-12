@@ -7,6 +7,7 @@ import classNames from '@/Filters/classNames';
 import { Filter, FilterValue } from '@/Pages/Incident/Index';
 import dateFormat from '@/Filters/dateFormat';
 import LabeledCheckbox from '@/Components/LabeledCheckbox';
+import DateInput from '@/Components/DateInput';
 
 interface IndexFilterProps {
     filters: Record<FilterValue, Filter[]>;
@@ -115,8 +116,7 @@ export default function IndexFilter({ filters, setFilters, resetFilters }: Index
                                                         className="ml-2 grid space-y-6 sm:space-y-4"
                                                     >
                                                         <label>{filter.label}</label>
-                                                        <input
-                                                            type="date"
+                                                        <DateInput
                                                             value={filter.value}
                                                             min={
                                                                 filter.label === 'To'
@@ -127,6 +127,11 @@ export default function IndexFilter({ filters, setFilters, resetFilters }: Index
                                                                     : undefined
                                                             }
                                                             onChange={(e) => {
+                                                                const selectedDate = new Date(
+                                                                    e.target.value
+                                                                );
+                                                                selectedDate.setHours(23, 59, 0, 0);
+
                                                                 setFilters((prev) => ({
                                                                     ...prev,
                                                                     created_at: prev.created_at.map(
@@ -148,7 +153,6 @@ export default function IndexFilter({ filters, setFilters, resetFilters }: Index
                                                                     ),
                                                                 }));
                                                             }}
-                                                            className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                                                         />
                                                     </div>
                                                 ))}

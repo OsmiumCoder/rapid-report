@@ -1,14 +1,8 @@
 import { Link, usePage } from '@inertiajs/react';
-import {
-    Cog6ToothIcon,
-    FolderIcon,
-    HomeIcon,
-} from '@heroicons/react/24/outline';
+import { FolderIcon, HomeIcon } from '@heroicons/react/24/outline';
 import classNames from '@/Filters/classNames';
 import { useState } from 'react';
-import NavigationItem, {
-    NavigationItemInterface,
-} from '@/Layouts/Partials/NavigationItem';
+import NavigationItem, { NavigationItemInterface } from '@/Layouts/Partials/NavigationItem';
 import NavigationDropDownItem from '@/Layouts/Partials/NavigationDropDownItem';
 import { Role } from '@/types';
 
@@ -49,10 +43,7 @@ export default function NavigationItems() {
     );
     const { auth } = usePage().props;
 
-    const canView = (
-        navigationItem: NavigationItemInterface,
-        userRoles: Role[]
-    ): boolean =>
+    const canView = (navigationItem: NavigationItemInterface, userRoles: Role[]): boolean =>
         userRoles.some(({ name }) => navigationItem.roles.includes(name)) ||
         navigationItem.roles.includes('all');
 
@@ -69,19 +60,14 @@ export default function NavigationItems() {
                                             item={item}
                                             isOpen={incidentDropDownIsOpen}
                                             onClick={() =>
-                                                setIncidentDropDownIsOpen(
-                                                    (prev) => !prev
-                                                )
+                                                setIncidentDropDownIsOpen((prev) => !prev)
                                             }
                                         />
                                         {incidentDropDownIsOpen && (
                                             <div>
                                                 {item.subItems.map(
                                                     (item, index) =>
-                                                        canView(
-                                                            item,
-                                                            auth.user.roles
-                                                        ) && (
+                                                        canView(item, auth.user.roles) && (
                                                             <NavigationItem
                                                                 key={`${item.name}${index}`}
                                                                 item={item}
@@ -95,15 +81,11 @@ export default function NavigationItems() {
                                     canView(item, auth.user.roles) && (
                                         <li key={`${item.name}${index}`}>
                                             <Link
-                                                href={route(
-                                                    item.route as string
-                                                )}
+                                                href={route(item.route as string)}
                                                 className={classNames(
-                                                    route().current(
-                                                        item.route as string
-                                                    )
-                                                        ? 'bg-gray-800 text-white'
-                                                        : 'text-gray-400 hover:bg-gray-800 hover:text-white',
+                                                    route().current(item.route + '*')
+                                                        ? 'bg-upei-red-700 text-white'
+                                                        : 'text-gray-200 hover:bg-upei-red-700 hover:text-white',
                                                     'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold'
                                                 )}
                                             >
@@ -121,23 +103,6 @@ export default function NavigationItems() {
                             </>
                         ))}
                     </ul>
-                </li>
-
-                <li className="mt-auto">
-                    <Link
-                        href="#"
-                        className={classNames(
-                            'group -mx-2 flex gap-x-3 rounded-md',
-                            'p-2 text-sm/6 font-semibold text-gray-400',
-                            'hover:bg-gray-800 hover:text-white'
-                        )}
-                    >
-                        <Cog6ToothIcon
-                            aria-hidden="true"
-                            className="size-6 shrink-0"
-                        />
-                        Settings
-                    </Link>
                 </li>
             </ul>
         </nav>

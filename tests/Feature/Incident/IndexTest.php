@@ -24,7 +24,7 @@ class IndexTest extends TestCase
             'incidents.owned',
             ['filters' => urlencode(json_encode(
                 [
-                    ['column' => 'descriptor', 'value' => 'a', 'comparator' => '=']
+                    ['column' => 'descriptor', 'values' => [['value' => 'a', 'comparator' => '=']]]
                 ]
             )),
                 'sort_by' => 'descriptor',
@@ -42,8 +42,9 @@ class IndexTest extends TestCase
             ->where('currentSortDirection', 'asc')
             ->has('currentFilters', 1)
             ->where('currentFilters.0.column', 'descriptor')
-            ->where('currentFilters.0.value', 'a')
-            ->where('currentFilters.0.comparator', '=')
+            ->has('currentFilters.0.values', 1)
+            ->where('currentFilters.0.values.0.value', 'a')
+            ->where('currentFilters.0.values.0.comparator', '=')
         );
     }
     public function test_owned_route_filters_incidents()
@@ -61,10 +62,9 @@ class IndexTest extends TestCase
             'incidents.owned',
             ['filters' => urlencode(json_encode(
                 [
-                    ['column' => 'descriptor', 'value' => 'a', 'comparator' => '=']
+                    ['column' => 'descriptor', 'values' => [['value' => 'a', 'comparator' => '=']]]
                 ]
-            ))
-            ]
+            ))]
         ));
 
         $response->assertOk();
@@ -101,7 +101,7 @@ class IndexTest extends TestCase
             'incidents.assigned',
             ['filters' => urlencode(json_encode(
                 [
-                    ['column' => 'descriptor', 'value' => 'a', 'comparator' => '=']
+                    ['column' => 'descriptor', 'values' => [['value' => 'a', 'comparator' => '=']]]
                 ]
             ))
             ]
@@ -141,7 +141,7 @@ class IndexTest extends TestCase
             'incidents.index',
             ['filters' => urlencode(json_encode(
                 [
-                    ['column' => 'descriptor', 'value' => 'a', 'comparator' => '=']
+                    ['column' => 'descriptor', 'values' => [['value' => 'a', 'comparator' => '=']]]
                 ]
             ))
             ]
