@@ -3,6 +3,7 @@ import React from 'react';
 import ToggleSwitch from '@/Components/ToggleSwitch';
 import { isValidEmail } from '@/Filters/isValidEmail';
 import { usePage } from '@inertiajs/react';
+import TextInput from '@/Components/TextInput';
 
 export default function AnonymousStage({
     formData,
@@ -32,9 +33,7 @@ export default function AnonymousStage({
                                 setValidStep(true);
                             } else if (
                                 (formData.reporters_email === '' ||
-                                    isValidEmail(
-                                        formData.reporters_email ?? ''
-                                    )) &&
+                                    isValidEmail(formData.reporters_email ?? '')) &&
                                 !e.valueOf()
                             ) {
                                 setValidStep(false);
@@ -54,36 +53,24 @@ export default function AnonymousStage({
                             Reporter's Email
                         </label>
                         <div className="mt-2">
-                            <input
+                            <TextInput
                                 type="email"
                                 disabled={auth.user !== null}
                                 value={
-                                    auth.user
-                                        ? auth.user.email
-                                        : (formData.reporters_email ?? '')
+                                    auth.user ? auth.user.email : (formData.reporters_email ?? '')
                                 }
                                 onChange={(e) => {
-                                    setFormData(
-                                        'reporters_email',
-                                        e.target.value
-                                    );
-                                    if (
-                                        e.target.value !== '' &&
-                                        isValidEmail(e.target.value)
-                                    ) {
+                                    setFormData('reporters_email', e.target.value);
+                                    if (e.target.value !== '' && isValidEmail(e.target.value)) {
                                         setValidStep(true);
                                     } else {
                                         setValidStep(false);
                                     }
                                 }}
                                 placeholder="example@email.com"
-                                className="block disabled:opacity-60 w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                             />
                             {failedStep && (
-                                <p
-                                    id="validation-error"
-                                    className="mt-2 text-sm text-red-600"
-                                >
+                                <p id="validation-error" className="mt-2 text-sm text-red-600">
                                     *Please enter a valid email
                                 </p>
                             )}

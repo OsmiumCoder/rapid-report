@@ -73,15 +73,17 @@ class Incident extends Model
             return;
         }
 
-        $query->where(function ($innerQuery) use ($filters) {
-            for ($i = 0; $i < count($filters); $i++) {
-                if ($i == 0 || $filters[$i]['column'] == 'descriptor') {
-                    $innerQuery->where($filters[$i]['column'], $filters[$i]['comparator'], $filters[$i]['value']);
-                } else {
-                    $innerQuery->where($filters[$i]['column'], $filters[$i]['comparator'], $filters[$i]['value']);
+        foreach ($filters as $filter) {
+            $query->where(function ($innerQuery) use ($filter) {
+                for ($i = 0; $i < count($filter['values']); $i++) {
+                    if ($i == 0 || $filter['column'] == 'created_at') {
+                        $innerQuery->where($filter['column'], $filter['values'][$i]['comparator'], $filter['values'][$i]['value']);
+                    } else {
+                        $innerQuery->orWhere($filter['column'], $filter['values'][$i]['comparator'], $filter['values'][$i]['value']);
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     public function scopeSort($query, $sortBy, $sortDirection): void

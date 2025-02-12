@@ -16,6 +16,8 @@ import { useEffect, useRef, useState } from 'react';
 import classNames from '@/Filters/classNames';
 import { descriptors } from '@/Pages/Incident/Stages/IncidentDropDownValues';
 import { IncidentStatus } from '@/Enums/IncidentStatus';
+import Badge from '@/Components/Badge';
+import { incidentBadgeColor } from '@/Filters/incidentBadgeColor';
 
 type IndexType = 'owned' | 'assigned' | 'all';
 
@@ -32,8 +34,7 @@ export interface Filter {
 
 interface ProcessedFilter {
     column: FilterValue;
-    value: string;
-    comparator: Comparator;
+    values: { value: string; comparator: Comparator }[];
 }
 
 interface IndexProps {
@@ -111,9 +112,13 @@ const getInitialFilters: (currentFilters: ProcessedFilter[]) => Record<FilterVal
     const newFilters = structuredClone(initialFilters) as Record<FilterValue, Filter[]>;
 
     currentFilters.forEach((filter) => {
-        newFilters[filter.column] = newFilters[filter.column].map((newFilter) =>
-            newFilter.value === filter.value ? { ...newFilter, checked: true } : newFilter
-        );
+        if (newFilters[filter.column]) {
+            newFilters[filter.column] = newFilters[filter.column].map((newFilter) =>
+                filter.values.some(({ value }) => value === newFilter.value)
+                    ? { ...newFilter, checked: true }
+                    : newFilter
+            );
+        }
     });
 
     return newFilters;
@@ -160,17 +165,25 @@ export default function Index({
     }, [filters, sortDirection, sortedBy]);
 
     const handleSortAndFilter = () => {
-        const processedFilters = Object.entries(filters)
-            .map(([key, value]) =>
-                value
+        const processedFilters = Object.entries(filters).reduce<ProcessedFilter[]>(
+            (acc, [key, value]) => {
+                const checkedValues = value
                     .filter((filter) => filter.checked)
                     .map((filter) => ({
-                        column: key,
                         value: filter.value,
                         comparator: filter.comparator,
-                    }))
-            )
-            .flat();
+                    }));
+
+                if (checkedValues.length > 0) {
+                    acc.push({
+                        column: key as FilterValue,
+                        values: checkedValues,
+                    });
+                }
+                return acc;
+            },
+            []
+        );
 
         router.get(
             route(`incidents.${indexType === 'all' ? 'index' : indexType}`),
@@ -204,7 +217,7 @@ export default function Index({
                             <Link
                                 href={route('incidents.create')}
                                 as="button"
-                                className="flex items-center rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                className="flex items-center rounded-md bg-upei-green-500 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-upei-green-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-upei-green-600"
                             >
                                 <PencilIcon className="h-4 w-4 mr-2" />
                                 Submit Incident
@@ -447,15 +460,18 @@ export default function Index({
                                                 <td className="px-3 py-4 text-sm text-gray-500 md:table-cell">
                                                     {incident.location ?? 'Not Provided'}
                                                 </td>
-                                                <td className="hidden px-3 py-4 text-sm text-gray-500 md:table-cell">
-                                                    {uppercaseWordFormat(incident.status)}
+                                                <td className="hidden px-3 py-4 text-sm md:table-cell">
+                                                    <Badge
+                                                        color={incidentBadgeColor(incident)}
+                                                        text={uppercaseWordFormat(incident.status)}
+                                                    />
                                                 </td>
                                                 <td className="py-4 pl-3 pr-4 text-right text-sm font-medium md:pr-6">
                                                     <Link
                                                         href={route('incidents.show', {
                                                             incident: incident.id,
                                                         })}
-                                                        className="text-indigo-600 hover:text-indigo-900"
+                                                        className="text-upei-green-500 hover:text-upei-green-600"
                                                     >
                                                         View
                                                         <span className="sr-only">
@@ -532,7 +548,7 @@ export default function Index({
                                                             href={link.url || '#'}
                                                             className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold ${
                                                                 link.active
-                                                                    ? 'z-10 bg-indigo-600 text-white focus:z-20 focus:outline-offset-0'
+                                                                    ? 'z-10 bg-upei-green-500 text-white focus:z-20 focus:outline-offset-0'
                                                                     : 'text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0'
                                                             }`}
                                                             preserveState={true}

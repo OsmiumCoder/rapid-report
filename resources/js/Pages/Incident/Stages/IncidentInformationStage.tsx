@@ -3,7 +3,9 @@ import { StageProps } from '@/Pages/Incident/Stages/StageWrapper';
 import { descriptors } from '@/Pages/Incident/Stages/IncidentDropDownValues';
 import ToggleSwitch from '@/Components/ToggleSwitch';
 import dateFormat from '@/Filters/dateFormat';
-import { usePage } from '@inertiajs/react';
+import TextInput from '@/Components/TextInput';
+import SelectInput from '@/Components/SelectInput';
+import DateInput from '@/Components/DateInput';
 
 export default function IncidentInformationStage({
     formData,
@@ -22,28 +24,21 @@ export default function IncidentInformationStage({
                     When did this Incident occur?
                 </label>
                 <div className="mt-2">
-                    <input
-                        type="date"
+                    <DateInput
                         value={formData.happened_at ?? dateFormat(new Date())}
                         onChange={(e) => {
                             setFormData('happened_at', e.target.value);
                         }}
-                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                     />
                 </div>
             </div>
 
             <div className="flex mt-4">
                 <div className="min-w-0 flex-1 text-sm/6">
-                    <label
-                        htmlFor="work_related"
-                        className="font-medium text-gray-900"
-                    >
+                    <label htmlFor="work_related" className="font-medium text-gray-900">
                         Work Related
                     </label>
-                    <p className="text-xs text-gray-500">
-                        Was the Incident Work related?
-                    </p>
+                    <p className="text-xs text-gray-500">Was the Incident Work related?</p>
                 </div>
                 <ToggleSwitch
                     checked={formData.work_related ?? false}
@@ -55,46 +50,37 @@ export default function IncidentInformationStage({
 
             <div className="mt-4">
                 <div>
-                    <label className="block text-sm/6 font-medium text-gray-900">
-                        Location
-                    </label>
+                    <label className="block text-sm/6 font-medium text-gray-900">Location</label>
                     <p className="text-xs text-gray-500">
-                        Enter the building or description of area where the
-                        incident occurred.
+                        Enter the building or description of area where the incident occurred.
                     </p>
                 </div>
 
                 <div className="mt-2">
-                    <input
+                    <TextInput
                         placeholder="e.g Cass Science Hall"
                         aria-describedby="location-description"
                         required
                         value={formData.location ?? ''}
-                        onChange={(e) =>
-                            setFormData('location', e.target.value)
-                        }
-                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                        onChange={(e) => setFormData('location', e.target.value)}
                     />
                 </div>
             </div>
 
             <div className="mt-4">
                 <div>
-                    <label className="block text-sm/6 font-medium text-gray-900">
-                        Room Number
-                    </label>
+                    <label className="block text-sm/6 font-medium text-gray-900">Room Number</label>
                     <p className="text-xs text-gray-500">If Applicable.</p>
                 </div>
 
                 <div className="mt-2">
-                    <input
+                    <TextInput
                         placeholder="e.g 123A"
                         required
                         value={formData.room_number ?? ''}
                         onChange={(e) => {
                             setFormData('room_number', e.target.value);
                         }}
-                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                     />
                 </div>
             </div>
@@ -106,26 +92,22 @@ export default function IncidentInformationStage({
                     </label>
                 </div>
                 <div className="mt-1 grid grid-cols-1">
-                    <select
+                    <SelectInput
                         value={
-                            descriptors.find(
-                                ({ value }) => value === formData?.incident_type
-                            )?.name ?? descriptors[0].name
+                            descriptors.find(({ value }) => value === formData?.incident_type)
+                                ?.name ?? descriptors[0].name
                         }
-                        className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                         onChange={(e) => {
                             setFormData(
                                 'incident_type',
-                                descriptors.find(
-                                    ({ name }) => name === e.target.value
-                                )?.value
+                                descriptors.find(({ name }) => name === e.target.value)?.value
                             );
                         }}
                     >
                         {descriptors.map(({ name }, index) => (
                             <option key={index}>{name}</option>
                         ))}
-                    </select>
+                    </SelectInput>
                 </div>
             </div>
 
@@ -136,12 +118,9 @@ export default function IncidentInformationStage({
                     </label>
                 </div>
                 <div className="mt-1 grid grid-cols-1">
-                    <select
+                    <SelectInput
                         value={formData.descriptor}
-                        onChange={(e) =>
-                            setFormData('descriptor', e.target.value)
-                        }
-                        className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                        onChange={(e) => setFormData('descriptor', e.target.value)}
                     >
                         {descriptors.map(
                             ({ options, value }) =>
@@ -150,7 +129,7 @@ export default function IncidentInformationStage({
                                     <option key={index}>{option}</option>
                                 ))
                         )}
-                    </select>
+                    </SelectInput>
                 </div>
             </div>
 
@@ -162,13 +141,10 @@ export default function IncidentInformationStage({
                         </label>
                     </div>
                     <div className="mt-1">
-                        <input
+                        <TextInput
                             required
                             value={formData.other_descriptor ?? ''}
-                            onChange={(e) =>
-                                setFormData('other_descriptor', e.target.value)
-                            }
-                            className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                            onChange={(e) => setFormData('other_descriptor', e.target.value)}
                         />
                     </div>
                 </div>

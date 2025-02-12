@@ -1,18 +1,13 @@
 import { StageProps } from '@/Pages/Incident/Stages/StageWrapper';
 import React, { useEffect } from 'react';
 import ToggleSwitch from '@/Components/ToggleSwitch';
+import TextArea from '@/Components/TextArea';
 
-export default function VictimInformationStage({
-    formData,
-    setFormData,
-}: StageProps) {
+export default function VictimInformationStage({ formData, setFormData }: StageProps) {
     useEffect(() => {
         console.log('RUNS');
 
-        if (
-            !(formData.work_related && formData.has_injury) &&
-            formData.workers_comp_submitted
-        ) {
+        if (!(formData.work_related && formData.has_injury) && formData.workers_comp_submitted) {
             setFormData('workers_comp_submitted', false);
         }
     }, [formData.work_related, formData.has_injury]);
@@ -26,9 +21,7 @@ export default function VictimInformationStage({
             <div className="flex">
                 <div className="min-w-0 flex-1 text-sm/6">
                     <label className="font-medium text-gray-900">Injury</label>
-                    <p className="text-xs text-gray-500">
-                        Did the incident result in injury?
-                    </p>
+                    <p className="text-xs text-gray-500">Did the incident result in injury?</p>
                 </div>
                 <ToggleSwitch
                     checked={formData.has_injury ?? false}
@@ -46,16 +39,10 @@ export default function VictimInformationStage({
                         </label>
                     </div>
                     <div className="mt-1">
-                        <textarea
+                        <TextArea
                             rows={4}
                             value={formData.injury_description ?? ''}
-                            onChange={(e) =>
-                                setFormData(
-                                    'injury_description',
-                                    e.target.value
-                                )
-                            }
-                            className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                            onChange={(e) => setFormData('injury_description', e.target.value)}
                         />
                     </div>
                 </div>
@@ -82,9 +69,7 @@ export default function VictimInformationStage({
 
             <div className="flex mt-4">
                 <div className="min-w-0 flex-1 text-sm/6">
-                    <label className="block text-sm/6 font-medium text-gray-900">
-                        First Aid
-                    </label>
+                    <label className="block text-sm/6 font-medium text-gray-900">First Aid</label>
                     <p className="text-xs text-gray-500">
                         Did the incident result in an first aid being required?
                     </p>
@@ -104,16 +89,10 @@ export default function VictimInformationStage({
                         </label>
                     </div>
                     <div className="mt-1">
-                        <textarea
+                        <TextArea
                             rows={4}
                             value={formData.first_aid_description ?? ''}
-                            onChange={(e) =>
-                                setFormData(
-                                    'first_aid_description',
-                                    e.target.value
-                                )
-                            }
-                            className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                            onChange={(e) => setFormData('first_aid_description', e.target.value)}
                         />
                     </div>
                 </div>
@@ -127,13 +106,12 @@ export default function VictimInformationStage({
                     Please offer as in-depth a description as possible.
                 </p>
                 <div className="mt-2">
-                    <textarea
+                    <TextArea
                         rows={4}
                         value={formData.description ?? ''}
                         onChange={(e) => {
                             setFormData('description', e.target.value);
                         }}
-                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                     />
                 </div>
             </div>

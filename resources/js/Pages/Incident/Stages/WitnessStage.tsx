@@ -5,6 +5,10 @@ import { PlusIcon } from '@heroicons/react/20/solid';
 import WitnessList from '@/Components/WitnessList';
 import validatePhoneInput from '@/Filters/validatePhoneInput';
 import { isValidEmail } from '@/Filters/isValidEmail';
+import PrimaryButton from '@/Components/PrimaryButton';
+import DangerButton from '@/Components/DangerButton';
+import TextInput from '@/Components/TextInput';
+import TextArea from '@/Components/TextArea';
 
 const newWitness: () => Witness = () => ({
     name: '',
@@ -12,11 +16,7 @@ const newWitness: () => Witness = () => ({
     phone: '',
 });
 
-export default function WitnessStage({
-    formData,
-    setFormData,
-    setShowButtons,
-}: StageProps) {
+export default function WitnessStage({ formData, setFormData, setShowButtons }: StageProps) {
     const [witnessInProgress, setWitnessInProgress] = useState(newWitness());
     const [validationError, setValidationError] = useState(false);
     const [witnessFormVisible, setWitnessFormVisible] = useState(false);
@@ -27,10 +27,7 @@ export default function WitnessStage({
         }
 
         setValidationError(false);
-        setFormData('witnesses', [
-            ...(formData.witnesses ?? []),
-            witnessInProgress,
-        ]);
+        setFormData('witnesses', [...(formData.witnesses ?? []), witnessInProgress]);
         setWitnessInProgress(newWitness());
         setShowButtons?.((prev) => !prev);
         setWitnessFormVisible((prev) => !prev);
@@ -39,18 +36,14 @@ export default function WitnessStage({
         setFormData(
             'witnesses',
             formData.witnesses
-                ? formData.witnesses.filter(
-                      (_, personIndex) => personIndex != index
-                  )
+                ? formData.witnesses.filter((_, personIndex) => personIndex != index)
                 : []
         );
     };
 
     return (
         <div className="min-w-0 flex-1 text-sm/6 space-y-4">
-            <label className="flex justify-center font-bold text-lg text-gray-900">
-                Witnesses
-            </label>
+            <label className="flex justify-center font-bold text-lg text-gray-900">Witnesses</label>
 
             {witnessFormVisible && (
                 <>
@@ -60,7 +53,7 @@ export default function WitnessStage({
                                 Witness Name
                             </label>
                             <div className="mt-2">
-                                <input
+                                <TextInput
                                     value={witnessInProgress.name}
                                     onChange={(e) => {
                                         setWitnessInProgress((prev) => ({
@@ -68,12 +61,9 @@ export default function WitnessStage({
                                             name: e.target.value,
                                         }));
                                     }}
-                                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                                 />
                                 {validationError && (
-                                    <span className="text-red-600">
-                                        Name is Required
-                                    </span>
+                                    <span className="text-red-600">Name is Required</span>
                                 )}
                             </div>
                         </div>
@@ -82,7 +72,7 @@ export default function WitnessStage({
                                 Witness Email
                             </label>
                             <div className="mt-2">
-                                <input
+                                <TextInput
                                     type="email"
                                     value={witnessInProgress.email}
                                     onChange={(e) => {
@@ -92,7 +82,6 @@ export default function WitnessStage({
                                         }));
                                     }}
                                     placeholder="you@example.com"
-                                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                                 />
 
                                 {witnessInProgress.email.length > 0 &&
@@ -111,7 +100,7 @@ export default function WitnessStage({
                             </div>
 
                             <div className="mt-1">
-                                <input
+                                <TextInput
                                     required
                                     type="tel"
                                     placeholder="123-456-7890"
@@ -119,12 +108,9 @@ export default function WitnessStage({
                                     onChange={(e) =>
                                         setWitnessInProgress((prev) => ({
                                             ...prev,
-                                            phone: validatePhoneInput(
-                                                e.target.value
-                                            ),
+                                            phone: validatePhoneInput(e.target.value),
                                         }))
                                     }
-                                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                                 />
                                 {witnessInProgress.phone.length > 0 &&
                                     witnessInProgress.phone.length < 12 && (
@@ -136,28 +122,26 @@ export default function WitnessStage({
                         </div>
                     </div>
                     <div className="flex justify-between mx-5">
-                        <button
+                        <DangerButton
                             type="button"
                             onClick={() => {
                                 setWitnessFormVisible((prev) => !prev);
                                 setShowButtons?.((prev) => !prev);
                             }}
-                            className="mr-16 pr-3 items-center gap-x-2 rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                            className="mr-16 pr-3 items-center gap-x-2 rounded-md  px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 "
                         >
                             Cancel
-                        </button>
-                        <button
+                        </DangerButton>
+                        <PrimaryButton
                             type="button"
                             onClick={addPerson}
-                            className="items-center gap-x-2 rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                            className="items-center gap-x-2 rounded-md px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 "
                         >
                             Add Witness
-                        </button>
+                        </PrimaryButton>
                     </div>
                     {validationError && (
-                        <p className="mt-2 text-sm text-red-600">
-                            *More Information Required
-                        </p>
+                        <p className="mt-2 text-sm text-red-600">*More Information Required</p>
                     )}
                 </>
             )}
@@ -168,17 +152,17 @@ export default function WitnessStage({
                         witnesses={formData.witnesses ?? []}
                     />
                     <div className="flex justify-center">
-                        <button
+                        <PrimaryButton
                             type="button"
                             onClick={() => {
                                 setWitnessFormVisible((prev) => !prev);
                                 setShowButtons?.((prev) => !prev);
                             }}
-                            className="my-2 flex justify-center items-center gap-x-2 rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                            className="my-2 flex justify-center items-center gap-x-2 rounded-md px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                         >
                             Add a Witness
                             <PlusIcon aria-hidden="true" className="size-3" />
-                        </button>
+                        </PrimaryButton>
                     </div>
                 </>
             )}

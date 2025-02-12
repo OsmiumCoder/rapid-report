@@ -6,6 +6,9 @@
 
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
+        <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
+        <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
+
         <!-- Fonts -->
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
 

@@ -33,11 +33,7 @@ export default function Login({
         <GuestLayout>
             <Head title="Log in" />
 
-            {status && (
-                <div className="mb-4 text-sm font-medium text-green-600">
-                    {status}
-                </div>
-            )}
+            {status && <div className="mb-4 text-sm font-medium text-green-600">{status}</div>}
 
             <form onSubmit={submit}>
                 <div className="flex justify-center mt-2 font-semibold">
@@ -99,13 +95,9 @@ export default function Login({
                         <Checkbox
                             name="remember"
                             checked={data.remember}
-                            onChange={(e) =>
-                                setData('remember', e.target.checked)
-                            }
+                            onChange={(e) => setData('remember', e.target.checked)}
                         />
-                        <span className="ms-2 text-sm text-gray-600">
-                            Remember me
-                        </span>
+                        <span className="ms-2 text-sm text-gray-600">Remember me</span>
                     </label>
                 </div>
 
@@ -113,7 +105,7 @@ export default function Login({
                     {canResetPassword && (
                         <Link
                             href={route('password.request')}
-                            className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                            className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-upei-green-500 focus:ring-offset-2"
                         >
                             Forgot your password?
                         </Link>

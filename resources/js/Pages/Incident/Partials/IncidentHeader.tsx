@@ -1,6 +1,8 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { EllipsisVerticalIcon } from '@heroicons/react/20/solid';
 import { Incident } from '@/types/incident/Incident';
+import ApplicationLogo from '@/Components/ApplicationLogo';
+import PrimaryButton from '@/Components/PrimaryButton';
 
 export default function IncidentHeader({ incident }: { incident: Incident }) {
     return (
@@ -9,11 +11,7 @@ export default function IncidentHeader({ incident }: { incident: Incident }) {
                 <div className="mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="mx-auto flex max-w-2xl items-center justify-between gap-x-8 lg:mx-0 lg:max-w-none">
                         <div className="flex items-center gap-x-6">
-                            <img
-                                alt=""
-                                src="https://tailwindui.com/plus/img/logos/48x48/tuple.svg"
-                                className="size-16 flex-none rounded-full ring-1 ring-gray-900/10"
-                            />
+                            <ApplicationLogo className="size-[6rem] flex-none rounded-full ring-gray-900/10" />
                             <h1>
                                 <div className="text-sm/6 text-gray-500">
                                     Incident <span className="text-gray-700">{incident.id}</span>
@@ -36,12 +34,7 @@ export default function IncidentHeader({ incident }: { incident: Incident }) {
                             >
                                 Edit
                             </a>
-                            <a
-                                href="#"
-                                className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                            >
-                                Send
-                            </a>
+                            <PrimaryButton>Send</PrimaryButton>
 
                             <Menu as="div" className="relative sm:hidden">
                                 <MenuButton className="-m-3 block p-3">
