@@ -14,7 +14,7 @@ import {
 import WitnessStage from '@/Pages/Incident/Stages/WitnessStage';
 import SupervisorStage from '@/Pages/Incident/Stages/SupervisorStage';
 import dateFormat from '@/Filters/dateFormat';
-import { useForm } from '@inertiajs/react';
+import {Head, useForm} from '@inertiajs/react';
 import ReviewStage from "@/Pages/Incident/Stages/ReviewStage";
 import {Incident} from "@/types/incident/Incident";
 
@@ -114,6 +114,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
 
     return (
         <GuestLayout>
+            <Head title="Submit Incident" />
             <form onSubmit={submit}>
                 <>
                     <StageWrapper
@@ -187,7 +188,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
                             <button
                                 type="button"
                                 onClick={prevStep}
-                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                className="bg-upei-red-400 hover:bg-upei-red-600 text-white font-bold py-2 px-4 rounded"
                             >
                                 Back
                             </button>
@@ -198,7 +199,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
                                     type="button"
                                     disabled={processing}
                                     onClick={submit}
-                                    className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                                    className="bg-upei-green-500 hover:bg-upei-green-700 text-white font-bold py-2 px-4 rounded"
                                 >
                                     Submit
                                 </button>
@@ -208,7 +209,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
                             <button
                                 type="button"
                                 onClick={nextStep}
-                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                className="bg-upei-green-500 hover:bg-upei-green-700 text-white font-bold py-2 px-4 rounded"
                             >
                                 Next
                             </button>

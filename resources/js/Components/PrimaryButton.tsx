@@ -3,7 +3,6 @@ import classNames from '@/Filters/classNames';
 
 export default function PrimaryButton({
     className = '',
-    disabled,
     children,
     ...props
 }: ButtonHTMLAttributes<HTMLButtonElement>) {
@@ -11,12 +10,11 @@ export default function PrimaryButton({
         <button
             {...props}
             className={classNames(
-                'rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm,' +
-                    'hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600',
-                disabled ? 'opacity-25' : '',
+                'rounded-md bg-upei-green-500 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm',
+                'hover:bg-upei-green-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-upei-green-600',
+                'disabled:opacity-25 disabled:hover:bg-upei-green-500',
                 className
             )}
-            disabled={disabled}
         >
             {children}
         </button>

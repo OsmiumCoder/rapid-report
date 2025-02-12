@@ -4,7 +4,6 @@ namespace Tests\Unit\Data;
 
 use App\Data\IncidentData;
 use App\Enum\IncidentType;
-use Carbon\Carbon;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
@@ -12,8 +11,6 @@ class IncidentDataTest extends TestCase
 {
     public function test_incident_data_valid_with_correct_values(): void
     {
-        Carbon::setTestNow('2025-01-24');
-
         $incidentDate = now();
 
         $incidentData = IncidentData::validateAndCreate([
@@ -47,8 +44,6 @@ class IncidentDataTest extends TestCase
     public function test_incident_data_throws_invalid_with_incorrect_values(): void
     {
         $this->expectException(ValidationException::class);
-
-        Carbon::setTestNow('2025-01-24');
 
         $incidentDate = now();
 

@@ -1,5 +1,4 @@
 import { User } from '@/types';
-import { uppercaseWordFormat } from '@/Filters/uppercaseWordFormat';
 import { Incident } from '@/types/incident/Incident';
 import {
     Combobox,
@@ -7,25 +6,18 @@ import {
     ComboboxInput,
     ComboboxOption,
     ComboboxOptions,
-    Label,
-    Listbox,
-    ListboxButton,
-    ListboxOption,
-    ListboxOptions,
 } from '@headlessui/react';
 import { ChevronUpDownIcon } from '@heroicons/react/16/solid';
 import { useState } from 'react';
 import LoadingIndicator from '@/Components/LoadingIndicator';
 import SecondaryButton from '@/Components/SecondaryButton';
-import {
-    assignSupervisor,
-    unassignSupervisor,
-} from '@/Pages/Incident/Partials/AdminActionComponents/supervisorActions';
 import ConfirmationModal, {
     ConfirmationModalProps,
     useConfirmationModalProps,
 } from '@/Components/ConfirmationModal';
 import { CheckIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid';
+import { assignSupervisor, unassignSupervisor } from '@/Helpers/Incident/statusUpdates';
+import { router } from '@inertiajs/react';
 
 export default function SupervisorUpdate({
     incident,
@@ -73,14 +65,20 @@ export default function SupervisorUpdate({
                             ...prev,
                             title: 'Assign Supervisor',
                             text: `Are you sure you want to assign ${supervisor?.name} to this incident?\n${supervisor?.name} will be notified.`,
-                            action: () => assignSupervisor(parseInt(id), incident, setIsLoading),
+                            action: () =>
+                                assignSupervisor(parseInt(id), incident, setIsLoading, () =>
+                                    router.reload({ only: ['incident'] })
+                                ),
                             show: true,
                         }));
                     }}
                 >
                     <div className="relative">
                         <ComboboxInput
-                            className="block w-full rounded-md bg-white py-1.5 pl-3 pr-12 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                            className="block w-full rounded-md bg-white py-1.5 pl-3 pr-12 text-base text-gray-900 outline outline-1 -outline-offset-1
+                                        outline-gray-300 placeholder:text-gray-400
+                                       focus:outline-none focus:ring-0 focus:shadow-none focus-visible:ring-0 focus-visible:ring-offset-0
+                                       focus:border-upei-green-600 focus:ring-upei-green-600 sm:text-sm/6"
                             onChange={(event) => setQuery(event.target.value)}
                             onClick={() => setDefaultText('')}
                             onBlur={() => {
@@ -102,19 +100,19 @@ export default function SupervisorUpdate({
                                     <ComboboxOption
                                         key={supervisor.id}
                                         value={supervisor.id}
-                                        className="group relative cursor-default select-none py-2 pl-3 pr-9 text-gray-900 data-[focus]:bg-indigo-600 data-[focus]:text-white data-[focus]:outline-none"
+                                        className="group relative cursor-default select-none py-2 pl-3 pr-9 text-gray-900 data-[focus]:bg-upei-green-500 data-[focus]:text-white data-[focus]:outline-none"
                                     >
                                         <div className="">
                                             <div className="group-data-[selected]:font-semibold">
                                                 {supervisor.name}
                                             </div>
-                                            <div className="text-gray-500 group-data-[focus]:text-indigo-200">
+                                            <div className="text-gray-500 group-data-[focus]:text-white">
                                                 {supervisor.email}
                                             </div>
                                         </div>
 
                                         {supervisor.id === incident.supervisor_id && (
-                                            <span className="absolute flex inset-y-0 right-0 items-center pr-4 text-indigo-600 group-data-[focus]:text-white">
+                                            <span className="absolute flex inset-y-0 right-0 items-center pr-4 text-upei-green-500 group-data-[focus]:text-white">
                                                 <CheckIcon className="size-5" aria-hidden="true" />
                                             </span>
                                         )}
@@ -133,7 +131,10 @@ export default function SupervisorUpdate({
                                 ...prev,
                                 title: 'Unassign Supervisor',
                                 text: `Are you sure you want to unassign ${incident?.supervisor?.name} from this incident?`,
-                                action: () => unassignSupervisor(incident, setIsLoading),
+                                action: () =>
+                                    unassignSupervisor(incident, setIsLoading, () =>
+                                        router.reload({ only: ['incident'] })
+                                    ),
                                 show: true,
                             }))
                         }
@@ -144,13 +145,7 @@ export default function SupervisorUpdate({
                     <></>
                 )}
             </div>
-            <ConfirmationModal
-                title={modalProps.title}
-                text={modalProps.text}
-                action={modalProps.action}
-                show={modalProps.show}
-                setShow={modalProps.setShow}
-            />
+            <ConfirmationModal modalProps={modalProps} />
         </>
     );
 }

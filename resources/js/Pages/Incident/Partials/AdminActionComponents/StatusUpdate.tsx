@@ -1,76 +1,39 @@
 import { Incident } from '@/types/incident/Incident';
 import { IncidentStatus } from '@/Enums/IncidentStatus';
 import PrimaryButton from '@/Components/PrimaryButton';
-import { router } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import { useState } from 'react';
 import LoadingIndicator from '@/Components/LoadingIndicator';
-import { assignSupervisor } from '@/Pages/Incident/Partials/AdminActionComponents/supervisorActions';
-import ConfirmationModal, {
-    useConfirmationModalProps,
-} from '@/Components/ConfirmationModal';
+import ConfirmationModal, { useConfirmationModalProps } from '@/Components/ConfirmationModal';
+import DangerButton from '@/Components/DangerButton';
+import {
+    closeIncident,
+    reopenIncident,
+    returnInvestigation,
+} from '@/Helpers/Incident/statusUpdates';
+import dateTimeFormat from '@/Filters/dateTimeFormat';
 
 export default function StatusUpdate({ incident }: { incident: Incident }) {
     const [isLoading, setIsLoading] = useState(false);
     const [modalProps, setModalProps] = useConfirmationModalProps();
-
-    const closeIncident = () => {
-        setIsLoading(true);
-        router.put(
-            route('incidents.close', { incident: incident.id }),
-            undefined,
-            {
-                onSuccess: (_) => {
-                    router.reload({ only: ['incident'] });
-                    setIsLoading(false);
-                },
-                preserveScroll: true,
-            }
-        );
-    };
-
-    const reopenIncident = () => {
-        setIsLoading(true);
-        router.put(
-            route('incidents.reopen', { incident: incident.id }),
-            undefined,
-            {
-                onSuccess: (_) => {
-                    router.reload({ only: ['incident'] });
-                    setIsLoading(false);
-                },
-                preserveScroll: true,
-            }
-        );
-    };
-
     return (
         <>
-            <div className="mt-6 w-full flex justify-evenly border-t border-gray-900/5 p-6">
+            <div className="flex flex-col gap-y-6 w-full mt-6 border-t border-gray-900/5 p-6">
                 {isLoading ? (
                     <LoadingIndicator />
                 ) : (
                     <>
-                        {incident.status !== IncidentStatus.CLOSED && (
-                            <PrimaryButton
-                                onClick={() =>
-                                    setModalProps({
-                                        title: 'Close Incident',
-                                        text: 'Are you sure you want to close this incident?',
-                                        action: () => closeIncident(),
-                                        show: true,
-                                    })
-                                }
-                            >
-                                Close Incident
-                            </PrimaryButton>
-                        )}
                         {incident.status === IncidentStatus.CLOSED && (
                             <PrimaryButton
+                                className="col-span-2"
                                 onClick={() =>
                                     setModalProps({
                                         title: 'Reopen Incident',
                                         text: 'Are you sure you want to reopen this incident?',
-                                        action: () => reopenIncident(),
+                                        action: () =>
+                                            reopenIncident(incident, setIsLoading, () =>
+                                                router.reload({ only: ['incident'] })
+                                            ),
                                         show: true,
                                     })
                                 }
@@ -80,35 +43,65 @@ export default function StatusUpdate({ incident }: { incident: Incident }) {
                         )}
 
                         {incident.status === IncidentStatus.IN_REVIEW && (
-                            <PrimaryButton
+                            <>
+                                <div className="font-semibold">
+                                    Investigations
+                                    {incident.investigations.map((investigation, index) => (
+                                        <div className="font-normal">
+                                            <Link
+                                                className="text-sm cursor-pointer text-blue-500 hover:text-blue-400"
+                                                href={route('incidents.investigations.show', {
+                                                    incident: incident.id,
+                                                    investigation: investigation.id,
+                                                })}
+                                            >
+                                                {investigation.supervisor.name}:{' '}
+                                                {dateTimeFormat(investigation.created_at)}
+                                            </Link>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <PrimaryButton
+                                    onClick={() =>
+                                        setModalProps({
+                                            title: 'Request Re-Investigation',
+                                            text: `Are you sure you want to request ${incident.supervisor?.name} to further investigate this incident? They will be notified.`,
+                                            action: () =>
+                                                incident.supervisor_id &&
+                                                returnInvestigation(incident, setIsLoading, () =>
+                                                    router.reload({ only: ['incident'] })
+                                                ),
+                                            show: true,
+                                        })
+                                    }
+                                >
+                                    Request Re-Investigation
+                                </PrimaryButton>
+                            </>
+                        )}
+                        {incident.status !== IncidentStatus.CLOSED && (
+                            <DangerButton
+                                className="col-span-2"
                                 onClick={() =>
                                     setModalProps({
-                                        title: 'Request Re-Investigation',
-                                        text: `Are you sure you want to request ${incident.supervisor?.name} to further investigate this incident? They will be reassigned and notified.`,
+                                        title: 'Close Incident',
+                                        text: 'Are you sure you want to close this incident?',
                                         action: () =>
-                                            incident.supervisor_id &&
-                                            assignSupervisor(
-                                                incident.supervisor_id,
-                                                incident,
-                                                setIsLoading
+                                            closeIncident(incident, setIsLoading, () =>
+                                                router.reload({ only: ['incident'] })
                                             ),
                                         show: true,
                                     })
                                 }
                             >
-                                Request Re-Investigation
-                            </PrimaryButton>
+                                Close Incident
+                            </DangerButton>
                         )}
                     </>
                 )}
             </div>
-            <ConfirmationModal
-                title={modalProps.title}
-                text={modalProps.text}
-                action={modalProps.action}
-                show={modalProps.show}
-                setShow={modalProps.setShow}
-            />
+            <ConfirmationModal modalProps={modalProps} />
         </>
     );
 }

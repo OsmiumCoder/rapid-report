@@ -12,26 +12,18 @@ interface AddCommentFormProps {
                 content: string;
             }
         ) => void) &
-        (<K extends keyof { content: string }>(
-            key: K,
-            value: { content: string }[K]
-        ) => void);
+        (<K extends keyof { content: string }>(key: K, value: { content: string }[K]) => void);
     processing: boolean;
     data: { content: string };
 }
 
-export default function AddCommentForm({
-    submit,
-    setData,
-    processing,
-    data,
-}: AddCommentFormProps) {
+export default function AddCommentForm({ submit, setData, processing, data }: AddCommentFormProps) {
     return (
         <div className="mt-6 flex gap-x-3">
             <ChatBubbleBottomCenterTextIcon className="text-blue-600 relative flex size-6 flex-none items-center justify-center bg-white" />
 
             <form onSubmit={submit} className="relative flex-auto">
-                <div className="overflow-hidden rounded-lg pb-12 outline outline-1 -outline-offset-1 outline-gray-300 focus-within:outline focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">
+                <div className="overflow-hidden rounded-lg pb-12 outline outline-1 -outline-offset-1 outline-gray-300 focus-within:outline focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-blue-600">
                     <label className="sr-only">Add your comment</label>
                     <textarea
                         value={data.content}
@@ -49,10 +41,7 @@ export default function AddCommentForm({
                                 type="button"
                                 className="-m-2.5 flex size-10 items-center justify-center rounded-full text-gray-400 hover:text-gray-500"
                             >
-                                <PaperClipIcon
-                                    aria-hidden="true"
-                                    className="size-5"
-                                />
+                                <PaperClipIcon aria-hidden="true" className="size-5" />
                                 <span className="sr-only">Attach a file</span>
                             </button>
                         </div>

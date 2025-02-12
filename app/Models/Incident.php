@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Scout\Searchable;
 use Spatie\ModelStates\HasStates;
 
 class Incident extends Model
@@ -16,6 +17,7 @@ class Incident extends Model
     use HasStates;
     use HasUuids;
     use SoftDeletes;
+    use Searchable;
 
     protected function casts(): array
     {
@@ -30,14 +32,39 @@ class Incident extends Model
         ];
     }
 
+    public function toSearchableArray()
+    {
+        $array = $this->toArray();
+
+        // Convert all boolean fields to integers
+        foreach ($array as $key => $value) {
+            if (is_bool($value)) {
+                $array[$key] = (int) $value;
+            }
+        }
+
+        return array_merge($array, [
+            'id' => (string) $this->id,
+            'upei_id' => (string) $this->upei_id,
+            'supervisor' => $this->supervisor ? $this->supervisor->name : null,
+            'supervisor_id' => (int) $this->supervisor_id,
+            'created_at' => $this->created_at->timestamp,
+        ]);
+    }
+
     public function supervisor()
     {
-        return $this->belongsTo(User::class, 'supervisor_id');
+        return $this->hasOne(User::class, 'id', 'supervisor_id');
     }
 
     public function comments()
     {
         return $this->morphMany(Comment::class, 'commentable');
+    }
+
+    public function investigations()
+    {
+        return $this->hasMany(Investigation::class);
     }
 
     public function scopeFilter($query, ?array $filters)
@@ -46,15 +73,17 @@ class Incident extends Model
             return;
         }
 
-        $query->where(function ($innerQuery) use ($filters) {
-            for ($i = 0; $i < count($filters); $i++) {
-                if ($i == 0 || $filters[$i]['column'] == 'descriptor') {
-                    $innerQuery->where($filters[$i]['column'], $filters[$i]['comparator'], $filters[$i]['value']);
-                } else {
-                    $innerQuery->where($filters[$i]['column'], $filters[$i]['comparator'], $filters[$i]['value']);
+        foreach ($filters as $filter) {
+            $query->where(function ($innerQuery) use ($filter) {
+                for ($i = 0; $i < count($filter['values']); $i++) {
+                    if ($i == 0 || $filter['column'] == 'created_at') {
+                        $innerQuery->where($filter['column'], $filter['values'][$i]['comparator'], $filter['values'][$i]['value']);
+                    } else {
+                        $innerQuery->orWhere($filter['column'], $filter['values'][$i]['comparator'], $filter['values'][$i]['value']);
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     public function scopeSort($query, $sortBy, $sortDirection): void

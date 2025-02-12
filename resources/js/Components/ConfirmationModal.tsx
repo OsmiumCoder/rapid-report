@@ -2,12 +2,7 @@ import Modal from '@/Components/Modal';
 import { Dispatch, PropsWithChildren, SetStateAction, useState } from 'react';
 import PrimaryButton from '@/Components/PrimaryButton';
 import DangerButton from '@/Components/DangerButton';
-import {
-    Dialog,
-    DialogBackdrop,
-    DialogPanel,
-    DialogTitle,
-} from '@headlessui/react';
+import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
 import { ExclamationTriangleIcon } from '@heroicons/react/16/solid';
 import SecondaryButton from '@/Components/SecondaryButton';
 
@@ -26,9 +21,7 @@ export const useConfirmationModalProps = (
     (
         props:
             | Partial<ConfirmationModalProps>
-            | ((
-                  prev: ConfirmationModalProps
-              ) => Partial<ConfirmationModalProps>)
+            | ((prev: ConfirmationModalProps) => Partial<ConfirmationModalProps>)
     ) => void,
 ] => {
     const [props, setProps] = useState<ConfirmationModalProps>(
@@ -55,9 +48,7 @@ export const useConfirmationModalProps = (
     );
 
     const setModalProps = (
-        props:
-            | Partial<ConfirmationModalProps>
-            | ((prev: ConfirmationModalProps) => void)
+        props: Partial<ConfirmationModalProps> | ((prev: ConfirmationModalProps) => void)
     ) => {
         setProps((prev) => ({
             ...prev,
@@ -70,13 +61,9 @@ export const useConfirmationModalProps = (
     return [props, setModalProps];
 };
 
-export default function ConfirmationModal({
-    title,
-    text,
-    show,
-    setShow,
-    action,
-}: ConfirmationModalProps) {
+export default function ConfirmationModal({ modalProps }: { modalProps: ConfirmationModalProps }) {
+    const { title, text, show, setShow, action } = modalProps;
+
     const handleYes = () => {
         action();
         setShow(false);
@@ -112,9 +99,7 @@ export default function ConfirmationModal({
                                     {title}
                                 </DialogTitle>
                                 <div className="mt-2">
-                                    <p className="text-sm text-gray-500">
-                                        {text}
-                                    </p>
+                                    <p className="text-sm text-gray-500">{text}</p>
                                 </div>
                             </div>
                         </div>
@@ -122,9 +107,7 @@ export default function ConfirmationModal({
                             <DangerButton data-autofocus onClick={handleNo}>
                                 No
                             </DangerButton>
-                            <PrimaryButton onClick={handleYes}>
-                                Yes
-                            </PrimaryButton>
+                            <PrimaryButton onClick={handleYes}>Yes</PrimaryButton>
                         </div>
                     </DialogPanel>
                 </div>

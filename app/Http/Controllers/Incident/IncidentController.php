@@ -33,6 +33,9 @@ class IncidentController extends Controller
         return Inertia::render('Incident/Index', [
             'incidents' => $incidents,
             'indexType' => 'all',
+            'currentFilters' => $filters,
+            'currentSortBy' => $sortBy,
+            'currentSortDirection' => $sortDirection,
         ]);
     }
 
@@ -70,10 +73,20 @@ class IncidentController extends Controller
     {
         $this->authorize('view', $incident);
 
-        if (auth()->user()->can('performAdminActions', Incident::class)) {
+        $user = auth()->user();
+
+        if ($user->can('perform admin actions')) {
             $supervisors = User::role('supervisor')->get();
         } else {
             $supervisors = [];
+        }
+
+        if ($user->can('view any investigation')) {
+            $incident->load('investigations.supervisor');
+        } else {
+            $incident->load(['investigations' => function ($query) use ($user, $incident) {
+                $query->where('supervisor_id', $user->id)->with('supervisor');
+            }]);
         }
 
         return Inertia::render('Incident/Show', [

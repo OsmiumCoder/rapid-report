@@ -30,6 +30,9 @@ class OwnedIncidentsController extends Controller
         return Inertia::render('Incident/Index', [
             'incidents' => $ownedIncidents,
             'indexType' => 'owned',
+            'currentFilters' => $filters,
+            'currentSortBy' => $sortBy,
+            'currentSortDirection' => $sortDirection,
         ]);
     }
 }

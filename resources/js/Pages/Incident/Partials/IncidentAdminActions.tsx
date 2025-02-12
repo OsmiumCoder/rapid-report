@@ -8,10 +8,7 @@ interface AdminActionsProps {
     incident: Incident;
     supervisors: User[];
 }
-export default function AdminActions({
-    incident,
-    supervisors,
-}: AdminActionsProps) {
+export default function IncidentAdminActions({ incident, supervisors }: AdminActionsProps) {
     return (
         <>
             <div className="lg:col-start-3 lg:row-end-1 bg-white">
@@ -24,10 +21,7 @@ export default function AdminActions({
                             incident.status === IncidentStatus.ASSIGNED ||
                             incident.status === IncidentStatus.REOPENED ||
                             incident.status === IncidentStatus.IN_REVIEW) && (
-                            <SupervisorUpdate
-                                incident={incident}
-                                supervisors={supervisors}
-                            />
+                            <SupervisorUpdate incident={incident} supervisors={supervisors} />
                         )}
                         <StatusUpdate incident={incident} />
                     </div>

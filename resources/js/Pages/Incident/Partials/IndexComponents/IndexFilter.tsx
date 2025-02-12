@@ -6,7 +6,8 @@ import { uppercaseWordFormat } from '@/Filters/uppercaseWordFormat';
 import classNames from '@/Filters/classNames';
 import { Filter, FilterValue } from '@/Pages/Incident/Index';
 import dateFormat from '@/Filters/dateFormat';
-import DatePicker from "@/Components/DatePicker";
+import LabeledCheckbox from '@/Components/LabeledCheckbox';
+import DateInput from '@/Components/DateInput';
 
 interface IndexFilterProps {
     filters: Record<FilterValue, Filter[]>;
@@ -115,7 +116,7 @@ export default function IndexFilter({ filters, setFilters, resetFilters }: Index
                                                         className="ml-2 grid space-y-6 sm:space-y-4"
                                                     >
                                                         <label>{filter.label}</label>
-                                                        <DatePicker
+                                                        <DateInput
                                                             value={filter.value}
                                                             min={
                                                                 filter.label === 'To'
@@ -126,6 +127,11 @@ export default function IndexFilter({ filters, setFilters, resetFilters }: Index
                                                                     : undefined
                                                             }
                                                             onChange={(e) => {
+                                                                const selectedDate = new Date(
+                                                                    e.target.value
+                                                                );
+                                                                selectedDate.setHours(23, 59, 0, 0);
+
                                                                 setFilters((prev) => ({
                                                                     ...prev,
                                                                     created_at: prev.created_at.map(
@@ -162,51 +168,18 @@ export default function IndexFilter({ filters, setFilters, resetFilters }: Index
                                                                 excludeDescriptor(value) &&
                                                                 !commonDescriptors.includes(value)
                                                             ) && (
-                                                                <div
+                                                                <LabeledCheckbox
                                                                     key={innerIndex + value}
-                                                                    className="flex gap-3 items-center"
-                                                                >
-                                                                    <div className="flex h-5 shrink-0 items-center">
-                                                                        <div className="group grid size-4 grid-cols-1 ml-2">
-                                                                            <input
-                                                                                onChange={(e) =>
-                                                                                    handleSelectFilter(
-                                                                                        filterName as FilterValue,
-                                                                                        innerIndex,
-                                                                                        e.target
-                                                                                            .checked
-                                                                                    )
-                                                                                }
-                                                                                checked={checked}
-                                                                                type="checkbox"
-                                                                                className="col-start-1 row-start-1 appearance-none rounded border border-gray-300 bg-white checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto"
-                                                                            />
-                                                                            <svg
-                                                                                fill="none"
-                                                                                viewBox="0 0 14 14"
-                                                                                className="pointer-events-none col-start-1 row-start-1 size-3.5 self-center justify-self-center stroke-white group-has-[:disabled]:stroke-gray-950/25"
-                                                                            >
-                                                                                <path
-                                                                                    d="M3 8L6 11L11 3.5"
-                                                                                    strokeWidth={2}
-                                                                                    strokeLinecap="round"
-                                                                                    strokeLinejoin="round"
-                                                                                    className="opacity-0 group-has-[:checked]:opacity-100"
-                                                                                />
-                                                                                <path
-                                                                                    d="M3 7H11"
-                                                                                    strokeWidth={2}
-                                                                                    strokeLinecap="round"
-                                                                                    strokeLinejoin="round"
-                                                                                    className="opacity-0 group-has-[:indeterminate]:opacity-100"
-                                                                                />
-                                                                            </svg>
-                                                                        </div>
-                                                                    </div>
-                                                                    <label className="text-base text-gray-600 sm:text-sm">
-                                                                        {label}
-                                                                    </label>
-                                                                </div>
+                                                                    checked={checked}
+                                                                    label={label}
+                                                                    onChange={(e) =>
+                                                                        handleSelectFilter(
+                                                                            filterName as FilterValue,
+                                                                            innerIndex,
+                                                                            e.target.checked
+                                                                        )
+                                                                    }
+                                                                />
                                                             )}
                                                         </>
                                                     )

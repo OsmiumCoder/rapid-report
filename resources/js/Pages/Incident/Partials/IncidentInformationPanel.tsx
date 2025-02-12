@@ -8,31 +8,15 @@ import WitnessInformation from '@/Pages/Incident/Partials/InformationComponents/
 import IncidentInformation from '@/Pages/Incident/Partials/InformationComponents/IncidentInformation';
 import Badge, { BadgeColor } from '@/Components/Badge';
 import { IncidentStatus } from '@/Enums/IncidentStatus';
+import { incidentBadgeColor } from '@/Filters/incidentBadgeColor';
 
-export default function IncidentInformationPanel({
-    incident,
-}: {
-    incident: Incident;
-}) {
-    const getBadgeColor: () => BadgeColor = () =>
-        incident.status === IncidentStatus.OPENED
-            ? 'blue'
-            : incident.status === IncidentStatus.ASSIGNED
-              ? 'yellow'
-              : incident.status === IncidentStatus.IN_REVIEW
-                ? 'purple'
-                : incident.status === IncidentStatus.CLOSED
-                  ? 'green'
-                  : 'red';
-
+export default function IncidentInformationPanel({ incident }: { incident: Incident }) {
     return (
         <div className="bg-white -mx-4 px-4 py-8 shadow-sm ring-1 ring-gray-900/5 sm:mx-0 sm:rounded-lg sm:px-8 sm:pb-14 lg:col-span-2 lg:row-span-2 lg:row-end-2 xl:px-16 xl:pb-20 xl:pt-16">
             <div className="flex items-center justify-between">
-                <h2 className="font-semibold text-gray-900 text-2xl">
-                    Incident
-                </h2>
+                <h2 className="font-semibold text-gray-900 text-2xl">Incident</h2>
                 <Badge
-                    color={getBadgeColor()}
+                    color={incidentBadgeColor(incident)}
                     text={uppercaseWordFormat(incident.status)}
                 />
             </div>

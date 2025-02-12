@@ -9,6 +9,34 @@ use Tests\TestCase;
 
 class IncidentPolicyTest extends TestCase
 {
+    public function test_admin_can_search_for_all_incidents()
+    {
+        $admin = User::factory()->create()->assignRole('admin');
+
+        $queryBuilder = Incident::search('searchValue');
+
+        $result = $this->getPolicy()->searchIncidents($admin, $queryBuilder);
+        $this->assertTrue($result);
+    }
+
+    public function test_supervisor_can_search_for_assigned_incidents()
+    {
+        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $queryBuilder = Incident::search('searchValue');
+
+        $result = $this->getPolicy()->searchIncidents($supervisor, $queryBuilder);
+        $this->assertTrue($result);
+    }
+
+    public function test_user_can_not_search_for_incidents()
+    {
+        $user = User::factory()->create()->assignRole('user');
+        $queryBuilder = Incident::search('searchValue');
+
+        $result = $this->getPolicy()->searchIncidents($user, $queryBuilder);
+        $this->assertFalse($result);
+    }
+
     public function test_supervisor_can_add_comment_on_incident_they_own_but_arent_assigned()
     {
         $user = User::factory()->create([
