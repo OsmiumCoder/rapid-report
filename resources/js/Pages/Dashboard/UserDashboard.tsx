@@ -142,19 +142,19 @@ export default function UserDashboard({
                                                 <tr>
                                                     <th
                                                         scope="col"
-                                                        className="px-4 py-3.5 text-left text-sm font-semibold text-gray-900 "
+                                                        className="px-4 py-3.5 text-left text-sm font-semibold text-gray-900 w-3/5"
                                                     >
                                                         Description
                                                     </th>
                                                     <th
                                                         scope="col"
-                                                        className="px-4 py-3.5 text-left text-sm font-semibold text-gray-900 "
+                                                        className="px-4 py-3.5 text-center text-sm font-semibold text-gray-900 "
                                                     >
                                                         Status
                                                     </th>
                                                     <th
                                                         scope="col"
-                                                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                                                        className="px-3 py-3.5 text-center text-sm font-semibold text-gray-900"
                                                     >
                                                         Reported
                                                     </th>
@@ -177,19 +177,17 @@ export default function UserDashboard({
                                                         key={incident.id}
                                                     >
                                                         <td className="px-3 py-4 text-sm w-[70rem] text-gray-500 ">
-                                                            <div className="w-full line-clamp-3">
+                                                            <div className="line-clamp-3">
                                                                 {incident.description}
                                                             </div>
                                                         </td>
-                                                        <td className="px-3 py-4 text-sm">
+                                                        <td className="px-3 py-4 text-sm text-center">
                                                             <Badge
                                                                 color={incidentBadgeColor(incident)}
-                                                                text={uppercaseWordFormat(
-                                                                    'In Review'
-                                                                )}
+                                                                text={uppercaseWordFormat(incident.status)}
                                                             />
                                                         </td>
-                                                        <td className="px-3 py-4 text-sm text-gray-500">
+                                                        <td className="px-3 py-4 text-sm text-gray-500 text-center">
                                                             {dateFormat(incident.created_at)}
                                                         </td>
                                                         <td className="py-4 pl-3 pr-4 text-right text-sm font-medium md:pr-6">

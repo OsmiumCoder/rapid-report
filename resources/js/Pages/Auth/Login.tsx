@@ -6,6 +6,7 @@ import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
+import {PencilIcon} from "@heroicons/react/24/outline";
 
 export default function Login({
     status,
@@ -35,6 +36,27 @@ export default function Login({
             {status && <div className="mb-4 text-sm font-medium text-green-600">{status}</div>}
 
             <form onSubmit={submit}>
+                <div className="flex justify-center mt-2 font-semibold">
+                    Submit an Incident Without Signing In
+                </div>
+                <div className="flex justify-center mt-4">
+                    <Link
+                        href={route('incidents.create')}
+                        as="button"
+                        className="flex items-center rounded-md bg-upei-green-500 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-upei-green-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-upei-green-600"
+                    >
+                        <PencilIcon className="h-4 w-4 mr-2" />
+                        Submit Incident
+                    </Link>
+                </div>
+                <div className="relative my-6">
+                    <div aria-hidden="true" className="absolute inset-0 flex items-center">
+                        <div className="w-full border-t border-gray-300" />
+                    </div>
+                    <div className="relative flex justify-center">
+                        <span className="bg-white px-2 text-sm text-gray-500">Or</span>
+                    </div>
+                </div>
                 <div>
                     <InputLabel htmlFor="email" value="Email" />
 
