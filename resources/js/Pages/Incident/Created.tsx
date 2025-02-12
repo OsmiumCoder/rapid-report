@@ -24,7 +24,7 @@ export default function Created({
                         <Link
                             href={route('login')}
                             as="button"
-                            className="rounded-md bg-upei-green-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-upei-green-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-upei-green-600"
+                            className="rounded-md bg-upei-red-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-upei-red-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-upei-red-600"
                         >
                             Return Home
                         </Link>
@@ -37,7 +37,7 @@ export default function Created({
                                     incident: incident_id,
                                 })}
                                 as="button"
-                                className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                className="rounded-md bg-upei-green-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-upei-green-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-upei-green-600"
                             >
                                 View Incident
                             </Link>
