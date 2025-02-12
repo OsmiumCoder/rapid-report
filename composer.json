@@ -17,7 +17,8 @@
         "spatie/laravel-event-sourcing": "^7.10",
         "spatie/laravel-model-states": "^2.10",
         "spatie/laravel-permission": "^6.10",
-        "tightenco/ziggy": "^2.0"
+        "tightenco/ziggy": "^2.0",
+        "ext-http": "*"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.14",

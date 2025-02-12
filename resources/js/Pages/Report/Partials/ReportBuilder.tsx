@@ -83,6 +83,14 @@ export default function ReportBuilder({
             }
         }
     }
+    const exportTypes = [
+        {
+            action: route('report.download_file_csv', 'report_'+ dayjs().format('YYYY-MM-DDTHH:mm:ssZ[Z]') ),
+            name:'CSV'
+        },
+    ]
+
+
     const timelineLengths: timeLengthsCollection = {
         day : {
             stringify: 'Day',

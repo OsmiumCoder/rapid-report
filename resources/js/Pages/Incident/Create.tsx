@@ -58,6 +58,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
         if (validStep) {
             post(route('incidents.store'), {
                 onError: (err) => console.error(err),
+
             });
         } else {
             setFailedStep(true);
