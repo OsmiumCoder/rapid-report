@@ -13,6 +13,7 @@ use App\StorableEvents\Incident\IncidentCreated;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class IncidentCreatedTest extends TestCase
@@ -224,6 +225,8 @@ class IncidentCreatedTest extends TestCase
             supervisor_name: null,
         );
 
+        $event->setAggregateRootUuid(Str::uuid()->toString());
+
         Mail::assertNothingSent();
 
         $event->react();
@@ -266,6 +269,8 @@ class IncidentCreatedTest extends TestCase
             supervisor_name: null,
         );
 
+        $event->setAggregateRootUuid(Str::uuid()->toString());
+
         $event->react();
 
         Mail::assertNothingSent();
@@ -304,6 +309,8 @@ class IncidentCreatedTest extends TestCase
             reporters_email: $user->email,
             supervisor_name: null,
         );
+
+        $event->setAggregateRootUuid(Str::uuid()->toString());
 
         Notification::assertNothingSent();
 
