@@ -8,6 +8,7 @@ use App\States\IncidentStatus\Assigned;
 use App\States\IncidentStatus\Closed;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Spatie\Permission\Models\Role;
 
 class DashboardController extends Controller
 {
@@ -74,7 +75,8 @@ class DashboardController extends Controller
         $paginatedUsers = User::paginate()->appends($request->query());
 
         return inertia('Dashboard/UserManagement', [
-            'users' => $paginatedUsers
+            'users' => $paginatedUsers,
+            'roles' => Role::all()
         ]);
     }
 }

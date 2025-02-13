@@ -1,21 +1,21 @@
 import Authenticated from '@/Layouts/AuthenticatedLayout';
-import {Head, Link, router, WhenVisible} from '@inertiajs/react';
+import {Head} from '@inertiajs/react';
 import {PaginatedResponse} from "@/types/PaginatedResponse";
-import {User} from "@/types";
+import {Role, User} from "@/types";
 import Pagination from "@/Components/Pagination";
-import {XMarkIcon} from "@heroicons/react/20/solid";
-import PrimaryButton from "@/Components/PrimaryButton";
-import {PencilIcon} from "@heroicons/react/24/outline";
-import {returnInvestigation} from "@/Helpers/Incident/statusUpdates";
 import {useConfirmationModalProps} from "@/Components/ConfirmationModal";
-import SecondaryButton from "@/Components/SecondaryButton";
 import DangerButton from "@/Components/DangerButton";
+import {descriptors} from "@/Pages/Incident/Stages/IncidentDropDownValues";
+import SelectInput from "@/Components/SelectInput";
+import React from "react";
+import {uppercaseWordFormat} from "@/Filters/uppercaseWordFormat";
 
 interface UserManagementProps {
-    users: PaginatedResponse<User>
+    users: PaginatedResponse<User>,
+    roles: Role[]
 }
 
-export default function UserManagement({ users }: UserManagementProps) {
+export default function UserManagement({ users, roles }: UserManagementProps) {
     const [modalProps, setModalProps] = useConfirmationModalProps();
 
     return (
@@ -83,6 +83,16 @@ export default function UserManagement({ users }: UserManagementProps) {
                                                 </td>
                                                 <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                                                     {user.roles[0].name}
+                                                    <SelectInput
+                                                        value={user.roles[0].name}
+                                                        onChange={(e) => {
+                                                            console.log(e.target.value)
+                                                        }}
+                                                    >
+                                                        {roles.map(({ name }, index) => (
+                                                            <option key={index}>{name}</option>
+                                                        ))}
+                                                    </SelectInput>
                                                 </td>
                                                 <td className="flex justify-end whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                                                     <DangerButton
