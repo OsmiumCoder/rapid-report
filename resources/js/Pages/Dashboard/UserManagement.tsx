@@ -3,12 +3,12 @@ import {Head} from '@inertiajs/react';
 import {PaginatedResponse} from "@/types/PaginatedResponse";
 import {Role, User} from "@/types";
 import Pagination from "@/Components/Pagination";
-import {useConfirmationModalProps} from "@/Components/ConfirmationModal";
+import ConfirmationModal, {useConfirmationModalProps} from "@/Components/ConfirmationModal";
 import DangerButton from "@/Components/DangerButton";
-import {descriptors} from "@/Pages/Incident/Stages/IncidentDropDownValues";
 import SelectInput from "@/Components/SelectInput";
 import React from "react";
 import {uppercaseWordFormat} from "@/Filters/uppercaseWordFormat";
+import PrimaryButton from "@/Components/PrimaryButton";
 
 interface UserManagementProps {
     users: PaginatedResponse<User>,
@@ -21,6 +21,7 @@ export default function UserManagement({ users, roles }: UserManagementProps) {
     return (
         <Authenticated>
             <Head title="User Management" />
+            <ConfirmationModal modalProps={modalProps} />
             <div className="px-4 sm:px-6 lg:px-8">
                 <div className="sm:flex sm:items-center">
                     <div className="sm:flex-auto">
@@ -31,12 +32,11 @@ export default function UserManagement({ users, roles }: UserManagementProps) {
                         </p>
                     </div>
                     <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-                        <button
-                            type="button"
-                            className="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        <PrimaryButton
+                            onClick={() => {}}
                         >
-                            Add user
-                        </button>
+                            Add User
+                        </PrimaryButton>
                     </div>
                 </div>
                 <div className="mt-8 flow-root">
@@ -82,7 +82,6 @@ export default function UserManagement({ users, roles }: UserManagementProps) {
                                                     {user.email}
                                                 </td>
                                                 <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                                    {user.roles[0].name}
                                                     <SelectInput
                                                         value={user.roles[0].name}
                                                         onChange={(e) => {
@@ -90,7 +89,9 @@ export default function UserManagement({ users, roles }: UserManagementProps) {
                                                         }}
                                                     >
                                                         {roles.map(({ name }, index) => (
-                                                            <option key={index}>{name}</option>
+                                                            <option className="hover:bg-upei-green-500" key={index} value={name}>
+                                                                {uppercaseWordFormat(name, '-')}
+                                                            </option>
                                                         ))}
                                                     </SelectInput>
                                                 </td>
@@ -100,7 +101,6 @@ export default function UserManagement({ users, roles }: UserManagementProps) {
                                                             setModalProps({
                                                                 title: 'Delete User',
                                                                 text: `Are you sure you want to delete ${user.name} from the system?`,
-                                                                action: () => "",
                                                                 show: true,
                                                             })
                                                         }
