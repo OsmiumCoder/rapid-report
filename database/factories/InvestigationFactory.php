@@ -65,7 +65,7 @@ class InvestigationFactory extends Factory
                 'Lack of skill',
                 'Stress',
                 'Improper motivation',
-            ], rand(1, 7)),
+            ], rand(1, 5)),
 
             'job_factors' => fake()->randomElements([
                 'Inadequate leadership/supervision',
