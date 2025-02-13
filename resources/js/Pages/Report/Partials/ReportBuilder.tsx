@@ -85,7 +85,7 @@ export default function ReportBuilder({
     }
     const exportTypes = [
         {
-            action: route('report.download_file_csv', 'report_'+ dayjs().format('YYYY-MM-DDTHH:mm:ssZ[Z]') ),
+            action: route('report.downloadFileCSV', 'report_'+ dayjs().format('YYYY-MM-DDTHH:mm:ssZ[Z]') ),
             name:'CSV'
         },
     ]
