@@ -8,8 +8,10 @@ use App\Data\IncidentData;
 use App\Enum\CommentType;
 use App\Enum\IncidentType;
 use App\Exceptions\UserNotSupervisorException;
+use App\Mail\IncidentReceived;
 use App\Models\Incident;
 use App\Models\User;
+use App\Notifications\IncidentSubmitted;
 use App\States\IncidentStatus\Assigned;
 use App\States\IncidentStatus\Closed;
 use App\States\IncidentStatus\InReview;
@@ -23,6 +25,8 @@ use App\StorableEvents\Incident\IncidentReopened;
 use App\StorableEvents\Incident\InvestigationReturned;
 use App\StorableEvents\Incident\SupervisorAssigned;
 use App\StorableEvents\Incident\SupervisorUnassigned;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
@@ -598,5 +602,138 @@ class IncidentAggregateRootTest extends TestCase
         $this->assertEquals($incidentData->supervisor_name, $incident->supervisor_name);
         $this->assertNull($incident->closed_at);
         $this->assertEquals(Opened::class, $incident->status::class);
+    }
+
+    public function test_create_incident_sends_mail_on_reporters_email_set(): void
+    {
+        Mail::fake();
+        Notification::fake();
+
+        $admins = User::factory(3)->create()->each(function (User $user) {
+            $user->assignRole('admin');
+        });
+        $user = User::factory()->create()->assignRole('user');
+
+        $incidentData = IncidentData::from([
+            'anonymous' => false,
+            'on_behalf' => false,
+            'on_behalf_anonymous' => false,
+            'role' => 0,
+            'last_name' => 'last',
+            'first_name' => 'first',
+            'upei_id' => '322',
+            'email' => 'john@doe.com',
+            'phone' => '(902) 333-4444',
+            'work_related' => true,
+            'workers_comp_submitted' => true,
+            'happened_at' => now(),
+            'location' => 'Building A',
+            'room_number' => '123A',
+            'witnesses' => [],
+            'incident_type' => IncidentType::SAFETY,
+            'descriptor' => 'Burn',
+            'description' => 'A fire broke out in the room.',
+            'injury_description' => 'Minor burn',
+            'first_aid_description' => 'Minor burn treated',
+            'reporters_email' => $user->email,
+            'supervisor_name' => 'John Doe',
+        ]);
+
+        $uuid = Str::uuid()->toString();
+
+        Mail::assertNothingSent();
+
+        $aggregate = IncidentAggregateRoot::retrieve($uuid)
+            ->createIncident($incidentData)
+            ->persist();
+
+        Mail::assertSentCount(1);
+        Mail::assertSent(IncidentReceived::class, 1);
+        Mail::assertSent(IncidentReceived::class, $user->email);
+
+        Notification::assertSentTo($admins, IncidentSubmitted::class);
+        Notification::assertNotSentTo($user, IncidentSubmitted::class);
+    }
+
+    public function test_create_incident_sends_no_mail_on_reporters_email_not_set(): void
+    {
+        Mail::fake();
+        Notification::fake();
+
+        $incidentData = IncidentData::from([
+            'anonymous' => false,
+            'on_behalf' => false,
+            'on_behalf_anonymous' => false,
+            'role' => 0,
+            'last_name' => 'last',
+            'first_name' => 'first',
+            'upei_id' => '322',
+            'email' => 'john@doe.com',
+            'phone' => '(902) 333-4444',
+            'work_related' => true,
+            'workers_comp_submitted' => true,
+            'happened_at' => now(),
+            'location' => 'Building A',
+            'room_number' => '123A',
+            'witnesses' => [],
+            'incident_type' => IncidentType::SAFETY,
+            'descriptor' => 'Burn',
+            'description' => 'A fire broke out in the room.',
+            'injury_description' => 'Minor burn',
+            'first_aid_description' => 'Minor burn treated',
+            'reporters_email' => null,
+            'supervisor_name' => 'John Doe',
+        ]);
+
+        $uuid = Str::uuid()->toString();
+
+        $aggregate = IncidentAggregateRoot::retrieve($uuid)
+            ->createIncident($incidentData)
+            ->persist();
+
+        Mail::assertNothingSent();
+    }
+
+    public function test_create_incident_notifies_admin_team(): void
+    {
+        Mail::fake();
+        Notification::fake();
+
+        $admins = User::factory(3)->create()->each(function (User $user) {
+            $user->assignRole('admin');
+        });
+
+        $incidentData = IncidentData::from([
+            'anonymous' => false,
+            'on_behalf' => false,
+            'on_behalf_anonymous' => false,
+            'role' => 0,
+            'last_name' => 'last',
+            'first_name' => 'first',
+            'upei_id' => '322',
+            'email' => 'john@doe.com',
+            'phone' => '(902) 333-4444',
+            'work_related' => true,
+            'workers_comp_submitted' => true,
+            'happened_at' => now(),
+            'location' => 'Building A',
+            'room_number' => '123A',
+            'witnesses' => [],
+            'incident_type' => IncidentType::SAFETY,
+            'descriptor' => 'Burn',
+            'description' => 'A fire broke out in the room.',
+            'injury_description' => 'Minor burn',
+            'first_aid_description' => 'Minor burn treated',
+            'reporters_email' => 'jane@doe.com',
+            'supervisor_name' => 'John Doe',
+        ]);
+
+        $uuid = Str::uuid()->toString();
+
+        $aggregate = IncidentAggregateRoot::retrieve($uuid)
+            ->createIncident($incidentData)
+            ->persist();
+
+        Notification::assertSentTo($admins, IncidentSubmitted::class);
     }
 }

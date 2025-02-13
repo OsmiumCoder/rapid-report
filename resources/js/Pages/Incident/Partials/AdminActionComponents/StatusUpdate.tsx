@@ -42,7 +42,7 @@ export default function StatusUpdate({ incident }: { incident: Incident }) {
                             </PrimaryButton>
                         )}
 
-                        {incident.status === IncidentStatus.IN_REVIEW && (
+                        {incident.investigations.length > 0 && (
                             <>
                                 <div className="font-semibold">
                                     Investigations
@@ -61,24 +61,25 @@ export default function StatusUpdate({ incident }: { incident: Incident }) {
                                         </div>
                                     ))}
                                 </div>
-
-                                <PrimaryButton
-                                    onClick={() =>
-                                        setModalProps({
-                                            title: 'Request Re-Investigation',
-                                            text: `Are you sure you want to request ${incident.supervisor?.name} to further investigate this incident? They will be notified.`,
-                                            action: () =>
-                                                incident.supervisor_id &&
-                                                returnInvestigation(incident, setIsLoading, () =>
-                                                    router.reload({ only: ['incident'] })
-                                                ),
-                                            show: true,
-                                        })
-                                    }
-                                >
-                                    Request Re-Investigation
-                                </PrimaryButton>
                             </>
+                        )}
+                        {incident.status === IncidentStatus.IN_REVIEW && (
+                            <PrimaryButton
+                                onClick={() =>
+                                    setModalProps({
+                                        title: 'Request Re-Investigation',
+                                        text: `Are you sure you want to request ${incident.supervisor?.name} to further investigate this incident? They will be notified.`,
+                                        action: () =>
+                                            incident.supervisor_id &&
+                                            returnInvestigation(incident, setIsLoading, () =>
+                                                router.reload({ only: ['incident'] })
+                                            ),
+                                        show: true,
+                                    })
+                                }
+                            >
+                                Request Re-Investigation
+                            </PrimaryButton>
                         )}
                         {incident.status !== IncidentStatus.CLOSED && (
                             <DangerButton

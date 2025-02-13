@@ -4,10 +4,15 @@ namespace App\StorableEvents\Incident;
 
 use App\Enum\CommentType;
 use App\Enum\IncidentType;
+use App\Mail\IncidentReceived;
 use App\Models\Comment;
 use App\Models\Incident;
+use App\Models\User;
+use App\Notifications\IncidentSubmitted;
 use App\StorableEvents\StoredEvent;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
 
 class IncidentCreated extends StoredEvent
 {
@@ -78,5 +83,15 @@ class IncidentCreated extends StoredEvent
         $comment->commentable()->associate($incident);
 
         $comment->save();
+    }
+
+    public function react()
+    {
+        if ($this->reporters_email) {
+            Mail::to($this->reporters_email)->send(new IncidentReceived);
+        }
+
+        $admins = User::role('admin')->get();
+        Notification::send($admins, new IncidentSubmitted($this->aggregateRootUuid()));
     }
 }

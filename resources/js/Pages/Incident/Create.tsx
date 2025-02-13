@@ -7,24 +7,16 @@ import AffectedPartyStage from '@/Pages/Incident/Stages/AffectedPartyStage';
 import IncidentInformationStage from '@/Pages/Incident/Stages/IncidentInformationStage';
 import VictimInformationStage from '@/Pages/Incident/Stages/VictimInformationStage';
 import IncidentData from '@/types/incident/IncidentData';
-import {
-    descriptors,
-    roles,
-} from '@/Pages/Incident/Stages/IncidentDropDownValues';
+import { descriptors, roles } from '@/Pages/Incident/Stages/IncidentDropDownValues';
 import WitnessStage from '@/Pages/Incident/Stages/WitnessStage';
 import SupervisorStage from '@/Pages/Incident/Stages/SupervisorStage';
 import dateFormat from '@/Filters/dateFormat';
-import {Head, useForm} from '@inertiajs/react';
-import ReviewStage from "@/Pages/Incident/Stages/ReviewStage";
-import {Incident} from "@/types/incident/Incident";
+import { Head, useForm } from '@inertiajs/react';
+import ReviewStage from '@/Pages/Incident/Stages/ReviewStage';
+import { Incident } from '@/types/incident/Incident';
 
 export default function Create({ form }: PageProps<{ form: IncidentData }>) {
-    const {
-        data: formData,
-        setData,
-        post,
-        processing,
-    } = useForm<Partial<IncidentData>>(form);
+    const { data: formData, setData, post, processing } = useForm<Partial<IncidentData>>(form);
 
     const numberOfSteps = 7;
     const [remainingSteps, setRemainingSteps] = useState(numberOfSteps - 1);
@@ -33,8 +25,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
     const [validStep, setValidStep] = useState(true);
     const [failedStep, setFailedStep] = useState(false);
     const [showButtons, setShowButtons] = useState(true);
-    const setFormData = (key: keyof IncidentData, value: any) =>
-        setData(key, value);
+    const setFormData = (key: keyof IncidentData, value: any) => setData(key, value);
     const nextStep = () => {
         if (validStep) {
             setCurrentStepNumber((prev) => prev + 1);
@@ -82,12 +73,8 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
         if (
             !(
                 (!formData.anonymous && !formData.on_behalf) ||
-                (!formData.anonymous &&
-                    formData.on_behalf &&
-                    !formData.on_behalf_anonymous) ||
-                (formData.anonymous &&
-                    formData.on_behalf &&
-                    !formData.on_behalf_anonymous)
+                (!formData.anonymous && formData.on_behalf && !formData.on_behalf_anonymous) ||
+                (formData.anonymous && formData.on_behalf && !formData.on_behalf_anonymous)
             )
         ) {
             setFormData('first_name', '');
@@ -116,10 +103,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
             <Head title="Submit Incident" />
             <form onSubmit={submit}>
                 <>
-                    <StageWrapper
-                        completedSteps={completedSteps}
-                        remainingSteps={remainingSteps}
-                    >
+                    <StageWrapper completedSteps={completedSteps} remainingSteps={remainingSteps}>
                         {currentStepNumber === 0 && (
                             <AnonymousStage
                                 formData={formData}
@@ -176,9 +160,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
                             />
                         )}
                         {currentStepNumber === 6 && (
-                            <ReviewStage
-                                incidentData={formData as Incident}
-                            />
+                            <ReviewStage incidentData={formData as Incident} />
                         )}
                     </StageWrapper>
 
@@ -194,15 +176,15 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
                         )}
 
                         {completedSteps === numberOfSteps - 1 && showButtons && (
-                                <button
-                                    type="button"
-                                    disabled={processing}
-                                    onClick={submit}
-                                    className="bg-upei-green-500 hover:bg-upei-green-700 text-white font-bold py-2 px-4 rounded"
-                                >
-                                    Submit
-                                </button>
-                            )}
+                            <button
+                                type="button"
+                                disabled={processing}
+                                onClick={submit}
+                                className="bg-upei-green-500 hover:bg-upei-green-700 text-white font-bold py-2 px-4 rounded"
+                            >
+                                Submit
+                            </button>
+                        )}
 
                         {remainingSteps > 0 && remainingSteps < numberOfSteps && showButtons && (
                             <button
