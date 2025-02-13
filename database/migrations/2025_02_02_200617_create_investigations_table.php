@@ -23,6 +23,12 @@ return new class () extends Migration {
 
             $table->jsonb('resulted_in');
 
+            $table->jsonb('substandard_acts');
+            $table->jsonb('substandard_conditions');
+            $table->jsonb('energy_transfer_causes');
+            $table->jsonb('personal_factors');
+            $table->jsonb('job_factors');
+
             $table->timestamps();
             $table->softDeletes();
         });

@@ -31,6 +31,11 @@ class InvestigationCreatedTest extends TestCase
             hazard_class: 'hazard class',
             risk_rank: 10,
             resulted_in: ['injury', 'burn'],
+            substandard_acts: ['injury', 'burn'],
+            substandard_conditions: ['injury', 'burn'],
+            energy_transfer_causes: ['injury', 'burn'],
+            personal_factors: ['injury', 'burn'],
+            job_factors: ['injury', 'burn'],
         );
 
         $event->setMetaData(['user_id' => $supervisor->id]);
@@ -63,6 +68,11 @@ class InvestigationCreatedTest extends TestCase
             hazard_class: 'hazard class',
             risk_rank: 10,
             resulted_in: ['injury', 'burn'],
+            substandard_acts: ['injury', 'burn'],
+            substandard_conditions: ['injury', 'burn'],
+            energy_transfer_causes: ['injury', 'burn'],
+            personal_factors: ['injury', 'burn'],
+            job_factors: ['injury', 'burn'],
         );
 
         $event->setMetaData(['user_id' => $supervisor->id]);
@@ -102,6 +112,11 @@ class InvestigationCreatedTest extends TestCase
             hazard_class: 'hazard class',
             risk_rank: 10,
             resulted_in: ['injury', 'burn'],
+            substandard_acts: ['injury', 'burn'],
+            substandard_conditions: ['injury', 'burn'],
+            energy_transfer_causes: ['injury', 'burn'],
+            personal_factors: ['injury', 'burn'],
+            job_factors: ['injury', 'burn'],
         );
 
         $event->setMetaData(['user_id' => $supervisor->id]);
@@ -133,6 +148,11 @@ class InvestigationCreatedTest extends TestCase
             hazard_class: 'hazard class',
             risk_rank: 10,
             resulted_in: ['injury', 'burn'],
+            substandard_acts: ['injury', 'burn'],
+            substandard_conditions: ['injury', 'burn'],
+            energy_transfer_causes: ['injury', 'burn'],
+            personal_factors: ['injury', 'burn'],
+            job_factors: ['injury', 'burn'],
         );
         $event->setMetaData(['user_id' => $supervisor->id]);
 
@@ -153,5 +173,10 @@ class InvestigationCreatedTest extends TestCase
         $this->assertEquals($event->hazard_class, $investigation->hazard_class);
         $this->assertEquals($event->risk_rank, $investigation->risk_rank);
         $this->assertEquals($event->resulted_in, $investigation->resulted_in);
+        $this->assertEquals($event->substandard_acts, $investigation->substandard_acts);
+        $this->assertEquals($event->substandard_conditions, $investigation->substandard_conditions);
+        $this->assertEquals($event->energy_transfer_causes, $investigation->energy_transfer_causes);
+        $this->assertEquals($event->personal_factors, $investigation->personal_factors);
+        $this->assertEquals($event->job_factors, $investigation->job_factors);
     }
 }

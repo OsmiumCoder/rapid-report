@@ -85,6 +85,7 @@ export default function Create({ incident }: { incident: Incident }) {
         basic_causes: '',
         remedial_actions: '',
         prevention: '',
+        hazard_class: 'Z',
         risk_rank: 1,
         resulted_in: [] as string[],
         substandard_acts: [] as string[],

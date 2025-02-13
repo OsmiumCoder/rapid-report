@@ -17,29 +17,28 @@ export default function IncidentSupervisorActions({ incident }: SupervisorAction
                     <div className="mt-1 pt-6 text-base font-semibold text-gray-900">
                         Supervisor Actions
                     </div>
-                    <div className="flex flex-col gap-y-6 w-full mt-6 border-t border-gray-900/5 p-6">
-                        {incident.investigations.length > 0 && (
-                            <>
-                                <div className="font-semibold">
-                                    Investigations
-                                    {incident.investigations.map((investigation, index) => (
-                                        <div className="font-normal">
-                                            <Link
-                                                className="text-sm cursor-pointer text-blue-500 hover:text-blue-400"
-                                                href={route('incidents.investigations.show', {
-                                                    incident: incident.id,
-                                                    investigation: investigation.id,
-                                                })}
-                                            >
-                                                {investigation.supervisor.name}:{' '}
-                                                {dateTimeFormat(investigation.created_at)}
-                                            </Link>
-                                        </div>
-                                    ))}
-                                </div>
-                            </>
-                        )}
-                    </div>
+                    {incident.investigations.length > 0 && (
+                        <div className="flex flex-col gap-y-6 w-full mt-6 border-t border-gray-900/5 p-6">
+                            <div className="font-semibold">
+                                Investigations
+                                {incident.investigations.map((investigation, index) => (
+                                    <div className="font-normal">
+                                        <Link
+                                            className="text-sm cursor-pointer text-blue-500 hover:text-blue-400"
+                                            href={route('incidents.investigations.show', {
+                                                incident: incident.id,
+                                                investigation: investigation.id,
+                                            })}
+                                        >
+                                            {investigation.supervisor.name}:{' '}
+                                            {dateTimeFormat(investigation.created_at)}
+                                        </Link>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
                     {incident.status === IncidentStatus.ASSIGNED && (
                         <div className="flex flex-col gap-y-6 w-full mt-6 border-t border-gray-900/5 p-6">
                             <Link

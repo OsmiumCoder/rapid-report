@@ -32,7 +32,12 @@ class InvestigationAggregateRootTest extends TestCase
             'prevention' => 'prevention',
             'hazard_class' => 'hazard class',
             'risk_rank' => 10,
-            'resulted_in' => ['injury', 'burn']
+            'resulted_in' => ['injury', 'burn'],
+            'substandard_acts' => ['injury', 'burn'],
+            'substandard_conditions' => ['injury', 'burn'],
+            'energy_transfer_causes' => ['injury', 'burn'],
+            'personal_factors' => ['injury', 'burn'],
+            'job_factors' => ['injury', 'burn'],
         ]);
 
         InvestigationAggregateRoot::retrieve(Str::uuid()->toString())
@@ -64,7 +69,12 @@ class InvestigationAggregateRootTest extends TestCase
             'prevention' => 'prevention',
             'hazard_class' => 'hazard class',
             'risk_rank' => 10,
-            'resulted_in' => ['injury', 'burn']
+            'resulted_in' => ['injury', 'burn'],
+            'substandard_acts' => ['injury', 'burn'],
+            'substandard_conditions' => ['injury', 'burn'],
+            'energy_transfer_causes' => ['injury', 'burn'],
+            'personal_factors' => ['injury', 'burn'],
+            'job_factors' => ['injury', 'burn'],
         ]);
 
         $uuid = Str::uuid()->toString();
@@ -103,7 +113,12 @@ class InvestigationAggregateRootTest extends TestCase
             'prevention' => 'prevention',
             'hazard_class' => 'hazard class',
             'risk_rank' => 10,
-            'resulted_in' => ['injury', 'burn']
+            'resulted_in' => ['injury', 'burn'],
+            'substandard_acts' => ['injury', 'burn'],
+            'substandard_conditions' => ['injury', 'burn'],
+            'energy_transfer_causes' => ['injury', 'burn'],
+            'personal_factors' => ['injury', 'burn'],
+            'job_factors' => ['injury', 'burn'],
         ]);
 
         $uuid = Str::uuid()->toString();
@@ -138,7 +153,12 @@ class InvestigationAggregateRootTest extends TestCase
             'prevention' => 'prevention',
             'hazard_class' => 'hazard class',
             'risk_rank' => 10,
-            'resulted_in' => ['injury', 'burn']
+            'resulted_in' => ['injury', 'burn'],
+            'substandard_acts' => ['injury', 'burn'],
+            'substandard_conditions' => ['injury', 'burn'],
+            'energy_transfer_causes' => ['injury', 'burn'],
+            'personal_factors' => ['injury', 'burn'],
+            'job_factors' => ['injury', 'burn'],
         ]);
 
         InvestigationAggregateRoot::fake(Str::uuid()->toString())
@@ -154,6 +174,11 @@ class InvestigationAggregateRootTest extends TestCase
                     hazard_class: 'hazard class',
                     risk_rank: 10,
                     resulted_in: ['injury', 'burn'],
+                    substandard_acts: ['injury', 'burn'],
+                    substandard_conditions: ['injury', 'burn'],
+                    energy_transfer_causes: ['injury', 'burn'],
+                    personal_factors: ['injury', 'burn'],
+                    job_factors: ['injury', 'burn'],
                 )
             ]);
     }
@@ -172,7 +197,12 @@ class InvestigationAggregateRootTest extends TestCase
             'prevention' => 'prevention',
             'hazard_class' => 'hazard class',
             'risk_rank' => 10,
-            'resulted_in' => ['injury', 'burn']
+            'resulted_in' => ['injury', 'burn'],
+            'substandard_acts' => ['injury', 'burn'],
+            'substandard_conditions' => ['injury', 'burn'],
+            'energy_transfer_causes' => ['injury', 'burn'],
+            'personal_factors' => ['injury', 'burn'],
+            'job_factors' => ['injury', 'burn'],
         ]);
 
         $this->assertDatabaseCount('investigations', 0);
@@ -204,7 +234,12 @@ class InvestigationAggregateRootTest extends TestCase
             'prevention' => 'prevention',
             'hazard_class' => 'hazard class',
             'risk_rank' => 10,
-            'resulted_in' => ['injury', 'burn']
+            'resulted_in' => ['injury', 'burn'],
+            'substandard_acts' => ['injury', 'burn'],
+            'substandard_conditions' => ['injury', 'burn'],
+            'energy_transfer_causes' => ['injury', 'burn'],
+            'personal_factors' => ['injury', 'burn'],
+            'job_factors' => ['injury', 'burn'],
         ]);
 
         $this->assertDatabaseCount('investigations', 0);
@@ -228,5 +263,10 @@ class InvestigationAggregateRootTest extends TestCase
         $this->assertEquals($investigationData->hazard_class, $investigation->hazard_class);
         $this->assertEquals($investigationData->risk_rank, $investigation->risk_rank);
         $this->assertEquals($investigationData->resulted_in, $investigation->resulted_in);
+        $this->assertEquals($investigationData->substandard_acts, $investigation->substandard_acts);
+        $this->assertEquals($investigationData->substandard_conditions, $investigation->substandard_conditions);
+        $this->assertEquals($investigationData->energy_transfer_causes, $investigation->energy_transfer_causes);
+        $this->assertEquals($investigationData->personal_factors, $investigation->personal_factors);
+        $this->assertEquals($investigationData->job_factors, $investigation->job_factors);
     }
 }

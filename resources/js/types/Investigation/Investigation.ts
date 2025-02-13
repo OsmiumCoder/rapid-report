@@ -13,6 +13,11 @@ export interface Investigation {
     hazard_class: string;
     risk_rank: number;
     resulted_in: string[];
+    substandard_acts: string[];
+    substandard_conditions: string[];
+    energy_transfer_causes: string[];
+    personal_factors: string[];
+    job_factors: string[];
     created_at: string;
     updated_at: string;
     deleted_at?: string;
