@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Incident;
 use App\Models\Investigation;
 use App\Models\User;
+use App\States\IncidentStatus\Assigned;
 
 class InvestigationPolicy
 {
@@ -37,7 +38,7 @@ class InvestigationPolicy
      */
     public function create(User $user, Incident $incident): bool
     {
-        if ($user->can('provide investigations') && $incident->supervisor_id == $user->id) {
+        if ($user->can('provide investigations') && $incident->supervisor_id == $user->id && $incident->status::class == Assigned::class) {
             return true;
         }
 
