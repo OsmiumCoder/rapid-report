@@ -22,7 +22,7 @@ export default function UserManagement({ users, roles }: UserManagementProps) {
 
     const searchUsers = _.debounce((search: string) => {
         router.reload({
-            data: {search: search},
+            data: {search: search, page: 1},
             only: ['users']
         });
     }, 300)
