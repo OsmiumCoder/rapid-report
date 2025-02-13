@@ -26,6 +26,33 @@ export default function InvestigationInformationPanel({
                         <span className="font-semibold">Resulted In: </span>
                         <span>{investigation.resulted_in.join(', ')}</span>
                     </div>
+
+                    <div>
+                        <span className="font-semibold">Substandard Acts: </span>
+                        <span>{investigation.substandard_acts.join(', ')}</span>
+                    </div>
+
+                    <div>
+                        <span className="font-semibold">Substandard Conditions: </span>
+                        <span>{investigation.substandard_conditions.join(', ')}</span>
+                    </div>
+
+                    <div>
+                        <span className="font-semibold">Energy Transfer Causes: </span>
+                        <span>{investigation.energy_transfer_causes.join(', ')}</span>
+                    </div>
+
+                    <div>
+                        <span className="font-semibold">Personal Factors: </span>
+                        <span>{investigation.personal_factors.join(', ')}</span>
+                    </div>
+
+                    <div>
+                        <span className="font-semibold">Job Factors: </span>
+                        <span>{investigation.job_factors.join(', ')}</span>
+                    </div>
+
+
                     <div>
                         <span className="font-semibold">Hazard Class: </span>
                         <span>{investigation.hazard_class.toUpperCase()}</span>
