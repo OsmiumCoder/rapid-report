@@ -5,10 +5,14 @@ namespace Tests\Feature\Incident;
 use App\Data\IncidentData;
 use App\Enum\CommentType;
 use App\Enum\IncidentType;
+use App\Mail\IncidentReceived;
 use App\Models\CustomStoredEvent;
 use App\Models\Incident;
 use App\Models\User;
+use App\Notifications\IncidentSubmitted;
 use App\States\IncidentStatus\Opened;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\ValidationException;
 use Inertia\Testing\AssertableInertia;
 use Tests\TestCase;
@@ -367,5 +371,121 @@ class StoreTest extends TestCase
         $this->assertEquals($incidentData->supervisor_name, $incident->supervisor_name);
         $this->assertNull($incident->closed_at);
         $this->assertEquals(Opened::class, $incident->status::class);
+    }
+
+    public function test_sends_mail_if_reporters_mail_set()
+    {
+        Mail::fake();
+
+        $user = User::factory()->create()->assignRole('user');
+
+        $incidentData = IncidentData::from([
+            'anonymous' => false,
+            'on_behalf' => true,
+            'on_behalf_anonymous' => false,
+            'role' => 0,
+            'last_name' => 'last',
+            'first_name' => 'first',
+            'upei_id' => '322',
+            'email' => 'john@doe.com',
+            'phone' => '(902) 333-4444',
+            'work_related' => true,
+            'workers_comp_submitted' => true,
+            'happened_at' => now(),
+            'location' => 'Building A',
+            'room_number' => '123A',
+            'witnesses' => [],
+            'incident_type' => IncidentType::SAFETY,
+            'descriptor' => 'Burn',
+            'description' => 'A fire broke out in the room.',
+            'injury_description' => 'Minor burn',
+            'first_aid_description' => 'Minor burn treated',
+            'reporters_email' => $user->email,
+            'supervisor_name' => 'John Doe',
+        ]);
+
+        Mail::assertNothingSent();
+
+        $response = $this->post(route('incidents.store'), $incidentData->toArray());
+
+        Mail::assertSentCount(1);
+        Mail::assertSent(IncidentReceived::class, 1);
+        Mail::assertSent(IncidentReceived::class, $user->email);
+    }
+
+    public function test_sends_no_mail_if_reporters_mail_not_set()
+    {
+        Mail::fake();
+        Notification::fake();
+
+        $incidentData = IncidentData::from([
+            'anonymous' => false,
+            'on_behalf' => true,
+            'on_behalf_anonymous' => false,
+            'role' => 0,
+            'last_name' => 'last',
+            'first_name' => 'first',
+            'upei_id' => '322',
+            'email' => 'john@doe.com',
+            'phone' => '(902) 333-4444',
+            'work_related' => true,
+            'workers_comp_submitted' => true,
+            'happened_at' => now(),
+            'location' => 'Building A',
+            'room_number' => '123A',
+            'witnesses' => [],
+            'incident_type' => IncidentType::SAFETY,
+            'descriptor' => 'Burn',
+            'description' => 'A fire broke out in the room.',
+            'injury_description' => 'Minor burn',
+            'first_aid_description' => 'Minor burn treated',
+            'reporters_email' => null,
+            'supervisor_name' => 'John Doe',
+        ]);
+
+        $response = $this->post(route('incidents.store'), $incidentData->toArray());
+
+        Mail::assertNothingSent();
+    }
+
+    public function test_notifies_admin_team()
+    {
+        Mail::fake();
+        Notification::fake();
+
+        $admins = User::factory(3)->create()->each(function (User $user) {
+            $user->assignRole('admin');
+        });
+
+        $incidentData = IncidentData::from([
+            'anonymous' => true,
+            'on_behalf' => true,
+            'on_behalf_anonymous' => false,
+            'role' => 0,
+            'last_name' => 'last',
+            'first_name' => 'first',
+            'upei_id' => '322',
+            'email' => 'john@doe.com',
+            'phone' => '(902) 333-4444',
+            'work_related' => true,
+            'workers_comp_submitted' => true,
+            'happened_at' => now(),
+            'location' => 'Building A',
+            'room_number' => '123A',
+            'witnesses' => [],
+            'incident_type' => IncidentType::SAFETY,
+            'descriptor' => 'Burn',
+            'description' => 'A fire broke out in the room.',
+            'injury_description' => 'Minor burn',
+            'first_aid_description' => 'Minor burn treated',
+            'reporters_email' => null,
+            'supervisor_name' => 'John Doe',
+        ]);
+
+        Notification::assertNothingSent();
+
+        $response = $this->post(route('incidents.store'), $incidentData->toArray());
+
+        Notification::assertSentTo($admins, IncidentSubmitted::class);
     }
 }

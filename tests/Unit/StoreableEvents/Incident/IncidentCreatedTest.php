@@ -4,10 +4,16 @@ namespace StoreableEvents\Incident;
 
 use App\Enum\CommentType;
 use App\Enum\IncidentType;
+use App\Mail\IncidentReceived;
 use App\Models\Incident;
+use App\Models\User;
+use App\Notifications\IncidentSubmitted;
 use App\States\IncidentStatus\Opened;
 use App\StorableEvents\Incident\IncidentCreated;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class IncidentCreatedTest extends TestCase
@@ -182,5 +188,137 @@ class IncidentCreatedTest extends TestCase
         $this->assertNull($incident->supervisor_name);
         $this->assertNull($incident->closed_at);
         $this->assertEquals(Opened::class, $incident->status::class);
+    }
+
+    public function test_new_incident_notifies_reporter_if_reporters_email_set(): void
+    {
+        Mail::fake();
+        Notification::fake();
+
+        $admins = User::factory(3)->create()->each(function (User $user) {
+            $user->assignRole('admin');
+        });
+        $user = User::factory()->create()->assignRole('user');
+
+        $event = new IncidentCreated(
+            anonymous: false,
+            on_behalf: false,
+            on_behalf_anonymous: false,
+            role: '0',
+            last_name: null,
+            first_name: null,
+            upei_id: null,
+            email: null,
+            phone: null,
+            work_related: true,
+            workers_comp_submitted: true,
+            happened_at: now(),
+            location: 'Building A',
+            room_number: null,
+            witnesses: null,
+            incident_type: IncidentType::SAFETY,
+            descriptor: 'Burn',
+            description: 'A fire broke out in the room.',
+            injury_description: null,
+            first_aid_description: null,
+            reporters_email: $user->email,
+            supervisor_name: null,
+        );
+
+        $event->setAggregateRootUuid(Str::uuid()->toString());
+
+        Mail::assertNothingSent();
+
+        $event->react();
+
+        Mail::assertSentCount(1);
+        Mail::assertSent(IncidentReceived::class, 1);
+        Mail::assertSent(IncidentReceived::class, $user->email);
+
+        Notification::assertSentTo($admins, IncidentSubmitted::class);
+        Notification::assertNotSentTo($user, IncidentSubmitted::class);
+    }
+
+    public function test_new_incident_does_not_notify_reporter_if_reporters_email_not_set(): void
+    {
+        Mail::fake();
+        Notification::fake();
+
+        $event = new IncidentCreated(
+            anonymous: false,
+            on_behalf: false,
+            on_behalf_anonymous: false,
+            role: '0',
+            last_name: null,
+            first_name: null,
+            upei_id: null,
+            email: null,
+            phone: null,
+            work_related: true,
+            workers_comp_submitted: true,
+            happened_at: now(),
+            location: 'Building A',
+            room_number: null,
+            witnesses: null,
+            incident_type: IncidentType::SAFETY,
+            descriptor: 'Burn',
+            description: 'A fire broke out in the room.',
+            injury_description: null,
+            first_aid_description: null,
+            reporters_email: null,
+            supervisor_name: null,
+        );
+
+        $event->setAggregateRootUuid(Str::uuid()->toString());
+
+        $event->react();
+
+        Mail::assertNothingSent();
+    }
+
+    public function test_new_incident_notifies_admin_team(): void
+    {
+        Notification::fake();
+
+        $admins = User::factory(3)->create()->each(function (User $user) {
+            $user->assignRole('admin');
+        });
+        $user = User::factory()->create()->assignRole('user');
+
+        $event = new IncidentCreated(
+            anonymous: false,
+            on_behalf: false,
+            on_behalf_anonymous: false,
+            role: '0',
+            last_name: null,
+            first_name: null,
+            upei_id: null,
+            email: null,
+            phone: null,
+            work_related: true,
+            workers_comp_submitted: true,
+            happened_at: now(),
+            location: 'Building A',
+            room_number: null,
+            witnesses: null,
+            incident_type: IncidentType::SAFETY,
+            descriptor: 'Burn',
+            description: 'A fire broke out in the room.',
+            injury_description: null,
+            first_aid_description: null,
+            reporters_email: $user->email,
+            supervisor_name: null,
+        );
+
+        $event->setAggregateRootUuid(Str::uuid()->toString());
+
+        Notification::assertNothingSent();
+
+        $event->react();
+
+        Notification::assertCount(3);
+
+        Notification::assertSentTo($admins, IncidentSubmitted::class);
+        Notification::assertNotSentTo($user, IncidentSubmitted::class);
     }
 }

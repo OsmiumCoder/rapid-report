@@ -6,6 +6,11 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+// TODO: Test for demo purposes
+Route::get('/notification', function () {
+    return (new \App\Mail\IncidentReceived)->render();
+});
+
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
