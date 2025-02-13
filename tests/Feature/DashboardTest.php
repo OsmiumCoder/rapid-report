@@ -35,7 +35,7 @@ class DashboardTest extends TestCase
                         ->count('links', 4)
                         ->where('total', 26)
                         ->etc()
-                )->has('roles', 3);
+                )->has('roles', 4);
         });
     }
 
