@@ -29,7 +29,12 @@ class StoreTest extends TestCase
             'prevention' => 'prevention',
             'hazard_class' => 'hazard class',
             'risk_rank' => 10,
-            'resulted_in' => ['injury', 'burn']
+            'resulted_in' => ['injury', 'burn'],
+            'substandard_acts' => ['injury', 'burn'],
+            'substandard_conditions' => ['injury', 'burn'],
+            'energy_transfer_causes' => ['injury', 'burn'],
+            'personal_factors' => ['injury', 'burn'],
+            'job_factors' => ['injury', 'burn'],
         ]);
 
         $response = $this->actingAs($supervisor)->post(route('incidents.investigations.store', $incident), $investigationData->toArray());
@@ -58,7 +63,12 @@ class StoreTest extends TestCase
             'prevention' => 'prevention',
             'hazard_class' => 'hazard class',
             'risk_rank' => 10,
-            'resulted_in' => ['injury', 'burn']
+            'resulted_in' => ['injury', 'burn'],
+            'substandard_acts' => ['injury', 'burn'],
+            'substandard_conditions' => ['injury', 'burn'],
+            'energy_transfer_causes' => ['injury', 'burn'],
+            'personal_factors' => ['injury', 'burn'],
+            'job_factors' => ['injury', 'burn'],
         ]);
 
         Notification::assertNothingSent();
@@ -92,7 +102,12 @@ class StoreTest extends TestCase
             'prevention' => 'prevention',
             'hazard_class' => 'hazard class',
             'risk_rank' => 10,
-            'resulted_in' => ['injury', 'burn']
+            'resulted_in' => ['injury', 'burn'],
+            'substandard_acts' => ['injury', 'burn'],
+            'substandard_conditions' => ['injury', 'burn'],
+            'energy_transfer_causes' => ['injury', 'burn'],
+            'personal_factors' => ['injury', 'burn'],
+            'job_factors' => ['injury', 'burn'],
         ]);
 
         $response = $this->actingAs($supervisor)->post(route('incidents.investigations.store', $incident), $investigationData->toArray());
@@ -122,7 +137,12 @@ class StoreTest extends TestCase
             'prevention' => 'prevention',
             'hazard_class' => 'hazard class',
             'risk_rank' => 10,
-            'resulted_in' => ['injury', 'burn']
+            'resulted_in' => ['injury', 'burn'],
+            'substandard_acts' => ['injury', 'burn'],
+            'substandard_conditions' => ['injury', 'burn'],
+            'energy_transfer_causes' => ['injury', 'burn'],
+            'personal_factors' => ['injury', 'burn'],
+            'job_factors' => ['injury', 'burn'],
         ]);
 
         $response = $this->actingAs($supervisor)->post(route('incidents.investigations.store', $incident), $investigationData->toArray());
@@ -145,7 +165,12 @@ class StoreTest extends TestCase
             'prevention' => '',
             'hazard_class' => '',
             'risk_rank' => 10,
-            'resulted_in' => []
+            'resulted_in' => [],
+            'substandard_acts' => [],
+            'substandard_conditions' => [],
+            'energy_transfer_causes' => [],
+            'personal_factors' => [],
+            'job_factors' => [],
         ];
 
         $response = $this->actingAs($supervisor)->post(route('incidents.investigations.store', $incident), $investigationData);
@@ -158,7 +183,12 @@ class StoreTest extends TestCase
             'remedial_actions',
             'prevention',
             'hazard_class',
-            'resulted_in'
+            'resulted_in',
+            'substandard_acts',
+            'substandard_conditions',
+            'energy_transfer_causes',
+            'personal_factors',
+            'job_factors',
         ]);
     }
 
@@ -175,7 +205,12 @@ class StoreTest extends TestCase
             'prevention' => 'prevention',
             'hazard_class' => 'hazard class',
             'risk_rank' => 10,
-            'resulted_in' => ['injury', 'burn']
+            'resulted_in' => ['injury', 'burn'],
+            'substandard_acts' => ['injury', 'burn'],
+            'substandard_conditions' => ['injury', 'burn'],
+            'energy_transfer_causes' => ['injury', 'burn'],
+            'personal_factors' => ['injury', 'burn'],
+            'job_factors' => ['injury', 'burn'],
         ]);
 
         $response = $this->actingAs($user)->post(route('incidents.investigations.store', $incident), $investigationData->toArray());
@@ -196,7 +231,12 @@ class StoreTest extends TestCase
             'prevention' => 'prevention',
             'hazard_class' => 'hazard class',
             'risk_rank' => 10,
-            'resulted_in' => ['injury', 'burn']
+            'resulted_in' => ['injury', 'burn'],
+            'substandard_acts' => ['injury', 'burn'],
+            'substandard_conditions' => ['injury', 'burn'],
+            'energy_transfer_causes' => ['injury', 'burn'],
+            'personal_factors' => ['injury', 'burn'],
+            'job_factors' => ['injury', 'burn'],
         ]);
 
         $response = $this->actingAs($admin)->post(route('incidents.investigations.store', $incident), $investigationData->toArray());
@@ -217,7 +257,12 @@ class StoreTest extends TestCase
             'prevention' => 'prevention',
             'hazard_class' => 'hazard class',
             'risk_rank' => 10,
-            'resulted_in' => ['injury', 'burn']
+            'resulted_in' => ['injury', 'burn'],
+            'substandard_acts' => ['injury', 'burn'],
+            'substandard_conditions' => ['injury', 'burn'],
+            'energy_transfer_causes' => ['injury', 'burn'],
+            'personal_factors' => ['injury', 'burn'],
+            'job_factors' => ['injury', 'burn'],
         ]);
 
         $response = $this->actingAs($supervisor)->post(route('incidents.investigations.store', $incident), $investigationData->toArray());
@@ -238,7 +283,12 @@ class StoreTest extends TestCase
             'prevention' => 'prevention',
             'hazard_class' => 'hazard class',
             'risk_rank' => 10,
-            'resulted_in' => ['injury', 'burn']
+            'resulted_in' => ['injury', 'burn'],
+            'substandard_acts' => ['injury', 'burn'],
+            'substandard_conditions' => ['injury', 'burn'],
+            'energy_transfer_causes' => ['injury', 'burn'],
+            'personal_factors' => ['injury', 'burn'],
+            'job_factors' => ['injury', 'burn'],
         ]);
 
         $this->assertDatabaseCount('investigations', 0);
@@ -258,5 +308,10 @@ class StoreTest extends TestCase
         $this->assertEquals($investigationData->hazard_class, $investigation->hazard_class);
         $this->assertEquals($investigationData->risk_rank, $investigation->risk_rank);
         $this->assertEquals($investigationData->resulted_in, $investigation->resulted_in);
+        $this->assertEquals($investigationData->substandard_acts, $investigation->substandard_acts);
+        $this->assertEquals($investigationData->substandard_conditions, $investigation->substandard_conditions);
+        $this->assertEquals($investigationData->energy_transfer_causes, $investigation->energy_transfer_causes);
+        $this->assertEquals($investigationData->personal_factors, $investigation->personal_factors);
+        $this->assertEquals($investigationData->job_factors, $investigation->job_factors);
     }
 }
