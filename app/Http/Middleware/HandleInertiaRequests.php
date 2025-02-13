@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Incident;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
@@ -35,6 +36,7 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
+            'notifications' => Incident::paginate(5, pageName: 'notifications'),
             'ziggy' => fn () => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),

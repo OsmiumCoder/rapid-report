@@ -20,6 +20,7 @@ export default function UserDashboard({
     unresolvedCount,
 }: UserDashboardProps) {
     const { user } = usePage().props.auth;
+    console.log(user)
     return (
         <Authenticated>
             <Head title="Dashboard" />

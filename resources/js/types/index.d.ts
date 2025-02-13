@@ -1,4 +1,6 @@
 import { Config } from 'ziggy-js';
+import {PaginatedResponse} from "@/types/PaginatedResponse";
+import {Incident} from "@/types/incident/Incident";
 
 export interface User {
     id: number;
@@ -21,5 +23,6 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
     auth: {
         user: User;
     };
+    notifications: PaginatedResponse<Incident>
     ziggy: Config & { location: string };
 };
