@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature;
+namespace Tests\Feature;
 
 use App\Models\Incident;
 use App\Models\User;
@@ -11,6 +11,34 @@ use Tests\TestCase;
 
 class DashboardTest extends TestCase
 {
+    public function test_user_management_returns_paginated_users()
+    {
+        $admin = User::factory()->create()->assignRole('admin');
+        $this->actingAs($admin);
+
+        $users = User::factory(25)->create();
+
+        $response = $this->get(route('dashboard.user-management'));
+
+        $response->assertOk();
+
+        $response->assertInertia(function (AssertableInertia $page) {
+            $page->component('Dashboard/UserManagement')
+                ->has(
+                    'users',
+                    fn (AssertableInertia $page) => $page
+                        ->where('current_page', 1)
+                        ->count('data', 15)
+                        ->where('from', 1)
+                        ->where('to', 15)
+                        ->where('last_page', 2)
+                        ->count('links', 4)
+                        ->where('total', 26)
+                        ->etc()
+                );
+        });
+    }
+
     public function test_admin_overview_returns_5_latest_incidents()
     {
         $admin = User::factory()->create()->assignRole('admin');
@@ -232,12 +260,36 @@ class DashboardTest extends TestCase
         });
     }
 
+    public function test_supervisor_is_forbidden_to_view_user_management()
+    {
+        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $this->actingAs($supervisor);
+        $response = $this->get(route('dashboard.user-management'));
+        $response->assertForbidden();
+    }
+
+    public function test_user_is_forbidden_to_view_user_management()
+    {
+        $user = User::factory()->create()->assignRole('user');
+        $this->actingAs($user);
+        $response = $this->get(route('dashboard.user-management'));
+        $response->assertForbidden();
+    }
+
+    public function test_admin_can_view_user_management()
+    {
+        $admin = User::factory()->create()->assignRole('admin');
+        $this->actingAs($admin);
+        $response = $this->get(route('dashboard.user-management'));
+        $response->assertOk();
+    }
+
     public function test_admin_can_view_admin_overview()
     {
         $admin = User::factory()->create()->assignRole('admin');
         $this->actingAs($admin);
         $response = $this->get(route('dashboard.admin'));
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 
     public function test_supervisor_is_forbidden_to_view_admin_overview()
