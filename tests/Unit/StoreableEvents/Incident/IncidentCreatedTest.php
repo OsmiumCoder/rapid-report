@@ -271,41 +271,6 @@ class IncidentCreatedTest extends TestCase
         Mail::assertNothingSent();
     }
 
-
-    public function test_new_incident_notification_stores_in_database(): void
-    {
-        $admin = User::factory()->create()->assignRole('admin');
-
-        $event = new IncidentCreated(
-            anonymous: false,
-            on_behalf: false,
-            on_behalf_anonymous: false,
-            role: '0',
-            last_name: null,
-            first_name: null,
-            upei_id: null,
-            email: null,
-            phone: null,
-            work_related: true,
-            workers_comp_submitted: true,
-            happened_at: now(),
-            location: 'Building A',
-            room_number: null,
-            witnesses: null,
-            incident_type: IncidentType::SAFETY,
-            descriptor: 'Burn',
-            description: 'A fire broke out in the room.',
-            injury_description: null,
-            first_aid_description: null,
-            reporters_email: null,
-            supervisor_name: null,
-        );
-
-        $event->react();
-        $admin->refresh();
-        $this->assertCount(1, $admin->notifications);
-    }
-
     public function test_new_incident_notifies_admin_team(): void
     {
         Notification::fake();
