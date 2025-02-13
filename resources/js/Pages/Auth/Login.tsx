@@ -6,7 +6,7 @@ import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
-import {PencilIcon} from "@heroicons/react/24/outline";
+import { PencilIcon } from '@heroicons/react/24/outline';
 
 export default function Login({
     status,

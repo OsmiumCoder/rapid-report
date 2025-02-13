@@ -7,14 +7,6 @@ import dateFormat from '@/Filters/dateFormat';
 import Authenticated from '@/Layouts/AuthenticatedLayout';
 import { PencilIcon } from '@heroicons/react/24/outline';
 import { IncidentStatus } from '@/Enums/IncidentStatus';
-import {
-    ChevronDownIcon,
-    ChevronLeftIcon,
-    ChevronRightIcon,
-    ChevronUpIcon,
-} from '@heroicons/react/20/solid';
-import classNames from '@/Filters/classNames';
-import { nameFilter } from '@/Filters/nameFilter';
 
 interface UserDashboardProps {
     incidents: Incident[];
@@ -184,7 +176,9 @@ export default function UserDashboard({
                                                         <td className="px-3 py-4 text-sm text-center">
                                                             <Badge
                                                                 color={incidentBadgeColor(incident)}
-                                                                text={uppercaseWordFormat(incident.status)}
+                                                                text={uppercaseWordFormat(
+                                                                    incident.status
+                                                                )}
                                                             />
                                                         </td>
                                                         <td className="px-3 py-4 text-sm text-gray-500 text-center">

@@ -2,7 +2,7 @@ import GuestLayout from '@/Layouts/GuestLayout';
 import { PageProps } from '@/types';
 import React from 'react';
 import { CheckCircleIcon } from '@heroicons/react/24/outline';
-import {Head, Link} from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 
 export default function Created({
     can_view,
@@ -44,7 +44,6 @@ export default function Created({
                         </div>
                     )}
                 </div>
-
             </div>
         </GuestLayout>
     );

@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Investigation;
 
-use App\Data\InvestigationData;
 use App\Models\Incident;
 use Inertia\Testing\AssertableInertia;
 use Tests\TestCase;
@@ -20,9 +19,9 @@ class CreateTest extends TestCase
 
         $response->assertStatus(200);
 
-        $response->assertInertia(function (AssertableInertia $page) {
+        $response->assertInertia(function (AssertableInertia $page) use ($incident) {
             return $page->component('Investigation/Create')
-                ->where('form', InvestigationData::empty());
+                ->where('incident.id', $incident->id);
         });
     }
 

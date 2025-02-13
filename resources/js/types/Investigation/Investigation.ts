@@ -1,5 +1,5 @@
 import { Incident } from '@/types/incident/Incident';
-import {User} from "@/types";
+import { User } from '@/types';
 
 export interface Investigation {
     id: string;
@@ -16,5 +16,5 @@ export interface Investigation {
     created_at: string;
     updated_at: string;
     deleted_at?: string;
-    supervisor: User
+    supervisor: User;
 }
