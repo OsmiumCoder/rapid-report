@@ -26,7 +26,7 @@ class CreateTest extends TestCase
         $response->assertForbidden();
     }
 
-    public function test_shows_create_page_and_has_empty_form(): void
+    public function test_shows_create_page_and_has_incident(): void
     {
         $supervisor = User::factory()->create()->assignRole('supervisor');
 
