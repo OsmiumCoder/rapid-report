@@ -11,6 +11,46 @@ use Tests\TestCase;
 
 class DashboardTest extends TestCase
 {
+    public function test_user_management_can_search_users_by_email()
+    {
+        $admin = User::factory()->create(['name' => 'aaaa', 'email' => 'bbbb'])->syncRoles('admin');
+
+        $this->actingAs($admin);
+
+        $users = User::factory()->create(['name' => 'zzzz', 'email' => 'eeee']);
+        $users = User::factory()->create(['name' => 'yyyy', 'email' => 'ffff']);
+
+        $response = $this->get(route('dashboard.user-management', ['search' => "eeee"]));
+
+        $response->assertOk();
+
+        $response->assertInertia(function (AssertableInertia $page) {
+            $page->component('Dashboard/UserManagement')
+                ->has('users.data', 1)
+                ->where('users.data.0.email', 'eeee');
+        });
+    }
+
+    public function test_user_management_can_search_users_by_name()
+    {
+        $admin = User::factory()->create(['name' => 'aaaa', 'email' => 'bbbb'])->syncRoles('admin');
+
+        $this->actingAs($admin);
+
+        $users = User::factory()->create(['name' => 'zzzz', 'email' => 'eeee']);
+        $users = User::factory()->create(['name' => 'yyyy', 'email' => 'ffff']);
+
+        $response = $this->get(route('dashboard.user-management', ['search' => "eeee"]));
+
+        $response->assertOk();
+
+        $response->assertInertia(function (AssertableInertia $page) {
+            $page->component('Dashboard/UserManagement')
+                ->has('users.data', 1)
+                ->where('users.data.0.name', 'zzzz');
+        });
+    }
+
     public function test_user_management_returns_paginated_users()
     {
         $admin = User::factory()->create()->syncRoles('admin');
@@ -131,8 +171,7 @@ class DashboardTest extends TestCase
                 ->where('unresolvedIncidents.1.supervisor_id', $supervisor->id)
                 ->where('unresolvedIncidents.2.supervisor_id', $supervisor->id)
                 ->where('unresolvedIncidents.3.supervisor_id', $supervisor->id)
-                ->where('unresolvedIncidents.4.supervisor_id', $supervisor->id)
-            ;
+                ->where('unresolvedIncidents.4.supervisor_id', $supervisor->id);
         });
     }
 
@@ -217,8 +256,7 @@ class DashboardTest extends TestCase
                 ->where('incidents.1.reporters_email', $user->email)
                 ->where('incidents.2.reporters_email', $user->email)
                 ->where('incidents.3.reporters_email', $user->email)
-                ->where('incidents.4.reporters_email', $user->email)
-            ;
+                ->where('incidents.4.reporters_email', $user->email);
         });
     }
 

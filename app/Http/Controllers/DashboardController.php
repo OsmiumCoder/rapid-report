@@ -72,7 +72,13 @@ class DashboardController extends Controller
     {
         Gate::authorize('view-user-management');
 
-        $paginatedUsers = User::paginate()->appends($request->query());
+        $search = $request->string('search', '');
+
+        $paginatedUsers = User::whereLike('name', "%$search%")
+            ->orWhereLike('email', "%$search%")
+            ->orderBy('name')
+            ->paginate()
+            ->appends($request->query());
 
         return inertia('Dashboard/UserManagement', [
             'users' => $paginatedUsers,
