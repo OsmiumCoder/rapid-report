@@ -87,14 +87,9 @@ class IncidentCreated extends StoredEvent
 
     public function react()
     {
-        // test email is set
-        // test email is not set
-        // same in IncidentAggregateRootTest.php and StoreTest.php
         if ($this->reporters_email) {
             Mail::to($this->reporters_email)->send(new IncidentReceived);
         }
-        // test database store
-        //Notification::send(User::role('admin')->get(), new IncidentSubmitted); // one test
 
         $admins = User::role('admin')->get();
         Notification::send($admins, new IncidentSubmitted);
