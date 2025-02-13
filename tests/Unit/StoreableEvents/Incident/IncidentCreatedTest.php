@@ -196,9 +196,9 @@ class IncidentCreatedTest extends TestCase
         Notification::fake();
 
         $admins = User::factory(3)->create()->each(function (User $user) {
-            $user->assignRole('admin');
+            $user->syncRoles('admin');
         });
-        $user = User::factory()->create()->assignRole('user');
+        $user = User::factory()->create()->syncRoles('user');
 
         $event = new IncidentCreated(
             anonymous: false,
@@ -281,9 +281,9 @@ class IncidentCreatedTest extends TestCase
         Notification::fake();
 
         $admins = User::factory(3)->create()->each(function (User $user) {
-            $user->assignRole('admin');
+            $user->syncRoles('admin');
         });
-        $user = User::factory()->create()->assignRole('user');
+        $user = User::factory()->create()->syncRoles('user');
 
         $event = new IncidentCreated(
             anonymous: false,

@@ -24,43 +24,43 @@ class DatabaseSeeder extends Seeder
         $superAdmin = User::factory()->create([
             'name' => 'Super Admin',
             'email' => 'admin@super.com',
-        ])->assignRole(['super-admin']);
+        ])->syncRoles(['super-admin']);
 
         $admin = User::factory()->create([
             'name' => 'Admin',
             'email' => 'admin@b.com',
-        ])->assignRole('admin');
+        ])->syncRoles('admin');
 
         $supervisor = User::factory()->create([
             'name' => 'Supervisor',
             'email' => 'supervisor@b.com',
-        ])->assignRole('supervisor');
+        ])->syncRoles('supervisor');
 
 
         User::factory()->create([
             'name' => 'Supervisor A',
             'email' => 'supervisorA@b.com',
-        ])->assignRole('supervisor');
+        ])->syncRoles('supervisor');
 
         User::factory()->create([
             'name' => 'Supervisor B',
             'email' => 'supervisorB@b.com',
-        ])->assignRole('supervisor');
+        ])->syncRoles('supervisor');
 
         User::factory()->create([
             'name' => 'Supervisor C',
             'email' => 'supervisorC@b.com',
-        ])->assignRole('supervisor');
+        ])->syncRoles('supervisor');
 
         User::factory()->create([
             'name' => 'Supervisor D',
             'email' => 'supervisorD@b.com',
-        ])->assignRole('supervisor');
+        ])->syncRoles('supervisor');
 
         $user = User::factory()->create([
             'name' => 'User',
             'email' => 'user@b.com',
-        ])->assignRole('user');
+        ])->syncRoles('user');
 
         Incident::factory(5)->hasComments(5)->create([
             'supervisor_id' => $supervisor->id,

@@ -377,7 +377,7 @@ class StoreTest extends TestCase
     {
         Mail::fake();
 
-        $user = User::factory()->create()->assignRole('user');
+        $user = User::factory()->create()->syncRoles('user');
 
         $incidentData = IncidentData::from([
             'anonymous' => false,
@@ -454,7 +454,7 @@ class StoreTest extends TestCase
         Notification::fake();
 
         $admins = User::factory(3)->create()->each(function (User $user) {
-            $user->assignRole('admin');
+            $user->syncRoles('admin');
         });
 
         $incidentData = IncidentData::from([

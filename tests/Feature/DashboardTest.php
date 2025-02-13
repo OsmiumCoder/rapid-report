@@ -13,7 +13,7 @@ class DashboardTest extends TestCase
 {
     public function test_user_management_returns_paginated_users()
     {
-        $admin = User::factory()->create()->assignRole('admin');
+        $admin = User::factory()->create()->syncRoles('admin');
         $this->actingAs($admin);
 
         $users = User::factory(25)->create();
@@ -41,7 +41,7 @@ class DashboardTest extends TestCase
 
     public function test_admin_overview_returns_5_latest_incidents()
     {
-        $admin = User::factory()->create()->assignRole('admin');
+        $admin = User::factory()->create()->syncRoles('admin');
         $this->actingAs($admin);
 
         Incident::factory(5)->create();
@@ -58,7 +58,7 @@ class DashboardTest extends TestCase
 
     public function test_admin_overview_returns_correct_number_of_total_incidents()
     {
-        $admin = User::factory()->create()->assignRole('admin');
+        $admin = User::factory()->create()->syncRoles('admin');
         $this->actingAs($admin);
 
         Incident::factory(10)->create();
@@ -76,7 +76,7 @@ class DashboardTest extends TestCase
 
     public function test_admin_overview_returns_correct_number_of_closed_incidents()
     {
-        $admin = User::factory()->create()->assignRole('admin');
+        $admin = User::factory()->create()->syncRoles('admin');
         $this->actingAs($admin);
 
         Incident::factory(10)->create();
@@ -95,7 +95,7 @@ class DashboardTest extends TestCase
 
     public function test_admin_overview_returns_correct_number_of_open_incidents()
     {
-        $admin = User::factory()->create()->assignRole('admin');
+        $admin = User::factory()->create()->syncRoles('admin');
         $this->actingAs($admin);
 
         Incident::factory(10)->create();
@@ -114,7 +114,7 @@ class DashboardTest extends TestCase
 
     public function test_supervisor_overview_returns_5_latest_assigned_incidents()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $this->actingAs($supervisor);
 
         Incident::factory(5)->create();
@@ -138,7 +138,7 @@ class DashboardTest extends TestCase
 
     public function test_supervisor_overview_returns_correct_number_of_total_assigned_incidents()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $this->actingAs($supervisor);
 
         Incident::factory(10)->create(['supervisor_id' => $supervisor->id]);
@@ -158,7 +158,7 @@ class DashboardTest extends TestCase
 
     public function test_supervisor_overview_returns_correct_number_of_closed_incidents()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $this->actingAs($supervisor);
 
         Incident::factory(10)->create(['supervisor_id' => $supervisor->id]);
@@ -179,7 +179,7 @@ class DashboardTest extends TestCase
 
     public function test_supervisor_overview_returns_correct_number_of_open_incidents()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $this->actingAs($supervisor);
 
         Incident::factory(10)->create(['supervisor_id' => $supervisor->id]);
@@ -200,7 +200,7 @@ class DashboardTest extends TestCase
 
     public function test_user_dashboard_returns_5_latest_submitted_incidents()
     {
-        $user = User::factory()->create(['email' => 'email@b.com'])->assignRole('user');
+        $user = User::factory()->create(['email' => 'email@b.com'])->syncRoles('user');
         $this->actingAs($user);
 
         Incident::factory(5)->create(['reporters_email' => $user->email]);
@@ -224,7 +224,7 @@ class DashboardTest extends TestCase
 
     public function test_user_dashboard_returns_total_amount_of_incidents_submitted()
     {
-        $user = User::factory()->create(['email' => 'email@b.com'])->assignRole('user');
+        $user = User::factory()->create(['email' => 'email@b.com'])->syncRoles('user');
         $this->actingAs($user);
 
         Incident::factory(10)->create(['reporters_email' => $user->email]);
@@ -242,7 +242,7 @@ class DashboardTest extends TestCase
 
     public function test_user_dashbaord_returns_total_amount_of_unresolved_incidents()
     {
-        $user = User::factory()->create(['email' => 'email@b.com'])->assignRole('user');
+        $user = User::factory()->create(['email' => 'email@b.com'])->syncRoles('user');
         $this->actingAs($user);
 
         Incident::factory(10)->create(['reporters_email' => $user->email]);
@@ -262,7 +262,7 @@ class DashboardTest extends TestCase
 
     public function test_supervisor_is_forbidden_to_view_user_management()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $this->actingAs($supervisor);
         $response = $this->get(route('dashboard.user-management'));
         $response->assertForbidden();
@@ -270,7 +270,7 @@ class DashboardTest extends TestCase
 
     public function test_user_is_forbidden_to_view_user_management()
     {
-        $user = User::factory()->create()->assignRole('user');
+        $user = User::factory()->create()->syncRoles('user');
         $this->actingAs($user);
         $response = $this->get(route('dashboard.user-management'));
         $response->assertForbidden();
@@ -278,7 +278,7 @@ class DashboardTest extends TestCase
 
     public function test_admin_can_view_user_management()
     {
-        $admin = User::factory()->create()->assignRole('admin');
+        $admin = User::factory()->create()->syncRoles('admin');
         $this->actingAs($admin);
         $response = $this->get(route('dashboard.user-management'));
         $response->assertOk();
@@ -286,7 +286,7 @@ class DashboardTest extends TestCase
 
     public function test_admin_can_view_admin_overview()
     {
-        $admin = User::factory()->create()->assignRole('admin');
+        $admin = User::factory()->create()->syncRoles('admin');
         $this->actingAs($admin);
         $response = $this->get(route('dashboard.admin'));
         $response->assertOk();
@@ -294,7 +294,7 @@ class DashboardTest extends TestCase
 
     public function test_supervisor_is_forbidden_to_view_admin_overview()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $this->actingAs($supervisor);
         $response = $this->get(route('dashboard.admin'));
         $response->assertForbidden();
@@ -302,7 +302,7 @@ class DashboardTest extends TestCase
 
     public function test_user_is_forbidden_to_view_admin_overview()
     {
-        $user = User::factory()->create()->assignRole('user');
+        $user = User::factory()->create()->syncRoles('user');
         $this->actingAs($user);
         $response = $this->get(route('dashboard.admin'));
         $response->assertForbidden();
@@ -310,7 +310,7 @@ class DashboardTest extends TestCase
 
     public function test_supervisor_can_view_supervisor_overview()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $this->actingAs($supervisor);
         $response = $this->get(route('dashboard.supervisor'));
         $response->assertOk();
@@ -318,7 +318,7 @@ class DashboardTest extends TestCase
 
     public function test_admin_is_forbidden_to_view_supervisor_overview()
     {
-        $admin = User::factory()->create()->assignRole('admin');
+        $admin = User::factory()->create()->syncRoles('admin');
         $this->actingAs($admin);
         $response = $this->get(route('dashboard.supervisor'));
         $response->assertForbidden();
@@ -326,7 +326,7 @@ class DashboardTest extends TestCase
 
     public function test_user_is_forbidden_to_view_supervisor_overview()
     {
-        $user = User::factory()->create()->assignRole('user');
+        $user = User::factory()->create()->syncRoles('user');
         $this->actingAs($user);
         $response = $this->get(route('dashboard.supervisor'));
         $response->assertForbidden();
@@ -335,7 +335,7 @@ class DashboardTest extends TestCase
 
     public function test_user_can_view_dashboard()
     {
-        $user = User::factory()->create()->assignRole('user');
+        $user = User::factory()->create()->syncRoles('user');
         $this->actingAs($user);
         $response = $this->get(route('dashboard'));
         $response->assertOk();
@@ -343,7 +343,7 @@ class DashboardTest extends TestCase
 
     public function test_supervisor_can_view_dashboard()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $this->actingAs($supervisor);
         $response = $this->get(route('dashboard'));
         $response->assertOk();
@@ -351,7 +351,7 @@ class DashboardTest extends TestCase
 
     public function test_admin_can_view_dashboard()
     {
-        $admin = User::factory()->create()->assignRole('admin');
+        $admin = User::factory()->create()->syncRoles('admin');
         $this->actingAs($admin);
         $response = $this->get(route('dashboard'));
         $response->assertOk();

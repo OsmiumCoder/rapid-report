@@ -12,7 +12,7 @@ class IndexTest extends TestCase
     public function test_incident_index_passes_current_filters_and_sort_props()
     {
         $email = 'a@b.com';
-        $user = User::factory()->create(['email' => $email])->assignRole('user');
+        $user = User::factory()->create(['email' => $email])->syncRoles('user');
         $this->actingAs($user);
 
         Incident::factory()->create(['descriptor' => 'a', 'reporters_email' => $email]);
@@ -50,7 +50,7 @@ class IndexTest extends TestCase
     public function test_owned_route_filters_incidents()
     {
         $email = 'a@b.com';
-        $user = User::factory()->create(['email' => $email])->assignRole('user');
+        $user = User::factory()->create(['email' => $email])->syncRoles('user');
         $this->actingAs($user);
 
         Incident::factory()->create(['descriptor' => 'a', 'reporters_email' => $email]);
@@ -89,7 +89,7 @@ class IndexTest extends TestCase
 
     public function test_assigned_route_filters_incidents()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $this->actingAs($supervisor);
 
         Incident::factory()->create(['descriptor' => 'a', 'supervisor_id' => $supervisor->id]);
@@ -129,7 +129,7 @@ class IndexTest extends TestCase
 
     public function test_index_route_filters_incidents()
     {
-        $admin = User::factory()->create()->assignRole('admin');
+        $admin = User::factory()->create()->syncRoles('admin');
         $this->actingAs($admin);
 
         Incident::factory()->create(['descriptor' => 'a']);
@@ -169,7 +169,7 @@ class IndexTest extends TestCase
 
     public function test_assigned_route_sorts_incidents()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $this->actingAs($supervisor);
 
         Incident::factory()->create(['descriptor' => 'a', 'supervisor_id' => $supervisor->id]);
@@ -200,7 +200,7 @@ class IndexTest extends TestCase
     public function test_owned_route_sorts_incidents()
     {
         $email = 'a@b.com';
-        $user = User::factory()->create(['email' => $email])->assignRole('user');
+        $user = User::factory()->create(['email' => $email])->syncRoles('user');
         $this->actingAs($user);
 
         Incident::factory()->create(['descriptor' => 'a', 'reporters_email' => $email]);
@@ -230,7 +230,7 @@ class IndexTest extends TestCase
 
     public function test_index_route_sorts_incidents()
     {
-        $admin = User::factory()->create()->assignRole('admin');
+        $admin = User::factory()->create()->syncRoles('admin');
         $this->actingAs($admin);
 
         Incident::factory()->create(['descriptor' => 'a']);
@@ -262,7 +262,7 @@ class IndexTest extends TestCase
     public function test_assigned_incidents_is_paginated()
     {
         $email = 'email@b.com';
-        $user = User::factory()->create(['email' => $email])->assignRole('supervisor');
+        $user = User::factory()->create(['email' => $email])->syncRoles('supervisor');
         $this->actingAs($user);
 
         Incident::factory()->create(['supervisor_id' => $user->id]);
@@ -292,7 +292,7 @@ class IndexTest extends TestCase
     public function test_owned_incidents_is_paginated()
     {
         $email = 'email@b.com';
-        $user = User::factory()->create(['email' => $email])->assignRole('user');
+        $user = User::factory()->create(['email' => $email])->syncRoles('user');
         $this->actingAs($user);
 
         Incident::factory()->create(['reporters_email' => $email]);
@@ -324,7 +324,7 @@ class IndexTest extends TestCase
         $user = User::factory()->create([
             'name' => 'user',
             'email' => 'user@b.com',
-        ])->assignRole('user');
+        ])->syncRoles('user');
 
         $this->actingAs($user);
 
@@ -338,7 +338,7 @@ class IndexTest extends TestCase
     public function test_show_owned_incidents_returns_correct_incidents(): void
     {
         $email = 'email@b.com';
-        $user = User::factory()->create(['email' => $email])->assignRole('user');
+        $user = User::factory()->create(['email' => $email])->syncRoles('user');
         $this->actingAs($user);
 
         Incident::factory()->create(['reporters_email' => $email]);
@@ -374,7 +374,7 @@ class IndexTest extends TestCase
 
     public function test_show_assigned_incidents_returns_correct_incidents(): void
     {
-        $user = User::factory()->create()->assignRole('supervisor');
+        $user = User::factory()->create()->syncRoles('supervisor');
         $this->actingAs($user);
 
         Incident::factory()->create(['supervisor_id' => $user->id]);
@@ -423,7 +423,7 @@ class IndexTest extends TestCase
         $user = User::factory()->create([
             'name' => 'supervisor',
             'email' => 'supervisor@b.com',
-        ])->assignRole('supervisor');
+        ])->syncRoles('supervisor');
 
         $this->actingAs($user);
 
@@ -439,7 +439,7 @@ class IndexTest extends TestCase
         $user = User::factory()->create([
             'name' => 'user',
             'email' => 'user@b.com',
-        ])->assignRole('user');
+        ])->syncRoles('user');
 
         $this->actingAs($user);
 
@@ -455,7 +455,7 @@ class IndexTest extends TestCase
         $user = User::factory()->create([
             'name' => 'Admin',
             'email' => 'admin@b.com',
-        ])->assignRole('admin');
+        ])->syncRoles('admin');
 
         $this->actingAs($user);
 

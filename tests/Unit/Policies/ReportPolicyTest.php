@@ -14,7 +14,7 @@ class ReportPolicyTest extends TestCase
         $user = User::factory()->create([
             'name' => 'Admin',
             'email' => 'admin@b.com',
-        ])->assignRole('admin');
+        ])->syncRoles('admin');
 
         $result = $this->getPolicy()->view($user);
         $this->assertTrue($result);
@@ -26,7 +26,7 @@ class ReportPolicyTest extends TestCase
         $user = User::factory()->create([
             'name' => 'user',
             'email' => 'user@b.com',
-        ])->assignRole('user');
+        ])->syncRoles('user');
 
         $result = $this->getPolicy()->view($user);
         $this->assertFalse($result);
@@ -37,7 +37,7 @@ class ReportPolicyTest extends TestCase
         $user = User::factory()->create([
             'name' => 'Supervisor',
             'email' => 'supervisor@b.com',
-        ])->assignRole('supervisor');
+        ])->syncRoles('supervisor');
 
         $result = $this->getPolicy()->view($user);
         $this->assertFalse($result);

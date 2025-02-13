@@ -13,7 +13,7 @@ class CreateTest extends TestCase
 {
     public function test_forbidden_if_not_assigned_state(): void
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $incident = Incident::factory()->create([
             'supervisor_id' => $supervisor->id,
@@ -27,7 +27,7 @@ class CreateTest extends TestCase
 
     public function test_shows_create_page_and_has_incident(): void
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $incident = Incident::factory()->create([
             'supervisor_id' => $supervisor->id,
@@ -48,7 +48,7 @@ class CreateTest extends TestCase
     {
         $incident = Incident::factory()->create();
 
-        $user = User::factory()->create()->assignRole('user');
+        $user = User::factory()->create()->syncRoles('user');
 
         $response = $this->actingAs($user)->get(route('incidents.investigations.create', ['incident' => $incident->id]));
 
@@ -59,7 +59,7 @@ class CreateTest extends TestCase
     {
         $incident = Incident::factory()->create();
 
-        $admin = User::factory()->create()->assignRole('admin');
+        $admin = User::factory()->create()->syncRoles('admin');
 
         $response = $this->actingAs($admin)->get(route('incidents.investigations.create', ['incident' => $incident->id]));
 

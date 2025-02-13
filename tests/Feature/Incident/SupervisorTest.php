@@ -13,10 +13,10 @@ class SupervisorTest extends TestCase
 {
     public function test_adds_unassigned_comment()
     {
-        $admin = User::factory()->create()->assignRole('admin');
+        $admin = User::factory()->create()->syncRoles('admin');
         $this->actingAs($admin);
 
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $incident = Incident::factory()->create([
             'supervisor_id' => $supervisor->id,
@@ -41,8 +41,8 @@ class SupervisorTest extends TestCase
 
     public function test_throws_user_not_supervisor_if_id_not_supervisor()
     {
-        $admin = User::factory()->create()->assignRole('admin');
-        $notSupervisor = User::factory()->create()->assignRole('user');
+        $admin = User::factory()->create()->syncRoles('admin');
+        $notSupervisor = User::factory()->create()->syncRoles('user');
 
         $this->actingAs($admin);
 
@@ -55,8 +55,8 @@ class SupervisorTest extends TestCase
 
     public function test_adds_assigned_comment()
     {
-        $admin = User::factory()->create()->assignRole('admin');
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $admin = User::factory()->create()->syncRoles('admin');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $this->actingAs($admin);
 
@@ -83,7 +83,7 @@ class SupervisorTest extends TestCase
 
     public function test_unassign_supervisor_not_permitted_by_supervisor()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $this->actingAs($supervisor);
 
@@ -104,8 +104,8 @@ class SupervisorTest extends TestCase
 
     public function test_unassign_supervisor_not_permitted_by_user()
     {
-        $user = User::factory()->create()->assignRole('user');
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $user = User::factory()->create()->syncRoles('user');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $this->actingAs($user);
 
@@ -125,10 +125,10 @@ class SupervisorTest extends TestCase
 
     public function test_unassign_supervisor_removes_supervisor_id_from_incident()
     {
-        $admin = User::factory()->create()->assignRole('admin');
+        $admin = User::factory()->create()->syncRoles('admin');
         $this->actingAs($admin);
 
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $incident = Incident::factory()->create([
             'supervisor_id' => $supervisor->id,
@@ -146,8 +146,8 @@ class SupervisorTest extends TestCase
 
     public function test_assign_supervisor_updates_supervisor_id_on_incident()
     {
-        $admin = User::factory()->create()->assignRole('admin');
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $admin = User::factory()->create()->syncRoles('admin');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $this->actingAs($admin);
 
@@ -168,8 +168,8 @@ class SupervisorTest extends TestCase
 
     public function test_assign_supervisor_not_permitted_by_user()
     {
-        $user = User::factory()->create()->assignRole('user');
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $user = User::factory()->create()->syncRoles('user');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $this->actingAs($user);
 
@@ -188,7 +188,7 @@ class SupervisorTest extends TestCase
 
     public function test_assign_supervisor_not_permitted_by_supervisor()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $this->actingAs($supervisor);
 

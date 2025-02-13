@@ -20,7 +20,7 @@ class InvestigationAggregateRootTest extends TestCase
 {
     public function test_incident_transitions_from_assigned_to_in_review()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $this->actingAs($supervisor);
 
         $incident = Incident::factory()->create(['status' => Assigned::class]);
@@ -53,11 +53,11 @@ class InvestigationAggregateRootTest extends TestCase
     {
         Notification::fake();
 
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $this->actingAs($supervisor);
 
         $admins = User::factory(3)->create()->each(function (User $user) {
-            $user->assignRole('admin');
+            $user->syncRoles('admin');
         });
 
         $incident = Incident::factory()->create(['status' => Assigned::class]);
@@ -101,7 +101,7 @@ class InvestigationAggregateRootTest extends TestCase
 
     public function test_adds_created_investigation_comment_on_incident()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $this->actingAs($supervisor);
 
         $incident = Incident::factory()->create(['status' => Assigned::class]);
@@ -141,7 +141,7 @@ class InvestigationAggregateRootTest extends TestCase
 
     public function test_fires_investigation_created_event()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $this->actingAs($supervisor);
 
         $incident = Incident::factory()->create(['status' => Assigned::class]);
@@ -185,7 +185,7 @@ class InvestigationAggregateRootTest extends TestCase
 
     public function test_investigation_uuid_is_aggregate_uuid()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $this->actingAs($supervisor);
 
         $incident = Incident::factory()->create(['status' => Assigned::class]);
@@ -222,7 +222,7 @@ class InvestigationAggregateRootTest extends TestCase
 
     public function test_stores_investigation()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $this->actingAs($supervisor);
 
         $incident = Incident::factory()->create(['status' => Assigned::class]);
