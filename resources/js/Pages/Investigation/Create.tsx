@@ -85,7 +85,6 @@ export default function Create({ incident }: { incident: Incident }) {
         basic_causes: '',
         remedial_actions: '',
         prevention: '',
-        hazard_class: 'Z',
         risk_rank: 1,
         resulted_in: [] as string[],
         substandard_acts: [] as string[],
@@ -157,8 +156,162 @@ export default function Create({ incident }: { incident: Incident }) {
                     </SelectInput>
                 </div>
                 <Modal show={isModalOpen} onClose={() => setIsModalOpen(false)}>
-                    TEXT
+                    <div className="p-4 flex flex-col justify-center items-center">
+                        <h3 className="text-lg font-bold mb-2">
+                            Three Point Risk Ranking Scheme and Ranking Matrix
+                        </h3>
+
+
+                            <table className=" border border-gray-300">
+                                <thead>
+                                <tr>
+                                    <th
+                                        rowSpan={2}
+                                        className="border border-gray-300 px-4 py-2 text-center"
+                                    >
+                                        Frequency
+                                    </th>
+                                    <th
+                                        colSpan={3}
+                                        className="border border-gray-300 px-4 py-2 text-center"
+                                    >
+                                        Hazard Severity
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th className="border border-gray-300 px-4 py-2 text-center">
+                                        Minor
+                                    </th>
+                                    <th className="border border-gray-300 px-4 py-2 text-center">
+                                        Serious
+                                    </th>
+                                    <th className="border border-gray-300 px-4 py-2 text-center">
+                                        Major
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td className="border border-gray-300 px-4 py-2">Seldom</td>
+                                    <td className="border-r border-b border-black px-4 py-2 bg-green-300 text-center">
+                                        1
+                                    </td>
+                                    <td className="border-x border-b border-black px-4 py-2 bg-green-300 text-center">
+                                        2
+                                    </td>
+                                    <td className="border-l border-b border-black px-4 py-2 bg-yellow-200 text-center">
+                                        3
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td className="border border-gray-300 px-4 py-2">Occasional</td>
+                                    <td className="border-y border-r border-black px-4 py-2 bg-green-300 text-center">
+                                        2
+                                    </td>
+                                    <td className="border border-black px-4 py-2 bg-yellow-200 text-center">
+                                        4
+                                    </td>
+                                    <td className="border-y border-l border-black px-4 py-2 bg-red-300 text-center">
+                                        6
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td className="border border-gray-300 px-4 py-2">Frequent</td>
+                                    <td className="border-t border-r border-black px-4 py-2 bg-yellow-200 text-center">
+                                        3
+                                    </td>
+                                    <td className="border-t border-x border-black px-4 py-2 bg-red-300 text-center">
+                                        6
+                                    </td>
+                                    <td className="border-t border-l border-black px-4 py-2 bg-red-300 text-center">
+                                        9
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+
+                        <div className="flex flex-col md:flex-row mt-6 gap-4">
+                            <table className="border border-gray-300 ">
+                                <thead>
+                                <tr>
+                                    <th className="border border-gray-300 px-4 py-2 text-center">Level</th>
+                                    <th className="border border-gray-300 px-4 py-2 text-center">Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td className="border border-gray-300 px-4 py-2 text-center">
+                                        <strong>Minor</strong>
+                                    </td>
+                                    <td className="border border-gray-300 px-4 py-2">
+                                        Low risk to students/staff/
+                                        visitors/contractors/UPEI
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td className="border border-gray-300 px-4 py-2 text-center">
+                                        <strong>Serious</strong>
+                                    </td>
+                                    <td className="border border-gray-300 px-4 py-2">
+                                        Moderate risk to students/staff/
+                                        visitors/contractors/UPEI
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td className="border border-gray-300 px-4 py-2 text-center">
+                                        <strong>Major</strong>
+                                    </td>
+                                    <td className="border border-gray-300 px-4 py-2">
+                                        High risk to students/staff/
+                                        visitors/contractors/UPEI
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                            <table className="border border-gray-300 ">
+                                <thead>
+                                <tr>
+                                    <th className="border border-gray-300 px-4 py-2 text-center">Level</th>
+                                    <th className="border border-gray-300 px-4 py-2 text-center">Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td className="border border-gray-300 px-4 py-2 text-center">
+                                        <strong>Seldom</strong>
+                                    </td>
+                                    <td className="border border-gray-300 px-4 py-2">
+                                        Very unlikely risk to
+                                        students/staff/visitors/contractors/UPEI
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td className="border border-gray-300 px-4 py-2 text-center">
+                                        <strong>Occasional</strong>
+                                    </td>
+                                    <td className="border border-gray-300 px-4 py-2">
+                                        Risk to some students/staff/
+                                        visitors/contractors during specific tasks or areas.
+                                        Medium risk to UPEI.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td className="border border-gray-300 px-4 py-2 text-center">
+                                        <strong>Frequent</strong>
+                                    </td>
+                                    <td className="border border-gray-300 px-4 py-2">
+                                        Students/staff/visitors/
+                                        contractors/UPEI continuously exposed to the risk
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </Modal>
+
 
                 <div className="mb-4">
                     <label className="font-semibold text-gray-700">Immediate Causes:</label>
@@ -169,7 +322,7 @@ export default function Create({ incident }: { incident: Incident }) {
                     <TextArea
                         value={data.immediate_causes}
                         onChange={(e) => setData('immediate_causes', e.target.value)}
-                        className="p-2 border border-gray-300 rounded-md w-full h-24"
+                        className="p-2 border border-gray-300 rounded-md "
                     />
                 </div>
 
@@ -182,7 +335,7 @@ export default function Create({ incident }: { incident: Incident }) {
                     <TextArea
                         value={data.basic_causes}
                         onChange={(e) => setData('basic_causes', e.target.value)}
-                        className="p-2 border border-gray-300 rounded-md w-full h-24"
+                        className="p-2 border border-gray-300 rounded-md"
                     />
                 </div>
 
