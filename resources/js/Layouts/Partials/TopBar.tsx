@@ -3,8 +3,11 @@ import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { Link, usePage } from '@inertiajs/react';
 import { Method } from '@/types/Method';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Searchbar from '@/Layouts/Partials/Searchbar';
+import Notifications from '@/Layouts/Partials/Notifications';
+import axios from 'axios';
+import { Notification } from '@/types/Notification';
 
 const userNavigation: { name: string; href: string; method?: Method }[] = [
     { name: 'Your profile', href: route('profile.edit') },
@@ -49,13 +52,20 @@ export default function TopBar(props: { onClick: () => void }) {
                     )}
 
                     <div className="flex items-center gap-x-4 lg:gap-x-6">
-                        <button
-                            type="button"
-                            className="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500"
-                        >
-                            <span className="sr-only">View notifications</span>
-                            <BellIcon aria-hidden="true" className="size-6" />
-                        </button>
+                        <div className="relative">
+                            <button
+                                type="button"
+                                className="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500"
+                            >
+                                <span className="sr-only">View notifications</span>
+                                <BellIcon aria-hidden="true" className="size-6" />
+                            </button>
+
+                            {/* Notifications Dropdown */}
+                            <div className="absolute right-0 mt-2 w-72 rounded-lg border bg-white p-4 shadow-lg">
+                                <Notifications />
+                            </div>
+                        </div>
 
                         {/* Separator */}
                         <div
