@@ -1,10 +1,9 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, useForm, usePage } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
 import React, { FormEvent } from 'react';
 import TextArea from '@/Components/TextArea';
 import LabeledCheckbox from '@/Components/LabeledCheckbox';
 import { InformationCircleIcon } from '@heroicons/react/24/outline';
-import Modal from '@/Components/Modal';
 import SelectInput from '@/Components/SelectInput';
 import PrimaryButton from '@/Components/PrimaryButton';
 import { Incident } from '@/types/incident/Incident';

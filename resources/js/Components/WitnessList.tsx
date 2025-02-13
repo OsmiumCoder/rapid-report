@@ -7,19 +7,13 @@ interface WitnessListProps {
     removeWitness: (index: number) => void;
 }
 
-export default function WitnessList({
-    witnesses,
-    removeWitness,
-}: WitnessListProps) {
+export default function WitnessList({ witnesses, removeWitness }: WitnessListProps) {
     return (
         <>
             {witnesses.length > 0 && (
                 <ul className="px-4 divide-y divide-gray-100">
                     {witnesses.map((person, index) => (
-                        <li
-                            key={index}
-                            className="py-2 flex justify-between gap-x-12 items-center"
-                        >
+                        <li key={index} className="py-2 flex justify-between gap-x-12 items-center">
                             <div>
                                 <p className="text-sm/6 font-semibold text-gray-900">
                                     {person.name}
@@ -39,10 +33,7 @@ export default function WitnessList({
                                     }}
                                     className="rounded-full bg-red-600 p-2 text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
                                 >
-                                    <XMarkIcon
-                                        aria-hidden="true"
-                                        className="size-5"
-                                    />
+                                    <XMarkIcon aria-hidden="true" className="size-5" />
                                 </button>
                             </div>
                         </li>

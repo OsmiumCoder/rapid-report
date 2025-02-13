@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Investigation;
 
-use App\Data\InvestigationData;
 use App\Models\Incident;
 use Inertia\Testing\AssertableInertia;
 use Tests\TestCase;
