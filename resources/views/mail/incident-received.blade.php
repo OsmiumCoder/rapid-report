@@ -11,5 +11,5 @@
     Thank you for your report.
 
     Best regards,
-    Rapid-Report Team
+    UPEI Health, Safety, and Environment
 </x-mail::message>
