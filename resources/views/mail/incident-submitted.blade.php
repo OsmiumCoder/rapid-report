@@ -4,5 +4,5 @@
     A new incident has been submitted.
 
     Thanks,<br>
-    Rapid-Report Team
+    UPEI Health, Safety, and Environment
 </x-mail::message>
