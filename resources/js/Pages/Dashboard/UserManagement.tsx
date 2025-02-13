@@ -111,7 +111,7 @@ export default function UserManagement({ users, roles }: UserManagementProps) {
                                                         ))}
                                                     </SelectInput>
                                                 </td>
-                                                <td className="flex justify-end whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                                <td className="flex justify-end whitespace-nowrap py-4 pl-3 pr-4 sm:pl-6 text-sm text-gray-500">
                                                     <DangerButton
                                                         onClick={() =>
                                                             setModalProps({
