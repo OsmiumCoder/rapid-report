@@ -92,6 +92,6 @@ class IncidentCreated extends StoredEvent
         }
 
         $admins = User::role('admin')->get();
-        Notification::send($admins, new IncidentSubmitted);
+        Notification::send($admins, new IncidentSubmitted($this->aggregateRootUuid()));
     }
 }

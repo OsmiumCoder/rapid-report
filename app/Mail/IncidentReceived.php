@@ -36,10 +36,8 @@ class IncidentReceived extends Mailable
      */
     public function content(): Content
     {
-        $url = url('/incidents');
         return new Content(
             markdown: 'mail.incident-received',
-            with: (['url' => $url, 'http://rapid-report.test/incidents/']),
         );
     }
 
@@ -51,14 +49,5 @@ class IncidentReceived extends Mailable
     public function attachments(): array
     {
         return [];
-    }
-
-    public function toMail($notifiable): Content
-    {
-        $url = url('/incidents');
-        return new Content(
-            markdown: 'mail.incident-received',
-            with: (['url' => $url, 'http://rapid-report.test/incidents/']),
-        );
     }
 }

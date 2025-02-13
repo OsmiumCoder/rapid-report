@@ -14,8 +14,9 @@ class IncidentSubmitted extends Notification
     /**
      * Create a new notification instance.
      */
-    public function __construct()
-    {
+    public function __construct(
+        public string $incidentId,
+    ) {
         //
     }
 
@@ -35,7 +36,7 @@ class IncidentSubmitted extends Notification
     public function toVonage(object $notifiable): VonageMessage
     {
         return (new VonageMessage)
-            ->content('Your SMS message content');
+            ->content('A new incident has been submitted.');
     }
 
     /**
@@ -54,7 +55,7 @@ class IncidentSubmitted extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            'message' => 'A new incident has been reported.',
+            'incident_id' => $this->incidentId,
         ];
     }
 }
