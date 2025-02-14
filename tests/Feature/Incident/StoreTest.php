@@ -9,7 +9,7 @@ use App\Mail\IncidentReceived;
 use App\Models\CustomStoredEvent;
 use App\Models\Incident;
 use App\Models\User;
-use App\Notifications\IncidentSubmitted;
+use App\Notifications\Incident\IncidentSubmitted;
 use App\States\IncidentStatus\Opened;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;

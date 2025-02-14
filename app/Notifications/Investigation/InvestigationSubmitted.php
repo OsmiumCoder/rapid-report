@@ -12,13 +12,16 @@ class InvestigationSubmitted extends Notification
 {
     use Queueable;
 
+    public string $message;
     /**
      * Create a new notification instance.
      */
     public function __construct(
+        public string $incidentId,
         public string $investigationId,
         public User $supervisor,
     ) {
+        $this->message = "A new investigation was submitted by {$this->supervisor->name}";
     }
 
     /**
@@ -44,6 +47,15 @@ class InvestigationSubmitted extends Notification
     }
 
     /**
+     * Get the Vonage / SMS representation of the notification.
+     */
+    public function toVonage(object $notifiable): VonageMessage
+    {
+        return (new VonageMessage)
+            ->content($this->message);
+    }
+
+    /**
      * Get the array representation of the notification.
      *
      * @return array<string, mixed>
@@ -51,17 +63,13 @@ class InvestigationSubmitted extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            'investigation_id' => $this->investigationId,
+            'route' => 'incidents.investigations.show',
+            'params' => [
+                'incident' => $this->incidentId,
+                'investigation' => $this->investigationId,
+            ],
+            'message' => $this->message,
             'supervisor_name' => $this->supervisor->name,
         ];
-    }
-
-    /**
-     * Get the Vonage / SMS representation of the notification.
-     */
-    public function toVonage(object $notifiable): VonageMessage
-    {
-        return (new VonageMessage)
-            ->content('A new investigation was submitted by {$this->supervisor->name}.}');
     }
 }
