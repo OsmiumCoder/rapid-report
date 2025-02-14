@@ -74,8 +74,11 @@ class DashboardController extends Controller
 
         $search = $request->string('search', '');
 
-        $paginatedUsers = User::whereLike('name', "%$search%")
-            ->orWhereLike('email', "%$search%")
+        $paginatedUsers = User::whereNot('id', auth()->user()->id)
+            ->where(function ($query) use ($search) {
+                $query->whereLike('name', "%$search%")
+                    ->orWhereLike('email', "%$search%");
+            })
             ->orderBy('name')
             ->paginate()
             ->appends($request->query());

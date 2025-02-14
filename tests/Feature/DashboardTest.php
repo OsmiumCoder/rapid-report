@@ -11,6 +11,28 @@ use Tests\TestCase;
 
 class DashboardTest extends TestCase
 {
+    public function test_user_management_does_not_return_self()
+    {
+        $admin = User::factory()->create()->syncRoles('admin');
+        $this->actingAs($admin);
+
+        $user = User::factory()->create();
+
+        $response = $this->get(route('dashboard.user-management'));
+
+        $response->assertOk();
+
+        $response->assertInertia(function (AssertableInertia $page) use ($user) {
+            $page->component('Dashboard/UserManagement')
+                ->has(
+                    'users',
+                    fn (AssertableInertia $page) => $page
+                        ->has('users.data', 1)
+                        ->where('users.data.0.id', $user->id)
+                )->has('roles', 4);
+        });
+    }
+
     public function test_user_management_can_search_users_by_email()
     {
         $admin = User::factory()->create(['name' => 'aaaa', 'email' => 'bbbb'])->syncRoles('admin');
@@ -73,7 +95,7 @@ class DashboardTest extends TestCase
                         ->where('to', 15)
                         ->where('last_page', 2)
                         ->count('links', 4)
-                        ->where('total', 26)
+                        ->where('total', 25)
                         ->etc()
                 )->has('roles', 4);
         });
