@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\User;
 
+use App\Models\Incident;
+use App\Models\Investigation;
 use App\Models\User;
 use App\StorableEvents\User\UserDeleted;
 use Illuminate\Support\Facades\Event;
@@ -9,6 +11,49 @@ use Tests\TestCase;
 
 class DestroyTest extends TestCase
 {
+    public function test_deletes_user_but_incident_persists()
+    {
+        $admin = User::factory()->create()->assignRole('admin');
+
+        $this->actingAs($admin);
+
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
+        $incident = Incident::factory()->create(['supervisor_id' => $supervisor->id]);
+
+        $response = $this->delete(route('users.destroy', ['user' => $supervisor->id]));
+
+        $supervisor->refresh();
+
+        $this->assertTrue($supervisor->trashed());
+
+        $this->assertFalse($incident->trashed());
+    }
+
+    public function test_deletes_user_investigation_persists()
+    {
+        $admin = User::factory()->create()->assignRole('admin');
+
+        $this->actingAs($admin);
+
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
+        $incident = Incident::factory()->create(['supervisor_id' => $supervisor->id]);
+
+        $investigation = Investigation::factory()->create([
+            'incident_id' => $incident->id,
+            'supervisor_id' => $supervisor->id
+        ]);
+
+        $response = $this->delete(route('users.destroy', ['user' => $supervisor->id]));
+
+        $supervisor->refresh();
+
+        $this->assertTrue($supervisor->trashed());
+
+        $this->assertFalse($investigation->trashed());
+    }
+
     public function test_fires_user_deleted_event()
     {
         Event::fake();
