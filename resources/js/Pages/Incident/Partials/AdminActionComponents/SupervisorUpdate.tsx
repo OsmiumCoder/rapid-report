@@ -11,13 +11,10 @@ import { ChevronUpDownIcon } from '@heroicons/react/16/solid';
 import { useState } from 'react';
 import LoadingIndicator from '@/Components/LoadingIndicator';
 import SecondaryButton from '@/Components/SecondaryButton';
-import ConfirmationModal, {
-    ConfirmationModalProps,
-    useConfirmationModalProps,
-} from '@/Components/ConfirmationModal';
-import { CheckIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid';
+import { CheckIcon } from '@heroicons/react/20/solid';
 import { assignSupervisor, unassignSupervisor } from '@/Helpers/Incident/statusUpdates';
 import { router } from '@inertiajs/react';
+import { useConfirmationModal } from '@/Components/confirmationModal/ConfirmationModalProvider';
 
 export default function SupervisorUpdate({
     incident,
@@ -27,7 +24,7 @@ export default function SupervisorUpdate({
     supervisors: User[];
 }) {
     const [isLoading, setIsLoading] = useState(false);
-    const [modalProps, setModalProps] = useConfirmationModalProps();
+    const { setModalProps } = useConfirmationModal();
     const [query, setQuery] = useState('');
     const [defaultText, setDefaultText] = useState<'Unassigned' | ''>('Unassigned');
 
@@ -61,8 +58,7 @@ export default function SupervisorUpdate({
                         const supervisor = supervisors.find(
                             (supervisor) => supervisor.id === parseInt(id)
                         );
-                        setModalProps((prev: ConfirmationModalProps) => ({
-                            ...prev,
+                        setModalProps({
                             title: 'Assign Supervisor',
                             text: `Are you sure you want to assign ${supervisor?.name} to this incident?\n${supervisor?.name} will be notified.`,
                             action: () =>
@@ -70,7 +66,7 @@ export default function SupervisorUpdate({
                                     router.reload({ only: ['incident'] })
                                 ),
                             show: true,
-                        }));
+                        });
                     }}
                 >
                     <div className="relative">
@@ -127,8 +123,7 @@ export default function SupervisorUpdate({
                 ) : incident.supervisor ? (
                     <SecondaryButton
                         onClick={() =>
-                            setModalProps((prev: ConfirmationModalProps) => ({
-                                ...prev,
+                            setModalProps({
                                 title: 'Unassign Supervisor',
                                 text: `Are you sure you want to unassign ${incident?.supervisor?.name} from this incident?`,
                                 action: () =>
@@ -136,7 +131,7 @@ export default function SupervisorUpdate({
                                         router.reload({ only: ['incident'] })
                                     ),
                                 show: true,
-                            }))
+                            })
                         }
                     >
                         Unassign
@@ -145,7 +140,6 @@ export default function SupervisorUpdate({
                     <></>
                 )}
             </div>
-            <ConfirmationModal modalProps={modalProps} />
         </>
     );
 }
