@@ -54,7 +54,7 @@ class NotificationTest extends TestCase
 
         $notificationResponse = $this->put(route('notifications.mark-all-read'));
 
-        $notificationResponse->assertOk();
+        $notificationResponse->assertRedirect();
 
         $notification->refresh();
 
@@ -104,7 +104,7 @@ class NotificationTest extends TestCase
 
         $notificationResponse = $this->delete(route('notifications.destroy', ['notification' => $notification->id]));
 
-        $notificationResponse->assertOk();
+        $notificationResponse->assertRedirect();
 
         $admin->refresh();
         $this->assertCount(0, $admin->notifications);
@@ -154,7 +154,7 @@ class NotificationTest extends TestCase
 
         $notificationResponse = $this->delete(route('notifications.destroy-all'));
 
-        $notificationResponse->assertOk();
+        $notificationResponse->assertRedirect();
 
         $admin->refresh();
         $this->assertCount(0, $admin->notifications);

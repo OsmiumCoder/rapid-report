@@ -6,21 +6,21 @@ use Illuminate\Http\Request;
 
 class NotificationController extends Controller
 {
-    public function markAllRead(Request $request): void
+    public function markAllRead(Request $request)
     {
         auth()->user()->notifications->markAsRead();
-        response()->json(['status' => 'success']);
+        return back();
     }
 
-    public function destroyAll(Request $request): void
+    public function destroyAll(Request $request)
     {
         auth()->user()->notifications()->delete();
-        response()->json(['status' => 'success']);
+        return back();
     }
 
-    public function destroy(string $notification): void
+    public function destroy(string $notification)
     {
         auth()->user()->notifications()->find($notification)->delete();
-        response()->json(['status' => 'success']);
+        return back();
     }
 }

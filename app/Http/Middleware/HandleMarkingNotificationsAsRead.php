@@ -16,7 +16,7 @@ class HandleMarkingNotificationsAsRead
     public function handle(Request $request, Closure $next): Response
     {
         if ($request->query('notification') !== null) {
-            auth()->user()->unreadNotifications()->findOrFail($request->query('notification'))->markAsRead();
+            auth()->user()->unreadNotifications()->find($request->query('notification'))?->markAsRead();
         }
 
         return $next($request);
