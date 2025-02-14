@@ -41,3 +41,4 @@ require __DIR__.'/reports.php';
 require __DIR__.'/incidents.php';
 require __DIR__.'/investigations.php';
 require __DIR__.'/notifications.php';
+require __DIR__.'/users.php';
