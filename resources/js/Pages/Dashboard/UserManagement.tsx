@@ -106,7 +106,7 @@ export default function UserManagement({ users, roles }: UserManagementProps) {
                                                     <SelectInput
                                                         value={user.roles[0].name}
                                                         onChange={(e) => {
-                                                            console.log(e.target.value);
+                                                            router.patch(route('users.update-role', {user: user.id}), {role: e.target.value})
                                                         }}
                                                     >
                                                         {roles.map(({ name }, index) => (
