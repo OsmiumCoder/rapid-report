@@ -1,13 +1,12 @@
 import { Bars3Icon, BellIcon, UserCircleIcon } from '@heroicons/react/24/outline';
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 import { Menu, MenuButton, MenuItem, MenuItems, Transition } from '@headlessui/react';
-import { Link, usePage } from '@inertiajs/react';
+import { Link, router, usePage } from '@inertiajs/react';
 import { Method } from '@/types/Method';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Searchbar from '@/Layouts/Partials/Searchbar';
 import Notifications from '@/Layouts/Partials/Notifications';
 import useDismiss from '@/hooks/useDismiss';
-import ConfirmationModal from '@/Components/confirmationModal/ConfirmationModal';
 import { useConfirmationModal } from '@/Components/confirmationModal/ConfirmationModalProvider';
 
 const userNavigation: { name: string; href: string; method?: Method }[] = [

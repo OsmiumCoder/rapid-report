@@ -21,7 +21,10 @@ export default function NotificationActions() {
         try {
             router.put(route('notifications.mark-all-read'), undefined, {
                 onSuccess: () =>
-                    router.reload({ only: ['notifications, notifications_paginator'] }),
+                    router.reload({
+                        only: ['notifications, notifications_paginator'],
+                        reset: ['notifications'],
+                    }),
             });
         } catch (error) {
             console.error(error);
@@ -40,7 +43,7 @@ export default function NotificationActions() {
 
                 <MenuItems
                     transition
-                    className="absolute right-2 z-10 border border-gray-200 rounded-lg mt-2 w-24 sm:w-56 origin-top-right bg-white shadow-lg ring-1 ring-black/5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
+                    className="absolute right-2 z-10 border border-gray-200 rounded-lg mt-2 w-32 origin-top-right bg-white shadow-lg ring-1 ring-black/5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
                 >
                     <div className="py-1">
                         <MenuItem>
