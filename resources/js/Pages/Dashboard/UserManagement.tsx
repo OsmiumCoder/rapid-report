@@ -1,37 +1,35 @@
 import Authenticated from '@/Layouts/AuthenticatedLayout';
-import {Head, router} from '@inertiajs/react';
-import {PaginatedResponse} from "@/types/PaginatedResponse";
-import {Role, User} from "@/types";
-import Pagination from "@/Components/Pagination";
-import ConfirmationModal, {useConfirmationModalProps} from "@/Components/ConfirmationModal";
-import DangerButton from "@/Components/DangerButton";
-import SelectInput from "@/Components/SelectInput";
-import React from "react";
-import {uppercaseWordFormat} from "@/Filters/uppercaseWordFormat";
-import PrimaryButton from "@/Components/PrimaryButton";
-import TextInput from "@/Components/TextInput";
-import _ from "underscore";
+import { Head, router } from '@inertiajs/react';
+import { PaginatedResponse } from '@/types/PaginatedResponse';
+import { Role, User } from '@/types';
+import Pagination from '@/Components/Pagination';
+import DangerButton from '@/Components/DangerButton';
+import SelectInput from '@/Components/SelectInput';
+import React from 'react';
+import { uppercaseWordFormat } from '@/Filters/uppercaseWordFormat';
+import PrimaryButton from '@/Components/PrimaryButton';
+import TextInput from '@/Components/TextInput';
+import _ from 'underscore';
+import {useConfirmationModal} from "@/Components/confirmationModal/ConfirmationModalProvider";
 
 interface UserManagementProps {
-    users: PaginatedResponse<User>,
-    roles: Role[]
+    users: PaginatedResponse<User>;
+    roles: Role[];
 }
 
 export default function UserManagement({ users, roles }: UserManagementProps) {
-    const [modalProps, setModalProps] = useConfirmationModalProps();
+    const { setModalProps } = useConfirmationModal();
 
     const searchUsers = _.debounce((search: string) => {
         router.reload({
-            data: {search: search, page: 1},
-            only: ['users']
+            data: { search: search, page: 1 },
+            only: ['users'],
         });
-    }, 300)
+    }, 300);
 
     return (
         <Authenticated>
             <Head title="User Management" />
-
-            <ConfirmationModal modalProps={modalProps} />
 
             <div className="px-4 sm:px-6 lg:px-8">
                 <div className="sm:flex sm:items-center">
@@ -42,8 +40,9 @@ export default function UserManagement({ users, roles }: UserManagementProps) {
                             email and role.
                         </p>
                         <div className="w-1/2 mt-2 text-sm text-gray-700">
-                            <TextInput placeholder="Search"
-                                       onChange={(e) => searchUsers(e.target.value)}
+                            <TextInput
+                                placeholder="Search"
+                                onChange={(e) => searchUsers(e.target.value)}
                             />
                         </div>
                     </div>
@@ -107,11 +106,15 @@ export default function UserManagement({ users, roles }: UserManagementProps) {
                                                     <SelectInput
                                                         value={user.roles[0].name}
                                                         onChange={(e) => {
-                                                            console.log(e.target.value)
+                                                            console.log(e.target.value);
                                                         }}
                                                     >
                                                         {roles.map(({ name }, index) => (
-                                                            <option className="hover:bg-upei-green-500" key={index} value={name}>
+                                                            <option
+                                                                className="hover:bg-upei-green-500"
+                                                                key={index}
+                                                                value={name}
+                                                            >
                                                                 {uppercaseWordFormat(name, '-')}
                                                             </option>
                                                         ))}

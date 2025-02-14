@@ -76,6 +76,6 @@ class InvestigationCreated extends StoredEvent
 
         $supervisor = User::find($this->metaData['user_id']);
 
-        Notification::send($admins, new InvestigationSubmitted($this->aggregateRootUuid(), $supervisor));
+        Notification::send($admins, new InvestigationSubmitted($this->incident_id, $this->aggregateRootUuid(), $supervisor));
     }
 }

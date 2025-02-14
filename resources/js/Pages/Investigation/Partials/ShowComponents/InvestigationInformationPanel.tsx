@@ -1,4 +1,4 @@
-import { Investigation } from '@/types/Investigation/Investigation';
+import { Investigation } from '@/types/investigation/Investigation';
 import { ArrowLeftIcon } from '@heroicons/react/24/solid';
 import { Link } from '@inertiajs/react';
 
@@ -51,7 +51,6 @@ export default function InvestigationInformationPanel({
                         <span className="font-semibold">Job Factors: </span>
                         <span>{investigation.job_factors.join(', ')}</span>
                     </div>
-
 
                     <div>
                         <span className="font-semibold">Hazard Class: </span>
