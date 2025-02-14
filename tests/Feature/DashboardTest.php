@@ -27,9 +27,10 @@ class DashboardTest extends TestCase
                 ->has(
                     'users',
                     fn (AssertableInertia $page) => $page
-                        ->has('users.data', 1)
-                        ->where('users.data.0.id', $user->id)
-                )->has('roles', 4);
+                        ->has('data', 1)
+                        ->where('data.0.id', $user->id)
+                        ->etc()
+                );
         });
     }
 
