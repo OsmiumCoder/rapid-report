@@ -8,6 +8,56 @@ use Tests\TestCase;
 
 class UserPolicyTest extends TestCase
 {
+    public function test_admin_cant_update_role_of_self()
+    {
+        $user = User::factory()->create([
+            'name' => 'Admin',
+            'email' => 'admin@b.com',
+        ])->syncRoles('admin');
+
+        $result = $this->getPolicy()->updateRole($user, $user);
+        $this->assertFalse($result);
+    }
+
+    public function test_admin_can_update_role_of_users()
+    {
+        $user = User::factory()->create([
+            'name' => 'Admin',
+            'email' => 'admin@b.com',
+        ])->syncRoles('admin');
+
+        $otherUser = User::factory()->create();
+
+        $result = $this->getPolicy()->updateRole($user, $otherUser);
+        $this->assertTrue($result);
+    }
+
+    public function test_supervisor_cant_update_role_of_users()
+    {
+        $user = User::factory()->create([
+            'name' => 'Admin',
+            'email' => 'admin@b.com',
+        ])->syncRoles('supervisor');
+
+        $otherUser = User::factory()->create();
+
+        $result = $this->getPolicy()->updateRole($user, $otherUser);
+        $this->assertFalse($result);
+    }
+
+    public function test_user_cant_update_role_of_users()
+    {
+        $user = User::factory()->create([
+            'name' => 'Admin',
+            'email' => 'admin@b.com',
+        ])->syncRoles('user');
+
+        $otherUser = User::factory()->create();
+
+        $result = $this->getPolicy()->updateRole($user, $otherUser);
+        $this->assertFalse($result);
+    }
+
     public function test_admin_cant_delete_self()
     {
         $user = User::factory()->create([

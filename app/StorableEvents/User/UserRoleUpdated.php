@@ -2,13 +2,15 @@
 
 namespace App\StorableEvents\User;
 
+use App\Enum\RolesEnum;
 use App\Models\User;
 use App\StorableEvents\StoredEvent;
 
-class UserDeleted extends StoredEvent
+class UserRoleUpdated extends StoredEvent
 {
     public function __construct(
         public int $user_id,
+        public RolesEnum $role
     ) {
     }
 
@@ -16,6 +18,6 @@ class UserDeleted extends StoredEvent
     {
         $user = User::find($this->user_id);
 
-        $user->delete();
+        $user->syncRoles($this->role->value);
     }
 }

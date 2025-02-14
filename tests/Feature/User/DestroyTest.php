@@ -69,7 +69,7 @@ class DestroyTest extends TestCase
         Event::assertDispatchedTimes(UserDeleted::class, 1);
 
         Event::assertDispatched(function (UserDeleted $event) use ($user) {
-            return $user->id == $event->id;
+            return $user->id == $event->user_id;
         });
     }
 

@@ -25,4 +25,13 @@ class UserPolicy
 
         return false;
     }
+
+    public function updateRole(User $user, User $model)
+    {
+        if ($user->can('manage users') && $user->id !== $model->id) {
+            return true;
+        }
+
+        return false;
+    }
 }

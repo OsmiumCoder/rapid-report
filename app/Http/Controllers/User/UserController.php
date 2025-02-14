@@ -24,7 +24,9 @@ class UserController extends Controller
     {
         $this->authorize('delete', $user);
 
-        $event = new UserDeleted($user->id);
+        $event = new UserDeleted(
+            user_id: $user->id
+        );
 
         event($event);
 
