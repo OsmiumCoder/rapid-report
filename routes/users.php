@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\User\UserController;
-use App\Http\Controllers\UserRoleController;
+use App\Http\Controllers\User\UserRoleController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'verified'])->group(function () {
