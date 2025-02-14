@@ -20,15 +20,7 @@ interface UserManagementProps {
 export default function UserManagement({ users, roles }: UserManagementProps) {
     const [modalProps, setModalProps] = useConfirmationModalProps();
 
-    const abortControllerRef = useRef<AbortController | null>(null);
-
     const searchUsers = _.debounce((search: string) => {
-        if (abortControllerRef.current) {
-            abortControllerRef.current.abort();
-        }
-
-        abortControllerRef.current = new AbortController();
-
         router.reload({
             data: { search: search, page: 1 },
             only: ['users'],
