@@ -3,14 +3,14 @@ import { Head, router } from '@inertiajs/react';
 import { PaginatedResponse } from '@/types/PaginatedResponse';
 import { Role, User } from '@/types';
 import Pagination from '@/Components/Pagination';
-import ConfirmationModal, { useConfirmationModalProps } from '@/Components/ConfirmationModal';
 import DangerButton from '@/Components/DangerButton';
 import SelectInput from '@/Components/SelectInput';
-import React, { useRef } from 'react';
+import React from 'react';
 import { uppercaseWordFormat } from '@/Filters/uppercaseWordFormat';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import _ from 'underscore';
+import {useConfirmationModal} from "@/Components/confirmationModal/ConfirmationModalProvider";
 
 interface UserManagementProps {
     users: PaginatedResponse<User>;
@@ -18,7 +18,7 @@ interface UserManagementProps {
 }
 
 export default function UserManagement({ users, roles }: UserManagementProps) {
-    const [modalProps, setModalProps] = useConfirmationModalProps();
+    const { setModalProps } = useConfirmationModal();
 
     const searchUsers = _.debounce((search: string) => {
         router.reload({
@@ -30,8 +30,6 @@ export default function UserManagement({ users, roles }: UserManagementProps) {
     return (
         <Authenticated>
             <Head title="User Management" />
-
-            <ConfirmationModal modalProps={modalProps} />
 
             <div className="px-4 sm:px-6 lg:px-8">
                 <div className="sm:flex sm:items-center">
