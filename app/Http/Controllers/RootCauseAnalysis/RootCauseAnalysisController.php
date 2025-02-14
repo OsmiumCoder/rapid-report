@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\RootCauseAnalysis;
 
+use App\Http\Controllers\Controller;
 use App\Models\RootCauseAnalysis;
 use Illuminate\Http\Request;
 
