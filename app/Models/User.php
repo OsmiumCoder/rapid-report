@@ -16,6 +16,13 @@ class User extends Authenticatable
     use Notifiable;
 
     /**
+     * The relationships that should always be loaded.
+     *
+     * @var array
+     */
+    protected $with = ['roles'];
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
@@ -49,14 +56,6 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
-    }
-
-    public function toArray(): array
-    {
-        $array = parent::toArray();
-        $array['roles'] = $this->roles; // Include roles in the serialized output
-
-        return $array;
     }
 
     /**

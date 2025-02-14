@@ -85,7 +85,7 @@ class IncidentAggregateRootTest extends TestCase
 
     public function test_adds_reopened_comment()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $incident = Incident::factory()->create([
             'supervisor_id' => $supervisor->id,
@@ -109,7 +109,7 @@ class IncidentAggregateRootTest extends TestCase
 
     public function test_adds_closed_comment()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $incident = Incident::factory()->create([
             'supervisor_id' => $supervisor->id,
@@ -133,7 +133,7 @@ class IncidentAggregateRootTest extends TestCase
 
     public function test_adds_unassigned_comment()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $incident = Incident::factory()->create([
             'supervisor_id' => $supervisor->id,
@@ -159,7 +159,7 @@ class IncidentAggregateRootTest extends TestCase
     {
         $this->expectException(UserNotSupervisorException::class);
 
-        $notSupervisor = User::factory()->create()->assignRole('admin');
+        $notSupervisor = User::factory()->create()->syncRoles('admin');
 
         $incident = Incident::factory()->create();
 
@@ -170,7 +170,7 @@ class IncidentAggregateRootTest extends TestCase
 
     public function test_adds_assigned_comment_on_supervisor_assigned()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $incident = Incident::factory()->create();
 
@@ -244,7 +244,7 @@ class IncidentAggregateRootTest extends TestCase
 
     public function test_closed_incident_event_fired()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $incident = Incident::factory()->create([
             'supervisor_id' => $supervisor->id,
             'status' => InReview::class,
@@ -262,7 +262,7 @@ class IncidentAggregateRootTest extends TestCase
 
     public function test_close_incident()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $incident = Incident::factory()->create([
             'supervisor_id' => $supervisor->id,
@@ -282,7 +282,7 @@ class IncidentAggregateRootTest extends TestCase
 
     public function test_reopened_incident_event_fired()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $incident = Incident::factory()->create([
             'supervisor_id' => $supervisor->id,
             'status' => Closed::class,
@@ -300,7 +300,7 @@ class IncidentAggregateRootTest extends TestCase
 
     public function test_reopen_incident()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $incident = Incident::factory()->create([
             'supervisor_id' => $supervisor->id,
@@ -320,7 +320,7 @@ class IncidentAggregateRootTest extends TestCase
 
     public function test_unassigned_supervisor_event_fired()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $incident = Incident::factory()->create([
             'supervisor_id' => $supervisor->id,
             'status' => Assigned::class,
@@ -338,7 +338,7 @@ class IncidentAggregateRootTest extends TestCase
 
     public function test_unassign_supervisor_from_incident()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $incident = Incident::factory()->create([
             'supervisor_id' => $supervisor->id,
             'status' => Assigned::class,
@@ -357,7 +357,7 @@ class IncidentAggregateRootTest extends TestCase
 
     public function test_assigned_supervisor_event_fired()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $incident = Incident::factory()->create();
 
         IncidentAggregateRoot::fake($incident->id)
@@ -371,7 +371,7 @@ class IncidentAggregateRootTest extends TestCase
 
     public function test_assign_supervisor_to_incident()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $incident = Incident::factory()->create();
 
@@ -610,9 +610,9 @@ class IncidentAggregateRootTest extends TestCase
         Notification::fake();
 
         $admins = User::factory(3)->create()->each(function (User $user) {
-            $user->assignRole('admin');
+            $user->syncRoles('admin');
         });
-        $user = User::factory()->create()->assignRole('user');
+        $user = User::factory()->create()->syncRoles('user');
 
         $incidentData = IncidentData::from([
             'anonymous' => false,
@@ -700,7 +700,7 @@ class IncidentAggregateRootTest extends TestCase
         Notification::fake();
 
         $admins = User::factory(3)->create()->each(function (User $user) {
-            $user->assignRole('admin');
+            $user->syncRoles('admin');
         });
 
         $incidentData = IncidentData::from([

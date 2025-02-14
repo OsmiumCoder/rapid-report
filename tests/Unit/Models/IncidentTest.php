@@ -11,7 +11,7 @@ class IncidentTest extends TestCase
 {
     public function test_incident_has_one_supervisor_relation()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $incident = Incident::factory()->create(['supervisor_id' => $supervisor->id]);
 
         $this->assertEquals($supervisor->id, $incident->supervisor->id);
@@ -113,7 +113,7 @@ class IncidentTest extends TestCase
 
     public function test_incident_with_assigned_supervisor_returns_supervisor_user()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $incident = Incident::factory()->create([
             'supervisor_id' => $supervisor->id,
         ]);
