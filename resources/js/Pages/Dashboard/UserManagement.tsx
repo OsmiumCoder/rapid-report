@@ -49,7 +49,13 @@ export default function UserManagement({ users, roles }: UserManagementProps) {
                     </div>
                     <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
                         <PrimaryButton
-                            onClick={() => {}}
+                            onClick={() =>
+                                setModalProps({
+                                    title: 'Add User',
+                                    text: `Fill out the details:`,
+                                    show: true,
+                                })
+                            }
                         >
                             Add User
                         </PrimaryButton>
