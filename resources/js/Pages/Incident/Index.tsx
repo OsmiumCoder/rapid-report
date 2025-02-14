@@ -12,13 +12,14 @@ import { PencilIcon } from '@heroicons/react/24/outline';
 import { uppercaseWordFormat } from '@/Filters/uppercaseWordFormat';
 import { nameFilter } from '@/Filters/nameFilter';
 import IndexFilter from '@/Pages/Incident/Partials/IndexComponents/IndexFilter';
-import { useEffect, useRef, useState } from 'react';
+import { MouseEventHandler, useEffect, useRef, useState } from 'react';
 import classNames from '@/Filters/classNames';
 import { descriptors } from '@/Pages/Incident/Stages/IncidentDropDownValues';
 import { IncidentStatus } from '@/Enums/IncidentStatus';
 import Badge from '@/Components/Badge';
 import { incidentBadgeColor } from '@/Filters/incidentBadgeColor';
-import Pagination from "@/Components/Pagination";
+import Pagination from '@/Components/Pagination';
+import { sortBy } from 'underscore';
 
 type IndexType = 'owned' | 'assigned' | 'all';
 
@@ -140,20 +141,28 @@ export default function Index({
 
     const [sortedBy, setSortedBy] = useState<SortBy>(currentSortBy ?? 'created_at');
 
-    const [sortDirection, setSortDirection] = useState<SortDirection>(
+    const [sortedDirection, setSortedDirection] = useState<SortDirection>(
         currentSortDirection ?? 'desc'
     );
 
     const resetFilters = () => setFilters(initialFilters);
 
-    const handleSort = (sortBy: SortBy) => {
-        if (sortBy !== sortedBy || sortDirection === 'asc') {
-            setSortDirection('desc');
+    const handleSortCycle = (sortBy: SortBy) => {
+        if (sortBy !== sortedBy || sortedDirection === 'asc') {
+            setSortedDirection('desc');
         } else {
-            setSortDirection('asc');
+            setSortedDirection('asc');
         }
 
         setSortedBy(sortBy);
+    };
+
+    const handleSort = (e: MouseEvent, sortBy: SortBy, sortDirection: SortDirection) => {
+        e.stopPropagation();
+        if (sortBy === sortedBy && sortDirection === sortedDirection) return;
+
+        setSortedBy(sortBy);
+        setSortedDirection(sortDirection);
     };
 
     useEffect(() => {
@@ -163,7 +172,7 @@ export default function Index({
         } else {
             hasMounted.current = true;
         }
-    }, [filters, sortDirection, sortedBy]);
+    }, [filters, sortedDirection, sortedBy]);
 
     const handleSortAndFilter = () => {
         const processedFilters = Object.entries(filters).reduce<ProcessedFilter[]>(
@@ -191,7 +200,7 @@ export default function Index({
             {
                 filters: encodeURIComponent(JSON.stringify(processedFilters)),
                 sort_by: sortedBy,
-                sort_direction: sortDirection,
+                sort_direction: sortedDirection,
             },
             {
                 preserveState: true,
@@ -242,17 +251,24 @@ export default function Index({
                                                 scope="col"
                                                 className="hidden px-6 py-3.5 text-left text-sm font-semibold text-gray-900 md:table-cell"
                                             >
-                                                <div className="flex items-center">
+                                                <div
+                                                    onClick={() => handleSortCycle('created_at')}
+                                                    className="flex items-center hover:cursor-pointer select-none"
+                                                >
                                                     Submitted On
-                                                    <div
-                                                        className="ml-2 rounded text-gray-400 group-hover:visible group-focus:visible"
-                                                        onClick={() => handleSort('created_at')}
-                                                    >
+                                                    <div className="ml-2 rounded text-gray-400 group-hover:visible group-focus:visible">
                                                         <ChevronUpIcon
                                                             aria-hidden="true"
+                                                            onClick={(e) =>
+                                                                handleSort(
+                                                                    e as unknown as MouseEvent,
+                                                                    'created_at',
+                                                                    'asc'
+                                                                )
+                                                            }
                                                             className={classNames(
-                                                                'size-5 hover:cursor-pointer pt-1',
-                                                                sortDirection === 'asc' &&
+                                                                'size-5 pt-1',
+                                                                sortedDirection === 'asc' &&
                                                                     sortedBy === 'created_at'
                                                                     ? 'text-gray-900'
                                                                     : 'text-gray-400'
@@ -260,9 +276,16 @@ export default function Index({
                                                         />
                                                         <ChevronDownIcon
                                                             aria-hidden="true"
+                                                            onClick={(e) =>
+                                                                handleSort(
+                                                                    e as unknown as MouseEvent,
+                                                                    'created_at',
+                                                                    'desc'
+                                                                )
+                                                            }
                                                             className={classNames(
-                                                                'size-5 hover:cursor-pointer pb-1',
-                                                                sortDirection === 'desc' &&
+                                                                'size-5 pb-1',
+                                                                sortedDirection === 'desc' &&
                                                                     sortedBy === 'created_at'
                                                                     ? 'text-gray-900'
                                                                     : 'text-gray-400'
@@ -275,7 +298,10 @@ export default function Index({
                                                 scope="col"
                                                 className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
                                             >
-                                                <div className="flex items-center">
+                                                <div
+                                                    onClick={() => handleSortCycle('name')}
+                                                    className="flex items-center hover:cursor-pointer select-none"
+                                                >
                                                     <div>
                                                         <span className="sm:block md:hidden">
                                                             Incident
@@ -284,15 +310,19 @@ export default function Index({
                                                             Reporter
                                                         </span>
                                                     </div>
-                                                    <div
-                                                        className="ml-2 rounded text-gray-400 group-hover:visible group-focus:visible"
-                                                        onClick={() => handleSort('name')}
-                                                    >
+                                                    <div className="ml-2 rounded text-gray-400 group-hover:visible group-focus:visible">
                                                         <ChevronUpIcon
                                                             aria-hidden="true"
+                                                            onClick={(e) =>
+                                                                handleSort(
+                                                                    e as unknown as MouseEvent,
+                                                                    'name',
+                                                                    'asc'
+                                                                )
+                                                            }
                                                             className={classNames(
-                                                                'size-5 hover:cursor-pointer pt-1',
-                                                                sortDirection === 'asc' &&
+                                                                'size-5 pt-1',
+                                                                sortedDirection === 'asc' &&
                                                                     sortedBy === 'name'
                                                                     ? 'text-gray-900'
                                                                     : 'text-gray-400'
@@ -300,9 +330,16 @@ export default function Index({
                                                         />
                                                         <ChevronDownIcon
                                                             aria-hidden="true"
+                                                            onClick={(e) =>
+                                                                handleSort(
+                                                                    e as unknown as MouseEvent,
+                                                                    'name',
+                                                                    'desc'
+                                                                )
+                                                            }
                                                             className={classNames(
-                                                                'size-5 hover:cursor-pointer pb-1',
-                                                                sortDirection === 'desc' &&
+                                                                'size-5 pb-1',
+                                                                sortedDirection === 'desc' &&
                                                                     sortedBy === 'name'
                                                                     ? 'text-gray-900'
                                                                     : 'text-gray-400'
@@ -315,17 +352,24 @@ export default function Index({
                                                 scope="col"
                                                 className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 md:table-cell"
                                             >
-                                                <div className="flex items-center">
+                                                <div
+                                                    onClick={() => handleSortCycle('descriptor')}
+                                                    className="flex items-center hover:cursor-pointer select-none"
+                                                >
                                                     Descriptor
-                                                    <div
-                                                        className="ml-2 rounded text-gray-400 group-hover:visible group-focus:visible"
-                                                        onClick={() => handleSort('descriptor')}
-                                                    >
+                                                    <div className="ml-2 rounded text-gray-400 group-hover:visible group-focus:visible">
                                                         <ChevronUpIcon
                                                             aria-hidden="true"
+                                                            onClick={(e) =>
+                                                                handleSort(
+                                                                    e as unknown as MouseEvent,
+                                                                    'descriptor',
+                                                                    'asc'
+                                                                )
+                                                            }
                                                             className={classNames(
-                                                                'size-5 hover:cursor-pointer pt-1',
-                                                                sortDirection === 'asc' &&
+                                                                'size-5 pt-1',
+                                                                sortedDirection === 'asc' &&
                                                                     sortedBy === 'descriptor'
                                                                     ? 'text-gray-900'
                                                                     : 'text-gray-400'
@@ -333,9 +377,16 @@ export default function Index({
                                                         />
                                                         <ChevronDownIcon
                                                             aria-hidden="true"
+                                                            onClick={(e) =>
+                                                                handleSort(
+                                                                    e as unknown as MouseEvent,
+                                                                    'descriptor',
+                                                                    'desc'
+                                                                )
+                                                            }
                                                             className={classNames(
-                                                                'size-5 hover:cursor-pointer pb-1',
-                                                                sortDirection === 'desc' &&
+                                                                'size-5 pb-1',
+                                                                sortedDirection === 'desc' &&
                                                                     sortedBy === 'descriptor'
                                                                     ? 'text-gray-900'
                                                                     : 'text-gray-400'
@@ -348,17 +399,24 @@ export default function Index({
                                                 scope="col"
                                                 className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 md:table-cell"
                                             >
-                                                <div className="flex items-center">
+                                                <div
+                                                    onClick={() => handleSortCycle('location')}
+                                                    className="flex items-center hover:cursor-pointer select-none"
+                                                >
                                                     Location
-                                                    <div
-                                                        className="ml-2 rounded text-gray-400 group-hover:visible group-focus:visible"
-                                                        onClick={() => handleSort('location')}
-                                                    >
+                                                    <div className="ml-2 rounded text-gray-400 group-hover:visible group-focus:visible">
                                                         <ChevronUpIcon
                                                             aria-hidden="true"
+                                                            onClick={(e) =>
+                                                                handleSort(
+                                                                    e as unknown as MouseEvent,
+                                                                    'location',
+                                                                    'asc'
+                                                                )
+                                                            }
                                                             className={classNames(
-                                                                'size-5 hover:cursor-pointer pt-1',
-                                                                sortDirection === 'asc' &&
+                                                                'size-5 pt-1',
+                                                                sortedDirection === 'asc' &&
                                                                     sortedBy === 'location'
                                                                     ? 'text-gray-900'
                                                                     : 'text-gray-400'
@@ -366,9 +424,16 @@ export default function Index({
                                                         />
                                                         <ChevronDownIcon
                                                             aria-hidden="true"
+                                                            onClick={(e) =>
+                                                                handleSort(
+                                                                    e as unknown as MouseEvent,
+                                                                    'location',
+                                                                    'desc'
+                                                                )
+                                                            }
                                                             className={classNames(
-                                                                'size-5 hover:cursor-pointer pb-1',
-                                                                sortDirection === 'desc' &&
+                                                                'size-5 pb-1',
+                                                                sortedDirection === 'desc' &&
                                                                     sortedBy === 'location'
                                                                     ? 'text-gray-900'
                                                                     : 'text-gray-400'
@@ -382,17 +447,24 @@ export default function Index({
                                                 scope="col"
                                                 className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 md:table-cell"
                                             >
-                                                <div className="flex items-center">
+                                                <div
+                                                    onClick={() => handleSortCycle('status')}
+                                                    className="flex items-center hover:cursor-pointer select-none"
+                                                >
                                                     Status
-                                                    <div
-                                                        className="ml-2 rounded text-gray-400 group-hover:visible group-focus:visible"
-                                                        onClick={() => handleSort('status')}
-                                                    >
+                                                    <div className="ml-2 rounded text-gray-400 group-hover:visible group-focus:visible">
                                                         <ChevronUpIcon
                                                             aria-hidden="true"
+                                                            onClick={(e) =>
+                                                                handleSort(
+                                                                    e as unknown as MouseEvent,
+                                                                    'status',
+                                                                    'asc'
+                                                                )
+                                                            }
                                                             className={classNames(
-                                                                'size-5 hover:cursor-pointer pt-1',
-                                                                sortDirection === 'asc' &&
+                                                                'size-5 pt-1',
+                                                                sortedDirection === 'asc' &&
                                                                     sortedBy === 'status'
                                                                     ? 'text-gray-900'
                                                                     : 'text-gray-400'
@@ -400,9 +472,16 @@ export default function Index({
                                                         />
                                                         <ChevronDownIcon
                                                             aria-hidden="true"
+                                                            onClick={(e) =>
+                                                                handleSort(
+                                                                    e as unknown as MouseEvent,
+                                                                    'status',
+                                                                    'desc'
+                                                                )
+                                                            }
                                                             className={classNames(
-                                                                'size-5 hover:cursor-pointer pb-1',
-                                                                sortDirection === 'desc' &&
+                                                                'size-5 pb-1',
+                                                                sortedDirection === 'desc' &&
                                                                     sortedBy === 'status'
                                                                     ? 'text-gray-900'
                                                                     : 'text-gray-400'
