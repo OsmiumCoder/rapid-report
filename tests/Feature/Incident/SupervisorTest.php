@@ -23,7 +23,7 @@ class SupervisorTest extends TestCase
             'status' => Assigned::class,
         ]);
 
-        $response = $this->put(route('incidents.unassign-supervisor', ['incident' => $incident->id]));
+        $response = $this->patch(route('incidents.unassign-supervisor', ['incident' => $incident->id]));
 
         $response->assertRedirect();
 
@@ -48,7 +48,7 @@ class SupervisorTest extends TestCase
 
         $incident = Incident::factory()->create();
 
-        $response = $this->put(route('incidents.assign-supervisor', ['incident' => $incident->id]), ['supervisor_id' => $notSupervisor->id]);
+        $response = $this->patch(route('incidents.assign-supervisor', ['incident' => $incident->id]), ['supervisor_id' => $notSupervisor->id]);
 
         $this->assertInstanceOf(UserNotSupervisorException::class, $response->exception);
     }
@@ -64,7 +64,7 @@ class SupervisorTest extends TestCase
 
         $this->assertCount(0, $incident->comments);
 
-        $response = $this->put(route('incidents.assign-supervisor', ['incident' => $incident->id]), ['supervisor_id' => $supervisor->id]);
+        $response = $this->patch(route('incidents.assign-supervisor', ['incident' => $incident->id]), ['supervisor_id' => $supervisor->id]);
 
         $response->assertRedirect();
 
@@ -92,7 +92,7 @@ class SupervisorTest extends TestCase
             'status' => Assigned::class,
         ]);
 
-        $response = $this->put(route('incidents.unassign-supervisor', ['incident' => $incident->id]));
+        $response = $this->patch(route('incidents.unassign-supervisor', ['incident' => $incident->id]));
 
         $response->assertStatus(403);
 
@@ -114,7 +114,7 @@ class SupervisorTest extends TestCase
             'status' => Assigned::class,
         ]);
 
-        $response = $this->put(route('incidents.unassign-supervisor', ['incident' => $incident->id]));
+        $response = $this->patch(route('incidents.unassign-supervisor', ['incident' => $incident->id]));
 
         $response->assertStatus(403);
 
@@ -135,7 +135,7 @@ class SupervisorTest extends TestCase
             'status' => Assigned::class,
         ]);
 
-        $response = $this->put(route('incidents.unassign-supervisor', ['incident' => $incident->id]));
+        $response = $this->patch(route('incidents.unassign-supervisor', ['incident' => $incident->id]));
 
         $response->assertStatus(302);
 
@@ -155,7 +155,7 @@ class SupervisorTest extends TestCase
 
         $this->assertNull($incident->supervisor_id);
 
-        $response = $this->put(route('incidents.assign-supervisor', ['incident' => $incident->id]), ['supervisor_id' => $supervisor->id]);
+        $response = $this->patch(route('incidents.assign-supervisor', ['incident' => $incident->id]), ['supervisor_id' => $supervisor->id]);
 
         $response->assertStatus(302);
 
@@ -176,7 +176,7 @@ class SupervisorTest extends TestCase
         $incident = Incident::factory()->create();
         $this->assertNull($incident->supervisor_id);
 
-        $response = $this->put(route('incidents.assign-supervisor', ['incident' => $incident->id]), ['supervisor_id' => $supervisor->id]);
+        $response = $this->patch(route('incidents.assign-supervisor', ['incident' => $incident->id]), ['supervisor_id' => $supervisor->id]);
 
         $response->assertStatus(403);
 
@@ -195,7 +195,7 @@ class SupervisorTest extends TestCase
         $incident = Incident::factory()->create();
         $this->assertNull($incident->supervisor_id);
 
-        $response = $this->put(route('incidents.assign-supervisor', ['incident' => $incident->id]), ['supervisor_id' => $supervisor->id]);
+        $response = $this->patch(route('incidents.assign-supervisor', ['incident' => $incident->id]), ['supervisor_id' => $supervisor->id]);
 
         $response->assertStatus(403);
 

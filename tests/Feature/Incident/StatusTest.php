@@ -23,7 +23,7 @@ class StatusTest extends TestCase
             'status' => InReview::class,
         ]);
 
-        $response = $this->put(route('incidents.return-investigation', ['incident' => $incident]));
+        $response = $this->patch(route('incidents.return-investigation', ['incident' => $incident]));
 
         $response->assertRedirect();
 
@@ -49,7 +49,7 @@ class StatusTest extends TestCase
             'status' => InReview::class,
         ]);
 
-        $response = $this->put(route('incidents.return-investigation', ['incident' => $incident]));
+        $response = $this->patch(route('incidents.return-investigation', ['incident' => $incident]));
 
         $response->assertStatus(302);
 
@@ -68,7 +68,7 @@ class StatusTest extends TestCase
             'status' => InReview::class,
         ]);
 
-        $response = $this->put(route('incidents.return-investigation', ['incident' => $incident]));
+        $response = $this->patch(route('incidents.return-investigation', ['incident' => $incident]));
 
         $response->assertStatus(403);
 
@@ -87,7 +87,7 @@ class StatusTest extends TestCase
             'status' => InReview::class,
         ]);
 
-        $response = $this->put(route('incidents.return-investigation', ['incident' => $incident]));
+        $response = $this->patch(route('incidents.return-investigation', ['incident' => $incident]));
 
         $response->assertStatus(403);
 
@@ -106,7 +106,7 @@ class StatusTest extends TestCase
             'status' => Closed::class,
         ]);
 
-        $response = $this->put(route('incidents.reopen', ['incident' => $incident]));
+        $response = $this->patch(route('incidents.reopen', ['incident' => $incident]));
 
         $response->assertRedirect();
 
@@ -134,7 +134,7 @@ class StatusTest extends TestCase
             'status' => InReview::class,
         ]);
 
-        $response = $this->put(route('incidents.close', ['incident' => $incident]));
+        $response = $this->patch(route('incidents.close', ['incident' => $incident]));
 
         $response->assertRedirect();
 
@@ -162,7 +162,7 @@ class StatusTest extends TestCase
             'status' => Closed::class,
         ]);
 
-        $response = $this->put(route('incidents.reopen', ['incident' => $incident]));
+        $response = $this->patch(route('incidents.reopen', ['incident' => $incident]));
 
         $response->assertStatus(302);
 
@@ -185,7 +185,7 @@ class StatusTest extends TestCase
             'status' => Closed::class,
         ]);
 
-        $response = $this->put(route('incidents.reopen', ['incident' => $incident]));
+        $response = $this->patch(route('incidents.reopen', ['incident' => $incident]));
 
         $response->assertStatus(403);
 
@@ -206,7 +206,7 @@ class StatusTest extends TestCase
             'status' => Closed::class,
         ]);
 
-        $response = $this->put(route('incidents.reopen', ['incident' => $incident]));
+        $response = $this->patch(route('incidents.reopen', ['incident' => $incident]));
 
         $response->assertStatus(403);
 
@@ -226,7 +226,7 @@ class StatusTest extends TestCase
             'status' => InReview::class,
         ]);
 
-        $response = $this->put(route('incidents.close', ['incident' => $incident]));
+        $response = $this->patch(route('incidents.close', ['incident' => $incident]));
 
         $response->assertStatus(302);
 
@@ -249,7 +249,7 @@ class StatusTest extends TestCase
             'status' => InReview::class,
         ]);
 
-        $response = $this->put(route('incidents.close', ['incident' => $incident]));
+        $response = $this->patch(route('incidents.close', ['incident' => $incident]));
 
         $response->assertStatus(403);
 
@@ -270,7 +270,7 @@ class StatusTest extends TestCase
             'status' => InReview::class,
         ]);
 
-        $response = $this->put(route('incidents.close', ['incident' => $incident]));
+        $response = $this->patch(route('incidents.close', ['incident' => $incident]));
 
         $response->assertStatus(403);
 
