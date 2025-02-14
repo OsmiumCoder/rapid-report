@@ -123,6 +123,9 @@ export default function UserManagement({ users, roles }: UserManagementProps) {
                                                             setModalProps({
                                                                 title: 'Delete User',
                                                                 text: `Are you sure you want to delete ${user.name} from the system?`,
+                                                                action: () => {
+                                                                    router.delete(route('users.destroy', {user: user.id}))
+                                                                },
                                                                 show: true,
                                                             })
                                                         }
