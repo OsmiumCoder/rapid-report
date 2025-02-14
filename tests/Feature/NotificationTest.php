@@ -5,7 +5,9 @@ namespace Tests\Feature;
 use App\Data\IncidentData;
 use App\Enum\IncidentType;
 use App\Models\User;
+use Mockery\Matcher\Not;
 use Tests\TestCase;
+use Vonage\Client;
 
 class NotificationTest extends TestCase
 {
@@ -156,7 +158,11 @@ class NotificationTest extends TestCase
 
         $notificationResponse->assertRedirect();
 
+
         $admin->refresh();
+
+
+
         $this->assertCount(0, $admin->notifications);
     }
 }
