@@ -22,8 +22,8 @@ abstract class TestCase extends BaseTestCase
 
         $this->app->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
 
-        //        $this->mock(Client::class, function ($mock) {
-        //            $mock->shouldReceive('sms->send');
-        //        });
+        $this->mock(Client::class, function ($mock) {
+            $mock->shouldReceive('sms->send');
+        });
     }
 }
