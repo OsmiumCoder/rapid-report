@@ -4,7 +4,7 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import { Link, router } from '@inertiajs/react';
 import { useState } from 'react';
 import LoadingIndicator from '@/Components/LoadingIndicator';
-import ConfirmationModal, { useConfirmationModalProps } from '@/Components/ConfirmationModal';
+
 import DangerButton from '@/Components/DangerButton';
 import {
     closeIncident,
@@ -12,10 +12,11 @@ import {
     returnInvestigation,
 } from '@/Helpers/Incident/statusUpdates';
 import dateTimeFormat from '@/Filters/dateTimeFormat';
+import { useConfirmationModal } from '@/Components/confirmationModal/ConfirmationModalProvider';
 
 export default function StatusUpdate({ incident }: { incident: Incident }) {
     const [isLoading, setIsLoading] = useState(false);
-    const [modalProps, setModalProps] = useConfirmationModalProps();
+    const { setModalProps } = useConfirmationModal();
     return (
         <>
             <div className="flex flex-col gap-y-6 w-full mt-6 border-t border-gray-900/5 p-6">
@@ -102,7 +103,6 @@ export default function StatusUpdate({ incident }: { incident: Incident }) {
                     </>
                 )}
             </div>
-            <ConfirmationModal modalProps={modalProps} />
         </>
     );
 }

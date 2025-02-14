@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\Incident;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
@@ -33,15 +32,19 @@ class HandleInertiaRequests extends Middleware
     {
         $user = $request->user();
 
-        $notifications = $user ? $user->notifications()->paginate(10, pageName: "notifications") : [];
+        $notifications = $user ?
+            $user
+                ->notifications()
+                ->paginate(10, pageName: 'notifications')
+            : null;
 
         return [
             ...parent::share($request),
             'auth' => [
                 'user' => $user,
             ],
-            'notifications' => inertia()->merge($notifications->items()),
-            'notifications_paginator' => $notifications->toArray(),
+            'notifications' => $notifications ? inertia()->merge($notifications->items()) : null,
+            'notifications_paginator' => $notifications ? $notifications->toArray() : null,
             'ziggy' => fn () => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),

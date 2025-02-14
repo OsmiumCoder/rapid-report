@@ -3,13 +3,25 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Notifications\DatabaseNotification;
 
 class NotificationController extends Controller
 {
-    public function index(Request $request)
+    public function markAllRead(Request $request): void
     {
-        $notifications = auth()->user()->notifications()->simplePaginate(10, $page=$request->int('page'));
+        auth()->user()->notifications->markAsRead();
+        response()->json(['status' => 'success']);
+    }
 
-        return response()->json($notifications);
+    public function destroyAll(Request $request): void
+    {
+        auth()->user()->notifications()->delete();
+        response()->json(['status' => 'success']);
+    }
+
+    public function destroy(string $notification): void
+    {
+        auth()->user()->notifications()->find($notification)->delete();
+        response()->json(['status' => 'success']);
     }
 }

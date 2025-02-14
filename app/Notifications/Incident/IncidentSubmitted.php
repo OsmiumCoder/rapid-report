@@ -1,23 +1,35 @@
 <?php
 
-namespace App\Notifications;
+namespace App\Notifications\Incident;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\VonageMessage;
+use Illuminate\Notifications\Notification;
 
 class IncidentSubmitted extends Notification
 {
     use Queueable;
 
+    public string $message;
     /**
      * Create a new notification instance.
      */
     public function __construct(
         public string $incidentId,
+        public ?string $firstName,
+        public ?string $lastName,
     ) {
-        $this->message = 'A new incident has been submitted.';
+        if ($this->firstName == null && $this->lastName == null) {
+            $name = 'an Anonymous User';
+        } elseif ($this->firstName == null) {
+            $name = $this->lastName;
+        } elseif ($this->lastName == null) {
+            $name = $this->firstName;
+        } else {
+            $name = $this->firstName.' '.$this->lastName;
+        }
+        $this->message = "An incident was submitted by $name";
     }
 
     /**
