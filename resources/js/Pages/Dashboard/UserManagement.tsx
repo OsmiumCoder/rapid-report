@@ -11,6 +11,7 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import _ from 'underscore';
 import {useConfirmationModal} from "@/Components/confirmationModal/ConfirmationModalProvider";
+import AddUserForm from "@/Pages/Dashboard/Partials/AddUserForm";
 
 interface UserManagementProps {
     users: PaginatedResponse<User>;
@@ -47,17 +48,7 @@ export default function UserManagement({ users, roles }: UserManagementProps) {
                         </div>
                     </div>
                     <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-                        <PrimaryButton
-                            onClick={() =>
-                                setModalProps({
-                                    title: 'Add User',
-                                    text: `Fill out the details:`,
-                                    show: true,
-                                })
-                            }
-                        >
-                            Add User
-                        </PrimaryButton>
+                        <AddUserForm roles={roles}/>
                     </div>
                 </div>
                 <div className="mt-8 flow-root">

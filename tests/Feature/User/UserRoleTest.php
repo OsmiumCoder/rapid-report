@@ -11,6 +11,19 @@ use Tests\TestCase;
 
 class UserRoleTest extends TestCase
 {
+    public function test_no_role_throws_validation()
+    {
+        $admin = User::factory()->create()->assignRole('admin');
+
+        $this->actingAs($admin);
+
+        $user = User::factory()->create()->syncRoles(RolesEnum::USER->value);
+
+        $response = $this->patch(route('users.update-role', ['user' => $user->id]));
+
+        $this->assertInstanceOf(ValidationException::class, $response->exception);
+    }
+
     public function test_bad_role_throws_validation()
     {
         $admin = User::factory()->create()->assignRole('admin');
