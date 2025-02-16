@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\RootCauseAnalysis;
 
 use App\Http\Controllers\Controller;
+use App\Models\Incident;
 use App\Models\RootCauseAnalysis;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class RootCauseAnalysisController extends Controller
 {
@@ -19,9 +21,10 @@ class RootCauseAnalysisController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request, Incident $incident)
     {
-        //
+        $this->authorize('create', [RootCauseAnalysis::class, $incident]);
+        return Inertia::render('RootCauseAnalysis/Create');
     }
 
     /**

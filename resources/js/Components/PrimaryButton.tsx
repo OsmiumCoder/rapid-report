@@ -8,6 +8,7 @@ export default function PrimaryButton({
 }: ButtonHTMLAttributes<HTMLButtonElement>) {
     return (
         <button
+            type="button"
             {...props}
             className={classNames(
                 'rounded-md bg-upei-green-500 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm',
