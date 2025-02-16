@@ -19,7 +19,7 @@ class UserRoleController extends Controller
         $this->authorize('updateRole', $user);
 
         $request->validate([
-            'role' => [Rule::enum(RolesEnum::class)],
+            'role' => ['required', Rule::enum(RolesEnum::class)],
         ]);
 
         $role = $request->enum('role', RolesEnum::class);
