@@ -3,7 +3,7 @@ import { User } from '@/types';
 import { IncidentType } from '@/Enums/IncidentType';
 import { Comment } from '@/types/Comment';
 import { Witness } from '@/types/incident/Witness';
-import { Investigation } from '@/types/Investigation/Investigation';
+import { Investigation } from '@/types/investigation/Investigation';
 
 export interface Incident {
     id: string;

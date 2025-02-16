@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Database\Seeders\RolesAndPermissionsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Vonage\Client;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -20,5 +21,9 @@ abstract class TestCase extends BaseTestCase
         Carbon::setTestNow('2025-01-24');
 
         $this->app->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+
+        $this->mock(Client::class, function ($mock) {
+            $mock->shouldReceive('sms->send');
+        });
     }
 }

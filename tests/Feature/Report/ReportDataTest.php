@@ -11,7 +11,7 @@ class ReportDataTest extends TestCase
 {
     public function test_report_page_receives_all_incidents()
     {
-        $admin = User::factory()->create()->assignRole('admin');
+        $admin = User::factory()->create()->syncRoles('admin');
 
         $this->actingAs($admin);
 
@@ -32,7 +32,7 @@ class ReportDataTest extends TestCase
         $user = User::factory()->create([
             'name' => 'user',
             'email' => 'user@b.com',
-        ])->assignRole('user');
+        ])->syncRoles('user');
 
         $this->actingAs($user);
 
@@ -44,7 +44,7 @@ class ReportDataTest extends TestCase
     }
     public function test_forbidden_if_supervisor_access_reports_page()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $this->actingAs($supervisor);
 

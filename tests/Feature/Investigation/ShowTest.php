@@ -12,7 +12,7 @@ class ShowTest extends TestCase
 {
     public function test_admin_can_view_investigation_show_page()
     {
-        $admin = User::factory()->create()->assignRole('admin');
+        $admin = User::factory()->create()->syncRoles('admin');
         $this->actingAs($admin);
 
         $incident = Incident::factory()->create();
@@ -25,7 +25,7 @@ class ShowTest extends TestCase
 
     public function test_supervisor_can_view_investigation_show_page_if_they_made_investigation()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $this->actingAs($supervisor);
 
         $incident = Incident::factory()->create(['supervisor_id' => $supervisor->id]);
@@ -38,7 +38,7 @@ class ShowTest extends TestCase
 
     public function test_supervisor_can_not_view_investigation_show_page_if_they_did_not_make_investigation()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $this->actingAs($supervisor);
 
         $incident = Incident::factory()->create();
@@ -51,7 +51,7 @@ class ShowTest extends TestCase
 
     public function test_user_can_not_view_investigation_show_page()
     {
-        $user = User::factory()->create()->assignRole('user');
+        $user = User::factory()->create()->syncRoles('user');
         $this->actingAs($user);
 
         $incident = Incident::factory()->create();
@@ -64,7 +64,7 @@ class ShowTest extends TestCase
 
     public function test_show_investigation_page_loads_incident_on_investigation_prop()
     {
-        $admin = User::factory()->create()->assignRole('admin');
+        $admin = User::factory()->create()->syncRoles('admin');
         $this->actingAs($admin);
 
         $incident = Incident::factory()->create();
@@ -84,7 +84,7 @@ class ShowTest extends TestCase
 
     public function test_investigation_show_page_returns_correct_investigation_values()
     {
-        $admin = User::factory()->create()->assignRole('admin');
+        $admin = User::factory()->create()->syncRoles('admin');
         $this->actingAs($admin);
 
         $incident = Incident::factory()->create();

@@ -11,7 +11,7 @@ class InvestigationTest extends TestCase
 {
     public function test_investigation_belongs_to_supervisor_relation()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $investigation = Investigation::factory()->create(['supervisor_id' => $supervisor->id]);
 
         $this->assertEquals($supervisor->id, $investigation->supervisor->id);

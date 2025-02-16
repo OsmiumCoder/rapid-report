@@ -11,7 +11,7 @@ class SearchTest extends TestCase
 {
     public function test_admin_search_returns_correct_incidents()
     {
-        $admin = User::factory()->create()->assignRole('admin');
+        $admin = User::factory()->create()->syncRoles('admin');
         $this->actingAs($admin);
 
         $incidentA = Incident::factory()->create(['description' => 'description a']);
@@ -36,7 +36,7 @@ class SearchTest extends TestCase
 
     public function test_supervisor_search_returns_assigned_incidents()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $this->actingAs($supervisor);
 
         $incidentA = Incident::factory()->create(['description' => 'description a', 'supervisor_id' => $supervisor->id]);
@@ -61,7 +61,7 @@ class SearchTest extends TestCase
 
     public function test_supervisor_search_does_not_return_unassigned_incidents()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $this->actingAs($supervisor);
 
         $incidentA = Incident::factory()->create(['description' => 'description a']);
@@ -84,7 +84,7 @@ class SearchTest extends TestCase
 
     public function test_user_incident_search_throws_forbidden_exception()
     {
-        $user = User::factory()->create()->assignRole('user');
+        $user = User::factory()->create()->syncRoles('user');
         $this->actingAs($user);
 
         $response = $this->get(route('incidents.search', ['search' => 'description', 'search_by' => 'description']));
