@@ -3,12 +3,38 @@
 namespace StoreableEvents\User;
 
 use App\Enum\RolesEnum;
+use App\Mail\UserAdded;
 use App\Models\User;
 use App\StorableEvents\User\UserCreated;
+use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 class UserCreatedTest extends TestCase
 {
+    public function test_notifies_user()
+    {
+        Mail::fake();
+
+        $event = new UserCreated(
+            name: 'john',
+            email: 'john@doe.com',
+            password: 'password',
+            upei_id: '43123',
+            phone: '2332413124321',
+            role: RolesEnum::SUPERVISOR,
+        );
+
+        Mail::assertNothingSent();
+
+        $event->react();
+
+        Mail::assertSentCount(1);
+
+        Mail::assertSent(UserAdded::class, function (UserAdded $mail) use ($event) {
+            return $mail->hasTo($event->email);
+        });
+    }
+
     public function test_creates_user()
     {
         $event = new UserCreated(

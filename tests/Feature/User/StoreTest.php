@@ -3,13 +3,42 @@
 namespace Tests\Feature\User;
 
 use App\Enum\RolesEnum;
+use App\Mail\UserAdded;
 use App\Models\User;
 use App\StorableEvents\User\UserCreated;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 class StoreTest extends TestCase
 {
+    public function test_notifies_user()
+    {
+        Mail::fake();
+
+        $admin = User::factory()->create()->assignRole('admin');
+
+        $this->actingAs($admin);
+
+        Mail::assertNothingSent();
+
+        $response = $this->post(route('users.store'), [
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'password' => 'password',
+            'password_confirmation' => 'password',
+            'upei_id' => '123456',
+            'phone' => '12346565',
+            'role' => RolesEnum::SUPERVISOR->value,
+        ]);
+
+        Mail::assertSentCount(1);
+
+        Mail::assertSent(UserAdded::class, function (UserAdded $mail) {
+            return $mail->hasTo('test@example.com');
+        });
+    }
+
     public function test_fires_user_deleted_event()
     {
         Event::fake();

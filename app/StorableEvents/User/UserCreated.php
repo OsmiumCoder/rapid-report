@@ -3,17 +3,19 @@
 namespace App\StorableEvents\User;
 
 use App\Enum\RolesEnum;
+use App\Mail\UserAdded;
 use App\Models\User;
 use App\StorableEvents\StoredEvent;
+use Illuminate\Support\Facades\Mail;
 
 class UserCreated extends StoredEvent
 {
     public function __construct(
-        public string $name,
-        public string $email,
-        public string $password,
-        public string $upei_id,
-        public string $phone,
+        public string    $name,
+        public string    $email,
+        public string    $password,
+        public string    $upei_id,
+        public string    $phone,
         public RolesEnum $role,
     ) {
     }
@@ -31,5 +33,6 @@ class UserCreated extends StoredEvent
 
     public function react()
     {
+        Mail::to($this->email)->send(new UserAdded);
     }
 }
