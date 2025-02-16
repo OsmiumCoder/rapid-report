@@ -8,7 +8,7 @@ use App\Mail\IncidentReceived;
 use App\Models\Comment;
 use App\Models\Incident;
 use App\Models\User;
-use App\Notifications\IncidentSubmitted;
+use App\Notifications\Incident\IncidentSubmitted;
 use App\StorableEvents\StoredEvent;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
@@ -92,6 +92,6 @@ class IncidentCreated extends StoredEvent
         }
 
         $admins = User::role('admin')->get();
-        Notification::send($admins, new IncidentSubmitted($this->aggregateRootUuid()));
+        Notification::send($admins, new IncidentSubmitted($this->aggregateRootUuid(), $this->first_name, $this->last_name));
     }
 }

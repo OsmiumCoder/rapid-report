@@ -1,5 +1,5 @@
 import Modal from '@/Components/Modal';
-import { Dispatch, PropsWithChildren, SetStateAction, useState } from 'react';
+import { Dispatch, PropsWithChildren, RefObject, SetStateAction, useState } from 'react';
 import PrimaryButton from '@/Components/PrimaryButton';
 import DangerButton from '@/Components/DangerButton';
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
@@ -14,54 +14,13 @@ export interface ConfirmationModalProps {
     setShow: (show: boolean) => void;
 }
 
-export const useConfirmationModalProps = (
-    initial?: Omit<ConfirmationModalProps, 'setShow'>
-): [
-    ConfirmationModalProps,
-    (
-        props:
-            | Partial<ConfirmationModalProps>
-            | ((prev: ConfirmationModalProps) => Partial<ConfirmationModalProps>)
-    ) => void,
-] => {
-    const [props, setProps] = useState<ConfirmationModalProps>(
-        initial
-            ? {
-                  ...initial,
-                  setShow: (show: boolean) =>
-                      setProps((prev: ConfirmationModalProps) => ({
-                          ...prev,
-                          show,
-                      })),
-              }
-            : ({
-                  title: '',
-                  text: '',
-                  show: false,
-                  setShow: (show: boolean) =>
-                      setProps((prev: ConfirmationModalProps) => ({
-                          ...prev,
-                          show,
-                      })),
-                  action: () => console.error('No Action Set'),
-              } as ConfirmationModalProps)
-    );
-
-    const setModalProps = (
-        props: Partial<ConfirmationModalProps> | ((prev: ConfirmationModalProps) => void)
-    ) => {
-        setProps((prev) => ({
-            ...prev,
-            ...(typeof props === 'function' ? props(prev) : props),
-            // Keep show and setShow immutable
-            setShow: (show: boolean) => setProps((prev) => ({ ...prev, show })),
-        }));
-    };
-
-    return [props, setModalProps];
-};
-
-export default function ConfirmationModal({ modalProps }: { modalProps: ConfirmationModalProps }) {
+export default function ConfirmationModal({
+    modalProps,
+    modalRef,
+}: {
+    modalProps: ConfirmationModalProps;
+    modalRef: RefObject<HTMLDivElement>;
+}) {
     const { title, text, show, setShow, action } = modalProps;
 
     const handleYes = () => {
@@ -78,7 +37,7 @@ export default function ConfirmationModal({ modalProps }: { modalProps: Confirma
                 className="fixed inset-0 bg-gray-500/75 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in"
             />
 
-            <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+            <div ref={modalRef} className="fixed inset-0 z-10 w-screen overflow-y-auto">
                 <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
                     <DialogPanel
                         transition

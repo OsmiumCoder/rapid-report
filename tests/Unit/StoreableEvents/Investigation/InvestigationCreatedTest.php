@@ -18,7 +18,7 @@ class InvestigationCreatedTest extends TestCase
 {
     public function test_incident_transitions_from_assigned_to_in_review()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $incident = Incident::factory()->create(['status' => Assigned::class]);
 
@@ -52,10 +52,10 @@ class InvestigationCreatedTest extends TestCase
         Notification::fake();
 
         $admins = User::factory(3)->create()->each(function (User $user) {
-            $user->assignRole('admin');
+            $user->syncRoles('admin');
         });
 
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $incident = Incident::factory()->create(['status' => Assigned::class]);
 
@@ -99,7 +99,7 @@ class InvestigationCreatedTest extends TestCase
 
     public function test_adds_created_investigation_comment_on_incident()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $incident = Incident::factory()->create(['status' => Assigned::class]);
 
@@ -135,7 +135,7 @@ class InvestigationCreatedTest extends TestCase
 
     public function test_creates_investigation()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $incident = Incident::factory()->create(['status' => Assigned::class]);
 

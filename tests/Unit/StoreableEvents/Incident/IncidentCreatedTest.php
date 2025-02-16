@@ -7,12 +7,12 @@ use App\Enum\IncidentType;
 use App\Mail\IncidentReceived;
 use App\Models\Incident;
 use App\Models\User;
-use App\Notifications\IncidentSubmitted;
+use App\Notifications\Incident\IncidentSubmitted;
 use App\States\IncidentStatus\Opened;
 use App\StorableEvents\Incident\IncidentCreated;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
@@ -196,9 +196,9 @@ class IncidentCreatedTest extends TestCase
         Notification::fake();
 
         $admins = User::factory(3)->create()->each(function (User $user) {
-            $user->assignRole('admin');
+            $user->syncRoles('admin');
         });
-        $user = User::factory()->create()->assignRole('user');
+        $user = User::factory()->create()->syncRoles('user');
 
         $event = new IncidentCreated(
             anonymous: false,
@@ -281,9 +281,9 @@ class IncidentCreatedTest extends TestCase
         Notification::fake();
 
         $admins = User::factory(3)->create()->each(function (User $user) {
-            $user->assignRole('admin');
+            $user->syncRoles('admin');
         });
-        $user = User::factory()->create()->assignRole('user');
+        $user = User::factory()->create()->syncRoles('user');
 
         $event = new IncidentCreated(
             anonymous: false,

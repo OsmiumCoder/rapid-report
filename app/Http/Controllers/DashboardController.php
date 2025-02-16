@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Incident;
+use App\Models\User;
 use App\States\IncidentStatus\Assigned;
 use App\States\IncidentStatus\Closed;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Spatie\Permission\Models\Role;
 
 class DashboardController extends Controller
 {
@@ -65,10 +68,24 @@ class DashboardController extends Controller
         ]);
     }
 
-    public function userManagement()
+    public function userManagement(Request $request)
     {
         Gate::authorize('view-user-management');
 
-        return inertia('Dashboard/UserManagement');
+        $search = $request->string('search', '');
+
+        $paginatedUsers = User::whereNot('id', auth()->user()->id)
+            ->where(function ($query) use ($search) {
+                $query->whereLike('name', "%$search%")
+                    ->orWhereLike('email', "%$search%");
+            })
+            ->orderBy('name')
+            ->paginate()
+            ->appends($request->query());
+
+        return inertia('Dashboard/UserManagement', [
+            'users' => $paginatedUsers,
+            'roles' => Role::all()
+        ]);
     }
 }

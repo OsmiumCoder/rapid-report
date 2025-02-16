@@ -15,7 +15,7 @@ class StatusTest extends TestCase
 {
     public function test_adds_returned_comment()
     {
-        $admin = User::factory()->create()->assignRole('admin');
+        $admin = User::factory()->create()->syncRoles('admin');
 
         $this->actingAs($admin);
 
@@ -23,7 +23,7 @@ class StatusTest extends TestCase
             'status' => InReview::class,
         ]);
 
-        $response = $this->put(route('incidents.return-investigation', ['incident' => $incident]));
+        $response = $this->patch(route('incidents.return-investigation', ['incident' => $incident]));
 
         $response->assertRedirect();
 
@@ -41,7 +41,7 @@ class StatusTest extends TestCase
 
     public function test_admin_can_return_incidents()
     {
-        $admin = User::factory()->create()->assignRole('admin');
+        $admin = User::factory()->create()->syncRoles('admin');
 
         $this->actingAs($admin);
 
@@ -49,7 +49,7 @@ class StatusTest extends TestCase
             'status' => InReview::class,
         ]);
 
-        $response = $this->put(route('incidents.return-investigation', ['incident' => $incident]));
+        $response = $this->patch(route('incidents.return-investigation', ['incident' => $incident]));
 
         $response->assertStatus(302);
 
@@ -60,7 +60,7 @@ class StatusTest extends TestCase
 
     public function test_user_can_not_return_incidents()
     {
-        $user = User::factory()->create()->assignRole('user');
+        $user = User::factory()->create()->syncRoles('user');
 
         $this->actingAs($user);
 
@@ -68,7 +68,7 @@ class StatusTest extends TestCase
             'status' => InReview::class,
         ]);
 
-        $response = $this->put(route('incidents.return-investigation', ['incident' => $incident]));
+        $response = $this->patch(route('incidents.return-investigation', ['incident' => $incident]));
 
         $response->assertStatus(403);
 
@@ -79,7 +79,7 @@ class StatusTest extends TestCase
 
     public function test_supervisor_can_not_return_incidents()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $this->actingAs($supervisor);
 
@@ -87,7 +87,7 @@ class StatusTest extends TestCase
             'status' => InReview::class,
         ]);
 
-        $response = $this->put(route('incidents.return-investigation', ['incident' => $incident]));
+        $response = $this->patch(route('incidents.return-investigation', ['incident' => $incident]));
 
         $response->assertStatus(403);
 
@@ -96,8 +96,8 @@ class StatusTest extends TestCase
 
     public function test_adds_reopened_comment()
     {
-        $admin = User::factory()->create()->assignRole('admin');
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $admin = User::factory()->create()->syncRoles('admin');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $this->actingAs($admin);
 
@@ -106,7 +106,7 @@ class StatusTest extends TestCase
             'status' => Closed::class,
         ]);
 
-        $response = $this->put(route('incidents.reopen', ['incident' => $incident]));
+        $response = $this->patch(route('incidents.reopen', ['incident' => $incident]));
 
         $response->assertRedirect();
 
@@ -124,8 +124,8 @@ class StatusTest extends TestCase
 
     public function test_adds_closed_comment()
     {
-        $admin = User::factory()->create()->assignRole('admin');
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $admin = User::factory()->create()->syncRoles('admin');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $this->actingAs($admin);
 
@@ -134,7 +134,7 @@ class StatusTest extends TestCase
             'status' => InReview::class,
         ]);
 
-        $response = $this->put(route('incidents.close', ['incident' => $incident]));
+        $response = $this->patch(route('incidents.close', ['incident' => $incident]));
 
         $response->assertRedirect();
 
@@ -152,8 +152,8 @@ class StatusTest extends TestCase
 
     public function test_admin_can_reopen_incidents()
     {
-        $admin = User::factory()->create()->assignRole('admin');
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $admin = User::factory()->create()->syncRoles('admin');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $this->actingAs($admin);
 
@@ -162,7 +162,7 @@ class StatusTest extends TestCase
             'status' => Closed::class,
         ]);
 
-        $response = $this->put(route('incidents.reopen', ['incident' => $incident]));
+        $response = $this->patch(route('incidents.reopen', ['incident' => $incident]));
 
         $response->assertStatus(302);
 
@@ -174,9 +174,9 @@ class StatusTest extends TestCase
 
     public function test_user_can_not_reopen_incidents()
     {
-        $user = User::factory()->create()->assignRole('user');
+        $user = User::factory()->create()->syncRoles('user');
 
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $this->actingAs($user);
 
@@ -185,7 +185,7 @@ class StatusTest extends TestCase
             'status' => Closed::class,
         ]);
 
-        $response = $this->put(route('incidents.reopen', ['incident' => $incident]));
+        $response = $this->patch(route('incidents.reopen', ['incident' => $incident]));
 
         $response->assertStatus(403);
 
@@ -197,7 +197,7 @@ class StatusTest extends TestCase
 
     public function test_supervisor_can_not_reopen_incidents()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $this->actingAs($supervisor);
 
@@ -206,7 +206,7 @@ class StatusTest extends TestCase
             'status' => Closed::class,
         ]);
 
-        $response = $this->put(route('incidents.reopen', ['incident' => $incident]));
+        $response = $this->patch(route('incidents.reopen', ['incident' => $incident]));
 
         $response->assertStatus(403);
 
@@ -216,8 +216,8 @@ class StatusTest extends TestCase
 
     public function test_admin_can_close_incidents()
     {
-        $admin = User::factory()->create()->assignRole('admin');
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $admin = User::factory()->create()->syncRoles('admin');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $this->actingAs($admin);
 
@@ -226,7 +226,7 @@ class StatusTest extends TestCase
             'status' => InReview::class,
         ]);
 
-        $response = $this->put(route('incidents.close', ['incident' => $incident]));
+        $response = $this->patch(route('incidents.close', ['incident' => $incident]));
 
         $response->assertStatus(302);
 
@@ -238,9 +238,9 @@ class StatusTest extends TestCase
 
     public function test_user_can_not_close_incidents()
     {
-        $user = User::factory()->create()->assignRole('user');
+        $user = User::factory()->create()->syncRoles('user');
 
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $this->actingAs($user);
 
@@ -249,7 +249,7 @@ class StatusTest extends TestCase
             'status' => InReview::class,
         ]);
 
-        $response = $this->put(route('incidents.close', ['incident' => $incident]));
+        $response = $this->patch(route('incidents.close', ['incident' => $incident]));
 
         $response->assertStatus(403);
 
@@ -261,7 +261,7 @@ class StatusTest extends TestCase
 
     public function test_supervisor_can_not_close_incidents()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $this->actingAs($supervisor);
 
@@ -270,7 +270,7 @@ class StatusTest extends TestCase
             'status' => InReview::class,
         ]);
 
-        $response = $this->put(route('incidents.close', ['incident' => $incident]));
+        $response = $this->patch(route('incidents.close', ['incident' => $incident]));
 
         $response->assertStatus(403);
 
