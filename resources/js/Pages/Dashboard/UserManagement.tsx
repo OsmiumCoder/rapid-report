@@ -7,11 +7,10 @@ import DangerButton from '@/Components/DangerButton';
 import SelectInput from '@/Components/SelectInput';
 import React from 'react';
 import { uppercaseWordFormat } from '@/Filters/uppercaseWordFormat';
-import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import _ from 'underscore';
-import {useConfirmationModal} from "@/Components/confirmationModal/ConfirmationModalProvider";
-import AddUserForm from "@/Pages/Dashboard/Partials/AddUserForm";
+import AddUserForm from '@/Pages/Dashboard/Partials/AddUserForm';
+import { useConfirmationModal } from '@/Components/ConfirmationModal/ConfirmationModalProvider';
 
 interface UserManagementProps {
     users: PaginatedResponse<User>;
@@ -48,7 +47,7 @@ export default function UserManagement({ users, roles }: UserManagementProps) {
                         </div>
                     </div>
                     <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-                        <AddUserForm roles={roles}/>
+                        <AddUserForm roles={roles} />
                     </div>
                 </div>
                 <div className="mt-8 flow-root">
@@ -97,7 +96,12 @@ export default function UserManagement({ users, roles }: UserManagementProps) {
                                                     <SelectInput
                                                         value={user.roles[0].name}
                                                         onChange={(e) => {
-                                                            router.patch(route('users.update-role', {user: user.id}), {role: e.target.value})
+                                                            router.patch(
+                                                                route('users.update-role', {
+                                                                    user: user.id,
+                                                                }),
+                                                                { role: e.target.value }
+                                                            );
                                                         }}
                                                     >
                                                         {roles.map(({ name }, index) => (
@@ -118,7 +122,11 @@ export default function UserManagement({ users, roles }: UserManagementProps) {
                                                                 title: 'Delete User',
                                                                 text: `Are you sure you want to delete ${user.name} from the system?`,
                                                                 action: () => {
-                                                                    router.delete(route('users.destroy', {user: user.id}))
+                                                                    router.delete(
+                                                                        route('users.destroy', {
+                                                                            user: user.id,
+                                                                        })
+                                                                    );
                                                                 },
                                                                 show: true,
                                                             })

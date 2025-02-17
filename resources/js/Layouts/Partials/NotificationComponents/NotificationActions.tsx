@@ -1,7 +1,7 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { EllipsisVerticalIcon } from '@heroicons/react/20/solid';
 import { router } from '@inertiajs/react';
-import { useConfirmationModal } from '@/Components/confirmationModal/ConfirmationModalProvider';
+import { useConfirmationModal } from '@/Components/ConfirmationModal/ConfirmationModalProvider';
 
 export default function NotificationActions() {
     const { setModalProps } = useConfirmationModal();

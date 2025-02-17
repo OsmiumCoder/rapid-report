@@ -3,11 +3,11 @@
 namespace App\Policies;
 
 use App\Models\Incident;
-use App\Models\Investigation;
+use App\Models\RootCauseAnalysis;
 use App\Models\User;
 use App\States\IncidentStatus\Assigned;
 
-class InvestigationPolicy
+class RootCauseAnalysisPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -20,16 +20,8 @@ class InvestigationPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Investigation $investigation): bool
+    public function view(User $user, RootCauseAnalysis $rootCauseAnalysis): bool
     {
-        if ($user->can('view any incident follow-up')) {
-            return true;
-        }
-
-        if ($investigation->supervisor_id == $user->id) {
-            return true;
-        }
-
         return false;
     }
 
@@ -48,7 +40,7 @@ class InvestigationPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Investigation $investigation): bool
+    public function update(User $user, RootCauseAnalysis $rootCauseAnalysis): bool
     {
         return false;
     }
@@ -56,7 +48,7 @@ class InvestigationPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Investigation $investigation): bool
+    public function delete(User $user, RootCauseAnalysis $rootCauseAnalysis): bool
     {
         return false;
     }
@@ -64,7 +56,7 @@ class InvestigationPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Investigation $investigation): bool
+    public function restore(User $user, RootCauseAnalysis $rootCauseAnalysis): bool
     {
         return false;
     }
@@ -72,7 +64,7 @@ class InvestigationPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Investigation $investigation): bool
+    public function forceDelete(User $user, RootCauseAnalysis $rootCauseAnalysis): bool
     {
         return false;
     }

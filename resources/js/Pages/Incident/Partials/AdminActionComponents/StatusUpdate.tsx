@@ -12,7 +12,7 @@ import {
     returnInvestigation,
 } from '@/Helpers/Incident/statusUpdates';
 import dateTimeFormat from '@/Filters/dateTimeFormat';
-import { useConfirmationModal } from '@/Components/confirmationModal/ConfirmationModalProvider';
+import { useConfirmationModal } from '@/Components/ConfirmationModal/ConfirmationModalProvider';
 
 export default function StatusUpdate({ incident }: { incident: Incident }) {
     const [isLoading, setIsLoading] = useState(false);

@@ -50,6 +50,15 @@ export default function IncidentSupervisorActions({ incident }: SupervisorAction
                             >
                                 Submit Investigation
                             </Link>
+                            <Link
+                                href={route('incidents.root-cause-analysis.create', {
+                                    incident: incident.id,
+                                })}
+                                as="button"
+                                className="text-center rounded-md bg-upei-green-500 px-3 py-2  text-sm font-semibold text-white shadow-sm hover:bg-upei-green-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-upei-green-600"
+                            >
+                                Submit Root Cause Analysis
+                            </Link>
                         </div>
                     )}
                 </div>
