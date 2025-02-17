@@ -6,7 +6,6 @@ use App\Models\Incident;
 use App\Models\RootCauseAnalysis;
 use App\Models\User;
 use App\States\IncidentStatus\Assigned;
-use Illuminate\Auth\Access\Response;
 
 class RootCauseAnalysisPolicy
 {

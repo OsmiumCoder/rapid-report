@@ -1,10 +1,8 @@
-import Modal from '@/Components/Modal';
-import { Dispatch, PropsWithChildren, RefObject, SetStateAction, useState } from 'react';
+import { RefObject } from 'react';
 import PrimaryButton from '@/Components/PrimaryButton';
 import DangerButton from '@/Components/DangerButton';
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
 import { ExclamationTriangleIcon } from '@heroicons/react/16/solid';
-import SecondaryButton from '@/Components/SecondaryButton';
 
 export interface ConfirmationModalProps {
     title: string;

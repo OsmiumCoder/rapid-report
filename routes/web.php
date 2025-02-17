@@ -43,4 +43,3 @@ require __DIR__.'/investigations.php';
 require __DIR__.'/root-cause-analysis.php';
 require __DIR__.'/notifications.php';
 require __DIR__.'/users.php';
-

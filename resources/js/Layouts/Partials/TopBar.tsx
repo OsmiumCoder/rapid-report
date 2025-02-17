@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import Searchbar from '@/Layouts/Partials/Searchbar';
 import Notifications from '@/Layouts/Partials/Notifications';
 import useDismiss from '@/hooks/useDismiss';
-import { useConfirmationModal } from '@/Components/confirmationModal/ConfirmationModalProvider';
+import { useConfirmationModal } from '@/Components/ConfirmationModal/ConfirmationModalProvider';
 
 const userNavigation: { name: string; href: string; method?: Method }[] = [
     { name: 'Your profile', href: route('profile.edit') },

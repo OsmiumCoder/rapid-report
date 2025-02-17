@@ -14,7 +14,7 @@ import SecondaryButton from '@/Components/SecondaryButton';
 import { CheckIcon } from '@heroicons/react/20/solid';
 import { assignSupervisor, unassignSupervisor } from '@/Helpers/Incident/statusUpdates';
 import { router } from '@inertiajs/react';
-import { useConfirmationModal } from '@/Components/confirmationModal/ConfirmationModalProvider';
+import { useConfirmationModal } from '@/Components/ConfirmationModal/ConfirmationModalProvider';
 
 export default function SupervisorUpdate({
     incident,

@@ -54,6 +54,3 @@ class RootCauseAnalysisPolicyTest extends TestCase
         return app(RootCauseAnalysisPolicy::class);
     }
 }
-
-
-

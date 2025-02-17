@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { closeIncident, returnInvestigation } from '@/Helpers/Incident/statusUpdates';
 import LoadingIndicator from '@/Components/LoadingIndicator';
 import { router } from '@inertiajs/react';
-import { useConfirmationModal } from '@/Components/confirmationModal/ConfirmationModalProvider';
+import { useConfirmationModal } from '@/Components/ConfirmationModal/ConfirmationModalProvider';
 
 interface InvestigationAdminActionsProps {
     investigation: Investigation;
