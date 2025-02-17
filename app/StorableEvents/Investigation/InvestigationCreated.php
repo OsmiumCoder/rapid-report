@@ -55,7 +55,7 @@ class InvestigationCreated extends StoredEvent
 
         if ($this->risk_rank < 3) {
             $investigation->hazard_class = 'A';
-        } else if ($this->risk_rank < 5) {
+        } elseif ($this->risk_rank < 5) {
             $investigation->hazard_class = 'B';
         } else {
             $investigation->hazard_class = 'C';
