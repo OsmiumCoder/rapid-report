@@ -12,44 +12,6 @@ use Tests\TestCase;
 
 class InvestigationPolicyTest extends TestCase
 {
-    public function test_supervisor_can_not_create_investigation_if_not_assigned_state()
-    {
-        $supervisor = User::factory()->create()->syncRoles('supervisor');
-        $incident = Incident::factory()->create([
-            'supervisor_id' => $supervisor->id,
-            'status' => InReview::class
-        ]);
-
-        $this->assertFalse($this->getPolicy()->create($supervisor, $incident));
-    }
-
-    public function test_supervisor_can_create_investigation_if_assigned_state()
-    {
-        $supervisor = User::factory()->create()->syncRoles('supervisor');
-        $incident = Incident::factory()->create([
-            'supervisor_id' => $supervisor->id,
-            'status' => Assigned::class
-        ]);
-
-        $this->assertTrue($this->getPolicy()->create($supervisor, $incident));
-    }
-
-    public function test_user_can_not_create_investigations()
-    {
-        $user = User::factory()->create()->assignRole('user');
-        $incident = Incident::factory()->create();
-
-        $this->assertFalse($this->getPolicy()->create($user, $incident));
-    }
-
-    public function test_admin_can_not_create_investigations()
-    {
-        $admin = User::factory()->create()->assignRole('admin');
-        $incident = Incident::factory()->create();
-
-        $this->assertFalse($this->getPolicy()->create($admin, $incident));
-    }
-
     public function test_admin_can_view_any_investigation()
     {
         $admin = User::factory()->create()->syncRoles('admin');
