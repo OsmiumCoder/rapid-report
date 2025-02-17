@@ -43,6 +43,9 @@ class RootCauseAnalysisCreated extends StoredEvent
 
         $rca->id = $this->aggregateRootUuid();
 
+        $rca->incident_id = $incident->id;
+        $rca->supervisor_id = $this->metaData['user_id'];
+
         $rca->individuals_involved = $this->individuals_involved;
         $rca->primary_effect = $this->primary_effect;
         $rca->whys = $this->whys;
@@ -60,6 +63,8 @@ class RootCauseAnalysisCreated extends StoredEvent
         $rca->tool_in_good_condition = $this->tool_in_good_condition;
         $rca->working_conditions = $this->working_conditions;
         $rca->root_causes = $this->root_causes;
+
+        $rca->save();
 
         $comment = new Comment;
 
