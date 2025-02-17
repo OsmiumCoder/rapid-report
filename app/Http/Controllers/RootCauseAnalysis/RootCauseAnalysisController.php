@@ -35,7 +35,7 @@ class RootCauseAnalysisController extends Controller
             ->createRootCauseAnalysis($rcaData, $incident)
             ->persist();
 
-        return to_route('incidents.root-cause-analysis.show', ['incident' => $incident->id, 'root_cause_analysis' => $uuid]);
+        return to_route('incidents.root-cause-analyses.show', ['incident' => $incident->id, 'root_cause_analysis' => $uuid]);
     }
 
     /**

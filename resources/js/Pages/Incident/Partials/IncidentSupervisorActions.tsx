@@ -51,7 +51,7 @@ export default function IncidentSupervisorActions({ incident }: SupervisorAction
                                 Submit Investigation
                             </Link>
                             <Link
-                                href={route('incidents.root-cause-analysis.create', {
+                                href={route('incidents.root-cause-analyses.create', {
                                     incident: incident.id,
                                 })}
                                 as="button"

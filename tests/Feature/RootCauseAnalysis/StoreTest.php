@@ -68,7 +68,7 @@ class StoreTest extends TestCase
 
         Notification::assertNothingSent();
 
-        $response = $this->actingAs($supervisor)->post(route('incidents.root-cause-analysis.store', $incident), $rcaData->toArray());
+        $response = $this->actingAs($supervisor)->post(route('incidents.root-cause-analyses.store', $incident), $rcaData->toArray());
 
         Notification::assertCount(3);
 
@@ -129,7 +129,7 @@ class StoreTest extends TestCase
             'root_causes' => ['root cause 1', 'root cause 2'],
         ]);
 
-        $response = $this->actingAs($supervisor)->post(route('incidents.root-cause-analysis.store', $incident), $rcaData->toArray());
+        $response = $this->actingAs($supervisor)->post(route('incidents.root-cause-analyses.store', $incident), $rcaData->toArray());
 
         $incident->refresh();
 
@@ -188,11 +188,11 @@ class StoreTest extends TestCase
             'root_causes' => ['root cause 1', 'root cause 2'],
         ]);
 
-        $response = $this->actingAs($supervisor)->post(route('incidents.root-cause-analysis.store', $incident), $rcaData->toArray());
+        $response = $this->actingAs($supervisor)->post(route('incidents.root-cause-analyses.store', $incident), $rcaData->toArray());
 
         $rca = RootCauseAnalysis::first();
 
-        $response->assertRedirectToRoute('incidents.root-cause-analysis.show', ['incident' => $incident->id, 'root_cause_analysis' => $rca->id]);
+        $response->assertRedirectToRoute('incidents.root-cause-analyses.show', ['incident' => $incident->id, 'root_cause_analysis' => $rca->id]);
     }
 
     public function test_throws_validation_error_for_solutions_and_actions()
@@ -221,7 +221,7 @@ class StoreTest extends TestCase
             'root_causes' => '',
         ];
 
-        $response = $this->actingAs($supervisor)->post(route('incidents.root-cause-analysis.store', $incident), $rcaData);
+        $response = $this->actingAs($supervisor)->post(route('incidents.root-cause-analyses.store', $incident), $rcaData);
 
         $this->assertInstanceOf(ValidationException::class, $response->exception);
 
@@ -277,7 +277,7 @@ class StoreTest extends TestCase
             'root_causes' => '',
         ];
 
-        $response = $this->actingAs($supervisor)->post(route('incidents.root-cause-analysis.store', $incident), $rcaData);
+        $response = $this->actingAs($supervisor)->post(route('incidents.root-cause-analyses.store', $incident), $rcaData);
 
         $this->assertInstanceOf(ValidationException::class, $response->exception);
 
@@ -328,7 +328,7 @@ class StoreTest extends TestCase
             'root_causes' => '',
         ];
 
-        $response = $this->actingAs($supervisor)->post(route('incidents.root-cause-analysis.store', $incident), $rcaData);
+        $response = $this->actingAs($supervisor)->post(route('incidents.root-cause-analyses.store', $incident), $rcaData);
 
         $this->assertInstanceOf(ValidationException::class, $response->exception);
 
@@ -398,7 +398,7 @@ class StoreTest extends TestCase
             'root_causes' => ['root cause 1', 'root cause 2'],
         ]);
 
-        $response = $this->actingAs($user)->post(route('incidents.root-cause-analysis.store', $incident), $rcaData->toArray());
+        $response = $this->actingAs($user)->post(route('incidents.root-cause-analyses.store', $incident), $rcaData->toArray());
 
         $response->assertForbidden();
     }
@@ -448,7 +448,7 @@ class StoreTest extends TestCase
             'root_causes' => ['root cause 1', 'root cause 2'],
         ]);
 
-        $response = $this->actingAs($admin)->post(route('incidents.root-cause-analysis.store', $incident), $rcaData->toArray());
+        $response = $this->actingAs($admin)->post(route('incidents.root-cause-analyses.store', $incident), $rcaData->toArray());
 
         $response->assertForbidden();
     }
@@ -498,7 +498,7 @@ class StoreTest extends TestCase
             'root_causes' => ['root cause 1', 'root cause 2'],
         ]);
 
-        $response = $this->actingAs($supervisor)->post(route('incidents.root-cause-analysis.store', $incident), $rcaData->toArray());
+        $response = $this->actingAs($supervisor)->post(route('incidents.root-cause-analyses.store', $incident), $rcaData->toArray());
 
         $response->assertForbidden();
     }
@@ -548,7 +548,7 @@ class StoreTest extends TestCase
             'root_causes' => ['root cause 1', 'root cause 2'],
         ]);
 
-        $response = $this->actingAs($supervisor)->post(route('incidents.root-cause-analysis.store', $incident), $rcaData->toArray());
+        $response = $this->actingAs($supervisor)->post(route('incidents.root-cause-analyses.store', $incident), $rcaData->toArray());
 
         $response->assertForbidden();
     }
@@ -600,7 +600,7 @@ class StoreTest extends TestCase
 
         $this->assertDatabaseCount('root_cause_analyses', 0);
 
-        $response = $this->actingAs($supervisor)->post(route('incidents.root-cause-analysis.store', $incident), $rcaData->toArray());
+        $response = $this->actingAs($supervisor)->post(route('incidents.root-cause-analyses.store', $incident), $rcaData->toArray());
 
         $this->assertDatabaseCount('root_cause_analyses', 1);
 
