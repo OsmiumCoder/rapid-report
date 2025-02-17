@@ -49,10 +49,9 @@ class RootCauseAnalysisPolicyTest extends TestCase
     public function test_user_can_not_create_rca()
     {
         $user = User::factory()->create()->assignRole('user');
-        $supervisor = User::factory()->create()->assignRole('supervisor');
 
         $incident = Incident::factory()->create([
-            'supervisor_id' => $supervisor->id,
+            'supervisor_id' => $user->id,
             'status' => Assigned::class
         ]);
 
@@ -62,10 +61,9 @@ class RootCauseAnalysisPolicyTest extends TestCase
     public function test_admin_can_not_create_rca()
     {
         $admin = User::factory()->create()->assignRole('admin');
-        $supervisor = User::factory()->create()->assignRole('supervisor');
 
         $incident = Incident::factory()->create([
-            'supervisor_id' => $supervisor->id,
+            'supervisor_id' => $admin->id,
             'status' => Assigned::class
         ]);
 
