@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers\RootCauseAnalysis;
 
+use App\Aggregates\RootCauseAnalysisAggregateRoot;
+use App\Data\RootCauseAnalysisData;
 use App\Http\Controllers\Controller;
+use App\Models\Incident;
 use App\Models\RootCauseAnalysis;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class RootCauseAnalysisController extends Controller
 {
@@ -27,9 +31,17 @@ class RootCauseAnalysisController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Incident $incident, RootCauseAnalysisData $rcaData)
     {
-        //
+        $this->authorize('create', [RootCauseAnalysis::class, $incident]);
+
+        $uuid = Str::uuid()->toString();
+
+        RootCauseAnalysisAggregateRoot::retrieve(uuid: $uuid)
+            ->createRootCauseAnalysis($rcaData, $incident)
+            ->persist();
+
+        return to_route('incidents.root-cause-analysis.show', ['incident' => $incident->id, 'root_cause_analysis' => $uuid]);
     }
 
     /**
