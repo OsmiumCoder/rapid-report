@@ -21,10 +21,10 @@ class RootCauseAnalysisController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Request $request, Incident $incident)
+    public function create(Incident $incident)
     {
         $this->authorize('create', [RootCauseAnalysis::class, $incident]);
-        return Inertia::render('RootCauseAnalysis/Create');
+        return Inertia::render('RootCauseAnalysis/Create', ['incident' => $incident]);
     }
 
     /**

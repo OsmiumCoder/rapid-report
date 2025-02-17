@@ -13,6 +13,7 @@ import { RootCauseAnalysisData } from '@/types/rootCauseAnalysis/RootCauseAnalys
 import PrimaryButton from '@/Components/PrimaryButton';
 import { FormEvent } from 'react';
 import ExecutionOfWork from '@/Pages/RootCauseAnalysis/Partials/CreateComponents/ExecutionOfWork';
+import { Incident } from '@/types/incident/Incident';
 
 export interface RootCauseAnalysisComponentProps {
     formData: RootCauseAnalysisData;
@@ -20,7 +21,7 @@ export interface RootCauseAnalysisComponentProps {
     errors?: Partial<Record<keyof RootCauseAnalysisData, string>>;
 }
 
-export default function Create() {
+export default function Create({ incident }: { incident: Incident }) {
     const {
         data: formData,
         setData,

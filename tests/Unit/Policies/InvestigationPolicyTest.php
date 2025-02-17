@@ -7,10 +7,33 @@ use App\Models\Investigation;
 use App\Models\User;
 use App\Policies\InvestigationPolicy;
 use App\States\IncidentStatus\Assigned;
+use App\States\IncidentStatus\InReview;
 use Tests\TestCase;
 
 class InvestigationPolicyTest extends TestCase
 {
+    public function test_supervisor_can_not_create_if_not_assigned_state()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => InReview::class
+        ]);
+
+        $this->assertFalse($this->getPolicy()->create($supervisor, $incident));
+    }
+
+    public function test_supervisor_can_create_if_assigned_state()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Assigned::class
+        ]);
+
+        $this->assertTrue($this->getPolicy()->create($supervisor, $incident));
+    }
+
     public function test_admin_can_view_any_investigation()
     {
         $admin = User::factory()->create()->syncRoles('admin');
