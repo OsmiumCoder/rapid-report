@@ -11,7 +11,6 @@ class InvestigationData extends Data
         public string $basic_causes,
         public string $remedial_actions,
         public string $prevention,
-        public string $hazard_class,
         public int $risk_rank,
         public array $resulted_in,
         public array $substandard_acts,

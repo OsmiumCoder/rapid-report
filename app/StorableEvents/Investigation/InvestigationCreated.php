@@ -20,7 +20,6 @@ class InvestigationCreated extends StoredEvent
         public string $basic_causes,
         public string $remedial_actions,
         public string $prevention,
-        public string $hazard_class,
         public int $risk_rank,
         public array $resulted_in,
         public array $substandard_acts,
@@ -45,7 +44,6 @@ class InvestigationCreated extends StoredEvent
         $investigation->basic_causes = $this->basic_causes;
         $investigation->remedial_actions = $this->remedial_actions;
         $investigation->prevention = $this->prevention;
-        $investigation->hazard_class = $this->hazard_class;
         $investigation->risk_rank = $this->risk_rank;
         $investigation->resulted_in = $this->resulted_in;
 
@@ -54,6 +52,14 @@ class InvestigationCreated extends StoredEvent
         $investigation->energy_transfer_causes = $this->energy_transfer_causes;
         $investigation->personal_factors = $this->personal_factors;
         $investigation->job_factors = $this->job_factors;
+
+        if ($this->risk_rank < 3) {
+            $investigation->hazard_class = 'A';
+        } elseif ($this->risk_rank < 5) {
+            $investigation->hazard_class = 'B';
+        } else {
+            $investigation->hazard_class = 'C';
+        }
 
         $investigation->save();
 

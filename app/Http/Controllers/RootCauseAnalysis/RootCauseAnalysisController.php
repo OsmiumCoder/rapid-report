@@ -9,23 +9,17 @@ use App\Models\Incident;
 use App\Models\RootCauseAnalysis;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Inertia\Inertia;
 
 class RootCauseAnalysisController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Incident $incident)
     {
-        //
+        $this->authorize('create', [RootCauseAnalysis::class, $incident]);
+        return Inertia::render('RootCauseAnalysis/Create', ['incident' => $incident]);
     }
 
     /**

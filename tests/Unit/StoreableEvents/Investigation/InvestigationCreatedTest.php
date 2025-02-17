@@ -16,6 +16,96 @@ use Tests\TestCase;
 
 class InvestigationCreatedTest extends TestCase
 {
+    public function test_event_calculates_hazard_class_a_correctly()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
+        $incident = Incident::factory()->create(['status' => Assigned::class]);
+
+        $event = new InvestigationCreated(
+            incident_id: $incident->id,
+            immediate_causes: "immediate causes",
+            basic_causes: 'basic causes',
+            remedial_actions: "remedial actions",
+            prevention: "prevention",
+            risk_rank: 1,
+            resulted_in: ['injury', 'burn'],
+            substandard_acts: ['injury', 'burn'],
+            substandard_conditions: ['injury', 'burn'],
+            energy_transfer_causes: ['injury', 'burn'],
+            personal_factors: ['injury', 'burn'],
+            job_factors: ['injury', 'burn'],
+        );
+
+        $event->setMetaData(['user_id' => $supervisor->id]);
+
+        $event->handle();
+
+        $incident->refresh();
+
+        $this->assertEquals('A', $incident->investigations[0]->hazard_class);
+    }
+
+    public function test_event_calculates_hazard_class_b_correctly()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
+        $incident = Incident::factory()->create(['status' => Assigned::class]);
+
+        $event = new InvestigationCreated(
+            incident_id: $incident->id,
+            immediate_causes: "immediate causes",
+            basic_causes: 'basic causes',
+            remedial_actions: "remedial actions",
+            prevention: "prevention",
+            risk_rank: 4,
+            resulted_in: ['injury', 'burn'],
+            substandard_acts: ['injury', 'burn'],
+            substandard_conditions: ['injury', 'burn'],
+            energy_transfer_causes: ['injury', 'burn'],
+            personal_factors: ['injury', 'burn'],
+            job_factors: ['injury', 'burn'],
+        );
+
+        $event->setMetaData(['user_id' => $supervisor->id]);
+
+        $event->handle();
+
+        $incident->refresh();
+
+        $this->assertEquals('B', $incident->investigations[0]->hazard_class);
+    }
+
+    public function test_event_calculates_hazard_class_c_correctly()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
+        $incident = Incident::factory()->create(['status' => Assigned::class]);
+
+        $event = new InvestigationCreated(
+            incident_id: $incident->id,
+            immediate_causes: "immediate causes",
+            basic_causes: 'basic causes',
+            remedial_actions: "remedial actions",
+            prevention: "prevention",
+            risk_rank: 6,
+            resulted_in: ['injury', 'burn'],
+            substandard_acts: ['injury', 'burn'],
+            substandard_conditions: ['injury', 'burn'],
+            energy_transfer_causes: ['injury', 'burn'],
+            personal_factors: ['injury', 'burn'],
+            job_factors: ['injury', 'burn'],
+        );
+
+        $event->setMetaData(['user_id' => $supervisor->id]);
+
+        $event->handle();
+
+        $incident->refresh();
+
+        $this->assertEquals('C', $incident->investigations[0]->hazard_class);
+    }
+
     public function test_incident_transitions_from_assigned_to_in_review()
     {
         $this->markTestSkipped('Functionality under changes.');
@@ -30,7 +120,6 @@ class InvestigationCreatedTest extends TestCase
             basic_causes: 'basic causes',
             remedial_actions: "remedial actions",
             prevention: "prevention",
-            hazard_class: 'hazard class',
             risk_rank: 10,
             resulted_in: ['injury', 'burn'],
             substandard_acts: ['injury', 'burn'],
@@ -67,7 +156,6 @@ class InvestigationCreatedTest extends TestCase
             basic_causes: 'basic causes',
             remedial_actions: "remedial actions",
             prevention: "prevention",
-            hazard_class: 'hazard class',
             risk_rank: 10,
             resulted_in: ['injury', 'burn'],
             substandard_acts: ['injury', 'burn'],
@@ -111,7 +199,6 @@ class InvestigationCreatedTest extends TestCase
             basic_causes: 'basic causes',
             remedial_actions: "remedial actions",
             prevention: "prevention",
-            hazard_class: 'hazard class',
             risk_rank: 10,
             resulted_in: ['injury', 'burn'],
             substandard_acts: ['injury', 'burn'],
@@ -147,7 +234,6 @@ class InvestigationCreatedTest extends TestCase
             basic_causes: 'basic causes',
             remedial_actions: "remedial actions",
             prevention: "prevention",
-            hazard_class: 'hazard class',
             risk_rank: 10,
             resulted_in: ['injury', 'burn'],
             substandard_acts: ['injury', 'burn'],
@@ -172,7 +258,6 @@ class InvestigationCreatedTest extends TestCase
         $this->assertEquals($event->basic_causes, $investigation->basic_causes);
         $this->assertEquals($event->remedial_actions, $investigation->remedial_actions);
         $this->assertEquals($event->prevention, $investigation->prevention);
-        $this->assertEquals($event->hazard_class, $investigation->hazard_class);
         $this->assertEquals($event->risk_rank, $investigation->risk_rank);
         $this->assertEquals($event->resulted_in, $investigation->resulted_in);
         $this->assertEquals($event->substandard_acts, $investigation->substandard_acts);

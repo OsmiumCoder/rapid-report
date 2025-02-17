@@ -22,7 +22,7 @@ class InvestigationPolicy
      */
     public function view(User $user, Investigation $investigation): bool
     {
-        if ($user->can('view any investigation')) {
+        if ($user->can('view any incident follow-up')) {
             return true;
         }
 
@@ -38,7 +38,7 @@ class InvestigationPolicy
      */
     public function create(User $user, Incident $incident): bool
     {
-        if ($user->can('provide investigations') && $incident->supervisor_id == $user->id && $incident->status::class == Assigned::class) {
+        if ($user->can('provide incident follow-up') && $incident->supervisor_id == $user->id && $incident->status::class == Assigned::class) {
             return true;
         }
 

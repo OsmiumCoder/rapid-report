@@ -2,9 +2,10 @@
 
 namespace App\Policies;
 
+use App\Models\Incident;
 use App\Models\RootCauseAnalysis;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
+use App\States\IncidentStatus\Assigned;
 
 class RootCauseAnalysisPolicy
 {
@@ -27,8 +28,12 @@ class RootCauseAnalysisPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
+    public function create(User $user, Incident $incident): bool
     {
+        if ($user->can('provide incident follow-up') && $incident->supervisor_id == $user->id && $incident->status::class == Assigned::class) {
+            return true;
+        }
+
         return false;
     }
 

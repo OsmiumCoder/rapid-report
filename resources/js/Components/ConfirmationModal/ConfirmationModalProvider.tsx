@@ -1,7 +1,7 @@
 import { createContext, PropsWithChildren, RefObject, useContext, useRef, useState } from 'react';
 import ConfirmationModal, {
     ConfirmationModalProps,
-} from '@/Components/confirmationModal/ConfirmationModal';
+} from '@/Components/ConfirmationModal/ConfirmationModal';
 
 interface ConfirmationModalContextType {
     setModalProps: (props: Partial<ConfirmationModalProps>) => void;
@@ -41,7 +41,6 @@ export default function ConfirmationModalProvider({ children }: PropsWithChildre
     return (
         <ConfirmationModalContext.Provider value={{ setModalProps, modalRef }}>
             {children}
-
             <ConfirmationModal modalProps={modalProps} modalRef={modalRef} />
         </ConfirmationModalContext.Provider>
     );
