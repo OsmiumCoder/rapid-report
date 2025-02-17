@@ -8,7 +8,7 @@ use Inertia\Inertia;
 
 // TODO: Test for demo purposes
 Route::get('/notification', function () {
-    return (new \App\Mail\IncidentReceived)->render();
+    return (new \App\Mail\UserAdded)->render();
 });
 
 Route::get('/', function () {
@@ -37,9 +37,10 @@ Route::middleware('auth')->group(function () {
 
 
 require __DIR__.'/auth.php';
-require __DIR__.'/reports.php';
 require __DIR__.'/incidents.php';
 require __DIR__.'/investigations.php';
 require __DIR__.'/root-cause-analysis.php';
 require __DIR__.'/notifications.php';
+require __DIR__.'/reports.php';
+require __DIR__.'/root-cause-analysis.php';
 require __DIR__.'/users.php';

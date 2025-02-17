@@ -16,6 +16,8 @@ return new class () extends Migration {
             $table->foreignUuid('incident_id')->constrained('incidents');
             $table->foreignId('supervisor_id')->constrained('users');
 
+            $table->jsonb('individuals_involved');
+
             $table->text('primary_effect');
 
             $table->jsonb('effective_solutions');

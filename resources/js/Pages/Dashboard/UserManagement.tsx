@@ -7,9 +7,9 @@ import DangerButton from '@/Components/DangerButton';
 import SelectInput from '@/Components/SelectInput';
 import React from 'react';
 import { uppercaseWordFormat } from '@/Filters/uppercaseWordFormat';
-import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import _ from 'underscore';
+import AddUserForm from '@/Pages/Dashboard/Partials/AddUserForm';
 import { useConfirmationModal } from '@/Components/ConfirmationModal/ConfirmationModalProvider';
 
 interface UserManagementProps {
@@ -47,17 +47,7 @@ export default function UserManagement({ users, roles }: UserManagementProps) {
                         </div>
                     </div>
                     <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-                        <PrimaryButton
-                            onClick={() =>
-                                setModalProps({
-                                    title: 'Add User',
-                                    text: `Fill out the details:`,
-                                    show: true,
-                                })
-                            }
-                        >
-                            Add User
-                        </PrimaryButton>
+                        <AddUserForm roles={roles} />
                     </div>
                 </div>
                 <div className="mt-8 flow-root">
