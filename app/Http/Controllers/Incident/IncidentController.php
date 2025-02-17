@@ -81,7 +81,7 @@ class IncidentController extends Controller
             $supervisors = [];
         }
 
-        if ($user->can('view any incident review')) {
+        if ($user->can('view any incident follow-up')) {
             $incident->load('investigations.supervisor');
         } else {
             $incident->load(['investigations' => function ($query) use ($user, $incident) {

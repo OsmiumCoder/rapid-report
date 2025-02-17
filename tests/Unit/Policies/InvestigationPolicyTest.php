@@ -7,7 +7,6 @@ use App\Models\Investigation;
 use App\Models\User;
 use App\Policies\InvestigationPolicy;
 use App\States\IncidentStatus\Assigned;
-use App\States\IncidentStatus\InReview;
 use Tests\TestCase;
 
 class InvestigationPolicyTest extends TestCase

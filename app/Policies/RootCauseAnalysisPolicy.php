@@ -30,7 +30,7 @@ class RootCauseAnalysisPolicy
      */
     public function create(User $user, Incident $incident): bool
     {
-        if ($user->can('provide incident review') && $incident->supervisor_id == $user->id && $incident->status::class == Assigned::class) {
+        if ($user->can('provide incident follow-up') && $incident->supervisor_id == $user->id && $incident->status::class == Assigned::class) {
             return true;
         }
 
