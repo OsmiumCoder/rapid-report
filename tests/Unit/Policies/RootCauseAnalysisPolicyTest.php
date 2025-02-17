@@ -18,7 +18,7 @@ class RootCauseAnalysisPolicyTest extends TestCase
 
         $incident = Incident::factory()->create([
             'supervisor_id' => $supervisorA->id,
-            'status' => InReview::class
+            'status' => Assigned::class
         ]);
 
         $this->assertFalse($this->getPolicy()->create($supervisor, $incident));
