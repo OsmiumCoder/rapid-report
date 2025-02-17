@@ -3,7 +3,6 @@ export interface InvestigationData {
     basic_causes: string;
     remedial_actions: string;
     prevention: string;
-    hazard_class: string;
     risk_rank: number;
     resulted_in: string[];
     substandard_acts: string[];
