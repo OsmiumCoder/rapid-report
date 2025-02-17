@@ -13,15 +13,17 @@ return new class () extends Migration {
         Schema::create('root_cause_analyses', function (Blueprint $table) {
             $table->uuid('id')->primary();
 
-            $table->foreignUuid('incident_id')->constrained('incidents');
             $table->foreignId('supervisor_id')->constrained('users');
+            $table->foreignUuid('incident_id')->constrained('incidents');
 
             $table->jsonb('individuals_involved');
 
             $table->text('primary_effect');
 
-            $table->jsonb('effective_solutions');
-            $table->jsonb('corrective_actions');
+            $table->jsonb('whys');
+
+            // effective_solutions and corrective_actions were combined
+            $table->jsonb('solutions_and_actions');
 
             $table->jsonb('peoples_positions');
             $table->jsonb('attention_to_work');
