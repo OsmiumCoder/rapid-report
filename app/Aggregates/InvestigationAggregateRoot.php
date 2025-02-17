@@ -17,7 +17,6 @@ class InvestigationAggregateRoot extends AggregateRoot
             basic_causes: $investigationData->basic_causes,
             remedial_actions: $investigationData->remedial_actions,
             prevention: $investigationData->prevention,
-            hazard_class: $investigationData->hazard_class,
             risk_rank: $investigationData->risk_rank,
             resulted_in: $investigationData->resulted_in,
             substandard_acts: $investigationData->substandard_acts,

@@ -27,7 +27,6 @@ class StoreTest extends TestCase
             'basic_causes' => 'basic causes',
             'remedial_actions' => "remedial actions",
             'prevention' => 'prevention',
-            'hazard_class' => 'hazard class',
             'risk_rank' => 10,
             'resulted_in' => ['injury', 'burn'],
             'substandard_acts' => ['injury', 'burn'],
@@ -61,7 +60,6 @@ class StoreTest extends TestCase
             'basic_causes' => 'basic causes',
             'remedial_actions' => "remedial actions",
             'prevention' => 'prevention',
-            'hazard_class' => 'hazard class',
             'risk_rank' => 10,
             'resulted_in' => ['injury', 'burn'],
             'substandard_acts' => ['injury', 'burn'],
@@ -100,7 +98,6 @@ class StoreTest extends TestCase
             'basic_causes' => 'basic causes',
             'remedial_actions' => "remedial actions",
             'prevention' => 'prevention',
-            'hazard_class' => 'hazard class',
             'risk_rank' => 10,
             'resulted_in' => ['injury', 'burn'],
             'substandard_acts' => ['injury', 'burn'],
@@ -135,7 +132,6 @@ class StoreTest extends TestCase
             'basic_causes' => 'basic causes',
             'remedial_actions' => "remedial actions",
             'prevention' => 'prevention',
-            'hazard_class' => 'hazard class',
             'risk_rank' => 10,
             'resulted_in' => ['injury', 'burn'],
             'substandard_acts' => ['injury', 'burn'],
@@ -163,7 +159,6 @@ class StoreTest extends TestCase
             'basic_causes' => '',
             'remedial_actions' => "",
             'prevention' => '',
-            'hazard_class' => '',
             'risk_rank' => 10,
             'resulted_in' => [],
             'substandard_acts' => [],
@@ -182,7 +177,6 @@ class StoreTest extends TestCase
             'basic_causes',
             'remedial_actions',
             'prevention',
-            'hazard_class',
             'resulted_in',
             'substandard_acts',
             'substandard_conditions',
@@ -203,7 +197,6 @@ class StoreTest extends TestCase
             'basic_causes' => 'basic causes',
             'remedial_actions' => "remedial actions",
             'prevention' => 'prevention',
-            'hazard_class' => 'hazard class',
             'risk_rank' => 10,
             'resulted_in' => ['injury', 'burn'],
             'substandard_acts' => ['injury', 'burn'],
@@ -229,7 +222,6 @@ class StoreTest extends TestCase
             'basic_causes' => 'basic causes',
             'remedial_actions' => "remedial actions",
             'prevention' => 'prevention',
-            'hazard_class' => 'hazard class',
             'risk_rank' => 10,
             'resulted_in' => ['injury', 'burn'],
             'substandard_acts' => ['injury', 'burn'],
@@ -255,7 +247,6 @@ class StoreTest extends TestCase
             'basic_causes' => 'basic causes',
             'remedial_actions' => "remedial actions",
             'prevention' => 'prevention',
-            'hazard_class' => 'hazard class',
             'risk_rank' => 10,
             'resulted_in' => ['injury', 'burn'],
             'substandard_acts' => ['injury', 'burn'],
@@ -281,7 +272,6 @@ class StoreTest extends TestCase
             'basic_causes' => 'basic causes',
             'remedial_actions' => "remedial actions",
             'prevention' => 'prevention',
-            'hazard_class' => 'hazard class',
             'risk_rank' => 10,
             'resulted_in' => ['injury', 'burn'],
             'substandard_acts' => ['injury', 'burn'],
@@ -305,7 +295,6 @@ class StoreTest extends TestCase
         $this->assertEquals($investigationData->basic_causes, $investigation->basic_causes);
         $this->assertEquals($investigationData->remedial_actions, $investigation->remedial_actions);
         $this->assertEquals($investigationData->prevention, $investigation->prevention);
-        $this->assertEquals($investigationData->hazard_class, $investigation->hazard_class);
         $this->assertEquals($investigationData->risk_rank, $investigation->risk_rank);
         $this->assertEquals($investigationData->resulted_in, $investigation->resulted_in);
         $this->assertEquals($investigationData->substandard_acts, $investigation->substandard_acts);
