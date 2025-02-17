@@ -57,8 +57,6 @@ class InvestigationCreated extends StoredEvent
 
         $investigation->save();
 
-        $incident->status->transitionTo(InReview::class);
-
         $comment = new Comment;
 
         $comment->user_id = $this->metaData['user_id'];
