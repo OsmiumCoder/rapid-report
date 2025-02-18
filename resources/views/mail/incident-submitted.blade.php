@@ -1,8 +1,12 @@
 <x-mail::message>
-    # Incident Submitted
+# Incident Submitted
 
-    A new incident has been submitted.
+A new incident has been submitted.
 
-    Thanks,<br>
-    UPEI Health, Safety, and Environment
+<x-mail::button :url="$url">
+View Incident
+</x-mail::button>
+
+Thanks,<br>
+UPEI Health, Safety, and Environment
 </x-mail::message>

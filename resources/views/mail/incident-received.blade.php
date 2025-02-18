@@ -1,15 +1,14 @@
 <x-mail::message>
-    # Incident Received
+# Incident Received
 
-    Dear name,
+Dear,
 
-    We have received your incident report and appreciate you taking the time to inform us. Our team will review the details and take appropriate action as soon as possible.
+We have received your incident report and appreciate you taking the time to inform us. Our team will review the details and take appropriate action as soon as possible.
 
+If you have any additional information or need to provide updates, please reply to this email or contact our support team.
 
-    If you have any additional information or need to provide updates, please reply to this email or contact our support team.
+Thank you for your report.
 
-    Thank you for your report.
-
-    Best regards,
-    UPEI Health, Safety, and Environment
+Best regards,
+UPEI Health, Safety, and Environment
 </x-mail::message>

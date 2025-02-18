@@ -40,7 +40,10 @@ class RootCauseAnalysisSubmitted extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        $url = route('incidents.root-cause-analyses.show', $this->rootCauseAnalysisId);
+        $url = route('incidents.root-cause-analyses.show', [
+            'incident' => $this->incidentId,
+            'root_cause_analysis' => $this->rootCauseAnalysisId
+        ]);
 
         return (new MailMessage)
             ->subject('Root Cause Analysis Submitted')

@@ -6,9 +6,40 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-// TODO: Test for demo purposes
+// TODO: Remove, used for demo purposes
 Route::get('/notification', function () {
-    return (new \App\Mail\UserAdded)->render();
+    $supervisor = \App\Models\User::factory()->create()->syncRoles('supervisor');
+    $incident = \App\Models\Incident::factory()->create();
+    $investigation = \App\Models\Investigation::factory()->create();
+    $rca = \App\Models\RootCauseAnalysis::factory()->create();
+
+    $incidentReceived = new \App\Mail\IncidentReceived;
+    $userAdded = new \App\Mail\UserAdded;
+
+    $incidentSubmitted = new \App\Notifications\Incident\IncidentSubmitted(
+        incidentId: $incident->id,
+        firstName: null,
+        lastName: null,
+    );
+
+    $investigationSubmitted = new \App\Notifications\Investigation\InvestigationSubmitted(
+        incidentId: $incident->id,
+        investigationId: $investigation->id,
+        supervisor: $supervisor,
+    );
+
+    $rcaSubmitted = new \App\Notifications\RootCauseAnalysis\RootCauseAnalysisSubmitted(
+        incidentId: $incident->id,
+        rootCauseAnalysisId: $rca->id,
+        supervisor: $supervisor,
+    );
+
+    return $incidentReceived->render();
+    // return $userAdded->render();
+    // return $incidentSubmitted->toMail($supervisor);
+    // return $investigationSubmitted->toMail($supervisor);
+    // return $rcaSubmitted->toMail($supervisor);
+
 });
 
 Route::get('/', function () {
