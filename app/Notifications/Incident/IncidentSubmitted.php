@@ -56,7 +56,13 @@ class IncidentSubmitted extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage)->markdown('mail.incident-submitted');
+        $url = route('incidents.show', [
+            'incident' => $this->incidentId,
+        ]);
+
+        return (new MailMessage)
+            ->subject('Incident Submitted')
+            ->markdown('mail.incident-submitted', ['url' => $url]);
     }
 
     /**
