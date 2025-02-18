@@ -16,7 +16,7 @@ export default function SupervisorStage({
     });
 
     const handleValidStep = () => {
-        if (auth.user !== null && formData.supervisor_name?.length === 0) {
+        if (auth.user !== null && formData.supervisor_name?.length === 0 && !formData.anonymous) {
             setValidStep(false);
         } else {
             setValidStep(true);
