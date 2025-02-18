@@ -2,28 +2,17 @@ import { Link, usePage } from '@inertiajs/react';
 import classNames from '@/Filters/classNames';
 import { RoleName } from '@/types';
 
-interface NavigationItem {
+export interface NavigationItem {
     name: string;
     href: string;
     roles: RoleName[];
 }
 
-const navigationItems: NavigationItem[] = [
-    { name: 'Dashboard', href: 'dashboard', roles: ['all'] },
-    {
-        name: 'Supervisor Overview',
-        href: 'dashboard.supervisor',
-        roles: ['supervisor'],
-    },
-    {
-        name: 'Admin Overview',
-        href: 'dashboard.admin',
-        roles: ['admin', 'super-admin'],
-    },
-    { name: 'User Management', href: 'dashboard.user-management', roles: ['admin', 'super-admin'] },
-];
 
-export default function DashboardNavBar() {
+interface NavProps{
+    navigationItems: NavigationItem[];
+}
+export default function DashboardNavBar( {navigationItems}:NavProps) {
     const { user } = usePage().props.auth;
 
     return (

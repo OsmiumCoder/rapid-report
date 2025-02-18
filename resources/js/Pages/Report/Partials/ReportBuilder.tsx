@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction, useState} from 'react';
+import React, {useState} from 'react';
 import ReportData from "@/types/report/ReportData";
 import ReportBuildingBlock from "@/Pages/Report/Partials/ReportBuildingBlock";
 import DatePicker from "@/Components/DatePicker";
@@ -8,12 +8,13 @@ import PrimaryButton from "@/Components/PrimaryButton";
 
 export interface ReportBuilderProps {
     formData: ReportData;
-    setFormData:  Dispatch<SetStateAction<ReportData>>;
+    setFormData:  Function;
+    post: Function;
 }
 export interface ReportBuildingBlockProps{
     kee: keyof ReportData;
     formData: ReportData;
-    setFormData:  Dispatch<SetStateAction<ReportData>>;
+    setFormData:  Function;
 }
 interface timelineLengthsInterface {
     stringify: string;
@@ -35,6 +36,7 @@ type timeLengthsCollection = {
 export default function ReportBuilder({
     formData,
     setFormData,
+    post
 }: ReportBuilderProps){
     const currentDate = dayjs(new Date())
     const [timeline, setTimeline] = useState<timelineInterface>({
@@ -83,12 +85,15 @@ export default function ReportBuilder({
             }
         }
     }
-    const exportTypes = [
-        {
-            action: route('report.downloadFileCSV', 'report_'+ dayjs().format('YYYY-MM-DDTHH:mm:ssZ[Z]') ),
-            name:'CSV'
-        },
-    ]
+    const done = ()=>{
+        post(route('report.downloadFileCSV'));
+    }
+    // const exportTypes = [
+    //     {
+    //         action: () -> {},
+    //         name:'CSV'
+    //     },
+    // ]
 
 
     const timelineLengths: timeLengthsCollection = {
@@ -124,7 +129,7 @@ export default function ReportBuilder({
         iter: 1
     });
     const numIters = Array.from({length:12}, (_, i) => i + 1);
-    const formItems = Object.keys(formData) as Array<keyof ReportData>;
+    const formItems = (Object.keys(formData) as Array<keyof ReportData>).filter((key) => (key !== 'timelineStart' && key !== 'timelineEnd'));
     const formBlocks = formItems.map((key) =>
         <li key={key}>
         <ReportBuildingBlock
@@ -229,7 +234,9 @@ export default function ReportBuilder({
                 >
                     Preview
                 </SecondaryButton>
-                <PrimaryButton>
+                <PrimaryButton
+                onClick={done}
+                >
                     Export
                 </PrimaryButton>
             </div>

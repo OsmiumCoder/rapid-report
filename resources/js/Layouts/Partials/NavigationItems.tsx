@@ -1,5 +1,5 @@
 import { Link, usePage } from '@inertiajs/react';
-import { FolderIcon, HomeIcon } from '@heroicons/react/24/outline';
+import {DocumentChartBarIcon, FolderIcon, HomeIcon} from '@heroicons/react/24/outline';
 import classNames from '@/Filters/classNames';
 import { useState } from 'react';
 import NavigationItem, { NavigationItemInterface } from '@/Layouts/Partials/NavigationItem';
@@ -35,6 +35,12 @@ const navigationItems: NavigationItemInterface[] = [
             },
         ],
     },
+    {
+        name: 'Reports',
+        route: 'report.index',
+        icon: DocumentChartBarIcon,
+        roles: ['all'],
+    }
 ];
 
 export default function NavigationItems() {
