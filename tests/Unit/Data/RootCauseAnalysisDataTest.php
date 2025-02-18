@@ -8,6 +8,46 @@ use Tests\TestCase;
 
 class RootCauseAnalysisDataTest extends TestCase
 {
+    public function test_rca_data_valid_with_nullable_arrays()
+    {
+        $rcaData = RootCauseAnalysisData::validateAndCreate([
+            'individuals_involved' => [
+                ['name' => 'john', 'email' => 'john@doe.com', 'phone' => '1234567890'],
+            ],
+            'primary_effect' => 'primary effect',
+            'whys' => ['why 1', 'why 2', 'why 3', 'why 4', 'why 5'],
+            'solutions_and_actions' => [
+                [
+                    "cause" => 'cause 1',
+                    'control' => 'control 1',
+                    'remedial_action' => 'action 1',
+                    'by_who' => 'who 1',
+                    'by_when' => now()->format('Y-m-d'),
+                    'manager' => 'manager 1',
+                ],
+                [
+                    "cause" => 'cause 2',
+                    'control' => 'control 2',
+                    'remedial_action' => 'action 2',
+                    'by_who' => 'who 2',
+                    'by_when' => now()->format('Y-m-d'),
+                    'manager' => 'manager 2',
+                ]
+            ],
+            'ppe_in_good_condition' => true,
+            'ppe_in_use' => true,
+            'ppe_correct_type' => true,
+            'correct_tool_used' => true,
+            'policies_followed' => true,
+            'worked_safely' => true,
+            'used_tool_properly' => true,
+            'tool_in_good_condition' => true,
+            'root_causes' => ['root cause 1', 'root cause 2'],
+        ]);
+
+        $this->assertInstanceOf(RootCauseAnalysisData::class, $rcaData);
+    }
+
     public function test_rca_data_valid_with_correct_values()
     {
         $rcaData = RootCauseAnalysisData::validateAndCreate([

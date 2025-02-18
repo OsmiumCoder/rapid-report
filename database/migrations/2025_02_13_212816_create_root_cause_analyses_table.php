@@ -25,9 +25,9 @@ return new class () extends Migration {
             // effective_solutions and corrective_actions were combined
             $table->jsonb('solutions_and_actions');
 
-            $table->jsonb('peoples_positions');
-            $table->jsonb('attention_to_work');
-            $table->jsonb('communication');
+            $table->jsonb('peoples_positions')->nullable();
+            $table->jsonb('attention_to_work')->nullable();
+            $table->jsonb('communication')->nullable();
 
             // Using PPE
             $table->boolean('ppe_in_good_condition');
@@ -41,7 +41,7 @@ return new class () extends Migration {
             $table->boolean('used_tool_properly');
             $table->boolean('tool_in_good_condition');
 
-            $table->jsonb('working_conditions');
+            $table->jsonb('working_conditions')->nullable();
             $table->jsonb('root_causes');
 
             $table->softDeletes();

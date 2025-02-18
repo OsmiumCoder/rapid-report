@@ -17,7 +17,7 @@ export default function PersonalProtectiveEquipment({
                     <>
                         <RadioGroup legend={label}>
                             <LabelledRadioInput
-                                name={i.toString()}
+                                name={label}
                                 onChange={(e) =>
                                     setFormData(
                                         key as keyof RootCauseAnalysisData,
@@ -27,7 +27,17 @@ export default function PersonalProtectiveEquipment({
                             >
                                 Yes
                             </LabelledRadioInput>
-                            <LabelledRadioInput name={i.toString()}>No</LabelledRadioInput>
+                            <LabelledRadioInput
+                                name={label}
+                                onChange={(e) =>
+                                    setFormData(
+                                        key as keyof RootCauseAnalysisData,
+                                        !e.target.checked
+                                    )
+                                }
+                            >
+                                No
+                            </LabelledRadioInput>
                         </RadioGroup>
                         <InputError
                             message={

@@ -19,9 +19,9 @@ class RootCauseAnalysisCreated extends StoredEvent
         public string $primary_effect,
         public array $whys,
         public array $solutions_and_actions,
-        public array $peoples_positions,
-        public array $attention_to_work,
-        public array $communication,
+        public ?array $peoples_positions,
+        public ?array $attention_to_work,
+        public ?array $communication,
         public bool $ppe_in_good_condition,
         public bool $ppe_in_use,
         public bool $ppe_correct_type,
@@ -30,7 +30,7 @@ class RootCauseAnalysisCreated extends StoredEvent
         public bool $worked_safely,
         public bool $used_tool_properly,
         public bool $tool_in_good_condition,
-        public array $working_conditions,
+        public ?array $working_conditions,
         public array $root_causes,
     ) {
     }

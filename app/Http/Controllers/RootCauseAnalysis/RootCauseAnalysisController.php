@@ -41,9 +41,9 @@ class RootCauseAnalysisController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(RootCauseAnalysis $rootCauseAnalysis)
+    public function show(Incident $incident, RootCauseAnalysis $rootCauseAnalysis)
     {
-        //
+
     }
 
     /**

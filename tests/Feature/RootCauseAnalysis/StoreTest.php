@@ -206,9 +206,6 @@ class StoreTest extends TestCase
             'primary_effect' => '',
             'whys' => '',
             'solutions_and_actions' => [[]],
-            'peoples_positions' => '',
-            'attention_to_work' => '',
-            'communication' => '',
             'ppe_in_good_condition' => '',
             'ppe_in_use' => '',
             'ppe_correct_type' => '',
@@ -217,7 +214,6 @@ class StoreTest extends TestCase
             'worked_safely' => '',
             'used_tool_properly' => '',
             'tool_in_good_condition' => '',
-            'working_conditions' => '',
             'root_causes' => '',
         ];
 
@@ -229,9 +225,6 @@ class StoreTest extends TestCase
             'individuals_involved',
             'primary_effect',
             'whys',
-            'peoples_positions',
-            'attention_to_work',
-            'communication',
             'ppe_in_good_condition',
             'ppe_in_use',
             'ppe_correct_type',
@@ -240,7 +233,6 @@ class StoreTest extends TestCase
             'worked_safely',
             'used_tool_properly',
             'tool_in_good_condition',
-            'working_conditions',
             'root_causes',
             'solutions_and_actions.0.cause',
             'solutions_and_actions.0.control',
@@ -262,9 +254,6 @@ class StoreTest extends TestCase
             'primary_effect' => '',
             'whys' => '',
             'solutions_and_actions' => '',
-            'peoples_positions' => '',
-            'attention_to_work' => '',
-            'communication' => '',
             'ppe_in_good_condition' => '',
             'ppe_in_use' => '',
             'ppe_correct_type' => '',
@@ -273,7 +262,6 @@ class StoreTest extends TestCase
             'worked_safely' => '',
             'used_tool_properly' => '',
             'tool_in_good_condition' => '',
-            'working_conditions' => '',
             'root_causes' => '',
         ];
 
@@ -285,9 +273,6 @@ class StoreTest extends TestCase
             'primary_effect',
             'whys',
             'solutions_and_actions',
-            'peoples_positions',
-            'attention_to_work',
-            'communication',
             'ppe_in_good_condition',
             'ppe_in_use',
             'ppe_correct_type',
@@ -296,7 +281,6 @@ class StoreTest extends TestCase
             'worked_safely',
             'used_tool_properly',
             'tool_in_good_condition',
-            'working_conditions',
             'root_causes',
             'individuals_involved.0.name',
         ]);
@@ -313,9 +297,6 @@ class StoreTest extends TestCase
             'primary_effect' => '',
             'whys' => '',
             'solutions_and_actions' => '',
-            'peoples_positions' => '',
-            'attention_to_work' => '',
-            'communication' => '',
             'ppe_in_good_condition' => '',
             'ppe_in_use' => '',
             'ppe_correct_type' => '',
@@ -324,7 +305,6 @@ class StoreTest extends TestCase
             'worked_safely' => '',
             'used_tool_properly' => '',
             'tool_in_good_condition' => '',
-            'working_conditions' => '',
             'root_causes' => '',
         ];
 
@@ -337,9 +317,6 @@ class StoreTest extends TestCase
             'primary_effect',
             'whys',
             'solutions_and_actions',
-            'peoples_positions',
-            'attention_to_work',
-            'communication',
             'ppe_in_good_condition',
             'ppe_in_use',
             'ppe_correct_type',
@@ -348,7 +325,6 @@ class StoreTest extends TestCase
             'worked_safely',
             'used_tool_properly',
             'tool_in_good_condition',
-            'working_conditions',
             'root_causes',
         ]);
     }
