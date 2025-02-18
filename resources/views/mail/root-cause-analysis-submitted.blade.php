@@ -1,10 +1,10 @@
 <x-mail::message>
-# Introduction
+# Root Cause Analysis Submitted
 
-The body of your message.
+A root cause analysis was submitted. Click below to view the root cause analysis that was submitted.
 
-<x-mail::button :url="''">
-Button Text
+<x-mail::button :url="$url">
+View Root Cause Analysis
 </x-mail::button>
 
 Thanks,<br>

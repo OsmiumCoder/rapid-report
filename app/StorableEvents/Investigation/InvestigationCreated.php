@@ -8,7 +8,6 @@ use App\Models\Incident;
 use App\Models\Investigation;
 use App\Models\User;
 use App\Notifications\Investigation\InvestigationSubmitted;
-use App\States\IncidentStatus\InReview;
 use App\StorableEvents\StoredEvent;
 use Illuminate\Support\Facades\Notification;
 
@@ -62,8 +61,6 @@ class InvestigationCreated extends StoredEvent
         }
 
         $investigation->save();
-
-        $incident->status->transitionTo(InReview::class);
 
         $comment = new Comment;
 

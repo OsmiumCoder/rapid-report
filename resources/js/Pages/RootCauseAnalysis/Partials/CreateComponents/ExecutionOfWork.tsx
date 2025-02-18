@@ -17,7 +17,7 @@ export default function ExecutionOfWork({ setFormData, errors }: RootCauseAnalys
                     <>
                         <RadioGroup legend={label}>
                             <LabelledRadioInput
-                                name={i.toString()}
+                                name={label}
                                 onChange={(e) =>
                                     setFormData(
                                         key as keyof RootCauseAnalysisData,
@@ -27,7 +27,17 @@ export default function ExecutionOfWork({ setFormData, errors }: RootCauseAnalys
                             >
                                 Yes
                             </LabelledRadioInput>
-                            <LabelledRadioInput name={i.toString()}>No</LabelledRadioInput>
+                            <LabelledRadioInput
+                                name={label}
+                                onChange={(e) =>
+                                    setFormData(
+                                        key as keyof RootCauseAnalysisData,
+                                        !e.target.checked
+                                    )
+                                }
+                            >
+                                No
+                            </LabelledRadioInput>
                         </RadioGroup>
                         <InputError
                             message={

@@ -43,14 +43,14 @@ export default function Create({ incident }: { incident: Incident }) {
         peoples_position: [] as string[],
         attention_to_work: [] as string[],
         communication: [] as string[],
-        ppe_in_good_condition: false as boolean,
-        ppe_in_use: false as boolean,
-        ppe_correct_type: false as boolean,
-        correct_tool_used: false as boolean,
-        policies_followed: false as boolean,
-        worked_safely: false as boolean,
-        used_tool_properly: false as boolean,
-        tool_in_good_condition: false as boolean,
+        ppe_in_good_condition: null as boolean | null,
+        ppe_in_use: null as boolean | null,
+        ppe_correct_type: null as boolean | null,
+        correct_tool_used: null as boolean | null,
+        policies_followed: null as boolean | null,
+        worked_safely: null as boolean | null,
+        used_tool_properly: null as boolean | null,
+        tool_in_good_condition: null as boolean | null,
         working_conditions: [] as string[],
         root_causes: [] as string[],
     });
@@ -59,7 +59,8 @@ export default function Create({ incident }: { incident: Incident }) {
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(formData);
+
+        post(route('incidents.root-cause-analyses.store', { incident: incident.id }));
     };
     return (
         <Authenticated>

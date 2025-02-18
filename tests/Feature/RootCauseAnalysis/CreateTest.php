@@ -17,7 +17,7 @@ class CreateTest extends TestCase
 
         $incident = Incident::factory()->create(['supervisor_id' => $supervisor->id, 'status' => Assigned::class]);
 
-        $response = $this->get(route('incidents.root-cause-analysis.create', ['incident' => $incident->id]));
+        $response = $this->get(route('incidents.root-cause-analyses.create', ['incident' => $incident->id]));
 
         $response->assertOk();
 
@@ -34,7 +34,7 @@ class CreateTest extends TestCase
 
         $incident = Incident::factory()->create();
 
-        $response = $this->get(route('incidents.root-cause-analysis.create', ['incident' => $incident->id]));
+        $response = $this->get(route('incidents.root-cause-analyses.create', ['incident' => $incident->id]));
 
         $response->assertForbidden();
     }
@@ -46,7 +46,7 @@ class CreateTest extends TestCase
 
         $incident = Incident::factory()->create();
 
-        $response = $this->get(route('incidents.root-cause-analysis.create', ['incident' => $incident->id]));
+        $response = $this->get(route('incidents.root-cause-analyses.create', ['incident' => $incident->id]));
 
         $response->assertForbidden();
     }
@@ -58,7 +58,7 @@ class CreateTest extends TestCase
 
         $incident = Incident::factory()->create();
 
-        $response = $this->get(route('incidents.root-cause-analysis.create', ['incident' => $incident->id]));
+        $response = $this->get(route('incidents.root-cause-analyses.create', ['incident' => $incident->id]));
 
         $response->assertForbidden();
     }

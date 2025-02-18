@@ -67,6 +67,11 @@ class Incident extends Model
         return $this->hasMany(Investigation::class);
     }
 
+    public function rootCauseAnalyses()
+    {
+        return $this->hasMany(RootCauseAnalysis::class);
+    }
+
     public function scopeFilter($query, ?array $filters)
     {
         if ($filters == null) {
