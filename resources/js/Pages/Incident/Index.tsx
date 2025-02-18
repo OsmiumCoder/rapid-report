@@ -148,10 +148,10 @@ export default function Index({
     const resetFilters = () => setFilters(initialFilters);
 
     const handleSortCycle = (sortBy: SortBy) => {
-        if (sortBy !== sortedBy || sortedDirection === 'asc') {
-            setSortedDirection('desc');
-        } else {
+        if (sortBy !== sortedBy || sortedDirection === 'desc') {
             setSortedDirection('asc');
+        } else {
+            setSortedDirection('desc');
         }
 
         setSortedBy(sortBy);

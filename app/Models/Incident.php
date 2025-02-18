@@ -39,15 +39,15 @@ class Incident extends Model
         // Convert all boolean fields to integers
         foreach ($array as $key => $value) {
             if (is_bool($value)) {
-                $array[$key] = (int) $value;
+                $array[$key] = (int)$value;
             }
         }
 
         return array_merge($array, [
-            'id' => (string) $this->id,
-            'upei_id' => (string) $this->upei_id,
+            'id' => (string)$this->id,
+            'upei_id' => (string)$this->upei_id,
             'supervisor' => $this->supervisor ? $this->supervisor->name : null,
-            'supervisor_id' => (int) $this->supervisor_id,
+            'supervisor_id' => (int)$this->supervisor_id,
             'created_at' => $this->created_at->timestamp,
         ]);
     }
@@ -91,12 +91,30 @@ class Incident extends Model
         }
     }
 
-    public function scopeSort($query, $sortBy, $sortDirection): void
+    public function scopeSort($query, $sortBy = 'created_at', $sortDirection = 'asc'): void
     {
         if ($sortBy == 'name') {
             $query->orderBy('first_name', $sortDirection)->orderBy('last_name', $sortDirection);
+        } elseif ($sortBy == 'status') {
+            $query->orderByRaw(
+                "CASE
+                WHEN status = 'reopened' THEN 1
+                WHEN status = 'returned' THEN 2
+                WHEN status = 'opened' THEN 3
+                WHEN status = 'assigned' THEN 4
+                WHEN status = 'in review' THEN 5
+                WHEN status = 'closed' THEN 6
+                ELSE 7
+            END $sortDirection"
+            );
         } else {
             $query->orderBy($sortBy, $sortDirection);
+        }
+
+        // Always sort by created_at within what we are sorting by
+        // Unless that's what's been explicitly set
+        if ($sortBy != 'created_at') {
+            $query->orderBy('created_at', 'desc');
         }
     }
 }

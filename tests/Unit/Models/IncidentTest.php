@@ -5,10 +5,32 @@ namespace Tests\Unit\Models;
 use App\Models\Incident;
 use App\Models\Investigation;
 use App\Models\User;
+use App\States\IncidentStatus\Assigned;
+use App\States\IncidentStatus\Closed;
+use App\States\IncidentStatus\InReview;
+use App\States\IncidentStatus\Opened;
+use App\States\IncidentStatus\Reopened;
+use App\States\IncidentStatus\Returned;
 use Tests\TestCase;
 
 class IncidentTest extends TestCase
 {
+    public function test_sort_scope_status_sorts_by_custom_order()
+    {
+        Incident::factory()->create(['status' => Assigned::class]);
+        Incident::factory()->create(['status' => Closed::class]);
+        Incident::factory()->create(['status' => InReview::class]);
+        Incident::factory()->create(['status' => Opened::class]);
+        Incident::factory()->create(['status' => Reopened::class]);
+        Incident::factory()->create(['status' => Returned::class]);
+
+        $sortedIncidents = Incident::sort('status')->get();
+
+        $sortedIncidentsStatus = $sortedIncidents->pluck('status')->toArray();
+
+        $this->assertEquals(['reopened', 'returned', 'opened', 'assigned', 'in review','closed'], $sortedIncidentsStatus);
+    }
+
     public function test_incident_has_one_supervisor_relation()
     {
         $supervisor = User::factory()->create()->syncRoles('supervisor');
