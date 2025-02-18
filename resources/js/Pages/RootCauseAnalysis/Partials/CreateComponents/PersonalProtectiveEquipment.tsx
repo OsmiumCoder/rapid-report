@@ -4,18 +4,22 @@ import InputError from '@/Components/InputError';
 import { ppeValues } from '@/Pages/RootCauseAnalysis/Partials/checkBoxOptions';
 import { RootCauseAnalysisData } from '@/types/rootCauseAnalysis/RootCauseAnalysisData';
 import { RootCauseAnalysisComponentProps } from '@/Pages/RootCauseAnalysis/Create';
+import InputLabel from '@/Components/InputLabel';
 
 export default function PersonalProtectiveEquipment({
     setFormData,
     errors,
 }: RootCauseAnalysisComponentProps) {
     return (
-        <>
-            <p className="text-sm text-gray-900 font-medium">Using PPE – Was It:</p>
+        <div>
+            <InputLabel className="text-gray-900 text-base mb-1">Using PPE</InputLabel>
             <div className="flex justify-evenly">
                 {Object.entries(ppeValues).map(([key, label], i) => (
                     <>
                         <RadioGroup legend={label}>
+                            <InputError
+                                message={errors ? errors[key as keyof RootCauseAnalysisData] : ''}
+                            />
                             <LabelledRadioInput
                                 name={label}
                                 onChange={(e) =>
@@ -39,15 +43,9 @@ export default function PersonalProtectiveEquipment({
                                 No
                             </LabelledRadioInput>
                         </RadioGroup>
-                        <InputError
-                            message={
-                                errors ? errors[key as keyof RootCauseAnalysisData] : undefined
-                            }
-                            className="mt-2"
-                        />
                     </>
                 ))}
             </div>
-        </>
+        </div>
     );
 }

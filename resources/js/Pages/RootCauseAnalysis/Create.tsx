@@ -18,7 +18,7 @@ import { Incident } from '@/types/incident/Incident';
 export interface RootCauseAnalysisComponentProps {
     formData: RootCauseAnalysisData;
     setFormData: (key: keyof RootCauseAnalysisData, value: any) => void;
-    errors?: Partial<Record<keyof RootCauseAnalysisData, string>>;
+    errors: Partial<Record<keyof RootCauseAnalysisData, string>>;
 }
 
 export default function Create({ incident }: { incident: Incident }) {
@@ -67,61 +67,65 @@ export default function Create({ incident }: { incident: Incident }) {
             <Head title="New Root Cause Analysis" />
             <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-md">
                 <h3 className="text-lg font-bold text-center">Root Cause Analysis Form</h3>
-                <form onSubmit={handleSubmit} className="flex flex-col gap-y-4 ">
-                    <IndividualsInvolved formData={formData} setFormData={setFormData} />
-                    <InputLabel>
-                        <span className="text-gray-900">Primary Effect</span>
-                        <span> - Define the problem (what happened)</span>
-                    </InputLabel>
-                    <TextArea
-                        value={formData.primary_effect}
-                        onChange={(e) => setFormData('primary_effect', e.target.value)}
+                <form onSubmit={handleSubmit} className="flex flex-col gap-y-6 ">
+                    <IndividualsInvolved
+                        formData={formData}
+                        setFormData={setFormData}
+                        errors={errors}
                     />
+                    <div>
+                        <InputLabel className="mb-1">
+                            <div className="text-gray-900">Primary Effect</div>
+                            <div>Define the problem (what happened)</div>
+                        </InputLabel>
 
-                    <InputError message={errors.primary_effect} className="mt-2" />
-
-                    <div className="my-2 font-medium text-lg">The 5 Why's</div>
-                    {formData.whys.map((val, i) => (
-                        <div key={i}>
-                            <InputLabel>{`Why #${i + 1}`}</InputLabel>
-                            <TextInput
-                                value={val}
-                                onChange={(e) => {
-                                    formData.whys[i] = e.target.value;
-                                    setFormData('whys', formData.whys);
-                                }}
-                            />
-                        </div>
-                    ))}
-                    <InputError message={errors.whys} className="mt-2" />
-
+                        <TextArea
+                            value={formData.primary_effect}
+                            onChange={(e) => setFormData('primary_effect', e.target.value)}
+                        />
+                        <InputError message={errors.primary_effect} />
+                    </div>
+                    <div>
+                        <div className="my-2 font-medium">The 5 Why's</div>
+                        {formData.whys.map((val, i) => (
+                            <div key={i} className="flex flex-col gap-y-2">
+                                <InputLabel className="mt-1">{`Why #${i + 1}`}</InputLabel>
+                                <TextInput
+                                    value={val}
+                                    onChange={(e) => {
+                                        formData.whys[i] = e.target.value;
+                                        setFormData('whys', formData.whys);
+                                    }}
+                                />
+                                <InputError
+                                    message={errors[`whys.${i}` as keyof RootCauseAnalysisData]}
+                                    className="mb-1"
+                                />
+                            </div>
+                        ))}
+                    </div>
                     <EffectiveSolutionsAndCorrectiveActions
                         formData={formData}
                         setFormData={setFormData}
+                        errors={errors}
                     />
                     <InputError message={errors.solutions_and_actions} className="mt-2" />
-
                     <IfDoneRightQuestions
                         formData={formData}
                         setFormData={setFormData}
                         errors={errors}
                     />
-
                     <PersonalProtectiveEquipment
                         formData={formData}
                         setFormData={setFormData}
                         errors={errors}
                     />
-
                     <ExecutionOfWork
                         formData={formData}
                         setFormData={setFormData}
                         errors={errors}
                     />
-
-                    <RootCauses formData={formData} setFormData={setFormData} />
-                    <InputError message={errors.root_causes} className="mt-2" />
-
+                    <RootCauses formData={formData} setFormData={setFormData} errors={errors} />
                     <PrimaryButton className="w-20 self-center mt-6">Submit</PrimaryButton>
                 </form>
             </div>

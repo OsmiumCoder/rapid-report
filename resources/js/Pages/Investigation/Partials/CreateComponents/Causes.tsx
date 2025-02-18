@@ -29,8 +29,8 @@ export default function Causes({
                     onChange={(e) => setFormData('immediate_causes', e.target.value)}
                     className="p-2 border border-gray-300 rounded-md "
                 />
+                <InputError className="mt-1" message={errors?.immediate_causes} />
             </div>
-            <InputError message={errors?.immediate_causes} />
 
             <div className="mb-4">
                 <label className="font-semibold text-gray-700">Basic Causes:</label>
@@ -42,9 +42,8 @@ export default function Causes({
                     onChange={(e) => setFormData('basic_causes', e.target.value)}
                     className="p-2 border border-gray-300 rounded-md"
                 />
+                <InputError className="mt-1" message={errors?.basic_causes} />
             </div>
-
-            <InputError message={errors?.basic_causes} />
 
             <div className="mb-4">
                 <label className="font-semibold text-gray-700">Remedial Actions:</label>
@@ -56,8 +55,8 @@ export default function Causes({
                     onChange={(e) => setFormData('remedial_actions', e.target.value)}
                     className="p-2 border border-gray-300 rounded-md w-full"
                 />
+                <InputError className="mt-1" message={errors?.remedial_actions} />
             </div>
-            <InputError message={errors?.remedial_actions} />
 
             <h3 className="text-lg font-semibold text-gray-700 mt-6">Prevention of Recurrence</h3>
             <div className="mb-4">
@@ -71,13 +70,11 @@ export default function Causes({
                     onChange={(e) => setFormData('prevention', e.target.value)}
                     className="p-2 border border-gray-300 rounded-md w-full"
                 />
+                <InputError className="mt-1" message={errors?.prevention} />
             </div>
-            <InputError message={errors?.prevention} />
 
             <fieldset className="mb-4">
-                <legend className="font-semibold text-gray-700 mb-2">
-                    Substandard Acts & Conditions:
-                </legend>
+                <legend className="font-semibold text-gray-700 mb-2">Immediate Causes:</legend>
                 <div className="grid grid-cols-2 ">
                     <div>
                         <h4 className="text-gray-600 font-semibold mb-2">Substandard Acts</h4>
@@ -92,7 +89,6 @@ export default function Causes({
                             />
                         ))}
                     </div>
-                    <InputError message={errors?.substandard_acts} />
 
                     <div>
                         <h4 className="text-gray-600 font-semibold mb-2">Substandard Conditions</h4>
@@ -107,7 +103,6 @@ export default function Causes({
                             />
                         ))}
                     </div>
-                    <InputError message={errors?.substandard_acts} />
                 </div>
             </fieldset>
 
@@ -127,13 +122,10 @@ export default function Causes({
                         />
                     ))}
                 </div>
-                <InputError message={errors?.energy_transfer_causes} />
             </fieldset>
 
             <fieldset className="mb-4">
-                <legend className="font-semibold text-gray-700 mb-2">
-                    Basic/Root Causes – check all as appropriate
-                </legend>
+                <legend className="font-semibold text-gray-700 mb-2">Basic/Root Causes:</legend>
                 <div className="grid grid-cols-2 ">
                     <div>
                         <h4 className="text-gray-600 font-semibold mb-2">Personal factors</h4>
@@ -148,7 +140,6 @@ export default function Causes({
                             />
                         ))}
                     </div>
-                    <InputError message={errors?.personal_factors} />
 
                     <div>
                         <h4 className="text-gray-600 font-semibold mb-2">Job factors</h4>
@@ -162,7 +153,6 @@ export default function Causes({
                                 className="mr-2"
                             />
                         ))}
-                        <InputError message={errors?.job_factors} />
                     </div>
                 </div>
             </fieldset>

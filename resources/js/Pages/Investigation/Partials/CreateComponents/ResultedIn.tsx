@@ -2,6 +2,7 @@ import { InvestigationComponentProps } from '@/Pages/Investigation/Create';
 import { resultedIn } from '@/Pages/Investigation/Partials/createDropdownValues';
 import LabeledCheckbox from '@/Components/LabeledCheckbox';
 import React from 'react';
+import InputError from '@/Components/InputError';
 
 export default function ResultedIn({
     formData,
@@ -23,6 +24,7 @@ export default function ResultedIn({
                         className="mr-2"
                     />
                 ))}
+                <InputError className="mt-1" message={errors.resulted_in} />
             </div>
         </fieldset>
     );

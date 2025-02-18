@@ -4,13 +4,19 @@ import DateInput from '@/Components/DateInput';
 import PrimaryButton from '@/Components/PrimaryButton';
 import DangerButton from '@/Components/DangerButton';
 import { RootCauseAnalysisComponentProps } from '@/Pages/RootCauseAnalysis/Create';
+import PrimaryButtonDivider from '@/Components/PrimaryButtonDivider';
+import { PlusIcon } from '@heroicons/react/20/solid';
+import classNames from '@/Filters/classNames';
+import InputError from '@/Components/InputError';
+import { RootCauseAnalysisData } from '@/types/rootCauseAnalysis/RootCauseAnalysisData';
 
 export default function EffectiveSolutionsAndCorrectiveActions({
     formData,
     setFormData,
+    errors,
 }: RootCauseAnalysisComponentProps) {
     return (
-        <>
+        <div>
             <div className="font-medium text-lg">
                 Identity Effective Solutions and Corrective Actions
             </div>
@@ -19,16 +25,36 @@ export default function EffectiveSolutionsAndCorrectiveActions({
                     ({ cause, control, remedial_action, by_who, by_when, manager }, i) => (
                         <div
                             key={i}
-                            className="flex flex-col gap-y-2 border-b border-gray-200 py-2"
+                            className={classNames(
+                                'flex flex-col gap-y-2 py-4',
+                                i !== formData.solutions_and_actions.length - 1
+                                    ? 'border-b border-gray-200'
+                                    : ''
+                            )}
                         >
-                            <p className="font-medium text-md">{`Solution #${i + 1}`}</p>
+                            <div className="flex justify-between">
+                                <p className="font-medium">{`Solution #${i + 1}`}</p>
+                                {formData.solutions_and_actions.length > 1 && (
+                                    <DangerButton
+                                        type="button"
+                                        onClick={() =>
+                                            setFormData('solutions_and_actions', [
+                                                ...formData.solutions_and_actions.filter(
+                                                    (_, index) => i !== index
+                                                ),
+                                            ])
+                                        }
+                                    >
+                                        Delete
+                                    </DangerButton>
+                                )}
+                            </div>
                             <InputLabel>
-                                <span className="text-gray-900">Cause</span>
-                                <span>
-                                    {' '}
-                                    - The incident would not have occurred if not for the
+                                <div className="text-gray-900">Cause</div>
+                                <div>
+                                    The incident would not have occurred if not for the
                                     presence/absence of these factors.
-                                </span>
+                                </div>
                             </InputLabel>
 
                             <TextInput
@@ -42,13 +68,20 @@ export default function EffectiveSolutionsAndCorrectiveActions({
                                     );
                                 }}
                             />
+                            <InputError
+                                message={
+                                    errors[
+                                        `solutions_and_actions.${i}.cause` as keyof RootCauseAnalysisData
+                                    ]
+                                }
+                                className="mb-1"
+                            />
                             <InputLabel>
-                                <span className="text-gray-900">Control</span>
-                                <span>
-                                    {' '}
-                                    - The identified causal factor would not have occurred if the
+                                <div className="text-gray-900">Control</div>
+                                <div>
+                                    The identified causal factor would not have occurred if the
                                     following control had been in place.{' '}
-                                </span>
+                                </div>
                             </InputLabel>
                             <TextInput
                                 onChange={(e) => {
@@ -59,6 +92,14 @@ export default function EffectiveSolutionsAndCorrectiveActions({
                                     );
                                 }}
                                 value={control}
+                            />
+                            <InputError
+                                message={
+                                    errors[
+                                        `solutions_and_actions.${i}.control` as keyof RootCauseAnalysisData
+                                    ]
+                                }
+                                className="mb-1"
                             />
                             <InputLabel>Remedial Action Plan</InputLabel>
                             <TextInput
@@ -72,6 +113,14 @@ export default function EffectiveSolutionsAndCorrectiveActions({
                                 }}
                                 value={remedial_action}
                             />
+                            <InputError
+                                message={
+                                    errors[
+                                        `solutions_and_actions.${i}.remedial_action` as keyof RootCauseAnalysisData
+                                    ]
+                                }
+                                className="mb-1"
+                            />
                             <InputLabel>Action by Who</InputLabel>
                             <TextInput
                                 onChange={(e) => {
@@ -82,6 +131,14 @@ export default function EffectiveSolutionsAndCorrectiveActions({
                                     );
                                 }}
                                 value={by_who}
+                            />
+                            <InputError
+                                message={
+                                    errors[
+                                        `solutions_and_actions.${i}.by_who` as keyof RootCauseAnalysisData
+                                    ]
+                                }
+                                className="mb-1"
                             />
                             <InputLabel>Action by When</InputLabel>
                             <DateInput
@@ -94,6 +151,14 @@ export default function EffectiveSolutionsAndCorrectiveActions({
                                 }}
                                 value={by_when}
                             />
+                            <InputError
+                                message={
+                                    errors[
+                                        `solutions_and_actions.${i}.by_when` as keyof RootCauseAnalysisData
+                                    ]
+                                }
+                                className="mb-1"
+                            />
                             <InputLabel>Manager Name</InputLabel>
                             <TextInput
                                 onChange={(e) => {
@@ -105,49 +170,39 @@ export default function EffectiveSolutionsAndCorrectiveActions({
                                 }}
                                 value={manager}
                             />
+                            <InputError
+                                message={
+                                    errors[
+                                        `solutions_and_actions.${i}.manager` as keyof RootCauseAnalysisData
+                                    ]
+                                }
+                                className="mb-1"
+                            />
                         </div>
                     )
                 )}
-                <div className="flex justify-between items-center my-2">
-                    {formData.solutions_and_actions.length !== 3 && (
-                        <PrimaryButton
-                            type="button"
-                            className="self-end"
-                            onClick={() => {
-                                setFormData('solutions_and_actions', [
-                                    ...formData.solutions_and_actions,
-                                    {
-                                        cause: '',
-                                        control: '',
-                                        remedial_action: '',
-                                        by_who: '',
-                                        by_when: '',
-                                        manager: '',
-                                    },
-                                ]);
-                            }}
-                        >
-                            Add
-                        </PrimaryButton>
-                    )}
-                    {formData.solutions_and_actions.length > 1 && (
-                        <DangerButton
-                            type="button"
-                            onClick={() =>
-                                setFormData(
-                                    'solutions_and_actions',
-                                    formData.solutions_and_actions.splice(
-                                        0,
-                                        formData.solutions_and_actions.length - 1
-                                    )
-                                )
-                            }
-                        >
-                            Delete
-                        </DangerButton>
-                    )}
-                </div>
+                {formData.solutions_and_actions.length !== 3 && (
+                    <PrimaryButtonDivider
+                        type="button"
+                        onClick={() => {
+                            setFormData('solutions_and_actions', [
+                                ...formData.solutions_and_actions,
+                                {
+                                    cause: '',
+                                    control: '',
+                                    remedial_action: '',
+                                    by_who: '',
+                                    by_when: '',
+                                    manager: '',
+                                },
+                            ]);
+                        }}
+                    >
+                        <PlusIcon className="size-5" />
+                        Add Solution/Correction
+                    </PrimaryButtonDivider>
+                )}
             </div>
-        </>
+        </div>
     );
 }
