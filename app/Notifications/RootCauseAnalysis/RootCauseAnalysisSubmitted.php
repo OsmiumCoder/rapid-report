@@ -13,6 +13,7 @@ class RootCauseAnalysisSubmitted extends Notification
     use Queueable;
 
     public string $message;
+    public string $url;
 
     /**
      * Create a new notification instance.
@@ -23,6 +24,11 @@ class RootCauseAnalysisSubmitted extends Notification
         public User $supervisor,
     ) {
         $this->message = "A new root cause analysis was submitted by {$this->supervisor->name}";
+        $this->url = route('incidents.root-cause-analyses.show', [
+            'incident' => $this->incidentId,
+            'root_cause_analysis' => $this->rootCauseAnalysisId
+        ]);
+
     }
 
     /**
@@ -40,14 +46,9 @@ class RootCauseAnalysisSubmitted extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        $url = route('incidents.root-cause-analyses.show', [
-            'incident' => $this->incidentId,
-            'root_cause_analysis' => $this->rootCauseAnalysisId
-        ]);
-
         return (new MailMessage)
             ->subject('Root Cause Analysis Submitted')
-            ->markdown('mail.root-cause-analysis-submitted', ['url' => $url]);
+            ->markdown('mail.root-cause-analysis-submitted', ['url' => $this->url]);
     }
 
     /**
@@ -67,11 +68,7 @@ class RootCauseAnalysisSubmitted extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            'route' => 'incidents.root-cause-analyses.show',
-            'params' => [
-                'incident' => $this->incidentId,
-                'root_cause_analysis' => $this->rootCauseAnalysisId,
-            ],
+            'url' => $this->url,
             'message' => $this->message,
             'supervisor_name' => $this->supervisor->name,
         ];
