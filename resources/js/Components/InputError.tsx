@@ -1,4 +1,5 @@
 import { HTMLAttributes } from 'react';
+import classNames from '@/Filters/classNames';
 
 export default function InputError({
     message,
@@ -6,7 +7,7 @@ export default function InputError({
     ...props
 }: HTMLAttributes<HTMLParagraphElement> & { message?: string }) {
     return message ? (
-        <p {...props} className={'text-sm text-red-600 mt-2' + className}>
+        <p {...props} className={classNames('text-sm text-red-600', className)}>
             {message}
         </p>
     ) : null;

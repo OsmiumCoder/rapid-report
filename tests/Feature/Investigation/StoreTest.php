@@ -180,11 +180,6 @@ class StoreTest extends TestCase
             'remedial_actions',
             'prevention',
             'resulted_in',
-            'substandard_acts',
-            'substandard_conditions',
-            'energy_transfer_causes',
-            'personal_factors',
-            'job_factors',
         ]);
     }
 

@@ -97,11 +97,11 @@ export default function UserDashboard({
                             Quickly report any health, safety or environmental incidents you
                             encounter.
                         </p>
-                        <div className="flex justify-evenly mt-6">
+                        <div className="flex justify-evenly mt-6 gap-x-4 flex-col h-24 sm:h-auto sm:flex-row">
                             <Link
                                 href={route('incidents.create')}
                                 as="button"
-                                className="flex items-center rounded-md bg-upei-green-500 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-upei-green-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-upei-green-600"
+                                className="flex items-center justify-center rounded-md bg-upei-green-500 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-upei-green-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-upei-green-600"
                             >
                                 <PencilIcon className="h-4 w-4 mr-2" />
                                 Submit Incident
@@ -109,7 +109,7 @@ export default function UserDashboard({
                             <Link
                                 href={route('incidents.owned')}
                                 as="button"
-                                className="flex items-center rounded-md bg-upei-green-500 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-upei-green-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-upei-green-600"
+                                className="flex items-center justify-center rounded-md bg-upei-green-500 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-upei-green-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-upei-green-600"
                             >
                                 View Submitted Incidents
                             </Link>

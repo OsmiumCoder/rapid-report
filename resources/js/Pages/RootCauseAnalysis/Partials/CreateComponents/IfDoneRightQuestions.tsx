@@ -24,12 +24,11 @@ export default function IfDoneRightQuestions({
     return (
         <>
             <InputLabel>
-                <span className="text-gray-900">People’s positions</span>
-                <span>
-                    {' '}
-                    - if this had been done right, it would have prevented the incident (check all
+                <p className="text-gray-900 text-base">People’s Positions</p>
+                <div>
+                    If this had been done right, it would have prevented the incident (check all
                     that apply)
-                </span>
+                </div>
             </InputLabel>
             <div className="flex justify-between mx-4">
                 {peoplesPositionsValues.map((val) => (
@@ -44,12 +43,11 @@ export default function IfDoneRightQuestions({
 
             <InputLabel>
                 <>
-                    <span className="text-gray-900">Attention to work</span>
-                    <span>
-                        {' '}
-                        - if this had been done right, it would’ve prevented the incident (check all
+                    <p className="text-gray-900 text-base">Attention To Work</p>
+                    <div>
+                        If this had been done right, it would’ve prevented the incident (check all
                         that apply)
-                    </span>
+                    </div>
                 </>
             </InputLabel>
             <div className="flex justify-between mx-6">
@@ -65,12 +63,11 @@ export default function IfDoneRightQuestions({
 
             <InputLabel>
                 <>
-                    <span className="text-gray-900">Communication</span>
-                    <span>
-                        {' '}
-                        – if this had been done right, it would have prevented the incident (check
-                        all that apply)
-                    </span>
+                    <p className="text-gray-900 text-base">Communication</p>
+                    <div>
+                        If this had been done right, it would have prevented the incident (check all
+                        that apply)
+                    </div>
                 </>
             </InputLabel>
             <div className="flex justify-between mx-6">
@@ -87,12 +84,11 @@ export default function IfDoneRightQuestions({
 
             <InputLabel>
                 <>
-                    <span className="text-gray-900">Working Conditions</span>
-                    <span>
-                        {' '}
-                        – if this had been done right, it would’ve prevented the incident (check all
+                    <p className="text-gray-900 text-base">Working Conditions</p>
+                    <div>
+                        If this had been done right, it would’ve prevented the incident (check all
                         that apply)
-                    </span>
+                    </div>
                 </>
             </InputLabel>
             <div className="flex justify-between mx-6">
