@@ -8,6 +8,7 @@ import IncidentInformationPanel from '@/Pages/Incident/Partials/IncidentInformat
 import { Incident } from '@/types/incident/Incident';
 import { FormEvent } from 'react';
 import IncidentSupervisorActions from '@/Pages/Incident/Partials/IncidentSupervisorActions';
+import { IncidentStatus } from '@/Enums/IncidentStatus';
 
 interface ShowProps extends PageProps {
     incident: Incident;
@@ -46,11 +47,12 @@ export default function Show({ auth, incident, supervisors }: PageProps<ShowProp
                                     supervisors={supervisors}
                                 ></IncidentAdminActions>
                             )}
-                            {user.roles.some((role) => role.name === 'supervisor') && (
-                                <IncidentSupervisorActions
-                                    incident={incident}
-                                ></IncidentSupervisorActions>
-                            )}
+                            {user.roles.some((role) => role.name === 'supervisor') &&
+                                incident.status === IncidentStatus.ASSIGNED && (
+                                    <IncidentSupervisorActions
+                                        incident={incident}
+                                    ></IncidentSupervisorActions>
+                                )}
 
                             <IncidentInformationPanel incident={incident} />
 
