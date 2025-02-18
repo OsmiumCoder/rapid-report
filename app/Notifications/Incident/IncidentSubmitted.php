@@ -12,6 +12,9 @@ class IncidentSubmitted extends Notification
     use Queueable;
 
     public string $message;
+    public string $url;
+
+
     /**
      * Create a new notification instance.
      */
@@ -30,6 +33,9 @@ class IncidentSubmitted extends Notification
             $name = $this->firstName.' '.$this->lastName;
         }
         $this->message = "An incident was submitted by $name";
+        $this->url = route('incidents.show', [
+            'incident' => $this->incidentId,
+        ]);
     }
 
     /**
@@ -56,13 +62,9 @@ class IncidentSubmitted extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        $url = route('incidents.show', [
-            'incident' => $this->incidentId,
-        ]);
-
         return (new MailMessage)
             ->subject('Incident Submitted')
-            ->markdown('mail.incident-submitted', ['url' => $url]);
+            ->markdown('mail.incident-submitted', ['url' => $this->url]);
     }
 
     /**
@@ -73,10 +75,7 @@ class IncidentSubmitted extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            'route' => 'incidents.show',
-            'params' => [
-                'incident' => $this->incidentId,
-            ],
+            'url' => $this->url,
             'message' => $this->message,
         ];
     }
