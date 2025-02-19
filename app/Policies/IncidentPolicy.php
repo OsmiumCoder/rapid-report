@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\Incident;
 use App\Models\User;
+use App\States\IncidentStatus\Assigned;
 use Laravel\Scout\Builder;
 
 class IncidentPolicy
@@ -51,6 +52,21 @@ class IncidentPolicy
         return $user->can('perform admin actions');
     }
 
+    public function requestReview(User $user, Incident $incident): bool
+    {
+        if ($user->can('provide incident follow-up') && $incident->supervisor_id == $user->id && $incident->status::class == Assigned::class) {
+            $latestInvestigation = $incident->investigations()->latest()->first();
+            $latestRootCauseAnalysis = $incident->rootCauseAnalyses()->latest()->first();
+
+            return $latestInvestigation
+                && $latestRootCauseAnalysis
+                && $latestInvestigation->supervisor_id == $incident->supervisor_id
+                && $latestRootCauseAnalysis->supervisor_id == $incident->supervisor_id;
+        }
+
+        return false;
+    }
+
     public function addComment(User $user, Incident $incident): bool
     {
         return $this->view($user, $incident);
@@ -58,7 +74,7 @@ class IncidentPolicy
 
     public function searchIncidents(User $user, Builder $incidentQuery): bool
     {
-        if (! $user->can('view all incidents') && $user->can('view assigned incidents')) {
+        if (!$user->can('view all incidents') && $user->can('view assigned incidents')) {
             $incidentQuery->where('supervisor_id', $user->id);
             return true;
         }
