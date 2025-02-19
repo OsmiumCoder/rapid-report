@@ -9,7 +9,6 @@ use App\Models\Investigation;
 use App\Models\User;
 use App\Notifications\Investigation\InvestigationSubmitted;
 use App\States\IncidentStatus\Assigned;
-use App\States\IncidentStatus\InReview;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;

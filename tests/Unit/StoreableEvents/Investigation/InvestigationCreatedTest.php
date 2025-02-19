@@ -8,7 +8,6 @@ use App\Models\Investigation;
 use App\Models\User;
 use App\Notifications\Investigation\InvestigationSubmitted;
 use App\States\IncidentStatus\Assigned;
-use App\States\IncidentStatus\InReview;
 use App\StorableEvents\Investigation\InvestigationCreated;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
