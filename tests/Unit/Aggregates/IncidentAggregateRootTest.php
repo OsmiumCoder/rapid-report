@@ -48,6 +48,7 @@ class IncidentAggregateRootTest extends TestCase
         $incident = Incident::factory()->create([
             'status' => Assigned::class,
         ]);
+
         Notification::assertNothingSent();
 
         IncidentAggregateRoot::retrieve($incident->id)
