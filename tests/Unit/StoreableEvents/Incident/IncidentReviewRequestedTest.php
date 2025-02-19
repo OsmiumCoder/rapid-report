@@ -40,8 +40,6 @@ class IncidentReviewRequestedTest extends TestCase
 
         Notification::assertCount(3);
 
-        Notification::assertSentTo($admins, IncidentReviewRequest::class);
-
         Notification::assertSentTo(
             $admins,
             function (IncidentReviewRequest $notification, array $channels) use ($incident, $admins, $supervisor) {
@@ -78,8 +76,6 @@ class IncidentReviewRequestedTest extends TestCase
 
         Notification::assertCount(3);
 
-        Notification::assertSentTo($admins, IncidentReviewRequest::class);
-
         Notification::assertSentTo(
             $admins,
             function (IncidentReviewRequest $notification, array $channels) use ($incident, $supervisor) {
@@ -90,11 +86,9 @@ class IncidentReviewRequestedTest extends TestCase
 
     public function test_adds_review_requested_comment()
     {
-        $this->expectException(TransitionNotFound::class);
-
         $supervisor = User::factory()->create()->syncRoles('supervisor');
 
-        $incident = Incident::factory()->create(['status' => Opened::class]);
+        $incident = Incident::factory()->create(['status' => Assigned::class]);
 
         $event = new IncidentReviewRequested;
 
