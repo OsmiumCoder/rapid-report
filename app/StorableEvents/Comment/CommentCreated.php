@@ -4,7 +4,10 @@ namespace App\StorableEvents\Comment;
 
 use App\Enum\CommentType;
 use App\Models\Comment;
+use App\Models\User;
+use App\Notifications\Comment\CommentMade;
 use App\StorableEvents\StoredEvent;
+use Illuminate\Support\Facades\Notification;
 
 class CommentCreated extends StoredEvent
 {
@@ -28,5 +31,16 @@ class CommentCreated extends StoredEvent
         $comment->commentable_type = $this->commentable_type;
 
         $comment->save();
+    }
+
+    public function react()
+    {
+        $commentable = $this->commentable_type::find($this->commentable_id);
+
+        if ($commentable && $commentable->supervisor) {
+            Notification::send($commentable->supervisor, new CommentMade);
+        }
+        $admins = User::role('admin')->get();
+        Notification::send($admins, new CommentMade);
     }
 }
