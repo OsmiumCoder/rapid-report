@@ -6,7 +6,7 @@ use App\Enum\CommentType;
 use App\Models\Incident;
 use App\States\IncidentStatus\InReview;
 use App\States\IncidentStatus\Returned;
-use App\StorableEvents\Incident\InvestigationReturned;
+use App\StorableEvents\Investigation\InvestigationReturned;
 use Tests\TestCase;
 
 class InvestigationReturnedTest extends TestCase

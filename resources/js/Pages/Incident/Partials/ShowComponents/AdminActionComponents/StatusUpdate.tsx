@@ -64,6 +64,27 @@ export default function StatusUpdate({ incident }: { incident: Incident }) {
                                 </div>
                             </>
                         )}
+                        {incident.root_cause_analyses.length > 0 && (
+                            <>
+                                <div className="font-semibold">
+                                    Root Cause Analyses
+                                    {incident.root_cause_analyses.map((rca, index) => (
+                                        <div className="font-normal">
+                                            <Link
+                                                className="text-sm cursor-pointer text-blue-500 hover:text-blue-400"
+                                                href={route('incidents.root-cause-analyses.show', {
+                                                    incident: rca.incident_id,
+                                                    root_cause_analysis: rca.id,
+                                                })}
+                                            >
+                                                {rca.supervisor.name}:{' '}
+                                                {dateTimeFormat(rca.created_at)}
+                                            </Link>
+                                        </div>
+                                    ))}
+                                </div>
+                            </>
+                        )}
                         {incident.status === IncidentStatus.IN_REVIEW && (
                             <PrimaryButton
                                 onClick={() =>

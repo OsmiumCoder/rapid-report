@@ -22,6 +22,14 @@ class RootCauseAnalysisPolicy
      */
     public function view(User $user, RootCauseAnalysis $rootCauseAnalysis): bool
     {
+        if ($user->can('view any incident follow-up')) {
+            return true;
+        }
+
+        if ($rootCauseAnalysis->supervisor_id == $user->id) {
+            return true;
+        }
+
         return false;
     }
 

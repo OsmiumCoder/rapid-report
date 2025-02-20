@@ -12,9 +12,9 @@ use App\StorableEvents\Comment\CommentCreated;
 use App\StorableEvents\Incident\IncidentClosed;
 use App\StorableEvents\Incident\IncidentCreated;
 use App\StorableEvents\Incident\IncidentReopened;
-use App\StorableEvents\Incident\InvestigationReturned;
 use App\StorableEvents\Incident\SupervisorAssigned;
 use App\StorableEvents\Incident\SupervisorUnassigned;
+use App\StorableEvents\Investigation\InvestigationReturned;
 use Spatie\EventSourcing\AggregateRoots\AggregateRoot;
 
 class IncidentAggregateRoot extends AggregateRoot
@@ -75,6 +75,13 @@ class IncidentAggregateRoot extends AggregateRoot
     public function returnInvestigation()
     {
         $this->recordThat(new InvestigationReturned);
+
+        return $this;
+    }
+
+    public function returnRCA()
+    {
+        $this->recordThat(new RootCauseAnalysisReturned);
 
         return $this;
     }

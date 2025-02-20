@@ -33,7 +33,7 @@ export default function NotificationList({ notifications, title }: NotificationL
                         key={notification.id}
                         as="li"
                         href={notification.data.url}
-                        data={{notification: notification.id}}
+                        data={{ notification: notification.id }}
                         className="flex py-5 w-full  hover:bg-gray-200 hover:cursor-pointer"
                     >
                         <div className="flex items-center justify-between w-full px-4">

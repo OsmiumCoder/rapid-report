@@ -35,11 +35,11 @@ export default function IfDoneRightQuestions({
                     <LabeledCheckbox
                         key={val}
                         label={val}
-                        onChange={() => toggleCheckbox('peoples_position', val)}
+                        onChange={() => toggleCheckbox('peoples_positions', val)}
                     />
                 ))}
             </div>
-            <InputError message={errors?.peoples_position} className="mt-2" />
+            <InputError message={errors?.peoples_positions} className="mt-2" />
 
             <InputLabel>
                 <>

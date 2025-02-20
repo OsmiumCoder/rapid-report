@@ -1,6 +1,6 @@
 import { ChatBubbleBottomCenterTextIcon } from '@heroicons/react/16/solid';
 import { PaperClipIcon } from '@heroicons/react/20/solid';
-import { FormEvent } from 'react';
+import { FormEvent, useEffect, useRef } from 'react';
 import LoadingIndicator from '@/Components/LoadingIndicator';
 import { PaperAirplaneIcon } from '@heroicons/react/24/solid';
 
@@ -18,8 +18,14 @@ interface AddCommentFormProps {
 }
 
 export default function AddCommentForm({ submit, setData, processing, data }: AddCommentFormProps) {
+    const commentFormRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        commentFormRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, []);
+
     return (
-        <div className="mt-6 flex gap-x-3">
+        <div ref={commentFormRef} className="mt-6 flex gap-x-3">
             <ChatBubbleBottomCenterTextIcon className="text-blue-600 relative flex size-6 flex-none items-center justify-center bg-white" />
 
             <form onSubmit={submit} className="relative flex-auto">

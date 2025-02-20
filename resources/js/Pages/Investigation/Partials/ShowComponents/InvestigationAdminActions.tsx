@@ -34,7 +34,7 @@ export default function InvestigationAdminActions({
                                         onClick={() =>
                                             setModalProps({
                                                 title: 'Request Re-Investigation',
-                                                text: `Are you sure you want to request ${investigation.incident.supervisor?.name} to further investigate this incident? They will be notified.`,
+                                                text: `Are you sure you want to request ${investigation.supervisor.name} to further investigate this incident? They will be notified.`,
                                                 action: () =>
                                                     investigation.incident.supervisor_id &&
                                                     returnInvestigation(

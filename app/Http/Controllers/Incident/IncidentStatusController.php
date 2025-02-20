@@ -20,6 +20,17 @@ class IncidentStatusController extends Controller
         return back();
     }
 
+    public function returnRCA(Incident $incident)
+    {
+        $this->authorize('performAdminActions', Incident::class);
+
+        IncidentAggregateRoot::retrieve($incident->id)
+            ->returnInvestigation()
+            ->persist();
+
+        return back();
+    }
+
     public function assignSupervisor(Request $request, Incident $incident)
     {
         $this->authorize('performAdminActions', Incident::class);

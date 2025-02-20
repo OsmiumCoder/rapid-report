@@ -29,7 +29,7 @@ export default function ActivityLog({
 }: ActivityLogProps) {
     return (
         <>
-            <div className="lg:col-start-3 p-5 rounded-lg bg-white shadow-sm ring-1 ring-gray-900/5">
+            <div className="lg:col-start-3 p-5 rounded-lg bg-white shadow-sm ring-1 ring-gray-900/5 max-h-[55rem] overflow-y-scroll">
                 <h2 className="text-sm/6 font-semibold text-gray-900">Activity</h2>
                 <ul role="list" className="mt-6 space-y-6">
                     {comments.map((comment, index) => (

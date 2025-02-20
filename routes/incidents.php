@@ -21,7 +21,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::patch('/incidents/{incident}/assign', [IncidentStatusController::class, 'assignSupervisor'])->name('incidents.assign-supervisor');
     Route::patch('/incidents/{incident}/unassign', [IncidentStatusController::class, 'unassignSupervisor'])->name('incidents.unassign-supervisor');
-    Route::patch('/incidents/{incident}/return', [IncidentStatusController::class, 'returnInvestigation'])->name('incidents.return-investigation');
+    Route::patch('/incidents/{incident}/return-investigation', [IncidentStatusController::class, 'returnInvestigation'])->name('incidents.return-investigation');
+    Route::patch('/incidents/{incident}/return-rca', [IncidentStatusController::class, 'returnInvestigation'])->name('incidents.return-rca');
     Route::patch('/incidents/{incident}/close', [IncidentStatusController::class, 'closeIncident'])->name('incidents.close');
     Route::patch('/incidents/{incident}/reopen', [IncidentStatusController::class, 'reopenIncident'])->name('incidents.reopen');
 
