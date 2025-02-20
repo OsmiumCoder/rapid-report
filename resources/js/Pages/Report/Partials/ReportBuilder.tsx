@@ -79,11 +79,15 @@ export default function ReportBuilder({ formData, setFormData }: ReportBuilderPr
             }
         }
     };
-    const download = () => {
+    const download = (type: 'csv' | 'excel') => {
         setFormData('timeline_start', timeline.startDate.format('YYYY-MM-DD'));
         setFormData('timeline_end', timeline.endDate.format('YYYY-MM-DD'));
 
-        csvFormRef?.current?.requestSubmit();
+        if (type === 'csv') {
+            csvFormRef?.current?.requestSubmit();
+        } else {
+            excelFormRef?.current?.requestSubmit();
+        }
     };
 
     const timelineLengths: TimeLengthsCollection = {
@@ -242,7 +246,7 @@ export default function ReportBuilder({ formData, setFormData }: ReportBuilderPr
                     target="_blank"
                 >
                     <input type="hidden" name="_token" value={window.csrf_token} />
-                    <PrimaryButton type={'button'} onClick={download}>
+                    <PrimaryButton type={'button'} onClick={() => download('csv')}>
                         Export as CSV
                     </PrimaryButton>
                 </form>
@@ -253,7 +257,7 @@ export default function ReportBuilder({ formData, setFormData }: ReportBuilderPr
                     target="_blank"
                 >
                     <input type="hidden" name="_token" value={window.csrf_token} />
-                    <PrimaryButton type={'button'} onClick={download}>
+                    <PrimaryButton type={'button'} onClick={() => download('excel')}>
                         Export as Excel
                     </PrimaryButton>
                 </form>
