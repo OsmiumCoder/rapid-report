@@ -9,12 +9,34 @@ use Illuminate\Http\Request;
 
 class IncidentStatusController extends Controller
 {
+    public function requestReview(Incident $incident)
+    {
+        $this->authorize('requestReview', $incident);
+
+        IncidentAggregateRoot::retrieve($incident->id)
+            ->requestReview()
+            ->persist();
+
+        return back();
+    }
+
     public function returnInvestigation(Incident $incident)
     {
         $this->authorize('performAdminActions', Incident::class);
 
         IncidentAggregateRoot::retrieve($incident->id)
             ->returnInvestigation()
+            ->persist();
+
+        return back();
+    }
+
+    public function returnRCA(Incident $incident)
+    {
+        $this->authorize('performAdminActions', Incident::class);
+
+        IncidentAggregateRoot::retrieve($incident->id)
+            ->returnRCA()
             ->persist();
 
         return back();

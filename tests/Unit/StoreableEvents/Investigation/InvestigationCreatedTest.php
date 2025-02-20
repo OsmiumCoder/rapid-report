@@ -8,7 +8,6 @@ use App\Models\Investigation;
 use App\Models\User;
 use App\Notifications\Investigation\InvestigationSubmitted;
 use App\States\IncidentStatus\Assigned;
-use App\States\IncidentStatus\InReview;
 use App\StorableEvents\Investigation\InvestigationCreated;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
@@ -16,9 +15,9 @@ use Tests\TestCase;
 
 class InvestigationCreatedTest extends TestCase
 {
-    public function test_incident_transitions_from_assigned_to_in_review()
+    public function test_event_calculates_hazard_class_a_correctly()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $incident = Incident::factory()->create(['status' => Assigned::class]);
 
@@ -28,9 +27,13 @@ class InvestigationCreatedTest extends TestCase
             basic_causes: 'basic causes',
             remedial_actions: "remedial actions",
             prevention: "prevention",
-            hazard_class: 'hazard class',
-            risk_rank: 10,
+            risk_rank: 1,
             resulted_in: ['injury', 'burn'],
+            substandard_acts: ['injury', 'burn'],
+            substandard_conditions: ['injury', 'burn'],
+            energy_transfer_causes: ['injury', 'burn'],
+            personal_factors: ['injury', 'burn'],
+            job_factors: ['injury', 'burn'],
         );
 
         $event->setMetaData(['user_id' => $supervisor->id]);
@@ -39,18 +42,12 @@ class InvestigationCreatedTest extends TestCase
 
         $incident->refresh();
 
-        $this->assertEquals(InReview::class, $incident->status::class);
+        $this->assertEquals('A', $incident->investigations[0]->hazard_class);
     }
 
-    public function test_sends_received_notification_to_admin()
+    public function test_event_calculates_hazard_class_b_correctly()
     {
-        Notification::fake();
-
-        $admins = User::factory(3)->create()->each(function (User $user) {
-            $user->assignRole('admin');
-        });
-
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $incident = Incident::factory()->create(['status' => Assigned::class]);
 
@@ -60,9 +57,79 @@ class InvestigationCreatedTest extends TestCase
             basic_causes: 'basic causes',
             remedial_actions: "remedial actions",
             prevention: "prevention",
-            hazard_class: 'hazard class',
+            risk_rank: 4,
+            resulted_in: ['injury', 'burn'],
+            substandard_acts: ['injury', 'burn'],
+            substandard_conditions: ['injury', 'burn'],
+            energy_transfer_causes: ['injury', 'burn'],
+            personal_factors: ['injury', 'burn'],
+            job_factors: ['injury', 'burn'],
+        );
+
+        $event->setMetaData(['user_id' => $supervisor->id]);
+
+        $event->handle();
+
+        $incident->refresh();
+
+        $this->assertEquals('B', $incident->investigations[0]->hazard_class);
+    }
+
+    public function test_event_calculates_hazard_class_c_correctly()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
+        $incident = Incident::factory()->create(['status' => Assigned::class]);
+
+        $event = new InvestigationCreated(
+            incident_id: $incident->id,
+            immediate_causes: "immediate causes",
+            basic_causes: 'basic causes',
+            remedial_actions: "remedial actions",
+            prevention: "prevention",
+            risk_rank: 6,
+            resulted_in: ['injury', 'burn'],
+            substandard_acts: ['injury', 'burn'],
+            substandard_conditions: ['injury', 'burn'],
+            energy_transfer_causes: ['injury', 'burn'],
+            personal_factors: ['injury', 'burn'],
+            job_factors: ['injury', 'burn'],
+        );
+
+        $event->setMetaData(['user_id' => $supervisor->id]);
+
+        $event->handle();
+
+        $incident->refresh();
+
+        $this->assertEquals('C', $incident->investigations[0]->hazard_class);
+    }
+
+    public function test_sends_received_notification_to_admin()
+    {
+        Notification::fake();
+
+        $admins = User::factory(3)->create()->each(function (User $user) {
+            $user->syncRoles('admin');
+        });
+
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
+        $incident = Incident::factory()->create(['status' => Assigned::class]);
+
+        $event = new InvestigationCreated(
+            incident_id: $incident->id,
+            immediate_causes: "immediate causes",
+            basic_causes: 'basic causes',
+            remedial_actions: "remedial actions",
+            prevention: "prevention",
             risk_rank: 10,
             resulted_in: ['injury', 'burn'],
+            substandard_acts: ['injury', 'burn'],
+            substandard_conditions: ['injury', 'burn'],
+            energy_transfer_causes: ['injury', 'burn'],
+            personal_factors: ['injury', 'burn'],
+            job_factors: ['injury', 'burn'],
         );
 
         $event->setMetaData(['user_id' => $supervisor->id]);
@@ -89,7 +156,7 @@ class InvestigationCreatedTest extends TestCase
 
     public function test_adds_created_investigation_comment_on_incident()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $incident = Incident::factory()->create(['status' => Assigned::class]);
 
@@ -99,9 +166,13 @@ class InvestigationCreatedTest extends TestCase
             basic_causes: 'basic causes',
             remedial_actions: "remedial actions",
             prevention: "prevention",
-            hazard_class: 'hazard class',
             risk_rank: 10,
             resulted_in: ['injury', 'burn'],
+            substandard_acts: ['injury', 'burn'],
+            substandard_conditions: ['injury', 'burn'],
+            energy_transfer_causes: ['injury', 'burn'],
+            personal_factors: ['injury', 'burn'],
+            job_factors: ['injury', 'burn'],
         );
 
         $event->setMetaData(['user_id' => $supervisor->id]);
@@ -120,7 +191,7 @@ class InvestigationCreatedTest extends TestCase
 
     public function test_creates_investigation()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $incident = Incident::factory()->create(['status' => Assigned::class]);
 
@@ -130,9 +201,13 @@ class InvestigationCreatedTest extends TestCase
             basic_causes: 'basic causes',
             remedial_actions: "remedial actions",
             prevention: "prevention",
-            hazard_class: 'hazard class',
             risk_rank: 10,
             resulted_in: ['injury', 'burn'],
+            substandard_acts: ['injury', 'burn'],
+            substandard_conditions: ['injury', 'burn'],
+            energy_transfer_causes: ['injury', 'burn'],
+            personal_factors: ['injury', 'burn'],
+            job_factors: ['injury', 'burn'],
         );
         $event->setMetaData(['user_id' => $supervisor->id]);
 
@@ -150,8 +225,12 @@ class InvestigationCreatedTest extends TestCase
         $this->assertEquals($event->basic_causes, $investigation->basic_causes);
         $this->assertEquals($event->remedial_actions, $investigation->remedial_actions);
         $this->assertEquals($event->prevention, $investigation->prevention);
-        $this->assertEquals($event->hazard_class, $investigation->hazard_class);
         $this->assertEquals($event->risk_rank, $investigation->risk_rank);
         $this->assertEquals($event->resulted_in, $investigation->resulted_in);
+        $this->assertEquals($event->substandard_acts, $investigation->substandard_acts);
+        $this->assertEquals($event->substandard_conditions, $investigation->substandard_conditions);
+        $this->assertEquals($event->energy_transfer_causes, $investigation->energy_transfer_causes);
+        $this->assertEquals($event->personal_factors, $investigation->personal_factors);
+        $this->assertEquals($event->job_factors, $investigation->job_factors);
     }
 }

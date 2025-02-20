@@ -1,11 +1,13 @@
-import { Investigation } from '@/types/Investigation/Investigation';
+import { Investigation } from '@/types/investigation/Investigation';
 import PrimaryButton from '@/Components/PrimaryButton';
 import DangerButton from '@/Components/DangerButton';
 import { useState } from 'react';
-import ConfirmationModal, { useConfirmationModalProps } from '@/Components/ConfirmationModal';
+
 import { closeIncident, returnInvestigation } from '@/Helpers/Incident/statusUpdates';
 import LoadingIndicator from '@/Components/LoadingIndicator';
 import { router } from '@inertiajs/react';
+import { useConfirmationModal } from '@/Components/ConfirmationModal/ConfirmationModalProvider';
+import { IncidentStatus } from '@/Enums/IncidentStatus';
 
 interface InvestigationAdminActionsProps {
     investigation: Investigation;
@@ -14,7 +16,7 @@ export default function InvestigationAdminActions({
     investigation,
 }: InvestigationAdminActionsProps) {
     const [isLoading, setIsLoading] = useState(false);
-    const [modalProps, setModalProps] = useConfirmationModalProps();
+    const { setModalProps } = useConfirmationModal();
 
     return (
         <>
@@ -29,30 +31,33 @@ export default function InvestigationAdminActions({
                                 <LoadingIndicator />
                             ) : (
                                 <>
-                                    <PrimaryButton
-                                        onClick={() =>
-                                            setModalProps({
-                                                title: 'Request Re-Investigation',
-                                                text: `Are you sure you want to request ${investigation.incident.supervisor?.name} to further investigate this incident? They will be notified.`,
-                                                action: () =>
-                                                    investigation.incident.supervisor_id &&
-                                                    returnInvestigation(
-                                                        investigation.incident,
-                                                        setIsLoading,
-                                                        () =>
-                                                            router.get(
-                                                                route('incidents.show', {
-                                                                    incident:
-                                                                        investigation.incident_id,
-                                                                })
-                                                            )
-                                                    ),
-                                                show: true,
-                                            })
-                                        }
-                                    >
-                                        Request Re-Investigation
-                                    </PrimaryButton>
+                                    {investigation.incident.status === IncidentStatus.IN_REVIEW && (
+                                        <PrimaryButton
+                                            onClick={() =>
+                                                setModalProps({
+                                                    title: 'Request Re-Investigation',
+                                                    text: `Are you sure you want to request ${investigation.supervisor.name} to further investigate this incident? They will be notified.`,
+                                                    action: () =>
+                                                        investigation.incident.supervisor_id &&
+                                                        returnInvestigation(
+                                                            investigation.incident,
+                                                            setIsLoading,
+                                                            () =>
+                                                                router.get(
+                                                                    route('incidents.show', {
+                                                                        incident:
+                                                                            investigation.incident_id,
+                                                                    })
+                                                                )
+                                                        ),
+                                                    show: true,
+                                                })
+                                            }
+                                        >
+                                            Request Re-Investigation
+                                        </PrimaryButton>
+                                    )}
+
                                     <DangerButton
                                         onClick={() =>
                                             setModalProps({
@@ -82,7 +87,6 @@ export default function InvestigationAdminActions({
                     </div>
                 </div>
             </div>
-            <ConfirmationModal modalProps={modalProps} />
         </>
     );
 }

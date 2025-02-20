@@ -6,15 +6,33 @@ use App\Enum\CommentType;
 use App\Models\Incident;
 use App\Models\User;
 use App\States\IncidentStatus\Closed;
+use App\States\IncidentStatus\Opened;
 use App\States\IncidentStatus\Reopened;
 use App\StorableEvents\Incident\IncidentReopened;
+use Spatie\ModelStates\Exceptions\TransitionNotFound;
 use Tests\TestCase;
 
 class IncidentReopenedTest extends TestCase
 {
+    public function test_throws_if_not_closed()
+    {
+        $this->expectException(TransitionNotFound::class);
+
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Opened::class,
+        ]);
+
+        $event = new IncidentReopened;
+        $event->setAggregateRootUuid($incident->id);
+        $event->handle();
+    }
+
     public function test_adds_reopened_comment()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $incident = Incident::factory()->create([
             'supervisor_id' => $supervisor->id,
@@ -38,7 +56,7 @@ class IncidentReopenedTest extends TestCase
 
     public function test_reopen_incident()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $incident = Incident::factory()->create([
             'supervisor_id' => $supervisor->id,

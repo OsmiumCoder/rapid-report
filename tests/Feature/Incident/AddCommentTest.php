@@ -14,7 +14,7 @@ class AddCommentTest extends TestCase
 {
     public function test_comment_belongs_to_current_signed_in_user()
     {
-        $user = User::factory()->create()->assignRole('admin');
+        $user = User::factory()->create()->syncRoles('admin');
         $incident = Incident::factory()->create();
 
         $this->actingAs($user);
@@ -38,7 +38,7 @@ class AddCommentTest extends TestCase
 
     public function test_throws_validation_error_for_bad_data()
     {
-        $user = User::factory()->create()->assignRole('admin');
+        $user = User::factory()->create()->syncRoles('admin');
         $incident = Incident::factory()->create();
 
         $this->actingAs($user);
@@ -72,7 +72,7 @@ class AddCommentTest extends TestCase
 
     public function test_creates_comment_and_attaches_to_model()
     {
-        $user = User::factory()->create()->assignRole('admin');
+        $user = User::factory()->create()->syncRoles('admin');
         $incident = Incident::factory()->create();
 
         $this->actingAs($user);

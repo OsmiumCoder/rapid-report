@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Incident;
+use App\Models\User;
 use App\States\IncidentStatus\Assigned;
 use App\States\IncidentStatus\Closed;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Spatie\Permission\Models\Role;
 
 class DashboardController extends Controller
 {
@@ -15,7 +18,7 @@ class DashboardController extends Controller
 
         $incidents = Incident::latest()->where('reporters_email', $user->email)->take(5)->get();
         $incidentCount = Incident::where('reporters_email', $user->email)->count();
-        $closedCount = Incident::where('status', Closed::$name)->where('reporters_email', $user->email)->count();
+        $closedCount = Incident::whereState('status', Closed::class)->where('reporters_email', $user->email)->count();
         $unresolvedCount = $incidentCount - $closedCount;
 
         return inertia('Dashboard/UserDashboard', [
@@ -24,13 +27,14 @@ class DashboardController extends Controller
             'unresolvedCount' => $unresolvedCount,
         ]);
     }
+
     public function adminOverview()
     {
         Gate::authorize('view-admin-overview');
 
         $incidents = Incident::latest()->take(5)->get();
         $incidentCount = Incident::count();
-        $closedCount = Incident::where('status', Closed::$name)->count();
+        $closedCount = Incident::whereState('status', Closed::class)->count();
         $unresolvedCount = $incidentCount - $closedCount;
 
         return inertia('Dashboard/AdminOverview', [
@@ -49,12 +53,16 @@ class DashboardController extends Controller
 
         $unresolvedIncidents = Incident::latest()
             ->where('supervisor_id', $user->id)
-            ->where('status', Assigned::$name)
+            ->whereState('status', Assigned::class)
             ->take(5)
             ->get();
 
         $incidentCount = Incident::where('supervisor_id', $user->id)->count();
-        $closedCount = Incident::where('status', Closed::$name)->where('supervisor_id', $user->id)->count();
+
+        $closedCount = Incident::whereState('status', Closed::class)
+            ->where('supervisor_id', $user->id)
+            ->count();
+
         $unresolvedCount = $incidentCount - $closedCount;
 
         return inertia('Dashboard/SupervisorOverview', [
@@ -65,10 +73,24 @@ class DashboardController extends Controller
         ]);
     }
 
-    public function userManagement()
+    public function userManagement(Request $request)
     {
         Gate::authorize('view-user-management');
 
-        return inertia('Dashboard/UserManagement');
+        $search = $request->string('search', '');
+
+        $paginatedUsers = User::whereNot('id', auth()->user()->id)
+            ->where(function ($query) use ($search) {
+                $query->whereLike('name', "%$search%")
+                    ->orWhereLike('email', "%$search%");
+            })
+            ->orderBy('name')
+            ->paginate()
+            ->appends($request->query());
+
+        return inertia('Dashboard/UserManagement', [
+            'users' => $paginatedUsers,
+            'roles' => Role::all()
+        ]);
     }
 }

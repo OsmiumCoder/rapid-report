@@ -61,9 +61,14 @@ Run the database migrations (**ensure database rapid_report exists and Docker co
   sail artisan migrate:fresh --seed
 ```
 
-Start the server
+Start Vite server
 ```bash
   npm run dev
+```
+
+Start Queues
+```bash
+  sail artisan queue:work --queue=default,scout
 ```
 
 You can now access the site at http://localhost (Port 80)

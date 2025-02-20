@@ -17,6 +17,11 @@ class Investigation extends Model
     {
         return [
             'resulted_in' => 'array',
+            'substandard_acts' => 'array',
+            'substandard_conditions' => 'array',
+            'energy_transfer_causes' => 'array',
+            'personal_factors' => 'array',
+            'job_factors' => 'array',
         ];
     }
 

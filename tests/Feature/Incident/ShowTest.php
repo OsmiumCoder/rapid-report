@@ -12,7 +12,7 @@ class ShowTest extends TestCase
 {
     public function test_show_incident_loads_only_supervisors_investigations_with_supervisor_relation_as_supervisor()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $this->actingAs($supervisor);
 
         $incident = Incident::factory()->create(['supervisor_id' => $supervisor->id]);
@@ -39,7 +39,7 @@ class ShowTest extends TestCase
 
     public function test_show_incident_loads_all_investigations_with_supervisor_relation_for_admins()
     {
-        $admin = User::factory()->create()->assignRole('admin');
+        $admin = User::factory()->create()->syncRoles('admin');
         $this->actingAs($admin);
 
         $incident = Incident::factory()->create();
@@ -61,7 +61,7 @@ class ShowTest extends TestCase
 
     public function test_show_incident_loads_all_investigations_for_admins()
     {
-        $admin = User::factory()->create()->assignRole('admin');
+        $admin = User::factory()->create()->syncRoles('admin');
         $this->actingAs($admin);
 
         $incident = Incident::factory()->create();
@@ -83,7 +83,7 @@ class ShowTest extends TestCase
 
     public function test_show_incident_loads_only_supervisors_investigations_as_supervisor()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $this->actingAs($supervisor);
 
         $incident = Incident::factory()->create(['supervisor_id' => $supervisor->id]);
@@ -109,7 +109,7 @@ class ShowTest extends TestCase
 
     public function test_show_incident_does_not_load_investigations_for_users()
     {
-        $user = User::factory()->create()->assignRole('user');
+        $user = User::factory()->create()->syncRoles('user');
         $this->actingAs($user);
 
         $incident = Incident::factory()->create(['reporters_email' => $user->email]);
@@ -126,10 +126,10 @@ class ShowTest extends TestCase
     }
     public function test_show_with_admin_gives_supervisors_prop()
     {
-        $admin = User::factory()->create()->assignRole('admin');
+        $admin = User::factory()->create()->syncRoles('admin');
         $this->actingAs($admin);
 
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $incident = Incident::factory()->create();
 
@@ -148,7 +148,7 @@ class ShowTest extends TestCase
 
     public function test_show_with_supervisor_gives_empty_supervisors_prop()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $this->actingAs($supervisor);
 
         $incident = Incident::factory()->create([
@@ -169,7 +169,7 @@ class ShowTest extends TestCase
 
     public function test_show_with_user_gives_empty_supervisors_prop()
     {
-        $user = User::factory()->create()->assignRole('user');
+        $user = User::factory()->create()->syncRoles('user');
         $this->actingAs($user);
 
         $incident = Incident::factory()->create([
@@ -193,7 +193,7 @@ class ShowTest extends TestCase
         $user = User::factory()->create([
             'name' => 'Admin',
             'email' => 'admin@b.com',
-        ])->assignRole('admin');
+        ])->syncRoles('admin');
 
         $this->actingAs($user);
 
@@ -226,7 +226,7 @@ class ShowTest extends TestCase
         $user = User::factory()->create([
             'name' => 'supervisor',
             'email' => 'supervisor@b.com',
-        ])->assignRole('supervisor');
+        ])->syncRoles('supervisor');
 
         $this->actingAs($user);
 
@@ -242,7 +242,7 @@ class ShowTest extends TestCase
         $user = User::factory()->create([
             'name' => 'Admin',
             'email' => 'admin@b.com',
-        ])->assignRole('user');
+        ])->syncRoles('user');
 
         $this->actingAs($user);
 
@@ -258,7 +258,7 @@ class ShowTest extends TestCase
         $user = User::factory()->create([
             'name' => 'supervisor',
             'email' => 'supervisor@b.com',
-        ])->assignRole('supervisor');
+        ])->syncRoles('supervisor');
 
         $this->actingAs($user);
 
@@ -282,7 +282,7 @@ class ShowTest extends TestCase
         $user = User::factory()->create([
             'name' => 'Admin',
             'email' => 'admin@b.com',
-        ])->assignRole('user');
+        ])->syncRoles('user');
 
         $this->actingAs($user);
 
@@ -306,7 +306,7 @@ class ShowTest extends TestCase
         $user = User::factory()->create([
             'name' => 'Admin',
             'email' => 'admin@b.com',
-        ])->assignRole('admin');
+        ])->syncRoles('admin');
 
         $this->actingAs($user);
 

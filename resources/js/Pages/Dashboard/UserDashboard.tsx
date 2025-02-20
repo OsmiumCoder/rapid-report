@@ -7,14 +7,6 @@ import dateFormat from '@/Filters/dateFormat';
 import Authenticated from '@/Layouts/AuthenticatedLayout';
 import { PencilIcon } from '@heroicons/react/24/outline';
 import { IncidentStatus } from '@/Enums/IncidentStatus';
-import {
-    ChevronDownIcon,
-    ChevronLeftIcon,
-    ChevronRightIcon,
-    ChevronUpIcon,
-} from '@heroicons/react/20/solid';
-import classNames from '@/Filters/classNames';
-import { nameFilter } from '@/Filters/nameFilter';
 
 interface UserDashboardProps {
     incidents: Incident[];
@@ -105,11 +97,11 @@ export default function UserDashboard({
                             Quickly report any health, safety or environmental incidents you
                             encounter.
                         </p>
-                        <div className="flex justify-evenly mt-6">
+                        <div className="flex justify-evenly mt-6 gap-x-4 flex-col h-24 sm:h-auto sm:flex-row">
                             <Link
                                 href={route('incidents.create')}
                                 as="button"
-                                className="flex items-center rounded-md bg-upei-green-500 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-upei-green-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-upei-green-600"
+                                className="flex items-center justify-center rounded-md bg-upei-green-500 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-upei-green-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-upei-green-600"
                             >
                                 <PencilIcon className="h-4 w-4 mr-2" />
                                 Submit Incident
@@ -117,7 +109,7 @@ export default function UserDashboard({
                             <Link
                                 href={route('incidents.owned')}
                                 as="button"
-                                className="flex items-center rounded-md bg-upei-green-500 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-upei-green-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-upei-green-600"
+                                className="flex items-center justify-center rounded-md bg-upei-green-500 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-upei-green-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-upei-green-600"
                             >
                                 View Submitted Incidents
                             </Link>
@@ -142,19 +134,19 @@ export default function UserDashboard({
                                                 <tr>
                                                     <th
                                                         scope="col"
-                                                        className="px-4 py-3.5 text-left text-sm font-semibold text-gray-900 "
+                                                        className="px-4 py-3.5 text-left text-sm font-semibold text-gray-900 w-3/5"
                                                     >
                                                         Description
                                                     </th>
                                                     <th
                                                         scope="col"
-                                                        className="px-4 py-3.5 text-left text-sm font-semibold text-gray-900 "
+                                                        className="px-4 py-3.5 text-center text-sm font-semibold text-gray-900 "
                                                     >
                                                         Status
                                                     </th>
                                                     <th
                                                         scope="col"
-                                                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                                                        className="px-3 py-3.5 text-center text-sm font-semibold text-gray-900"
                                                     >
                                                         Reported
                                                     </th>
@@ -177,19 +169,19 @@ export default function UserDashboard({
                                                         key={incident.id}
                                                     >
                                                         <td className="px-3 py-4 text-sm w-[70rem] text-gray-500 ">
-                                                            <div className="w-full line-clamp-3">
+                                                            <div className="line-clamp-3">
                                                                 {incident.description}
                                                             </div>
                                                         </td>
-                                                        <td className="px-3 py-4 text-sm">
+                                                        <td className="px-3 py-4 text-sm text-center">
                                                             <Badge
                                                                 color={incidentBadgeColor(incident)}
                                                                 text={uppercaseWordFormat(
-                                                                    'In Review'
+                                                                    incident.status
                                                                 )}
                                                             />
                                                         </td>
-                                                        <td className="px-3 py-4 text-sm text-gray-500">
+                                                        <td className="px-3 py-4 text-sm text-gray-500 text-center">
                                                             {dateFormat(incident.created_at)}
                                                         </td>
                                                         <td className="py-4 pl-3 pr-4 text-right text-sm font-medium md:pr-6">

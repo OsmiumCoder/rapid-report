@@ -30,11 +30,21 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $user = $request->user();
+
+        $notifications = $user ?
+            $user
+                ->notifications()
+                ->paginate(10, pageName: 'notifications')
+            : null;
+
         return [
             ...parent::share($request),
             'auth' => [
-                'user' => $request->user(),
+                'user' => $user,
             ],
+            'notifications' => $notifications ? inertia()->merge($notifications->items()) : null,
+            'notifications_paginator' => $notifications ? $notifications->toArray() : null,
             'ziggy' => fn () => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),

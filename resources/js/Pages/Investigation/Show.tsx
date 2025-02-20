@@ -2,7 +2,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm, usePage } from '@inertiajs/react';
 import { PageProps, User } from '@/types';
 import InvestigationAdminActions from '@/Pages/Investigation/Partials/ShowComponents/InvestigationAdminActions';
-import { Investigation } from '@/types/Investigation/Investigation';
+import { Investigation } from '@/types/investigation/Investigation';
 import InvestigationInformationPanel from '@/Pages/Investigation/Partials/ShowComponents/InvestigationInformationPanel';
 import classNames from '@/Filters/classNames';
 

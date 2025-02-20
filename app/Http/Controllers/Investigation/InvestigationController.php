@@ -21,7 +21,7 @@ class InvestigationController extends Controller
         $this->authorize('create', [Investigation::class, $incident]);
 
         return Inertia::render('Investigation/Create', [
-            'form' => InvestigationData::empty()
+            'incident' => $incident,
         ]);
     }
 
@@ -50,7 +50,7 @@ class InvestigationController extends Controller
 
         $investigation->load('incident');
 
-        return Inertia::render('Investigation/Show', ['investigation' => $investigation->load(['incident'])]);
+        return Inertia::render('Investigation/Show', ['investigation' => $investigation->load(['incident', 'supervisor'])]);
     }
 
     /**

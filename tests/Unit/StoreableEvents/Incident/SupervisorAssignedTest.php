@@ -14,7 +14,7 @@ class SupervisorAssignedTest extends TestCase
 {
     public function test_adds_assigned_comment()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $incident = Incident::factory()->create();
 
         $event = new SupervisorAssigned($supervisor->id);
@@ -41,7 +41,7 @@ class SupervisorAssignedTest extends TestCase
 
     public function test_updates_status_from_open_to_assigned()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $incident = Incident::factory()->create();
         $this->assertEquals(Opened::class, $incident->status::class);
 
@@ -54,7 +54,7 @@ class SupervisorAssignedTest extends TestCase
     }
     public function test_assigns_supervisor_to_incident()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $incident = Incident::factory()->create();
 
         $event = new SupervisorAssigned($supervisor->id);

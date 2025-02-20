@@ -4,5 +4,5 @@ namespace App\States\IncidentStatus;
 
 class Assigned extends IncidentStatusState
 {
-    public static $name = 'assigned';
+    public static string $name = 'assigned';
 }

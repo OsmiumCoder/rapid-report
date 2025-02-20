@@ -8,7 +8,20 @@ export const returnInvestigation = (
     onSuccess: () => void
 ) => {
     setIsLoading(true);
-    router.put(route('incidents.return-investigation', { incident: incident.id }), undefined, {
+    router.patch(route('incidents.return-investigation', { incident: incident.id }), undefined, {
+        onSuccess: (_) => onSuccess(),
+        onFinish: (_) => setIsLoading(false),
+        preserveScroll: true,
+    });
+};
+
+export const returnRCA = (
+    incident: Incident,
+    setIsLoading: Dispatch<SetStateAction<boolean>>,
+    onSuccess: () => void
+) => {
+    setIsLoading(true);
+    router.patch(route('incidents.return-rca', { incident: incident.id }), undefined, {
         onSuccess: (_) => onSuccess(),
         onFinish: (_) => setIsLoading(false),
         preserveScroll: true,
@@ -21,7 +34,7 @@ export const closeIncident = (
     onSuccess: () => void
 ) => {
     setIsLoading(true);
-    router.put(route('incidents.close', { incident: incident.id }), undefined, {
+    router.patch(route('incidents.close', { incident: incident.id }), undefined, {
         onSuccess: (_) => onSuccess(),
         onFinish: (_) => setIsLoading(false),
         preserveScroll: true,
@@ -34,7 +47,7 @@ export const reopenIncident = (
     onSuccess: () => void
 ) => {
     setIsLoading(true);
-    router.put(route('incidents.reopen', { incident: incident.id }), undefined, {
+    router.patch(route('incidents.reopen', { incident: incident.id }), undefined, {
         onSuccess: (_) => onSuccess(),
         onFinish: (_) => setIsLoading(false),
         preserveScroll: true,
@@ -48,7 +61,7 @@ export const assignSupervisor = (
     onSuccess: () => void
 ) => {
     setIsLoading(true);
-    router.put(
+    router.patch(
         route('incidents.assign-supervisor', { incident: incident.id }),
         { supervisor_id: supervisorId },
         {
@@ -65,7 +78,7 @@ export const unassignSupervisor = (
     onSuccess: () => void
 ) => {
     setIsLoading(true);
-    router.put(route('incidents.unassign-supervisor', { incident: incident.id }), undefined, {
+    router.patch(route('incidents.unassign-supervisor', { incident: incident.id }), undefined, {
         onSuccess: (_) => onSuccess(),
         onFinish: (_) => setIsLoading(false),
         preserveScroll: true,

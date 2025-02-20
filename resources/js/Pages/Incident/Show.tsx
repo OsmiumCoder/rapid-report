@@ -1,19 +1,22 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import IncidentAdminActions from '@/Pages/Incident/Partials/IncidentAdminActions';
-import ActivityLog from '@/Pages/Incident/Partials/ActivityLog';
-import IncidentHeader from '@/Pages/Incident/Partials/IncidentHeader';
+import IncidentAdminActions from '@/Pages/Incident/Partials/ShowComponents/IncidentAdminActions';
+import ActivityLog from '@/Pages/Incident/Partials/ShowComponents/ActivityLog';
+import IncidentHeader from '@/Pages/Incident/Partials/ShowComponents/IncidentHeader';
 import { Head, useForm } from '@inertiajs/react';
 import { PageProps, User } from '@/types';
-import IncidentInformationPanel from '@/Pages/Incident/Partials/IncidentInformationPanel';
+import IncidentInformationPanel from '@/Pages/Incident/Partials/ShowComponents/IncidentInformationPanel';
 import { Incident } from '@/types/incident/Incident';
 import { FormEvent } from 'react';
+import IncidentSupervisorActions from '@/Pages/Incident/Partials/ShowComponents/IncidentSupervisorActions';
+import { IncidentStatus } from '@/Enums/IncidentStatus';
 
 interface ShowProps extends PageProps {
     incident: Incident;
     supervisors: User[];
+    canRequestReview: boolean;
 }
 
-export default function Show({ auth, incident, supervisors }: PageProps<ShowProps>) {
+export default function Show({ auth, incident, supervisors, canRequestReview }: PageProps<ShowProps>) {
     const user = auth.user;
 
     const { data, setData, post, processing, reset } = useForm({
@@ -45,6 +48,13 @@ export default function Show({ auth, incident, supervisors }: PageProps<ShowProp
                                     supervisors={supervisors}
                                 ></IncidentAdminActions>
                             )}
+                            {user.roles.some((role) => role.name === 'supervisor') &&
+                                incident.status === IncidentStatus.ASSIGNED && (
+                                    <IncidentSupervisorActions
+                                        incident={incident}
+                                        canRequestReview={canRequestReview}
+                                    ></IncidentSupervisorActions>
+                                )}
 
                             <IncidentInformationPanel incident={incident} />
 

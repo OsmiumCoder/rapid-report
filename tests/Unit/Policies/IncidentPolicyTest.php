@@ -3,15 +3,260 @@
 namespace Tests\Unit\Policies;
 
 use App\Models\Incident;
+use App\Models\Investigation;
+use App\Models\RootCauseAnalysis;
 use App\Models\User;
 use App\Policies\IncidentPolicy;
+use App\States\IncidentStatus\Assigned;
 use Tests\TestCase;
 
 class IncidentPolicyTest extends TestCase
 {
+    public function test_supervisor_can_request_review()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Assigned::class
+        ]);
+
+        $investigation = Investigation::factory()->create([
+            'incident_id' => $incident->id,
+            'supervisor_id' => $supervisor->id,
+        ]);
+
+        $rca = RootCauseAnalysis::factory()->create([
+            'incident_id' => $incident->id,
+            'supervisor_id' => $supervisor->id,
+        ]);
+
+        $result = $this->getPolicy()->requestReview($supervisor, $incident);
+
+        $this->assertTrue($result);
+    }
+
+    public function test_supervisor_cant_request_review_if_not_assigned_to_incident()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
+        $incident = Incident::factory()->create([
+            'status' => Assigned::class
+        ]);
+
+        $investigation = Investigation::factory()->create([
+            'incident_id' => $incident->id,
+            'supervisor_id' => $supervisor->id,
+        ]);
+
+        $rca = RootCauseAnalysis::factory()->create([
+            'incident_id' => $incident->id,
+            'supervisor_id' => $supervisor->id,
+        ]);
+
+        $result = $this->getPolicy()->requestReview($supervisor, $incident);
+
+        $this->assertFalse($result);
+    }
+
+    public function test_supervisor_cant_request_review_if_not_assigned_state()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+        ]);
+
+        $investigation = Investigation::factory()->create([
+            'incident_id' => $incident->id,
+            'supervisor_id' => $supervisor->id,
+        ]);
+
+        $rca = RootCauseAnalysis::factory()->create([
+            'incident_id' => $incident->id,
+            'supervisor_id' => $supervisor->id,
+        ]);
+
+        $result = $this->getPolicy()->requestReview($supervisor, $incident);
+
+        $this->assertFalse($result);
+    }
+
+    public function test_supervisor_cant_request_review_if_latest_investigation_and_root_cause_analyses_not_his()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Assigned::class
+        ]);
+
+        $investigation = Investigation::factory()->create([
+            'incident_id' => $incident->id,
+        ]);
+
+        $rca = RootCauseAnalysis::factory()->create([
+            'incident_id' => $incident->id,
+        ]);
+
+        $result = $this->getPolicy()->requestReview($supervisor, $incident);
+
+        $this->assertFalse($result);
+    }
+
+    public function test_supervisor_cant_request_review_if_latest_root_cause_analyses_not_his()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Assigned::class
+        ]);
+
+        $investigation = Investigation::factory()->create([
+            'incident_id' => $incident->id,
+            'supervisor_id' => $supervisor->id,
+        ]);
+
+        $rca = RootCauseAnalysis::factory()->create([
+            'incident_id' => $incident->id,
+        ]);
+
+        $result = $this->getPolicy()->requestReview($supervisor, $incident);
+
+        $this->assertFalse($result);
+    }
+
+    public function test_supervisor_cant_request_review_if_latest_investigation_not_his()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Assigned::class
+        ]);
+
+        $investigation = Investigation::factory()->create([
+            'incident_id' => $incident->id,
+        ]);
+
+        $rca = RootCauseAnalysis::factory()->create([
+            'incident_id' => $incident->id,
+            'supervisor_id' => $supervisor->id,
+        ]);
+
+        $result = $this->getPolicy()->requestReview($supervisor, $incident);
+
+        $this->assertFalse($result);
+    }
+
+    public function test_supervisor_cant_request_review_if_no_investigations_and_no_root_cause_analyses()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Assigned::class
+        ]);
+
+        $result = $this->getPolicy()->requestReview($supervisor, $incident);
+
+        $this->assertFalse($result);
+    }
+
+    public function test_supervisor_cant_request_review_if_no_root_cause_analyses()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Assigned::class
+        ]);
+
+        $investigation = Investigation::factory()->create([
+            'incident_id' => $incident->id,
+            'supervisor_id' => $supervisor->id,
+        ]);
+
+        $result = $this->getPolicy()->requestReview($supervisor, $incident);
+
+        $this->assertFalse($result);
+    }
+
+    public function test_supervisor_cant_request_review_if_no_investigations()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Assigned::class
+        ]);
+
+        $rca = RootCauseAnalysis::factory()->create([
+            'incident_id' => $incident->id,
+            'supervisor_id' => $supervisor->id,
+        ]);
+
+        $result = $this->getPolicy()->requestReview($supervisor, $incident);
+
+        $this->assertFalse($result);
+    }
+
+    public function test_admin_cant_request_review()
+    {
+        $admin = User::factory()->create()->syncRoles('admin');
+
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Assigned::class
+        ]);
+
+        $investigation = Investigation::factory()->create([
+            'incident_id' => $incident->id,
+            'supervisor_id' => $supervisor->id,
+        ]);
+
+        $rca = RootCauseAnalysis::factory()->create([
+            'incident_id' => $incident->id,
+            'supervisor_id' => $supervisor->id,
+        ]);
+
+        $result = $this->getPolicy()->requestReview($admin, $incident);
+
+        $this->assertFalse($result);
+    }
+
+    public function test_user_cant_request_review()
+    {
+        $user = User::factory()->create()->syncRoles('user');
+
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Assigned::class
+        ]);
+
+        $investigation = Investigation::factory()->create([
+            'incident_id' => $incident->id,
+            'supervisor_id' => $supervisor->id,
+        ]);
+
+        $rca = RootCauseAnalysis::factory()->create([
+            'incident_id' => $incident->id,
+            'supervisor_id' => $supervisor->id,
+        ]);
+
+        $result = $this->getPolicy()->requestReview($user, $incident);
+
+        $this->assertFalse($result);
+    }
+
     public function test_admin_can_search_for_all_incidents()
     {
-        $admin = User::factory()->create()->assignRole('admin');
+        $admin = User::factory()->create()->syncRoles('admin');
 
         $queryBuilder = Incident::search('searchValue');
 
@@ -21,7 +266,7 @@ class IncidentPolicyTest extends TestCase
 
     public function test_supervisor_can_search_for_assigned_incidents()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $queryBuilder = Incident::search('searchValue');
 
         $result = $this->getPolicy()->searchIncidents($supervisor, $queryBuilder);
@@ -30,7 +275,7 @@ class IncidentPolicyTest extends TestCase
 
     public function test_user_can_not_search_for_incidents()
     {
-        $user = User::factory()->create()->assignRole('user');
+        $user = User::factory()->create()->syncRoles('user');
         $queryBuilder = Incident::search('searchValue');
 
         $result = $this->getPolicy()->searchIncidents($user, $queryBuilder);
@@ -42,7 +287,7 @@ class IncidentPolicyTest extends TestCase
         $user = User::factory()->create([
             'name' => 'User',
             'email' => 'user@b.com',
-        ])->assignRole('supervisor');
+        ])->syncRoles('supervisor');
 
         $incident = Incident::factory()->create([
             'reporters_email' => $user->email,
@@ -61,7 +306,7 @@ class IncidentPolicyTest extends TestCase
         $user = User::factory()->create([
             'name' => 'User',
             'email' => 'user@b.com',
-        ])->assignRole('user');
+        ])->syncRoles('user');
 
         $result = $this->getPolicy()->addComment($user, $incident);
         $this->assertFalse($result);
@@ -72,7 +317,7 @@ class IncidentPolicyTest extends TestCase
         $user = User::factory()->create([
             'name' => 'User',
             'email' => 'user@b.com',
-        ])->assignRole('user');
+        ])->syncRoles('user');
 
         $incident = Incident::factory()->create([
             'reporters_email' => $user->email,
@@ -89,7 +334,7 @@ class IncidentPolicyTest extends TestCase
         $user = User::factory()->create([
             'name' => 'Supervisor',
             'email' => 'supervisor@b.com',
-        ])->assignRole('supervisor');
+        ])->syncRoles('supervisor');
 
         $result = $this->getPolicy()->addComment($user, $incident);
         $this->assertFalse($result);
@@ -100,7 +345,7 @@ class IncidentPolicyTest extends TestCase
         $user = User::factory()->create([
             'name' => 'Supervisor',
             'email' => 'supervisor@b.com',
-        ])->assignRole('supervisor');
+        ])->syncRoles('supervisor');
 
         $incident = Incident::factory()->create([
             'supervisor_id' => $user->id,
@@ -117,7 +362,7 @@ class IncidentPolicyTest extends TestCase
         $user = User::factory()->create([
             'name' => 'Admin',
             'email' => 'admin@b.com',
-        ])->assignRole('admin');
+        ])->syncRoles('admin');
 
         $result = $this->getPolicy()->addComment($user, $incident);
         $this->assertTrue($result);
@@ -125,42 +370,42 @@ class IncidentPolicyTest extends TestCase
 
     public function test_admin_can_perform_admin_actions_on_incidents()
     {
-        $admin = User::factory()->create()->assignRole('admin');
+        $admin = User::factory()->create()->syncRoles('admin');
 
         $this->assertTrue($this->getPolicy()->performAdminActions($admin));
     }
 
     public function test_supervisor_can_not_perform_admin_actions_on_incidents()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $this->assertFalse($this->getPolicy()->performAdminActions($supervisor));
     }
 
     public function test_user_can_not_perform_admin_actions_on_incidents()
     {
-        $user = User::factory()->create()->assignRole('user');
+        $user = User::factory()->create()->syncRoles('user');
 
         $this->assertFalse($this->getPolicy()->performAdminActions($user));
     }
 
     public function test_user_can_view_all_their_incidents()
     {
-        $user = User::factory()->create()->assignRole('user');
+        $user = User::factory()->create()->syncRoles('user');
 
         $this->assertTrue($this->getPolicy()->viewAnyOwned($user));
     }
 
     public function test_user_cant_view_any_assigned_incident()
     {
-        $user = User::factory()->create()->assignRole('user');
+        $user = User::factory()->create()->syncRoles('user');
 
         $this->assertFalse($this->getPolicy()->viewAnyAssigned($user));
     }
 
     public function test_supervisor_can_view_any_assigned_incident()
     {
-        $user = User::factory()->create()->assignRole('supervisor');
+        $user = User::factory()->create()->syncRoles('supervisor');
 
         $this->assertTrue($this->getPolicy()->viewAnyAssigned($user));
     }
@@ -170,7 +415,7 @@ class IncidentPolicyTest extends TestCase
         $user = User::factory()->create([
             'name' => 'User',
             'email' => 'user@b.com',
-        ])->assignRole('supervisor');
+        ])->syncRoles('supervisor');
 
         $incident = Incident::factory()->create([
             'reporters_email' => $user->email,
@@ -189,7 +434,7 @@ class IncidentPolicyTest extends TestCase
         $user = User::factory()->create([
             'name' => 'User',
             'email' => 'user@b.com',
-        ])->assignRole('user');
+        ])->syncRoles('user');
 
         $result = $this->getPolicy()->view($user, $incident);
         $this->assertFalse($result);
@@ -200,7 +445,7 @@ class IncidentPolicyTest extends TestCase
         $user = User::factory()->create([
             'name' => 'User',
             'email' => 'user@b.com',
-        ])->assignRole('user');
+        ])->syncRoles('user');
 
         $incident = Incident::factory()->create([
             'reporters_email' => $user->email,
@@ -217,7 +462,7 @@ class IncidentPolicyTest extends TestCase
         $user = User::factory()->create([
             'name' => 'Supervisor',
             'email' => 'supervisor@b.com',
-        ])->assignRole('supervisor');
+        ])->syncRoles('supervisor');
 
         $result = $this->getPolicy()->view($user, $incident);
         $this->assertFalse($result);
@@ -228,7 +473,7 @@ class IncidentPolicyTest extends TestCase
         $user = User::factory()->create([
             'name' => 'Supervisor',
             'email' => 'supervisor@b.com',
-        ])->assignRole('supervisor');
+        ])->syncRoles('supervisor');
 
         $incident = Incident::factory()->create([
             'supervisor_id' => $user->id,
@@ -245,7 +490,7 @@ class IncidentPolicyTest extends TestCase
         $user = User::factory()->create([
             'name' => 'Admin',
             'email' => 'admin@b.com',
-        ])->assignRole('admin');
+        ])->syncRoles('admin');
 
         $result = $this->getPolicy()->view($user, $incident);
         $this->assertTrue($result);
@@ -256,7 +501,7 @@ class IncidentPolicyTest extends TestCase
         $user = User::factory()->create([
             'name' => 'User',
             'email' => 'user@b.com',
-        ])->assignRole('user');
+        ])->syncRoles('user');
 
         $result = $this->getPolicy()->viewAny($user);
         $this->assertFalse($result);
@@ -267,7 +512,7 @@ class IncidentPolicyTest extends TestCase
         $user = User::factory()->create([
             'name' => 'Supervisor',
             'email' => 'supervisor@b.com',
-        ])->assignRole('supervisor');
+        ])->syncRoles('supervisor');
 
         $result = $this->getPolicy()->viewAny($user);
         $this->assertFalse($result);
@@ -278,7 +523,7 @@ class IncidentPolicyTest extends TestCase
         $user = User::factory()->create([
             'name' => 'Admin',
             'email' => 'admin@b.com',
-        ])->assignRole('admin');
+        ])->syncRoles('admin');
 
         $result = $this->getPolicy()->viewAny($user);
         $this->assertTrue($result);

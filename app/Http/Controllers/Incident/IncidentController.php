@@ -81,17 +81,23 @@ class IncidentController extends Controller
             $supervisors = [];
         }
 
-        if ($user->can('view any investigation')) {
-            $incident->load('investigations.supervisor');
+        if ($user->can('view any incident follow-up')) {
+            $incident->load(['investigations.supervisor', 'rootCauseAnalyses.supervisor']);
         } else {
-            $incident->load(['investigations' => function ($query) use ($user, $incident) {
-                $query->where('supervisor_id', $user->id)->with('supervisor');
-            }]);
+            $incident->load([
+                'investigations' => function ($query) use ($user, $incident) {
+                    $query->where('supervisor_id', $user->id)->with('supervisor');
+                },
+                'rootCauseAnalyses' => function ($query) use ($user, $incident) {
+                    $query->where('supervisor_id', $user->id)->with('supervisor');
+                },
+            ]);
         }
 
         return Inertia::render('Incident/Show', [
             'incident' => $incident->load(['comments.user', 'supervisor']),
             'supervisors' => $supervisors,
+            'canRequestReview' => $user->can('requestReview', $incident)
         ]);
     }
 

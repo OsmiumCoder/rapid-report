@@ -8,27 +8,160 @@ use App\Data\IncidentData;
 use App\Enum\CommentType;
 use App\Enum\IncidentType;
 use App\Exceptions\UserNotSupervisorException;
+use App\Mail\IncidentReceived;
 use App\Models\Incident;
 use App\Models\User;
+use App\Notifications\Incident\IncidentReviewRequest;
+use App\Notifications\Incident\IncidentSubmitted;
 use App\States\IncidentStatus\Assigned;
 use App\States\IncidentStatus\Closed;
 use App\States\IncidentStatus\InReview;
 use App\States\IncidentStatus\Opened;
+use App\States\IncidentStatus\Reopened;
 use App\States\IncidentStatus\Returned;
 use App\StorableEvents\Comment\CommentCreated;
-use App\States\IncidentStatus\Reopened;
 use App\StorableEvents\Incident\IncidentClosed;
 use App\StorableEvents\Incident\IncidentCreated;
 use App\StorableEvents\Incident\IncidentReopened;
-use App\StorableEvents\Incident\InvestigationReturned;
 use App\StorableEvents\Incident\SupervisorAssigned;
 use App\StorableEvents\Incident\SupervisorUnassigned;
+use App\StorableEvents\Investigation\InvestigationReturned;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
+use Spatie\ModelStates\Exceptions\TransitionNotFound;
 use Tests\TestCase;
 
 class IncidentAggregateRootTest extends TestCase
 {
-    public function test_sets_returned_status()
+    public function test_stores_request_notification_in_database()
+    {
+        Notification::fake();
+
+        $admins = User::factory(3)->create()->each(function (User $user) {
+            $user->syncRoles('admin');
+        });
+
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+        $this->actingAs($supervisor);
+
+        $incident = Incident::factory()->create([
+            'status' => Assigned::class,
+        ]);
+
+        Notification::assertNothingSent();
+
+        IncidentAggregateRoot::retrieve($incident->id)
+            ->requestReview()
+            ->persist();
+
+        $incident->refresh();
+
+        Notification::assertCount(3);
+
+        Notification::assertSentTo(
+            $admins,
+            function (IncidentReviewRequest $notification, array $channels) use ($incident, $admins, $supervisor) {
+                $databaseStore = $notification->toArray($admins->first());
+
+                $this->assertEquals(route('incidents.show', $incident->id), $databaseStore['url']);
+
+                return array_key_exists('message', $databaseStore);
+            }
+        );
+    }
+
+    public function test_request_review_sends_request_notification_to_admin()
+    {
+        Notification::fake();
+
+        $admins = User::factory(3)->create()->each(function (User $user) {
+            $user->syncRoles('admin');
+        });
+
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+        $this->actingAs($supervisor);
+
+        $incident = Incident::factory()->create([
+            'status' => Assigned::class,
+        ]);
+
+        Notification::assertNothingSent();
+
+        IncidentAggregateRoot::retrieve($incident->id)
+            ->requestReview()
+            ->persist();
+
+        Notification::assertCount(3);
+
+        Notification::assertSentTo($admins, IncidentReviewRequest::class);
+
+        Notification::assertSentTo(
+            $admins,
+            function (IncidentReviewRequest $notification, array $channels) use ($incident, $supervisor) {
+                return $notification->incidentId === $incident->id && $notification->supervisor->id === $supervisor->id;
+            }
+        );
+    }
+
+    public function test_request_review_adds_review_requested_comment()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+        $this->actingAs($supervisor);
+
+        $incident = Incident::factory()->create([
+            'status' => Assigned::class,
+        ]);
+
+        IncidentAggregateRoot::retrieve($incident->id)
+            ->requestReview()
+            ->persist();
+
+        $incident->refresh();
+
+        $this->assertCount(1, $incident->comments);
+
+        $comment = $incident->comments->first();
+
+        $this->assertEquals(CommentType::ACTION, $comment->type);
+        $this->assertStringContainsStringIgnoringCase('review', $comment->content);
+        $this->assertStringContainsStringIgnoringCase('requested', $comment->content);
+        $this->assertStringContainsStringIgnoringCase('incident', $comment->content);
+    }
+
+    public function test_request_review_throws_if_not_assigned()
+    {
+        $this->expectException(TransitionNotFound::class);
+
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+        $this->actingAs($supervisor);
+
+        $incident = Incident::factory()->create(['status' => Opened::class]);
+
+        IncidentAggregateRoot::retrieve($incident->id)
+            ->requestReview()
+            ->persist();
+    }
+
+    public function test_request_review_transitions_incident_from_assigned_to_in_review()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+        $this->actingAs($supervisor);
+
+        $incident = Incident::factory()->create([
+            'status' => Assigned::class,
+        ]);
+
+        IncidentAggregateRoot::retrieve($incident->id)
+            ->requestReview()
+            ->persist();
+
+        $incident->refresh();
+
+        $this->assertEquals(InReview::class, $incident->status::class);
+    }
+
+    public function test_return_investigation_sets_returned_status()
     {
         $incident = Incident::factory()->create([
             'status' => InReview::class,
@@ -43,7 +176,7 @@ class IncidentAggregateRootTest extends TestCase
         $this->assertEquals(Returned::class, $incident->status::class);
     }
 
-    public function test_adds_returned_comment()
+    public function test_return_investigation_adds_returned_comment()
     {
         $incident = Incident::factory()->create([
             'status' => InReview::class,
@@ -64,7 +197,7 @@ class IncidentAggregateRootTest extends TestCase
         $this->assertStringContainsStringIgnoringCase('incident', $comment->content);
     }
 
-    public function test_fires_investigation_returned_event()
+    public function test_return_investigation_fires_investigation_returned_event()
     {
         $incident = Incident::factory()->create([
             'status' => InReview::class,
@@ -79,9 +212,9 @@ class IncidentAggregateRootTest extends TestCase
             ]);
     }
 
-    public function test_adds_reopened_comment()
+    public function test_reopen_incident_adds_reopened_comment()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $incident = Incident::factory()->create([
             'supervisor_id' => $supervisor->id,
@@ -103,9 +236,9 @@ class IncidentAggregateRootTest extends TestCase
         $this->assertStringContainsStringIgnoringCase('incident', $comment->content);
     }
 
-    public function test_adds_closed_comment()
+    public function test_close_incident_adds_closed_comment()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $incident = Incident::factory()->create([
             'supervisor_id' => $supervisor->id,
@@ -127,9 +260,9 @@ class IncidentAggregateRootTest extends TestCase
         $this->assertStringContainsStringIgnoringCase('incident', $comment->content);
     }
 
-    public function test_adds_unassigned_comment()
+    public function test_unassign_supervisor_adds_unassigned_comment()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $incident = Incident::factory()->create([
             'supervisor_id' => $supervisor->id,
@@ -151,11 +284,11 @@ class IncidentAggregateRootTest extends TestCase
         $this->assertStringContainsStringIgnoringCase('incident', $comment->content);
     }
 
-    public function test_throws_user_not_supervisor_if_id_not_supervisor()
+    public function test_assign_supervisor_throws_user_not_supervisor_if_id_not_supervisor()
     {
         $this->expectException(UserNotSupervisorException::class);
 
-        $notSupervisor = User::factory()->create()->assignRole('admin');
+        $notSupervisor = User::factory()->create()->syncRoles('admin');
 
         $incident = Incident::factory()->create();
 
@@ -164,9 +297,9 @@ class IncidentAggregateRootTest extends TestCase
             ->persist();
     }
 
-    public function test_adds_assigned_comment_on_supervisor_assigned()
+    public function test_assign_supervisor_adds_assigned_comment()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $incident = Incident::factory()->create();
 
@@ -188,7 +321,7 @@ class IncidentAggregateRootTest extends TestCase
         $this->assertStringContainsStringIgnoringCase($supervisor->name, $comment->content);
     }
 
-    public function test_add_comment_adds_comment_to_model()
+    public function test_add_comment_adds_comment_to_incident()
     {
         $incident = Incident::factory()->create();
 
@@ -216,7 +349,7 @@ class IncidentAggregateRootTest extends TestCase
         $this->assertEquals(get_class($incident), $comment->commentable_type);
     }
 
-    public function test_comment_created_event_fired()
+    public function test_add_comment_fires_comment_created_event()
     {
         $incident = Incident::factory()->create();
 
@@ -238,9 +371,9 @@ class IncidentAggregateRootTest extends TestCase
             ]);
     }
 
-    public function test_closed_incident_event_fired()
+    public function test_close_incident_fires_incident_closed_event()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $incident = Incident::factory()->create([
             'supervisor_id' => $supervisor->id,
             'status' => InReview::class,
@@ -256,9 +389,9 @@ class IncidentAggregateRootTest extends TestCase
             ]);
     }
 
-    public function test_close_incident()
+    public function test_close_incident_sets_incident_status_to_closed()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $incident = Incident::factory()->create([
             'supervisor_id' => $supervisor->id,
@@ -276,9 +409,9 @@ class IncidentAggregateRootTest extends TestCase
         $this->assertEquals(Closed::class, $incident->status::class);
     }
 
-    public function test_reopened_incident_event_fired()
+    public function test_reopened_incident_fires_incident_reopened_event()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $incident = Incident::factory()->create([
             'supervisor_id' => $supervisor->id,
             'status' => Closed::class,
@@ -294,9 +427,9 @@ class IncidentAggregateRootTest extends TestCase
             ]);
     }
 
-    public function test_reopen_incident()
+    public function test_reopen_incident_sets_status_to_reopened()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $incident = Incident::factory()->create([
             'supervisor_id' => $supervisor->id,
@@ -314,9 +447,9 @@ class IncidentAggregateRootTest extends TestCase
         $this->assertEquals(Reopened::class, $incident->status::class);
     }
 
-    public function test_unassigned_supervisor_event_fired()
+    public function test_unassigned_supervisor_fires_supervisor_unassigned_event()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $incident = Incident::factory()->create([
             'supervisor_id' => $supervisor->id,
             'status' => Assigned::class,
@@ -332,9 +465,9 @@ class IncidentAggregateRootTest extends TestCase
             ]);
     }
 
-    public function test_unassign_supervisor_from_incident()
+    public function test_unassign_supervisor_unassigns_supervisor_from_incident()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $incident = Incident::factory()->create([
             'supervisor_id' => $supervisor->id,
             'status' => Assigned::class,
@@ -351,9 +484,9 @@ class IncidentAggregateRootTest extends TestCase
         $this->assertEquals(Opened::class, $incident->status::class);
     }
 
-    public function test_assigned_supervisor_event_fired()
+    public function test_assigned_supervisor_fires_supervisor_assigned_event()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $incident = Incident::factory()->create();
 
         IncidentAggregateRoot::fake($incident->id)
@@ -365,9 +498,9 @@ class IncidentAggregateRootTest extends TestCase
             ]);
     }
 
-    public function test_assign_supervisor_to_incident()
+    public function test_assign_supervisor_assigns_supervisor_to_incident()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $incident = Incident::factory()->create();
 
@@ -384,7 +517,7 @@ class IncidentAggregateRootTest extends TestCase
         $this->assertInstanceOf(User::class, $incident->supervisor);
     }
 
-    public function test_adds_created_comment()
+    public function test_create_incident_adds_created_comment()
     {
         $incidentData = IncidentData::from([
             'anonymous' => false,
@@ -433,7 +566,7 @@ class IncidentAggregateRootTest extends TestCase
 
     }
 
-    public function test_fires_incident_created_event()
+    public function test_create_incident_fires_incident_created_event()
     {
         $incidentData = IncidentData::from([
             'anonymous' => false,
@@ -492,7 +625,7 @@ class IncidentAggregateRootTest extends TestCase
             ]);
     }
 
-    public function test_incident_uuid_is_aggregate_uuid()
+    public function test_create_incident_stored_incident_uuid_is_aggregate_uuid()
     {
         $incidentData = IncidentData::from([
             'anonymous' => false,
@@ -534,7 +667,7 @@ class IncidentAggregateRootTest extends TestCase
         $this->assertEquals($aggregate->uuid(), $incident->id);
     }
 
-    public function test_stores_incident()
+    public function test_create_incident_stores_incident()
     {
         $incidentData = IncidentData::from([
             'anonymous' => false,
@@ -598,5 +731,138 @@ class IncidentAggregateRootTest extends TestCase
         $this->assertEquals($incidentData->supervisor_name, $incident->supervisor_name);
         $this->assertNull($incident->closed_at);
         $this->assertEquals(Opened::class, $incident->status::class);
+    }
+
+    public function test_create_incident_sends_mail_on_reporters_email_set(): void
+    {
+        Mail::fake();
+        Notification::fake();
+
+        $admins = User::factory(3)->create()->each(function (User $user) {
+            $user->syncRoles('admin');
+        });
+        $user = User::factory()->create()->syncRoles('user');
+
+        $incidentData = IncidentData::from([
+            'anonymous' => false,
+            'on_behalf' => false,
+            'on_behalf_anonymous' => false,
+            'role' => 0,
+            'last_name' => 'last',
+            'first_name' => 'first',
+            'upei_id' => '322',
+            'email' => 'john@doe.com',
+            'phone' => '(902) 333-4444',
+            'work_related' => true,
+            'workers_comp_submitted' => true,
+            'happened_at' => now(),
+            'location' => 'Building A',
+            'room_number' => '123A',
+            'witnesses' => [],
+            'incident_type' => IncidentType::SAFETY,
+            'descriptor' => 'Burn',
+            'description' => 'A fire broke out in the room.',
+            'injury_description' => 'Minor burn',
+            'first_aid_description' => 'Minor burn treated',
+            'reporters_email' => $user->email,
+            'supervisor_name' => 'John Doe',
+        ]);
+
+        $uuid = Str::uuid()->toString();
+
+        Mail::assertNothingSent();
+
+        $aggregate = IncidentAggregateRoot::retrieve($uuid)
+            ->createIncident($incidentData)
+            ->persist();
+
+        Mail::assertSentCount(1);
+        Mail::assertSent(IncidentReceived::class, 1);
+        Mail::assertSent(IncidentReceived::class, $user->email);
+
+        Notification::assertSentTo($admins, IncidentSubmitted::class);
+        Notification::assertNotSentTo($user, IncidentSubmitted::class);
+    }
+
+    public function test_create_incident_sends_no_mail_on_reporters_email_not_set(): void
+    {
+        Mail::fake();
+        Notification::fake();
+
+        $incidentData = IncidentData::from([
+            'anonymous' => false,
+            'on_behalf' => false,
+            'on_behalf_anonymous' => false,
+            'role' => 0,
+            'last_name' => 'last',
+            'first_name' => 'first',
+            'upei_id' => '322',
+            'email' => 'john@doe.com',
+            'phone' => '(902) 333-4444',
+            'work_related' => true,
+            'workers_comp_submitted' => true,
+            'happened_at' => now(),
+            'location' => 'Building A',
+            'room_number' => '123A',
+            'witnesses' => [],
+            'incident_type' => IncidentType::SAFETY,
+            'descriptor' => 'Burn',
+            'description' => 'A fire broke out in the room.',
+            'injury_description' => 'Minor burn',
+            'first_aid_description' => 'Minor burn treated',
+            'reporters_email' => null,
+            'supervisor_name' => 'John Doe',
+        ]);
+
+        $uuid = Str::uuid()->toString();
+
+        $aggregate = IncidentAggregateRoot::retrieve($uuid)
+            ->createIncident($incidentData)
+            ->persist();
+
+        Mail::assertNothingSent();
+    }
+
+    public function test_create_incident_notifies_admin_team(): void
+    {
+        Mail::fake();
+        Notification::fake();
+
+        $admins = User::factory(3)->create()->each(function (User $user) {
+            $user->syncRoles('admin');
+        });
+
+        $incidentData = IncidentData::from([
+            'anonymous' => false,
+            'on_behalf' => false,
+            'on_behalf_anonymous' => false,
+            'role' => 0,
+            'last_name' => 'last',
+            'first_name' => 'first',
+            'upei_id' => '322',
+            'email' => 'john@doe.com',
+            'phone' => '(902) 333-4444',
+            'work_related' => true,
+            'workers_comp_submitted' => true,
+            'happened_at' => now(),
+            'location' => 'Building A',
+            'room_number' => '123A',
+            'witnesses' => [],
+            'incident_type' => IncidentType::SAFETY,
+            'descriptor' => 'Burn',
+            'description' => 'A fire broke out in the room.',
+            'injury_description' => 'Minor burn',
+            'first_aid_description' => 'Minor burn treated',
+            'reporters_email' => 'jane@doe.com',
+            'supervisor_name' => 'John Doe',
+        ]);
+
+        $uuid = Str::uuid()->toString();
+
+        $aggregate = IncidentAggregateRoot::retrieve($uuid)
+            ->createIncident($incidentData)
+            ->persist();
+
+        Notification::assertSentTo($admins, IncidentSubmitted::class);
     }
 }

@@ -11,7 +11,7 @@ class InvestigationTest extends TestCase
 {
     public function test_investigation_belongs_to_supervisor_relation()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $investigation = Investigation::factory()->create(['supervisor_id' => $supervisor->id]);
 
         $this->assertEquals($supervisor->id, $investigation->supervisor->id);
@@ -37,5 +37,10 @@ class InvestigationTest extends TestCase
         $this->assertNotNull($investigation->hazard_class);
         $this->assertNotNull($investigation->risk_rank);
         $this->assertNotNull($investigation->resulted_in);
+        $this->assertNotNull($investigation->substandard_acts);
+        $this->assertNotNull($investigation->substandard_conditions);
+        $this->assertNotNull($investigation->energy_transfer_causes);
+        $this->assertNotNull($investigation->personal_factors);
+        $this->assertNotNull($investigation->job_factors);
     }
 }

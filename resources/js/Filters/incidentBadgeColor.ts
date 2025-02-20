@@ -11,5 +11,7 @@ export function incidentBadgeColor(incident: Incident): BadgeColor {
             ? 'purple'
             : incident.status === IncidentStatus.CLOSED
               ? 'green'
-              : 'red';
+              : incident.status === IncidentStatus.RETURNED
+                ? 'indigo'
+                : 'red';
 }

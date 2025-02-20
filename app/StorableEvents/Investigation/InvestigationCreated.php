@@ -8,7 +8,6 @@ use App\Models\Incident;
 use App\Models\Investigation;
 use App\Models\User;
 use App\Notifications\Investigation\InvestigationSubmitted;
-use App\States\IncidentStatus\InReview;
 use App\StorableEvents\StoredEvent;
 use Illuminate\Support\Facades\Notification;
 
@@ -20,9 +19,13 @@ class InvestigationCreated extends StoredEvent
         public string $basic_causes,
         public string $remedial_actions,
         public string $prevention,
-        public string $hazard_class,
         public int $risk_rank,
-        public array $resulted_in
+        public ?array $resulted_in,
+        public ?array $substandard_acts,
+        public ?array $substandard_conditions,
+        public ?array $energy_transfer_causes,
+        public ?array $personal_factors,
+        public ?array $job_factors,
     ) {
     }
 
@@ -40,13 +43,24 @@ class InvestigationCreated extends StoredEvent
         $investigation->basic_causes = $this->basic_causes;
         $investigation->remedial_actions = $this->remedial_actions;
         $investigation->prevention = $this->prevention;
-        $investigation->hazard_class = $this->hazard_class;
         $investigation->risk_rank = $this->risk_rank;
         $investigation->resulted_in = $this->resulted_in;
 
-        $investigation->save();
+        $investigation->substandard_acts = $this->substandard_acts;
+        $investigation->substandard_conditions = $this->substandard_conditions;
+        $investigation->energy_transfer_causes = $this->energy_transfer_causes;
+        $investigation->personal_factors = $this->personal_factors;
+        $investigation->job_factors = $this->job_factors;
 
-        $incident->status->transitionTo(InReview::class);
+        if ($this->risk_rank < 3) {
+            $investigation->hazard_class = 'A';
+        } elseif ($this->risk_rank < 5) {
+            $investigation->hazard_class = 'B';
+        } else {
+            $investigation->hazard_class = 'C';
+        }
+
+        $investigation->save();
 
         $comment = new Comment;
 
@@ -65,6 +79,6 @@ class InvestigationCreated extends StoredEvent
 
         $supervisor = User::find($this->metaData['user_id']);
 
-        Notification::send($admins, new InvestigationSubmitted($this->aggregateRootUuid(), $supervisor));
+        Notification::send($admins, new InvestigationSubmitted($this->incident_id, $this->aggregateRootUuid(), $supervisor));
     }
 }

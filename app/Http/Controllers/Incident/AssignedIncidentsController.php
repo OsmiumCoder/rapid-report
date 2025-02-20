@@ -18,8 +18,8 @@ class AssignedIncidentsController extends Controller
 
         $filters = json_decode(urldecode($request->query('filters')), true);
 
-        $sortBy = $request->string('sort_by', 'created_at');
-        $sortDirection = $request->string('sort_direction', 'desc');
+        $sortBy = $request->string('sort_by', 'status');
+        $sortDirection = $request->string('sort_direction', 'asc');
 
         $assignedIncidents = Incident::sort($sortBy, $sortDirection)
             ->filter($filters)

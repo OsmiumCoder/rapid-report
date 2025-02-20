@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Incident;
 use App\Models\Investigation;
+use App\Models\RootCauseAnalysis;
 use App\Models\User;
 use App\States\IncidentStatus\Assigned;
 use App\States\IncidentStatus\Closed;
@@ -24,54 +25,56 @@ class DatabaseSeeder extends Seeder
         $superAdmin = User::factory()->create([
             'name' => 'Super Admin',
             'email' => 'admin@super.com',
-        ])->assignRole(['super-admin']);
+        ])->syncRoles(['super-admin']);
 
         $admin = User::factory()->create([
             'name' => 'Admin',
             'email' => 'admin@b.com',
-        ])->assignRole('admin');
+        ])->syncRoles('admin');
 
         $supervisor = User::factory()->create([
             'name' => 'Supervisor',
             'email' => 'supervisor@b.com',
-        ])->assignRole('supervisor');
+        ])->syncRoles('supervisor');
 
 
         User::factory()->create([
             'name' => 'Supervisor A',
             'email' => 'supervisorA@b.com',
-        ])->assignRole('supervisor');
+        ])->syncRoles('supervisor');
 
         User::factory()->create([
             'name' => 'Supervisor B',
             'email' => 'supervisorB@b.com',
-        ])->assignRole('supervisor');
+        ])->syncRoles('supervisor');
 
         User::factory()->create([
             'name' => 'Supervisor C',
             'email' => 'supervisorC@b.com',
-        ])->assignRole('supervisor');
+        ])->syncRoles('supervisor');
 
         User::factory()->create([
             'name' => 'Supervisor D',
             'email' => 'supervisorD@b.com',
-        ])->assignRole('supervisor');
+        ])->syncRoles('supervisor');
 
         $user = User::factory()->create([
             'name' => 'User',
             'email' => 'user@b.com',
-        ])->assignRole('user');
+        ])->syncRoles('user');
 
         Incident::factory(5)->hasComments(5)->create([
             'supervisor_id' => $supervisor->id,
             'status' => Assigned::class,
         ]);
 
+
         Incident::factory(5)->hasComments(5)->create([
             'supervisor_id' => $supervisor->id,
             'status' => InReview::class,
-        ])->each(function (Incident $incident) {
-            Investigation::factory()->create(['incident_id' => $incident->id]);
+        ])->each(function (Incident $incident) use ($supervisor) {
+            Investigation::factory()->create(['supervisor_id' => $supervisor->id, 'incident_id' => $incident->id]);
+            RootCauseAnalysis::factory()->create(['supervisor_id' => $supervisor->id, 'incident_id' => $incident->id]);
         });
 
         Incident::factory(5)->hasComments(5)->create([

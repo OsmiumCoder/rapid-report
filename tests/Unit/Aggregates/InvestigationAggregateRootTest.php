@@ -10,7 +10,6 @@ use App\Models\Investigation;
 use App\Models\User;
 use App\Notifications\Investigation\InvestigationSubmitted;
 use App\States\IncidentStatus\Assigned;
-use App\States\IncidentStatus\InReview;
 use App\StorableEvents\Investigation\InvestigationCreated;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
@@ -18,41 +17,15 @@ use Tests\TestCase;
 
 class InvestigationAggregateRootTest extends TestCase
 {
-    public function test_incident_transitions_from_assigned_to_in_review()
-    {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
-        $this->actingAs($supervisor);
-
-        $incident = Incident::factory()->create(['status' => Assigned::class]);
-
-        $investigationData = InvestigationData::from([
-            'immediate_causes' => "immediate causes",
-            'basic_causes' => 'basic causes',
-            'remedial_actions' => "remedial actions",
-            'prevention' => 'prevention',
-            'hazard_class' => 'hazard class',
-            'risk_rank' => 10,
-            'resulted_in' => ['injury', 'burn']
-        ]);
-
-        InvestigationAggregateRoot::retrieve(Str::uuid()->toString())
-            ->createInvestigation($investigationData, $incident)
-            ->persist();
-
-        $incident->refresh();
-
-        $this->assertEquals(InReview::class, $incident->status::class);
-    }
-
     public function test_sends_received_notification_to_admin()
     {
         Notification::fake();
 
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $this->actingAs($supervisor);
 
         $admins = User::factory(3)->create()->each(function (User $user) {
-            $user->assignRole('admin');
+            $user->syncRoles('admin');
         });
 
         $incident = Incident::factory()->create(['status' => Assigned::class]);
@@ -64,7 +37,12 @@ class InvestigationAggregateRootTest extends TestCase
             'prevention' => 'prevention',
             'hazard_class' => 'hazard class',
             'risk_rank' => 10,
-            'resulted_in' => ['injury', 'burn']
+            'resulted_in' => ['injury', 'burn'],
+            'substandard_acts' => ['injury', 'burn'],
+            'substandard_conditions' => ['injury', 'burn'],
+            'energy_transfer_causes' => ['injury', 'burn'],
+            'personal_factors' => ['injury', 'burn'],
+            'job_factors' => ['injury', 'burn'],
         ]);
 
         $uuid = Str::uuid()->toString();
@@ -91,7 +69,7 @@ class InvestigationAggregateRootTest extends TestCase
 
     public function test_adds_created_investigation_comment_on_incident()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $this->actingAs($supervisor);
 
         $incident = Incident::factory()->create(['status' => Assigned::class]);
@@ -103,7 +81,12 @@ class InvestigationAggregateRootTest extends TestCase
             'prevention' => 'prevention',
             'hazard_class' => 'hazard class',
             'risk_rank' => 10,
-            'resulted_in' => ['injury', 'burn']
+            'resulted_in' => ['injury', 'burn'],
+            'substandard_acts' => ['injury', 'burn'],
+            'substandard_conditions' => ['injury', 'burn'],
+            'energy_transfer_causes' => ['injury', 'burn'],
+            'personal_factors' => ['injury', 'burn'],
+            'job_factors' => ['injury', 'burn'],
         ]);
 
         $uuid = Str::uuid()->toString();
@@ -126,7 +109,7 @@ class InvestigationAggregateRootTest extends TestCase
 
     public function test_fires_investigation_created_event()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $this->actingAs($supervisor);
 
         $incident = Incident::factory()->create(['status' => Assigned::class]);
@@ -138,7 +121,12 @@ class InvestigationAggregateRootTest extends TestCase
             'prevention' => 'prevention',
             'hazard_class' => 'hazard class',
             'risk_rank' => 10,
-            'resulted_in' => ['injury', 'burn']
+            'resulted_in' => ['injury', 'burn'],
+            'substandard_acts' => ['injury', 'burn'],
+            'substandard_conditions' => ['injury', 'burn'],
+            'energy_transfer_causes' => ['injury', 'burn'],
+            'personal_factors' => ['injury', 'burn'],
+            'job_factors' => ['injury', 'burn'],
         ]);
 
         InvestigationAggregateRoot::fake(Str::uuid()->toString())
@@ -151,16 +139,20 @@ class InvestigationAggregateRootTest extends TestCase
                     basic_causes: 'basic causes',
                     remedial_actions: "remedial actions",
                     prevention: "prevention",
-                    hazard_class: 'hazard class',
                     risk_rank: 10,
                     resulted_in: ['injury', 'burn'],
+                    substandard_acts: ['injury', 'burn'],
+                    substandard_conditions: ['injury', 'burn'],
+                    energy_transfer_causes: ['injury', 'burn'],
+                    personal_factors: ['injury', 'burn'],
+                    job_factors: ['injury', 'burn'],
                 )
             ]);
     }
 
     public function test_investigation_uuid_is_aggregate_uuid()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $this->actingAs($supervisor);
 
         $incident = Incident::factory()->create(['status' => Assigned::class]);
@@ -172,7 +164,12 @@ class InvestigationAggregateRootTest extends TestCase
             'prevention' => 'prevention',
             'hazard_class' => 'hazard class',
             'risk_rank' => 10,
-            'resulted_in' => ['injury', 'burn']
+            'resulted_in' => ['injury', 'burn'],
+            'substandard_acts' => ['injury', 'burn'],
+            'substandard_conditions' => ['injury', 'burn'],
+            'energy_transfer_causes' => ['injury', 'burn'],
+            'personal_factors' => ['injury', 'burn'],
+            'job_factors' => ['injury', 'burn'],
         ]);
 
         $this->assertDatabaseCount('investigations', 0);
@@ -192,7 +189,7 @@ class InvestigationAggregateRootTest extends TestCase
 
     public function test_stores_investigation()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $this->actingAs($supervisor);
 
         $incident = Incident::factory()->create(['status' => Assigned::class]);
@@ -202,9 +199,13 @@ class InvestigationAggregateRootTest extends TestCase
             'basic_causes' => 'basic causes',
             'remedial_actions' => "remedial actions",
             'prevention' => 'prevention',
-            'hazard_class' => 'hazard class',
             'risk_rank' => 10,
-            'resulted_in' => ['injury', 'burn']
+            'resulted_in' => ['injury', 'burn'],
+            'substandard_acts' => ['injury', 'burn'],
+            'substandard_conditions' => ['injury', 'burn'],
+            'energy_transfer_causes' => ['injury', 'burn'],
+            'personal_factors' => ['injury', 'burn'],
+            'job_factors' => ['injury', 'burn'],
         ]);
 
         $this->assertDatabaseCount('investigations', 0);
@@ -225,8 +226,12 @@ class InvestigationAggregateRootTest extends TestCase
         $this->assertEquals($investigationData->basic_causes, $investigation->basic_causes);
         $this->assertEquals($investigationData->remedial_actions, $investigation->remedial_actions);
         $this->assertEquals($investigationData->prevention, $investigation->prevention);
-        $this->assertEquals($investigationData->hazard_class, $investigation->hazard_class);
         $this->assertEquals($investigationData->risk_rank, $investigation->risk_rank);
         $this->assertEquals($investigationData->resulted_in, $investigation->resulted_in);
+        $this->assertEquals($investigationData->substandard_acts, $investigation->substandard_acts);
+        $this->assertEquals($investigationData->substandard_conditions, $investigation->substandard_conditions);
+        $this->assertEquals($investigationData->energy_transfer_causes, $investigation->energy_transfer_causes);
+        $this->assertEquals($investigationData->personal_factors, $investigation->personal_factors);
+        $this->assertEquals($investigationData->job_factors, $investigation->job_factors);
     }
 }

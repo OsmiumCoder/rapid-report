@@ -14,7 +14,7 @@ class SupervisorUnassignedTest extends TestCase
 {
     public function test_adds_unassigned_comment()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $incident = Incident::factory()->create([
             'supervisor_id' => $supervisor->id,
             'status' => Assigned::class,
@@ -37,7 +37,7 @@ class SupervisorUnassignedTest extends TestCase
     }
     public function test_unassign_supervisor_from_incident()
     {
-        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
         $incident = Incident::factory()->create([
             'supervisor_id' => $supervisor->id,
             'status' => Assigned::class,

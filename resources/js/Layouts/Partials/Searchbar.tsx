@@ -21,8 +21,8 @@ import { incidentBadgeColor } from '@/Filters/incidentBadgeColor';
 import { nameFilter } from '@/Filters/nameFilter';
 
 interface CommandPaletteProps {
-    open: boolean;
-    setOpen: Dispatch<SetStateAction<boolean>>;
+    isOpen: boolean;
+    setIsOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 const defaultLabels = [
@@ -83,7 +83,7 @@ const defaultLabels = [
     },
 ];
 
-export default function Searchbar({ open, setOpen }: CommandPaletteProps) {
+export default function Searchbar({ isOpen, setIsOpen }: CommandPaletteProps) {
     const [search, setSearch] = useState('');
     const [incidents, setIncidents] = useState<Incident[]>([]);
     const [sortByMenuOpen, setSortByMenuOpen] = useState(false);
@@ -157,9 +157,9 @@ export default function Searchbar({ open, setOpen }: CommandPaletteProps) {
     return (
         <Dialog
             className="z-10"
-            open={open}
+            open={isOpen}
             onClose={() => {
-                setOpen(false);
+                setIsOpen(false);
             }}
         >
             <DialogBackdrop
