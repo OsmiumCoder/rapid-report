@@ -1,6 +1,6 @@
 <?php
 
-namespace Policies;
+namespace Tests\Unit\Policies;
 
 use App\Models\User;
 use App\Policies\ReportPolicy;

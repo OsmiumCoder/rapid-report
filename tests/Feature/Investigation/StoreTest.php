@@ -1,6 +1,6 @@
 <?php
 
-namespace Investigation;
+namespace Tests\Feature\Investigation;
 
 use App\Data\InvestigationData;
 use App\Enum\CommentType;

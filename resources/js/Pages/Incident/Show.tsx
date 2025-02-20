@@ -2,11 +2,11 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import IncidentAdminActions from '@/Pages/Incident/Partials/ShowComponents/IncidentAdminActions';
 import ActivityLog from '@/Pages/Incident/Partials/ShowComponents/ActivityLog';
 import IncidentHeader from '@/Pages/Incident/Partials/ShowComponents/IncidentHeader';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, router, useForm } from '@inertiajs/react';
 import { PageProps, User } from '@/types';
 import IncidentInformationPanel from '@/Pages/Incident/Partials/ShowComponents/IncidentInformationPanel';
 import { Incident } from '@/types/incident/Incident';
-import { FormEvent } from 'react';
+import { FormEvent, useEffect } from 'react';
 import IncidentSupervisorActions from '@/Pages/Incident/Partials/ShowComponents/IncidentSupervisorActions';
 import { IncidentStatus } from '@/Enums/IncidentStatus';
 
@@ -14,9 +14,16 @@ interface ShowProps extends PageProps {
     incident: Incident;
     supervisors: User[];
     canRequestReview: boolean;
+    canProvideFollowup: boolean;
 }
 
-export default function Show({ auth, incident, supervisors, canRequestReview }: PageProps<ShowProps>) {
+export default function Show({
+    auth,
+    incident,
+    supervisors,
+    canRequestReview,
+    canProvideFollowup,
+}: PageProps<ShowProps>) {
     const user = auth.user;
 
     const { data, setData, post, processing, reset } = useForm({
@@ -30,6 +37,16 @@ export default function Show({ auth, incident, supervisors, canRequestReview }: 
             onSuccess: () => reset(),
         });
     }
+    useEffect(() => {
+        // Refresh incidents prop (if exists) when browser back navigation occurs.
+        const reloadIncidents = () => router.reload({ only: ['incidents'] });
+
+        window.addEventListener('popstate', reloadIncidents);
+
+        return () => {
+            window.removeEventListener('popstate', reloadIncidents);
+        };
+    }, []);
 
     return (
         <AuthenticatedLayout>
@@ -48,13 +65,13 @@ export default function Show({ auth, incident, supervisors, canRequestReview }: 
                                     supervisors={supervisors}
                                 ></IncidentAdminActions>
                             )}
-                            {user.roles.some((role) => role.name === 'supervisor') &&
-                                incident.status === IncidentStatus.ASSIGNED && (
-                                    <IncidentSupervisorActions
-                                        incident={incident}
-                                        canRequestReview={canRequestReview}
-                                    ></IncidentSupervisorActions>
-                                )}
+                            {user.roles.some((role) => role.name === 'supervisor') && (
+                                <IncidentSupervisorActions
+                                    incident={incident}
+                                    canRequestReview={canRequestReview}
+                                    canProvideFollowup={canProvideFollowup}
+                                ></IncidentSupervisorActions>
+                            )}
 
                             <IncidentInformationPanel incident={incident} />
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Reactors;
+namespace Tests\Unit\Reactors;
 
 use App\Reactors\StoredEventReactor;
 use App\StorableEvents\StoredEvent;
