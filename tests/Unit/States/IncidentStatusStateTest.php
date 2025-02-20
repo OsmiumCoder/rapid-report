@@ -1,6 +1,6 @@
 <?php
 
-namespace States;
+namespace Tests\Unit\States;
 
 use App\Models\Incident;
 use App\States\IncidentStatus\Assigned;

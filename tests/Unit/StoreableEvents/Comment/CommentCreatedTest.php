@@ -1,6 +1,6 @@
 <?php
 
-namespace StoreableEvents\Comment;
+namespace Tests\Unit\StoreableEvents\Comment;
 
 use App\Enum\CommentType;
 use App\Models\Comment;

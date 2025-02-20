@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Incident;
 use App\Models\User;
 use App\States\IncidentStatus\Assigned;
+use App\States\IncidentStatus\Returned;
 use Laravel\Scout\Builder;
 
 class IncidentPolicy
@@ -54,7 +55,11 @@ class IncidentPolicy
 
     public function requestReview(User $user, Incident $incident): bool
     {
-        if ($user->can('provide incident follow-up') && $incident->supervisor_id == $user->id && $incident->status::class == Assigned::class) {
+        if (
+            $user->can('provide incident follow-up') &&
+            $incident->supervisor_id == $user->id &&
+            ($incident->status::class == Assigned::class || $incident->status::class == Returned::class)
+        ) {
             $latestInvestigation = $incident->investigations()->latest()->first();
             $latestRootCauseAnalysis = $incident->rootCauseAnalyses()->latest()->first();
 
@@ -65,6 +70,13 @@ class IncidentPolicy
         }
 
         return false;
+    }
+
+    public function provideFollowUp(User $user, Incident $incident): bool
+    {
+        return $user->can('provide incident follow-up') &&
+            $incident->supervisor_id == $user->id &&
+            ($incident->status::class == Assigned::class || $incident->status::class == Returned::class);
     }
 
     public function addComment(User $user, Incident $incident): bool

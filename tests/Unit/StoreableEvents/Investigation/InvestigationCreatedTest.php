@@ -1,6 +1,6 @@
 <?php
 
-namespace StoreableEvents\Investigation;
+namespace Tests\Unit\StoreableEvents\Investigation;
 
 use App\Enum\CommentType;
 use App\Models\Incident;
