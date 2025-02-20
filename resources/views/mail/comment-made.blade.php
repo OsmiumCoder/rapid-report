@@ -1,9 +1,9 @@
 <x-mail::message>
     # Comment Created
 
-    Dear name,
+    Dear {{ $recipient }},
 
-    A new comment has been made on an incident.
+    {{ $commenter }} commented: {{ $content }}
 
     Best regards,
     UPEI Health, Safety, and Environment

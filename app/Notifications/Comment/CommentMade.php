@@ -14,9 +14,20 @@ class CommentMade extends Notification
     /**
      * Create a new notification instance.
      */
-    public function __construct()
-    {
-        //
+    public function __construct(
+        public string $comment,
+        public ?string $commenterName,
+        public string $url  // Add the URL to the constructor
+    ) {
+        if ($this->commenterName == null) {
+            $this->commenterName = 'Anonymous User';
+        }
+
+        if ($this->comment == null) {
+            $this->message = "An empty comment was made by $this->commenterName";
+        } else {
+            $this->message = "$this->commenterName commented: $this->comment";
+        }
     }
 
     /**
@@ -35,7 +46,7 @@ class CommentMade extends Notification
     public function toVonage(object $notifiable): VonageMessage
     {
         return (new VonageMessage)
-            ->content('A new comment has been made.');
+            ->content($this->message);
     }
 
     /**
@@ -45,7 +56,12 @@ class CommentMade extends Notification
     {
         return (new MailMessage)
             ->subject('Comment Created')
-            ->markdown('mail.comment-made');
+            ->line($this->message)
+            ->markdown('mail.comment-made', [
+                'recipient' => $notifiable->name,
+                'commenter' => $this->commenterName,
+                'content' => $this->comment,
+            ]);
     }
 
     /**
@@ -56,7 +72,10 @@ class CommentMade extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            'message' => "A new comment has been made.",
+            'message' => $this->message,
+            'comment' => $this->comment,
+            'name' => $this->commenterName,
+            'url' => $this->url
         ];
     }
 }
