@@ -7,9 +7,10 @@ import dateTimeFormat from '@/Filters/dateTimeFormat';
 
 interface SupervisorActionsProps {
     incident: Incident;
+    canRequestReview: boolean;
 }
 
-export default function IncidentSupervisorActions({ incident }: SupervisorActionsProps) {
+export default function IncidentSupervisorActions({ incident, canRequestReview }: SupervisorActionsProps) {
     return (
         <div className="lg:col-start-3 lg:row-end-1 bg-white rounded-lg">
             <div className="rounded-lg  shadow-sm ring-1 ring-gray-900/5">
@@ -80,6 +81,18 @@ export default function IncidentSupervisorActions({ incident }: SupervisorAction
                             >
                                 Submit Root Cause Analysis
                             </Link>
+                            {canRequestReview && (
+                                <Link
+                                    href={route('incidents.request-review', {
+                                        incident: incident.id,
+                                    })}
+                                    method="patch"
+                                    as="button"
+                                    className="text-center rounded-md bg-upei-red-500 px-3 py-2  text-sm font-semibold text-white shadow-sm hover:bg-upei-red-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-upei-red-600"
+                                >
+                                    Request Review
+                                </Link>
+                            )}
                         </div>
                     )}
                 </div>

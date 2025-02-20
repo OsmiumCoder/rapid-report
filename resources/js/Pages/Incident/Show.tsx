@@ -13,9 +13,10 @@ import { IncidentStatus } from '@/Enums/IncidentStatus';
 interface ShowProps extends PageProps {
     incident: Incident;
     supervisors: User[];
+    canRequestReview: boolean;
 }
 
-export default function Show({ auth, incident, supervisors }: PageProps<ShowProps>) {
+export default function Show({ auth, incident, supervisors, canRequestReview }: PageProps<ShowProps>) {
     const user = auth.user;
 
     const { data, setData, post, processing, reset } = useForm({
@@ -51,6 +52,7 @@ export default function Show({ auth, incident, supervisors }: PageProps<ShowProp
                                 incident.status === IncidentStatus.ASSIGNED && (
                                     <IncidentSupervisorActions
                                         incident={incident}
+                                        canRequestReview={canRequestReview}
                                     ></IncidentSupervisorActions>
                                 )}
 

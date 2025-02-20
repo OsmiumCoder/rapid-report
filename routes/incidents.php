@@ -25,6 +25,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/incidents/{incident}/return-rca', [IncidentStatusController::class, 'returnRCA'])->name('incidents.return-rca');
     Route::patch('/incidents/{incident}/close', [IncidentStatusController::class, 'closeIncident'])->name('incidents.close');
     Route::patch('/incidents/{incident}/reopen', [IncidentStatusController::class, 'reopenIncident'])->name('incidents.reopen');
+    Route::patch('/incidents/{incident}/request-review', [IncidentStatusController::class, 'requestReview'])->name('incidents.request-review');
 
     Route::resource('incidents', IncidentController::class)->except([
         'create',
