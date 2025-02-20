@@ -27,22 +27,23 @@ export default function ActivityLog({
     processing,
     data,
 }: ActivityLogProps) {
-    const commentFormRef = useRef<HTMLDivElement>(null);
+    const commentFormRef = useRef<HTMLUListElement>(null);
 
     useEffect(() => {
         if (commentFormRef.current) {
             commentFormRef.current.scrollTop = commentFormRef.current.scrollHeight;
         }
-    }, []);
+    }, [comments]);
 
     return (
         <>
-            <div
-                ref={commentFormRef}
-                className="lg:col-start-3 p-5 rounded-lg bg-white shadow-sm ring-1 ring-gray-900/5 max-h-[55rem] overflow-y-scroll"
-            >
+            <div className="lg:col-start-3 p-5 rounded-lg bg-white shadow-sm ring-1 ring-gray-900/5">
                 <h2 className="text-sm/6 font-semibold text-gray-900">Activity</h2>
-                <ul role="list" className="mt-6 space-y-6">
+                <ul
+                    ref={commentFormRef}
+                    role="list"
+                    className="mt-6 space-y-6 max-h-[55rem] overflow-y-scroll"
+                >
                     {comments.map((comment, index) => (
                         <li key={index} className="relative flex gap-x-4">
                             <div
