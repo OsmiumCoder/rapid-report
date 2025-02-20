@@ -1,11 +1,11 @@
 import { Incident } from '@/types/incident/Incident';
 import { uppercaseWordFormat } from '@/Filters/uppercaseWordFormat';
-import AffectedPartyInformation from '@/Pages/Incident/Partials/InformationComponents/AffectedPartyInformation';
-import GeneralDescription from '@/Pages/Incident/Partials/InformationComponents/GeneralDescription';
-import SupervisorInformation from '@/Pages/Incident/Partials/InformationComponents/SupervisorInformation';
-import VictimInformation from '@/Pages/Incident/Partials/InformationComponents/VictimInformation';
-import WitnessInformation from '@/Pages/Incident/Partials/InformationComponents/WitnessInformation';
-import IncidentInformation from '@/Pages/Incident/Partials/InformationComponents/IncidentInformation';
+import AffectedPartyInformation from '@/Pages/Incident/Partials/ShowComponents/InformationComponents/AffectedPartyInformation';
+import GeneralDescription from '@/Pages/Incident/Partials/ShowComponents/InformationComponents/GeneralDescription';
+import SupervisorInformation from '@/Pages/Incident/Partials/ShowComponents/InformationComponents/SupervisorInformation';
+import VictimInformation from '@/Pages/Incident/Partials/ShowComponents/InformationComponents/VictimInformation';
+import WitnessInformation from '@/Pages/Incident/Partials/ShowComponents/InformationComponents/WitnessInformation';
+import IncidentInformation from '@/Pages/Incident/Partials/ShowComponents/InformationComponents/IncidentInformation';
 import Badge, { BadgeColor } from '@/Components/Badge';
 import { IncidentStatus } from '@/Enums/IncidentStatus';
 import { incidentBadgeColor } from '@/Filters/incidentBadgeColor';

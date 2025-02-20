@@ -18,14 +18,8 @@ interface AddCommentFormProps {
 }
 
 export default function AddCommentForm({ submit, setData, processing, data }: AddCommentFormProps) {
-    const commentFormRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        commentFormRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }, []);
-
     return (
-        <div ref={commentFormRef} className="mt-6 flex gap-x-3">
+        <div className="mt-6 flex gap-x-3">
             <ChatBubbleBottomCenterTextIcon className="text-blue-600 relative flex size-6 flex-none items-center justify-center bg-white" />
 
             <form onSubmit={submit} className="relative flex-auto">

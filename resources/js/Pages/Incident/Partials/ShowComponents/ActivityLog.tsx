@@ -1,10 +1,10 @@
 import classNames from '@/Filters/classNames';
 import { Comment } from '@/types/Comment';
-import AddCommentForm from '@/Pages/Incident/Partials/ActivityLogComponents/AddCommentForm';
+import AddCommentForm from '@/Pages/Incident/Partials/ShowComponents/ActivityLogComponents/AddCommentForm';
 import { CommentType } from '@/Enums/CommentType';
-import NoteComment from '@/Pages/Incident/Partials/ActivityLogComponents/CommentComponents/NoteComment';
-import ActionComment from '@/Pages/Incident/Partials/ActivityLogComponents/CommentComponents/ActionComment';
-import { FormEvent } from 'react';
+import NoteComment from '@/Pages/Incident/Partials/ShowComponents/ActivityLogComponents/CommentComponents/NoteComment';
+import ActionComment from '@/Pages/Incident/Partials/ShowComponents/ActivityLogComponents/CommentComponents/ActionComment';
+import { FormEvent, useEffect, useRef } from 'react';
 
 interface ActivityLogProps {
     comments: Comment[];
@@ -27,9 +27,20 @@ export default function ActivityLog({
     processing,
     data,
 }: ActivityLogProps) {
+    const commentFormRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (commentFormRef.current) {
+            commentFormRef.current.scrollTop = commentFormRef.current.scrollHeight;
+        }
+    }, []);
+
     return (
         <>
-            <div className="lg:col-start-3 p-5 rounded-lg bg-white shadow-sm ring-1 ring-gray-900/5 max-h-[55rem] overflow-y-scroll">
+            <div
+                ref={commentFormRef}
+                className="lg:col-start-3 p-5 rounded-lg bg-white shadow-sm ring-1 ring-gray-900/5 max-h-[55rem] overflow-y-scroll"
+            >
                 <h2 className="text-sm/6 font-semibold text-gray-900">Activity</h2>
                 <ul role="list" className="mt-6 space-y-6">
                     {comments.map((comment, index) => (
