@@ -85,10 +85,15 @@ export default function ReportBuilder({ formData, setFormData }: ReportBuilderPr
         setFormData('timeline_start', timeline.startDate.format('YYYY-MM-DD'));
         setFormData('timeline_end', timeline.endDate.format('YYYY-MM-DD'));
 
-        if (type === 'csv') {
-            csvFormRef?.current?.requestSubmit();
-        } else {
-            excelFormRef?.current?.requestSubmit();
+        const formRefToUse = type === 'csv' ? csvFormRef : excelFormRef;
+
+        const form = formRefToUse?.current;
+
+        if (form) {
+            // Delay the form submission to allow target="_blank" to work
+            setTimeout(() => {
+                form.submit();
+            });
         }
     };
 
