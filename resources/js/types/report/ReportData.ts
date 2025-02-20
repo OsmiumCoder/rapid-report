@@ -1,11 +1,9 @@
-
-
-
 export default interface ReportData {
     timeline_start?: string;
     timeline_end?: string;
-    $happened_at?: boolean;
+    happened_at?: boolean;
     work_related?: boolean;
+    personal_individual_information?: boolean;
     workers_comp_submitted?: boolean;
     happened_at?: boolean;
     location?: boolean;

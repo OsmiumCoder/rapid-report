@@ -22,9 +22,7 @@ class ReportController extends Controller
     {
         Gate::authorize('view-report-page');
 
-        return Inertia::render('Report/Index', [
-            'form' => ReportExportData::empty(),
-        ]);
+        return Inertia::render('Report/Index');
     }
 
     public function stats()
@@ -38,10 +36,9 @@ class ReportController extends Controller
 
     public function downloadFileXL(ReportExportData $exportData)
     {
-        $filename = 'report_data.xlsx';
         $headers = [
-            'Content-Type' => 'text/xlsx',
-            'Content-Disposition' => "attachment; filename=\"$filename\"",
+            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'Content-Disposition' => "attachment",
             'Pragma' => 'no-cache',
             'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
             'Expires' => '0',
@@ -59,8 +56,8 @@ class ReportController extends Controller
                 $headers = array_merge($headers, $person_headers);
             }
 
-            $timeline_start = DateTimeImmutable::createFromFormat("Y-m-d", $exportData -> timeline_start);
-            $timeline_end = DateTimeImmutable::createFromFormat("Y-m-d", $exportData -> timeline_end);
+            $timeline_start = DateTimeImmutable::createFromFormat("Y-m-d", $exportData->timeline_start);
+            $timeline_end = DateTimeImmutable::createFromFormat("Y-m-d", $exportData->timeline_end);
 
             unset($export_array_data['timeline_start'], $export_array_data['timeline_end'],$export_array_data['personal_individual_information']);
 
@@ -76,12 +73,13 @@ class ReportController extends Controller
                 $i++;
             }
 
-            Incident::chunk(1000, function ($incidents) use ($exportData, $spreadsheet, $sheet, $headers, $timeline_start, $timeline_end) {
-                $row = 2;
-                foreach ($incidents as $incident) {
-                    $col = 1;
-                    $time = DateTime::createFromFormat('Y-m-d H:i:s', $incident->{'happened_at'});
-                    if (($timeline_start->diff($time)->invert) == 0 && ($timeline_end->diff($time)->invert) == 1) {
+            Incident::where('created_at', '>', $timeline_start)
+                ->where('created_at', '<', $timeline_end)
+                ->chunk(1000, function ($incidents) use ($exportData, $spreadsheet, $sheet, $headers, $timeline_start, $timeline_end) {
+                    $row = 2;
+                    foreach ($incidents as $incident) {
+                        $col = 1;
+
                         foreach ($headers as $key) {
                             if ($key == "incident_type") {
                                 $sheet->setCellValue(
@@ -130,8 +128,7 @@ class ReportController extends Controller
                         }
                         $row++;
                     }
-                }
-            });
+                });
 
             $writer = IOFactory::createWriter($spreadsheet, "Xlsx");
             $writer->save("php://output");
@@ -139,10 +136,9 @@ class ReportController extends Controller
     }
     public function downloadFileCSV(ReportExportData $exportData)
     {
-        $filename = 'report_data.csv';
         $headers = [
             'Content-Type' => 'text/csv',
-            'Content-Disposition' => "attachment; filename=\"$filename\"",
+            'Content-Disposition' => "attachment",
             'Pragma' => 'no-cache',
             'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
             'Expires' => '0',
@@ -174,10 +170,11 @@ class ReportController extends Controller
             );
 
             // Fetch and process data in chunks
-            Incident::chunk(25, function ($incidents) use ($exportData, $handle, $headers, $timeline_start, $timeline_end) {
-                foreach ($incidents as $incident) {
-                    $time = DateTime::createFromFormat('Y-m-d H:i:s', $incident->{'happened_at'});
-                    if (($timeline_start->diff($time)->invert) == 0 && ($timeline_end->diff($time)->invert) == 1) {
+            Incident::where('created_at', '>', $timeline_start)
+                ->where('created_at', '<', $timeline_end)
+                ->chunk(25, function ($incidents) use ($exportData, $handle, $headers, $timeline_start, $timeline_end) {
+                    foreach ($incidents as $incident) {
+                        $time = DateTime::createFromFormat('Y-m-d H:i:s', $incident->{'created_at'});
                         $data = [];
                         foreach ($headers as $key) {
                             if ($key == "incident_type") {
@@ -198,8 +195,7 @@ class ReportController extends Controller
                         }
                         fputcsv($handle, $data);
                     }
-                }
-            });
+                });
             fclose($handle);
         }, 200, $headers);
     }

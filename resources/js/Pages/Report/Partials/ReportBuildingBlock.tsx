@@ -25,10 +25,7 @@ export default function ReportBuildingBlock({
                             checked={formData[reportDataKey] as boolean}
                             type="checkbox"
                             aria-describedby="comments-description"
-                            onChange={(e) => {
-                                setFormData(reportDataKey, e.target.checked);
-                                console.log(reportDataKey);
-                            }}
+                            onChange={(e) => setFormData(reportDataKey, e.target.checked)}
                         />
                     </div>
                 </div>

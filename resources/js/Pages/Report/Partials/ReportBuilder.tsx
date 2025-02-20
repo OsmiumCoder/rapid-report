@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ReportData from '@/types/report/ReportData';
 import ReportBuildingBlock from '@/Pages/Report/Partials/ReportBuildingBlock';
 import DatePicker from '@/Components/DatePicker';
@@ -6,11 +6,14 @@ import dayjs, { Dayjs, ManipulateType } from 'dayjs';
 import PrimaryButton from '@/Components/PrimaryButton';
 import SelectInput from '@/Components/SelectInput';
 import DateInput from '@/Components/DateInput';
+import axios from 'axios';
+import dateFormat from '@/Filters/dateFormat';
+import { downloadFile } from '@/Helpers/downloadFile';
+import * as fs from 'node:fs';
 
 export interface ReportBuilderProps {
     formData: ReportData;
     setFormData: Function;
-    post: Function;
 }
 
 interface TimelineLengths {
@@ -37,9 +40,6 @@ export default function ReportBuilder({ formData, setFormData }: ReportBuilderPr
         startDate: currentDate.subtract(1, 'day'),
         endDate: currentDate,
     });
-
-    const csvFormRef = useRef<HTMLFormElement>(null);
-    const excelFormRef = useRef<HTMLFormElement>(null);
 
     const setRelativeTimeline = (iter: number, unit: ManipulateType) => {
         if (unit !== 'millisecond') {
@@ -81,20 +81,30 @@ export default function ReportBuilder({ formData, setFormData }: ReportBuilderPr
             }
         }
     };
-    const download = (type: 'csv' | 'excel') => {
+
+    useEffect(() => {
         setFormData('timeline_start', timeline.startDate.format('YYYY-MM-DD'));
         setFormData('timeline_end', timeline.endDate.format('YYYY-MM-DD'));
+    }, [timeline]);
 
-        const formRefToUse = type === 'csv' ? csvFormRef : excelFormRef;
+    const downloadExcel = async () => {
+        const response = await axios.post(route('report.downloadFileXL'), formData, {
+            responseType: 'arraybuffer',
+        });
 
-        const form = formRefToUse?.current;
+        const blob = new Blob([response.data], {
+            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        });
 
-        if (form) {
-            // Delay the form submission to allow target="_blank" to work
-            setTimeout(() => {
-                form.submit();
-            });
-        }
+        downloadFile(blob, `${dateFormat(Date.now())} - report.xlsx`);
+    };
+
+    const downloadCSV = async () => {
+        const response = await axios.post(route('report.downloadFileCSV', { ...formData }));
+
+        const blob = new Blob([response.data], { type: 'text/csv' });
+
+        downloadFile(blob, `${dateFormat(Date.now())} - report.csv`);
     };
 
     const timelineLengths: TimeLengthsCollection = {
@@ -245,28 +255,12 @@ export default function ReportBuilder({ formData, setFormData }: ReportBuilderPr
                 </div>
             </div>
             <div className="flex justify-end gap-5 my-3 mx-5">
-                <form
-                    action={route('report.downloadFileCSV', { ...formData })}
-                    ref={csvFormRef}
-                    method="POST"
-                    target="_blank"
-                >
-                    <input type="hidden" name="_token" value={window.csrf_token} />
-                    <PrimaryButton type={'button'} onClick={() => download('csv')}>
-                        Export as CSV
-                    </PrimaryButton>
-                </form>
-                <form
-                    action={route('report.downloadFileXL', { ...formData })}
-                    ref={excelFormRef}
-                    method="POST"
-                    target="_blank"
-                >
-                    <input type="hidden" name="_token" value={window.csrf_token} />
-                    <PrimaryButton type={'button'} onClick={() => download('excel')}>
-                        Export as Excel
-                    </PrimaryButton>
-                </form>
+                <PrimaryButton type={'button'} onClick={downloadCSV}>
+                    Export as CSV
+                </PrimaryButton>
+                <PrimaryButton type={'button'} onClick={downloadExcel}>
+                    Export as Excel
+                </PrimaryButton>
             </div>
         </>
     );

@@ -9,7 +9,7 @@ use Tests\TestCase;
 
 class ReportDataTest extends TestCase
 {
-    public function test_report_page_receives_all_incidents()
+    public function test_statistics_page_receives_all_incidents()
     {
         $admin = User::factory()->create()->syncRoles('admin');
 
@@ -17,12 +17,12 @@ class ReportDataTest extends TestCase
 
         Incident::factory()->count(40)->create();
 
-        $response = $this->get(route('report.index'));
+        $response = $this->get(route('report.stats'));
 
         $response->assertStatus(200);
 
         $response->assertInertia(function (AssertableInertia $page) {
-            $page->component('Report/Index')
+            $page->component('Report/Stats')
                 ->has('incidents', 40);
         });
     }
