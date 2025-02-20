@@ -4,6 +4,8 @@ import ReportBuildingBlock from '@/Pages/Report/Partials/ReportBuildingBlock';
 import DatePicker from '@/Components/DatePicker';
 import dayjs, { Dayjs, ManipulateType } from 'dayjs';
 import PrimaryButton from '@/Components/PrimaryButton';
+import SelectInput from '@/Components/SelectInput';
+import DateInput from '@/Components/DateInput';
 
 export interface ReportBuilderProps {
     formData: ReportData;
@@ -159,7 +161,7 @@ export default function ReportBuilder({ formData, setFormData }: ReportBuilderPr
                     Choose the timeline of incidents you want to include in your report:
                 </p>
                 <div className="flex flex-wrap justify-center items-center gap-5 my-4">
-                    <select
+                    <SelectInput
                         value={timelineLength.iter}
                         onChange={(e) => {
                             setTimelineLength((prev) => ({
@@ -168,13 +170,12 @@ export default function ReportBuilder({ formData, setFormData }: ReportBuilderPr
                             }));
                             setRelativeTimeline(+e.target.value, timelineLength.unit.unit);
                         }}
-                        className="flex rounded-md bg-white py-1.5 pl-3 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                     >
                         {numIters.map((i) => (
                             <option key={i}>{i}</option>
                         ))}
-                    </select>
-                    <select
+                    </SelectInput>
+                    <SelectInput
                         value={
                             timelineLength.iter > 1
                                 ? timelineLength.unit.stringifyPlural
@@ -209,7 +210,7 @@ export default function ReportBuilder({ formData, setFormData }: ReportBuilderPr
                                 <option key={value}>{timelineLengths[index].stringify}</option>
                             )
                         )}
-                    </select>
+                    </SelectInput>
                 </div>
                 <div className="relative">
                     <div aria-hidden="true" className="absolute inset-0 flex items-center">
@@ -221,7 +222,7 @@ export default function ReportBuilder({ formData, setFormData }: ReportBuilderPr
                 </div>
                 <div className="flex flex-wrap justify-center items-center gap-5 mt-4 mb-7">
                     <div className="">
-                        <DatePicker
+                        <DateInput
                             value={timeline.startDate.format('YYYY-MM-DD')}
                             onChange={(e) => {
                                 setConTimeline(dayjs(e.target.value), true);
@@ -229,7 +230,7 @@ export default function ReportBuilder({ formData, setFormData }: ReportBuilderPr
                         />
                     </div>
                     <div>
-                        <DatePicker
+                        <DateInput
                             value={timeline.endDate.format('YYYY-MM-DD')}
                             onChange={(e) => {
                                 setConTimeline(dayjs(e.target.value), false);
