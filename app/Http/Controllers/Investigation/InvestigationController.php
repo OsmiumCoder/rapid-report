@@ -50,7 +50,7 @@ class InvestigationController extends Controller
 
         $investigation->load('incident');
 
-        return Inertia::render('Investigation/Show', ['investigation' => $investigation->load(['incident'])]);
+        return Inertia::render('Investigation/Show', ['investigation' => $investigation->load(['incident', 'supervisor'])]);
     }
 
     /**

@@ -43,7 +43,10 @@ class RootCauseAnalysisController extends Controller
      */
     public function show(Incident $incident, RootCauseAnalysis $rootCauseAnalysis)
     {
-
+        $this->authorize('view', $rootCauseAnalysis);
+        return Inertia::render('RootCauseAnalysis/Show', [
+            'rca' => $rootCauseAnalysis->load(['incident', 'supervisor'])
+        ]);
     }
 
     /**

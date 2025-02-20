@@ -22,63 +22,67 @@ export default function InvestigationInformationPanel({
             <div className="space-y-6 text-gray-900">
                 <div className="space-y-2">
                     <div className="font-semibold text-xl">General Information</div>
-                    <div>
-                        <span className="font-semibold">Resulted In: </span>
-                        <span>{investigation.resulted_in.join(', ')}</span>
-                    </div>
+                    <div className="space-y-2 ml-6">
+                        <div>
+                            <span className="font-semibold">Resulted In: </span>
+                            <span>{investigation.resulted_in.join(', ')}</span>
+                        </div>
 
-                    <div>
-                        <span className="font-semibold">Substandard Acts: </span>
-                        <span>{investigation.substandard_acts.join(', ')}</span>
-                    </div>
+                        <div>
+                            <span className="font-semibold">Substandard Acts: </span>
+                            <span>{investigation.substandard_acts.join(', ')}</span>
+                        </div>
 
-                    <div>
-                        <span className="font-semibold">Substandard Conditions: </span>
-                        <span>{investigation.substandard_conditions.join(', ')}</span>
-                    </div>
+                        <div>
+                            <span className="font-semibold">Substandard Conditions: </span>
+                            <span>{investigation.substandard_conditions.join(', ')}</span>
+                        </div>
 
-                    <div>
-                        <span className="font-semibold">Energy Transfer Causes: </span>
-                        <span>{investigation.energy_transfer_causes.join(', ')}</span>
-                    </div>
+                        <div>
+                            <span className="font-semibold">Energy Transfer Causes: </span>
+                            <span>{investigation.energy_transfer_causes.join(', ')}</span>
+                        </div>
 
-                    <div>
-                        <span className="font-semibold">Personal Factors: </span>
-                        <span>{investigation.personal_factors.join(', ')}</span>
-                    </div>
+                        <div>
+                            <span className="font-semibold">Personal Factors: </span>
+                            <span>{investigation.personal_factors.join(', ')}</span>
+                        </div>
 
-                    <div>
-                        <span className="font-semibold">Job Factors: </span>
-                        <span>{investigation.job_factors.join(', ')}</span>
-                    </div>
+                        <div>
+                            <span className="font-semibold">Job Factors: </span>
+                            <span>{investigation.job_factors.join(', ')}</span>
+                        </div>
 
-                    <div>
-                        <span className="font-semibold">Hazard Class: </span>
-                        <span>{investigation.hazard_class.toUpperCase()}</span>
-                    </div>
-                    <div>
-                        <span className="font-semibold">Risk Rank: </span>
-                        <span>{investigation.risk_rank}</span>
+                        <div>
+                            <span className="font-semibold">Hazard Class: </span>
+                            <span>{investigation.hazard_class.toUpperCase()}</span>
+                        </div>
+                        <div>
+                            <span className="font-semibold">Risk Rank: </span>
+                            <span>{investigation.risk_rank}</span>
+                        </div>
                     </div>
                 </div>
                 <div className="space-y-2">
                     <div className="font-semibold text-xl">Root Causes</div>
-                    <div>
-                        <span className="font-semibold">Immediate Causes: </span>
-                        <span>{investigation.immediate_causes}</span>
-                    </div>
-                    <div>
-                        <span className="font-semibold">Basic Causes: </span>
-                        <span>{investigation.basic_causes}</span>
-                    </div>
-                    <div>
-                        <span className="font-semibold">Remedial Causes: </span>
-                        <span>{investigation.immediate_causes}</span>
+                    <div className="space-y-2 ml-6">
+                        <div>
+                            <span className="font-semibold">Immediate Causes: </span>
+                            <span>{investigation.immediate_causes}</span>
+                        </div>
+                        <div>
+                            <span className="font-semibold">Basic Causes: </span>
+                            <span>{investigation.basic_causes}</span>
+                        </div>
+                        <div>
+                            <span className="font-semibold">Remedial Causes: </span>
+                            <span>{investigation.immediate_causes}</span>
+                        </div>
                     </div>
                 </div>
                 <div>
                     <div className="font-semibold text-xl">Prevention</div>
-                    <span>{investigation.prevention}</span>
+                    <span className="ml-6">{investigation.prevention}</span>
                 </div>
             </div>
         </div>

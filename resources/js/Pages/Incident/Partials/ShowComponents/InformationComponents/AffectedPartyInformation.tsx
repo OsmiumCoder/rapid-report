@@ -8,7 +8,7 @@ export default function AffectedPartyInformation({ incident }: { incident: Incid
         <dl className="mt-6 border-t border-gray-900/5 pt-6 sm:pr-4">
             <dt className="font-semibold text-gray-900 text-xl">Affected Party Information</dt>
             <dd className="mt-2 text-gray-500">
-                <div className="text-gray-900">
+                <div className="text-gray-900 ml-6">
                     <div>
                         <span className="font-semibold">Name: </span>
                         {firstName} {lastName}

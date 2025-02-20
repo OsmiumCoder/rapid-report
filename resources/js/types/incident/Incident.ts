@@ -4,6 +4,7 @@ import { IncidentType } from '@/Enums/IncidentType';
 import { Comment } from '@/types/Comment';
 import { Witness } from '@/types/incident/Witness';
 import { Investigation } from '@/types/investigation/Investigation';
+import { RootCauseAnalysis } from '@/types/rootCauseAnalysis/RootCauseAnalysis';
 
 export interface Incident {
     id: string;
@@ -35,6 +36,7 @@ export interface Incident {
     status: IncidentStatus;
     comments: Comment[];
     investigations: Investigation[];
+    root_cause_analyses: RootCauseAnalysis[];
     closed_at?: string;
     created_at: string;
     updated_at: string;

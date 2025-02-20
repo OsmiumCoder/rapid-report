@@ -1,6 +1,6 @@
 import { ChatBubbleBottomCenterTextIcon } from '@heroicons/react/16/solid';
 import { PaperClipIcon } from '@heroicons/react/20/solid';
-import { FormEvent } from 'react';
+import { FormEvent, useEffect, useRef } from 'react';
 import LoadingIndicator from '@/Components/LoadingIndicator';
 import { PaperAirplaneIcon } from '@heroicons/react/24/solid';
 

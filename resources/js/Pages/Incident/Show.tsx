@@ -1,13 +1,13 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import IncidentAdminActions from '@/Pages/Incident/Partials/IncidentAdminActions';
-import ActivityLog from '@/Pages/Incident/Partials/ActivityLog';
-import IncidentHeader from '@/Pages/Incident/Partials/IncidentHeader';
+import IncidentAdminActions from '@/Pages/Incident/Partials/ShowComponents/IncidentAdminActions';
+import ActivityLog from '@/Pages/Incident/Partials/ShowComponents/ActivityLog';
+import IncidentHeader from '@/Pages/Incident/Partials/ShowComponents/IncidentHeader';
 import { Head, useForm } from '@inertiajs/react';
 import { PageProps, User } from '@/types';
-import IncidentInformationPanel from '@/Pages/Incident/Partials/IncidentInformationPanel';
+import IncidentInformationPanel from '@/Pages/Incident/Partials/ShowComponents/IncidentInformationPanel';
 import { Incident } from '@/types/incident/Incident';
 import { FormEvent } from 'react';
-import IncidentSupervisorActions from '@/Pages/Incident/Partials/IncidentSupervisorActions';
+import IncidentSupervisorActions from '@/Pages/Incident/Partials/ShowComponents/IncidentSupervisorActions';
 import { IncidentStatus } from '@/Enums/IncidentStatus';
 
 interface ShowProps extends PageProps {
