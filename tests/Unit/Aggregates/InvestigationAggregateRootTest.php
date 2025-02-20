@@ -10,7 +10,6 @@ use App\Models\Investigation;
 use App\Models\User;
 use App\Notifications\Investigation\InvestigationSubmitted;
 use App\States\IncidentStatus\Assigned;
-use App\States\IncidentStatus\InReview;
 use App\StorableEvents\Investigation\InvestigationCreated;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
@@ -18,39 +17,6 @@ use Tests\TestCase;
 
 class InvestigationAggregateRootTest extends TestCase
 {
-    public function test_incident_transitions_from_assigned_to_in_review()
-    {
-        $this->markTestSkipped('Functionality under changes.');
-
-        $supervisor = User::factory()->create()->syncRoles('supervisor');
-        $this->actingAs($supervisor);
-
-        $incident = Incident::factory()->create(['status' => Assigned::class]);
-
-        $investigationData = InvestigationData::from([
-            'immediate_causes' => "immediate causes",
-            'basic_causes' => 'basic causes',
-            'remedial_actions' => "remedial actions",
-            'prevention' => 'prevention',
-            'hazard_class' => 'hazard class',
-            'risk_rank' => 10,
-            'resulted_in' => ['injury', 'burn'],
-            'substandard_acts' => ['injury', 'burn'],
-            'substandard_conditions' => ['injury', 'burn'],
-            'energy_transfer_causes' => ['injury', 'burn'],
-            'personal_factors' => ['injury', 'burn'],
-            'job_factors' => ['injury', 'burn'],
-        ]);
-
-        InvestigationAggregateRoot::retrieve(Str::uuid()->toString())
-            ->createInvestigation($investigationData, $incident)
-            ->persist();
-
-        $incident->refresh();
-
-        $this->assertEquals(InReview::class, $incident->status::class);
-    }
-
     public function test_sends_received_notification_to_admin()
     {
         Notification::fake();

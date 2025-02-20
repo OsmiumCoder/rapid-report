@@ -4,13 +4,28 @@ namespace StoreableEvents\Incident;
 
 use App\Enum\CommentType;
 use App\Models\Incident;
+use App\States\IncidentStatus\Assigned;
 use App\States\IncidentStatus\InReview;
 use App\States\IncidentStatus\Returned;
 use App\StorableEvents\Incident\InvestigationReturned;
+use Spatie\ModelStates\Exceptions\TransitionNotFound;
 use Tests\TestCase;
 
 class InvestigationReturnedTest extends TestCase
 {
+    public function test_throws_if_not_in_review()
+    {
+        $this->expectException(TransitionNotFound::class);
+
+        $incident = Incident::factory()->create([
+            'status' => Assigned::class,
+        ]);
+
+        $event = new InvestigationReturned;
+        $event->setAggregateRootUuid($incident->id);
+        $event->handle();
+    }
+
     public function test_adds_returned_comment()
     {
         $incident = Incident::factory()->create([
