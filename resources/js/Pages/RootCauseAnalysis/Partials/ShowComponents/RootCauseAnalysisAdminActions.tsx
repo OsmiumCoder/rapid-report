@@ -12,7 +12,6 @@ export default function RootCauseAnalysisAdminActions({ rca }: { rca: RootCauseA
     const [isLoading, setIsLoading] = useState(false);
     const { setModalProps } = useConfirmationModal();
 
-    console.log(rca);
     return (
         <>
             <div className="lg:col-start-3 lg:row-end-1 bg-white">
