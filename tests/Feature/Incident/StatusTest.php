@@ -13,7 +13,90 @@ use Tests\TestCase;
 
 class StatusTest extends TestCase
 {
-    public function test_adds_returned_comment()
+    public function test_returning_incident_rca_adds_returned_comment()
+    {
+        $admin = User::factory()->create()->syncRoles('admin');
+
+        $this->actingAs($admin);
+
+        $incident = Incident::factory()->create([
+            'status' => InReview::class,
+        ]);
+
+        $response = $this->patch(route('incidents.return-rca', ['incident' => $incident]));
+
+        $response->assertRedirect();
+
+        $incident->refresh();
+
+        $this->assertCount(1, $incident->comments);
+
+        $comment = $incident->comments->first();
+
+        $this->assertEquals(CommentType::ACTION, $comment->type);
+        $this->assertStringContainsStringIgnoringCase('returned', $comment->content);
+        $this->assertStringContainsStringIgnoringCase('Root Cause Analysis', $comment->content);
+        $this->assertEquals($admin->id, $comment->user_id);
+    }
+
+    public function test_admin_can_return_incident_rca()
+    {
+        $admin = User::factory()->create()->syncRoles('admin');
+
+        $this->actingAs($admin);
+
+        $incident = Incident::factory()->create([
+            'status' => InReview::class,
+        ]);
+
+        $response = $this->patch(route('incidents.return-rca', ['incident' => $incident]));
+
+        $response->assertStatus(302);
+
+        $incident->refresh();
+
+        $this->assertEquals(Returned::class, $incident->status::class);
+    }
+
+    public function test_user_can_not_return_incident_rcas()
+    {
+        $user = User::factory()->create()->syncRoles('user');
+
+        $this->actingAs($user);
+
+        $incident = Incident::factory()->create([
+            'status' => InReview::class,
+        ]);
+
+        $response = $this->patch(route('incidents.return-rca', ['incident' => $incident]));
+
+        $response->assertStatus(403);
+
+        $incident->refresh();
+
+        $this->assertEquals(InReview::class, $incident->status::class);
+    }
+
+    public function test_supervisor_can_not_return_incident_rcas()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
+        $this->actingAs($supervisor);
+
+        $incident = Incident::factory()->create([
+            'status' => InReview::class,
+        ]);
+
+        $response = $this->patch(route('incidents.return-rca', ['incident' => $incident]));
+
+        $response->assertStatus(403);
+
+        $this->assertEquals(InReview::class, $incident->status::class);
+    }
+
+
+
+    public function test_returning_incident_investigation_adds_returned_comment()
     {
         $admin = User::factory()->create()->syncRoles('admin');
 
@@ -39,7 +122,7 @@ class StatusTest extends TestCase
         $this->assertEquals($admin->id, $comment->user_id);
     }
 
-    public function test_admin_can_return_incidents()
+    public function test_admin_can_return_incident_investigations()
     {
         $admin = User::factory()->create()->syncRoles('admin');
 
@@ -58,7 +141,7 @@ class StatusTest extends TestCase
         $this->assertEquals(Returned::class, $incident->status::class);
     }
 
-    public function test_user_can_not_return_incidents()
+    public function test_user_can_not_return_incident_investigations()
     {
         $user = User::factory()->create()->syncRoles('user');
 
@@ -77,7 +160,7 @@ class StatusTest extends TestCase
         $this->assertEquals(InReview::class, $incident->status::class);
     }
 
-    public function test_supervisor_can_not_return_incidents()
+    public function test_supervisor_can_not_return_incident_investigations()
     {
         $supervisor = User::factory()->create()->syncRoles('supervisor');
 
@@ -94,7 +177,7 @@ class StatusTest extends TestCase
         $this->assertEquals(InReview::class, $incident->status::class);
     }
 
-    public function test_adds_reopened_comment()
+    public function test_reopening_incident_adds_reopened_comment()
     {
         $admin = User::factory()->create()->syncRoles('admin');
         $supervisor = User::factory()->create()->syncRoles('supervisor');
@@ -122,7 +205,7 @@ class StatusTest extends TestCase
         $this->assertEquals($admin->id, $comment->user_id);
     }
 
-    public function test_adds_closed_comment()
+    public function test_closing_incident_adds_closed_comment()
     {
         $admin = User::factory()->create()->syncRoles('admin');
         $supervisor = User::factory()->create()->syncRoles('supervisor');

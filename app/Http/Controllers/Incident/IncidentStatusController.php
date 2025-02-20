@@ -25,7 +25,7 @@ class IncidentStatusController extends Controller
         $this->authorize('performAdminActions', Incident::class);
 
         IncidentAggregateRoot::retrieve($incident->id)
-            ->returnInvestigation()
+            ->returnRCA()
             ->persist();
 
         return back();

@@ -2,10 +2,11 @@ import { useState } from 'react';
 import { useConfirmationModal } from '@/Components/ConfirmationModal/ConfirmationModalProvider';
 import LoadingIndicator from '@/Components/LoadingIndicator';
 import PrimaryButton from '@/Components/PrimaryButton';
-import { closeIncident, returnInvestigation, returnRCA } from '@/Helpers/Incident/statusUpdates';
+import { closeIncident, returnRCA } from '@/Helpers/Incident/statusUpdates';
 import { router } from '@inertiajs/react';
 import DangerButton from '@/Components/DangerButton';
 import { RootCauseAnalysis } from '@/types/rootCauseAnalysis/RootCauseAnalysis';
+import { IncidentStatus } from '@/Enums/IncidentStatus';
 
 export default function RootCauseAnalysisAdminActions({ rca }: { rca: RootCauseAnalysis }) {
     const [isLoading, setIsLoading] = useState(false);
@@ -25,26 +26,29 @@ export default function RootCauseAnalysisAdminActions({ rca }: { rca: RootCauseA
                                 <LoadingIndicator />
                             ) : (
                                 <>
-                                    <PrimaryButton
-                                        onClick={() =>
-                                            setModalProps({
-                                                title: 'Request New Analysis',
-                                                text: `Are you sure you want to request ${rca.supervisor.name} to submit a new Root Cause Analysis? They will be notified.`,
-                                                action: () =>
-                                                    rca.supervisor_id &&
-                                                    returnRCA(rca.incident, setIsLoading, () =>
-                                                        router.get(
-                                                            route('incidents.show', {
-                                                                incident: rca.incident_id,
-                                                            })
-                                                        )
-                                                    ),
-                                                show: true,
-                                            })
-                                        }
-                                    >
-                                        Re-Request RCA
-                                    </PrimaryButton>
+                                    {rca.incident.status === IncidentStatus.IN_REVIEW && (
+                                        <PrimaryButton
+                                            onClick={() =>
+                                                setModalProps({
+                                                    title: 'Request New Root Cause Analysis',
+                                                    text: `Are you sure you want to request ${rca.supervisor.name} to submit a new Root Cause Analysis? They will be notified.`,
+                                                    action: () =>
+                                                        rca.supervisor_id &&
+                                                        returnRCA(rca.incident, setIsLoading, () =>
+                                                            router.get(
+                                                                route('incidents.show', {
+                                                                    incident: rca.incident_id,
+                                                                })
+                                                            )
+                                                        ),
+                                                    show: true,
+                                                })
+                                            }
+                                        >
+                                            Re-Request RCA
+                                        </PrimaryButton>
+                                    )}
+
                                     <DangerButton
                                         onClick={() =>
                                             setModalProps({

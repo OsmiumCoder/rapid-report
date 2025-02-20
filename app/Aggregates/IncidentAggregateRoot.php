@@ -15,6 +15,7 @@ use App\StorableEvents\Incident\IncidentReopened;
 use App\StorableEvents\Incident\SupervisorAssigned;
 use App\StorableEvents\Incident\SupervisorUnassigned;
 use App\StorableEvents\Investigation\InvestigationReturned;
+use App\StorableEvents\RootCauseAnalysis\RootCauseAnalysisReturned;
 use Spatie\EventSourcing\AggregateRoots\AggregateRoot;
 
 class IncidentAggregateRoot extends AggregateRoot

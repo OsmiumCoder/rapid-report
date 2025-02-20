@@ -10,6 +10,7 @@ import {
     closeIncident,
     reopenIncident,
     returnInvestigation,
+    returnRCA,
 } from '@/Helpers/Incident/statusUpdates';
 import dateTimeFormat from '@/Filters/dateTimeFormat';
 import { useConfirmationModal } from '@/Components/ConfirmationModal/ConfirmationModalProvider';
@@ -85,23 +86,45 @@ export default function StatusUpdate({ incident }: { incident: Incident }) {
                                 </div>
                             </>
                         )}
-                        {incident.status === IncidentStatus.IN_REVIEW && (
-                            <PrimaryButton
-                                onClick={() =>
-                                    setModalProps({
-                                        title: 'Request Re-Investigation',
-                                        text: `Are you sure you want to request ${incident.supervisor?.name} to further investigate this incident? They will be notified.`,
-                                        action: () =>
-                                            incident.supervisor_id &&
-                                            returnInvestigation(incident, setIsLoading, () =>
-                                                router.reload({ only: ['incident'] })
-                                            ),
-                                        show: true,
-                                    })
-                                }
-                            >
-                                Request Re-Investigation
-                            </PrimaryButton>
+                        {incident.status === IncidentStatus.IN_REVIEW && incident.supervisor && (
+                            <>
+                                <PrimaryButton
+                                    onClick={() =>
+                                        setModalProps({
+                                            title: 'Request Re-Investigation',
+                                            text: `Are you sure you want to request ${incident.supervisor?.name} to further investigate this incident? They will be notified.`,
+                                            action: () =>
+                                                incident.supervisor_id &&
+                                                returnInvestigation(incident, setIsLoading, () =>
+                                                    router.reload({ only: ['incident'] })
+                                                ),
+                                            show: true,
+                                        })
+                                    }
+                                >
+                                    Request Re-Investigation
+                                </PrimaryButton>
+                                <PrimaryButton
+                                    onClick={() =>
+                                        setModalProps({
+                                            title: 'Request New Root Cause Analysis',
+                                            text: `Are you sure you want to request ${incident.supervisor?.name} to submit a new Root Cause Analysis? They will be notified.`,
+                                            action: () =>
+                                                incident.supervisor_id &&
+                                                returnRCA(incident, setIsLoading, () =>
+                                                    router.get(
+                                                        route('incidents.show', {
+                                                            incident: incident.id,
+                                                        })
+                                                    )
+                                                ),
+                                            show: true,
+                                        })
+                                    }
+                                >
+                                    Re-Request RCA
+                                </PrimaryButton>
+                            </>
                         )}
                         {incident.status !== IncidentStatus.CLOSED && (
                             <DangerButton
