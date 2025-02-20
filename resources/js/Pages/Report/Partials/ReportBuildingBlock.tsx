@@ -7,8 +7,8 @@ export default function ReportBuildingBlock({kee,formData, setFormData}:ReportBu
     }, []);
     return(
         <>
-            <div className="flex grid-cols-2 rounded-xl border-2 m-3 p-2">
-                <div className="mr-3 text-pretty font-medium text-gray-500">
+            <div className="flex grid-cols-2 rounded-xl bg-white border-gray-300  border m-3 p-2">
+                <div className="mr-3 text-pretty font-medium text-black-500">
 
                     {kee.replaceAll("_"," ").charAt(0).toUpperCase() + kee.replaceAll("_"," ").slice(1)}
                 </div>
@@ -19,7 +19,7 @@ export default function ReportBuildingBlock({kee,formData, setFormData}:ReportBu
                             checked={formData[kee]}
                             type="checkbox"
                             aria-describedby="comments-description"
-                            className="col-start-1 row-start-1 appearance-none rounded border border-gray-300 bg-white checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto"
+                            className="col-start-1 row-start-1 appearance-none rounded border border-gray-300 bg-white checked:upei-red-500 checked:bg-upei-red-500 indeterminate:border-upei-red-500 indeterminate:bg-upei-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-upei-red-500 disabled:border-upei-red-500  disabled:bg-upei-red-500  disabled:checked:bg-upei-red-500  "
                             onChange={(e) =>{
                                 setFormData(kee, e.target.checked)
                                 console.log(kee);

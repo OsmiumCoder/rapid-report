@@ -7,6 +7,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "ext-gd": "*",
         "guzzlehttp/guzzle": "^7.9",
         "inertiajs/inertia-laravel": "^2.0",
         "laravel/framework": "^11.31",
@@ -14,6 +15,7 @@
         "laravel/scout": "^10.12",
         "laravel/tinker": "^2.9",
         "laravel/vonage-notification-channel": "^3.3",
+        "phpoffice/phpspreadsheet": "^4.0",
         "predis/predis": "^2.3",
         "spatie/laravel-data": "^4.11",
         "spatie/laravel-event-sourcing": "^7.10",

@@ -1,9 +1,8 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import ReportData from "@/types/report/ReportData";
 import ReportBuildingBlock from "@/Pages/Report/Partials/ReportBuildingBlock";
 import DatePicker from "@/Components/DatePicker";
 import dayjs, {Dayjs, ManipulateType} from "dayjs";
-import SecondaryButton from "@/Components/SecondaryButton";
 import PrimaryButton from "@/Components/PrimaryButton";
 
 export interface ReportBuilderProps {
@@ -36,13 +35,13 @@ type timeLengthsCollection = {
 export default function ReportBuilder({
     formData,
     setFormData,
-    post
 }: ReportBuilderProps){
     const currentDate = dayjs(new Date())
     const [timeline, setTimeline] = useState<timelineInterface>({
         startDate: currentDate.subtract(1,'day'),
         endDate: currentDate
 })
+    const formRef = useRef<HTMLFormElement>(null)
     const setRelativeTimeline = (iter:number, unit:ManipulateType) => {
         if(unit != 'millisecond') {
             setTimeline(() => ({
@@ -85,16 +84,11 @@ export default function ReportBuilder({
             }
         }
     }
-    const done = ()=>{
-        post(route('report.downloadFileCSV'));
+    const download = ()=> {
+        setFormData('timeline_start',timeline.startDate.format('YYYY-MM-DD'));
+        setFormData('timeline_end', timeline.endDate.format('YYYY-MM-DD'))
+       formRef?.current?.submit()
     }
-    // const exportTypes = [
-    //     {
-    //         action: () -> {},
-    //         name:'CSV'
-    //     },
-    // ]
-
 
     const timelineLengths: timeLengthsCollection = {
         day : {
@@ -129,7 +123,7 @@ export default function ReportBuilder({
         iter: 1
     });
     const numIters = Array.from({length:12}, (_, i) => i + 1);
-    const formItems = (Object.keys(formData) as Array<keyof ReportData>).filter((key) => (key !== 'timelineStart' && key !== 'timelineEnd'));
+    const formItems = (Object.keys(formData) as Array<keyof ReportData>).filter((key) => (key !== 'timeline_start' && key !== 'timeline_end'));
     const formBlocks = formItems.map((key) =>
         <li key={key}>
         <ReportBuildingBlock
@@ -144,20 +138,20 @@ export default function ReportBuilder({
 
 
     return(<>
-    <p className="ml-8 mt-8 text-pretty text-lg font-medium text-gray-500 sm:text-xl/8">
+    <p className="ml-8 mt-8 text-pretty text-lg font-medium text-black-500 sm:text-xl/8">
         Build your report:
     </p>
 
-    <div className="rounded-xl border-2 mx-4 mb-4">
-        <p className="ml-3 mt-3 text-pretty text-m font-light text-gray-500 ">
+    <div className="rounded-xl shadow-lg bg-white mx-4 mb-4">
+        <p className="ml-3 mt-3 text-pretty text-m font-light text-black-500 ">
             Choose the categories you want to include in your report:
         </p>
         <ul className="flex flex-wrap items-center justify-center text-gray-900 dark:text-white">
             {formBlocks}
         </ul>
     </div>
-    <div className="rounded-xl border-2 mx-4">
-        <p className="ml-3 mt-3 text-pretty text-m font-light text-gray-500 ">
+    <div className="rounded-xl p-2 mx-4 shadow-lg bg-white">
+        <p className="ml-3 mt-3 text-pretty text-m font-light text-black-500 ">
             Choose the timeline of incidents you want to include in your report:
         </p>
         <div className="flex flex-wrap justify-center items-center gap-5 my-4">
@@ -201,13 +195,13 @@ export default function ReportBuilder({
         </div>
         <div className="relative">
             <div aria-hidden="true" className="absolute inset-0 flex items-center">
-                <div className="w-full mx-5 border-t border-gray-300" />
+                <div className="w-full mx-5 border-t border-black-300" />
             </div>
             <div className="relative flex justify-center">
-                <span className="bg-gray-100  px-2 text-sm text-gray-500">OR</span>
+                <span className="bg-white  px-2 text-sm text-black-500">OR</span>
             </div>
         </div>
-        <div className="flex flex-wrap justify-center items-center gap-5 my-4">
+        <div className="flex flex-wrap justify-center items-center gap-5 mt-4 mb-7">
             <div className="">
                 <DatePicker
                 value={timeline.startDate.format('YYYY-MM-DD')}
@@ -230,15 +224,25 @@ export default function ReportBuilder({
 
     </div>
             <div className="flex justify-end gap-5 my-3 mx-5">
-                <SecondaryButton
-                >
-                    Preview
-                </SecondaryButton>
-                <PrimaryButton
-                onClick={done}
-                >
-                    Export
-                </PrimaryButton>
+
+                <form action={route('report.downloadFileCSV', {...formData})} ref={formRef} method="POST" target="_blank">
+                    <input type="hidden" name="_token" value={window.csrf_token} />
+                    <PrimaryButton
+                        type={"button"}
+                        onClick={download}
+                    >
+                        Export as CSV
+                    </PrimaryButton>
+                </form>
+                <form action={route('report.downloadFileXL', {...formData})} ref={formRef} method="POST" target="_blank">
+                    <input type="hidden" name="_token" value={window.csrf_token} />
+                    <PrimaryButton
+                        type={"button"}
+                        onClick={download}
+                    >
+                        Export as Excel
+                    </PrimaryButton>
+                </form>
             </div>
 
     </>

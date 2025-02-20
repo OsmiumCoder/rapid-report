@@ -17,6 +17,9 @@
         @viteReactRefresh
         @vite(['resources/js/app.tsx', "resources/js/Pages/{$page['component']}.tsx"])
         @inertiaHead
+        <script>
+            window.csrf_token = "{{ csrf_token() }}";
+        </script>
     </head>
     <body class="font-sans antialiased h-full bg-gray-100">
         @inertia

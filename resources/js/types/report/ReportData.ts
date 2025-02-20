@@ -2,8 +2,9 @@
 
 
 export default interface ReportData {
-    timelineStart?: string;
-    timelineEnd?: string;
+    timeline_start?: string;
+    timeline_end?: string;
+    $happened_at?: boolean;
     work_related?: boolean;
     workers_comp_submitted?: boolean;
     happened_at?: boolean;
