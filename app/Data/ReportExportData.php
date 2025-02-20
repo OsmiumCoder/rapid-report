@@ -2,10 +2,6 @@
 
 namespace App\Data;
 
-use App\Enum\IncidentType;
-use Carbon\Carbon;
-use Spatie\LaravelData\Attributes\WithCast;
-use Spatie\LaravelData\Casts\DateTimeInterfaceCast;
 use Spatie\LaravelData\Data;
 
 class ReportExportData extends Data
@@ -16,7 +12,7 @@ class ReportExportData extends Data
         public bool $happened_at = false,
         public bool    $work_related = false,
         public bool    $personal_individual_information = false,
-        public bool    $workers_comp_submitted = false ,
+        public bool    $workers_comp_submitted = false,
         public bool    $location = false,
         public bool    $room_number = false,
         public bool    $incident_type = false,
@@ -28,5 +24,6 @@ class ReportExportData extends Data
         public bool $created_at = false,
         public bool $updated_at = false,
         public bool $deleted_at = false,
-    ) {}
+    ) {
+    }
 }
