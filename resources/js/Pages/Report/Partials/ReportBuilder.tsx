@@ -1,7 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReportData from '@/types/report/ReportData';
 import ReportBuildingBlock from '@/Pages/Report/Partials/ReportBuildingBlock';
-import DatePicker from '@/Components/DatePicker';
 import dayjs, { Dayjs, ManipulateType } from 'dayjs';
 import PrimaryButton from '@/Components/PrimaryButton';
 import SelectInput from '@/Components/SelectInput';
@@ -9,7 +8,6 @@ import DateInput from '@/Components/DateInput';
 import axios from 'axios';
 import dateFormat from '@/Filters/dateFormat';
 import { downloadFile } from '@/Helpers/downloadFile';
-import * as fs from 'node:fs';
 
 export interface ReportBuilderProps {
     formData: ReportData;
@@ -163,7 +161,7 @@ export default function ReportBuilder({ formData, setFormData }: ReportBuilderPr
                 Build your report:
             </p>
 
-            <div className="rounded-xl shadow-lg bg-white mx-4 mb-4">
+            <div className="rounded-xl shadow-lg bg-white mx-4 mb-4 p-2">
                 <p className="ml-3 mt-3 text-pretty text-m font-light text-black-500 ">
                     Choose the categories you want to include in your report:
                 </p>

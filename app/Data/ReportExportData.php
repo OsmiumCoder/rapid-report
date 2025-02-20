@@ -23,7 +23,6 @@ class ReportExportData extends Data
         public bool    $closed_at = false,
         public bool $created_at = false,
         public bool $updated_at = false,
-        public bool $deleted_at = false,
     ) {
     }
 }
