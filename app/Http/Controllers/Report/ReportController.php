@@ -21,10 +21,12 @@ class ReportController extends Controller
     public function index()
     {
         Gate::authorize('view-report-page');
+
         return Inertia::render('Report/Index', [
-        'form' => ReportExportData::empty(),
+            'form' => ReportExportData::empty(),
         ]);
     }
+
     public function stats()
     {
         Gate::authorize('view-report-page');
@@ -33,6 +35,7 @@ class ReportController extends Controller
             'incidents' => Incident::all(),
         ]);
     }
+
     public function downloadFileXL(ReportExportData $exportData)
     {
         $filename = 'report_data.xlsx';
@@ -47,25 +50,32 @@ class ReportController extends Controller
             $spreadsheet = new Spreadsheet;
             $spreadsheet->setValueBinder(new AdvancedValueBinder);
             $sheet = $spreadsheet->getActiveSheet();
+
             $headers = [];
             $person_headers = ['anonymous','on_behalf','on_behalf_anonymous','role','last_name','first_name','upei_id','email','phone'];
             $export_array_data = $exportData -> toArray();
+
             if ($export_array_data['personal_individual_information']) {
                 $headers = array_merge($headers, $person_headers);
             }
+
             $timeline_start = DateTimeImmutable::createFromFormat("Y-m-d", $exportData -> timeline_start);
             $timeline_end = DateTimeImmutable::createFromFormat("Y-m-d", $exportData -> timeline_end);
+
             unset($export_array_data['timeline_start'], $export_array_data['timeline_end'],$export_array_data['personal_individual_information']);
+
             $i = 1;
             foreach ($export_array_data as $key => $value) {
                 if ($value) {
                     $headers[] = $key;
                 }
             }
+
             foreach ($headers as $header) {
                 $sheet->setCellValue([$i,1], $header);
                 $i++;
             }
+
             Incident::chunk(1000, function ($incidents) use ($exportData, $spreadsheet, $sheet, $headers, $timeline_start, $timeline_end) {
                 $row = 2;
                 foreach ($incidents as $incident) {
@@ -75,22 +85,22 @@ class ReportController extends Controller
                         foreach ($headers as $key) {
                             if ($key == "incident_type") {
                                 $sheet->setCellValue(
-                                    [$col,$row],
+                                    [$col, $row],
                                     isset($incident->$key) ? IncidentType::toString($incident->$key) : 'N/A'
                                 );
                             } elseif ($key == "role") {
                                 $sheet->setCellValue(
-                                    [$col,$row],
+                                    [$col, $row],
                                     isset($incident->$key) ? RoleType::toString($incident->$key) : 'N/A'
                                 );
                             } elseif ($key == "happened_at" || $key == "closed_at" || $key == "created_at" || $key == "updated_at" || $key == "deleted_at") {
                                 $time_data = isset($incident->$key) ? DateTime::createFromFormat('Y-m-d H:i:s', $incident->$key) : 'N/A';
                                 if ($time_data != "N/A") {
                                     $sheet->setCellValue(
-                                        [$col,$row],
+                                        [$col, $row],
                                         Date::PHPToExcel($time_data)
                                     );
-                                    $sheet->getStyle([$col,$row])
+                                    $sheet->getStyle([$col, $row])
                                         ->getNumberFormat()
                                         ->setFormatCode(
                                             'yyyy-mm-dd'
@@ -100,18 +110,18 @@ class ReportController extends Controller
                                 if (gettype($incident->$key) == "boolean") {
                                     if ($incident->$key) {
                                         $sheet->setCellValue(
-                                            [$col,$row],
+                                            [$col, $row],
                                             "True"
                                         );
                                     } else {
                                         $sheet->setCellValue(
-                                            [$col,$row],
+                                            [$col, $row],
                                             "False"
                                         );
                                     }
                                 } else {
                                     $sheet->setCellValue(
-                                        [$col,$row],
+                                        [$col, $row],
                                         isset($incident->$key) ? strval($incident->$key) : 'N/A'
                                     );
                                 }
@@ -122,6 +132,7 @@ class ReportController extends Controller
                     }
                 }
             });
+
             $writer = IOFactory::createWriter($spreadsheet, "Xlsx");
             $writer->save("php://output");
         }, 200, $headers);
@@ -141,14 +152,16 @@ class ReportController extends Controller
             $handle = fopen('php://output', 'w');
             $headers = [];
             $person_headers = ['anonymous','on_behalf','on_behalf_anonymous','role','last_name','first_name','upei_id','email','phone'];
+
             $arrayData = $exportData -> toArray();
             if ($arrayData['personal_individual_information']) {
                 $headers = array_merge($headers, $person_headers);
             }
+
             $timeline_start = DateTimeImmutable::createFromFormat("Y-m-d", $exportData -> timeline_start);
             $timeline_end = DateTimeImmutable::createFromFormat("Y-m-d", $exportData -> timeline_end);
             unset($arrayData['timeline_start'], $arrayData['timeline_end'],$arrayData['personal_individual_information']);
-            $i = 0;
+
             foreach ($arrayData as $key => $value) {
                 if ($value) {
                     $headers[] = $key;
@@ -159,9 +172,9 @@ class ReportController extends Controller
                 $handle,
                 $headers,
             );
+
             // Fetch and process data in chunks
             Incident::chunk(25, function ($incidents) use ($exportData, $handle, $headers, $timeline_start, $timeline_end) {
-
                 foreach ($incidents as $incident) {
                     $time = DateTime::createFromFormat('Y-m-d H:i:s', $incident->{'happened_at'});
                     if (($timeline_start->diff($time)->invert) == 0 && ($timeline_end->diff($time)->invert) == 1) {
@@ -179,7 +192,7 @@ class ReportController extends Controller
                                         $data[] = "False";
                                     }
                                 } else {
-                                    $data[] = isset($incident->$key) ? $incident->$key : 'N/A';
+                                    $data[] = $incident->$key ?? 'N/A';
                                 }
                             }
                         }
