@@ -1,6 +1,6 @@
 <?php
 
-namespace Aggregates;
+namespace Tests\Unit\Aggregates;
 
 use App\Aggregates\RootCauseAnalysisAggregateRoot;
 use App\Data\RootCauseAnalysisData;

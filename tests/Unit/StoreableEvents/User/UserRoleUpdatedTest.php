@@ -1,6 +1,6 @@
 <?php
 
-namespace StoreableEvents\User;
+namespace Tests\Unit\StoreableEvents\User;
 
 use App\Enum\RolesEnum;
 use App\Models\User;

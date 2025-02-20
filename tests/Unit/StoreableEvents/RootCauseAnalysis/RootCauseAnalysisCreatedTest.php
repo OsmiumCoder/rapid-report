@@ -1,6 +1,6 @@
 <?php
 
-namespace StoreableEvents\RootCauseAnalysis;
+namespace Tests\Unit\StoreableEvents\RootCauseAnalysis;
 
 use App\Enum\CommentType;
 use App\Models\Incident;

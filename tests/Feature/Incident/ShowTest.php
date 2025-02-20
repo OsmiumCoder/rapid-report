@@ -1,15 +1,182 @@
 <?php
 
-namespace Incident;
+namespace Tests\Feature\Incident;
 
 use App\Models\Incident;
 use App\Models\Investigation;
 use App\Models\User;
+use App\States\IncidentStatus\Assigned;
+use App\States\IncidentStatus\Closed;
+use App\States\IncidentStatus\InReview;
+use App\States\IncidentStatus\Opened;
+use App\States\IncidentStatus\Reopened;
+use App\States\IncidentStatus\Returned;
 use Inertia\Testing\AssertableInertia;
 use Tests\TestCase;
 
 class ShowTest extends TestCase
 {
+    public function test_show_incident_canProvideFollowup_prop_true_for_supervisor_assigned_incident()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+        $this->actingAs($supervisor);
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Assigned::class
+        ]);
+
+        $response = $this->get(route('incidents.show', ['incident' => $incident->id]));
+
+        $response->assertOk();
+
+        $response->assertInertia(function (AssertableInertia $page) {
+            $page->component('Incident/Show')
+                ->where('canProvideFollowup', true);
+        });
+    }
+
+    public function test_show_incident_canProvideFollowup_prop_true_for_supervisor_returned_incident()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+        $this->actingAs($supervisor);
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Returned::class
+        ]);
+
+        $response = $this->get(route('incidents.show', ['incident' => $incident->id]));
+
+        $response->assertOk();
+
+        $response->assertInertia(function (AssertableInertia $page) {
+            $page->component('Incident/Show')
+                ->where('canProvideFollowup', true);
+        });
+    }
+
+    public function test_show_incident_canProvideFollowup_prop_false_for_supervisor_opened_incident()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+        $this->actingAs($supervisor);
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Opened::class
+        ]);
+
+        $response = $this->get(route('incidents.show', ['incident' => $incident->id]));
+
+        $response->assertOk();
+
+        $response->assertInertia(function (AssertableInertia $page) {
+            $page->component('Incident/Show')
+                ->where('canProvideFollowup', false);
+        });
+    }
+
+    public function test_show_incident_canProvideFollowup_prop_false_for_supervisor_inReview_incident()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+        $this->actingAs($supervisor);
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => InReview::class
+        ]);
+
+        $response = $this->get(route('incidents.show', ['incident' => $incident->id]));
+
+        $response->assertOk();
+
+        $response->assertInertia(function (AssertableInertia $page) {
+            $page->component('Incident/Show')
+                ->where('canProvideFollowup', false);
+        });
+    }
+
+    public function test_show_incident_canProvideFollowup_prop_false_for_supervisor_closed_incident()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+        $this->actingAs($supervisor);
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Closed::class
+        ]);
+
+        $response = $this->get(route('incidents.show', ['incident' => $incident->id]));
+
+        $response->assertOk();
+
+        $response->assertInertia(function (AssertableInertia $page) {
+            $page->component('Incident/Show')
+                ->where('canProvideFollowup', false);
+        });
+    }
+
+    public function test_show_incident_canProvideFollowup_prop_false_for_supervisor_reopened_incident()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+        $this->actingAs($supervisor);
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Reopened::class
+        ]);
+
+        $response = $this->get(route('incidents.show', ['incident' => $incident->id]));
+
+        $response->assertOk();
+
+        $response->assertInertia(function (AssertableInertia $page) {
+            $page->component('Incident/Show')
+                ->where('canProvideFollowup', false);
+        });
+    }
+
+    public function test_show_incident_canProvideFollowup_prop_false_for_admin()
+    {
+        $admin = User::factory()->create()->syncRoles('admin');
+        $this->actingAs($admin);
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $admin->id,
+            'status' => Assigned::class
+        ]);
+
+        $response = $this->get(route('incidents.show', ['incident' => $incident->id]));
+
+        $response->assertOk();
+
+        $response->assertInertia(function (AssertableInertia $page) {
+            $page->component('Incident/Show')
+                ->where('canProvideFollowup', false);
+        });
+    }
+
+    public function test_show_incident_canProvideFollowup_prop_false_for_reporting_user()
+    {
+        $user = User::factory()->create(['email' => 'email@b.com'])->syncRoles('user');
+        $this->actingAs($user);
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $user->id,
+            'reporters_email' => 'email@b.com',
+            'status' => Assigned::class,
+        ]);
+
+        $response = $this->get(route('incidents.show', ['incident' => $incident->id]));
+
+        $response->assertOk();
+
+        $response->assertInertia(function (AssertableInertia $page) {
+            $page->component('Incident/Show')
+                ->where('canProvideFollowup', false);
+        });
+    }
+
     public function test_show_incident_loads_only_supervisors_investigations_with_supervisor_relation_as_supervisor()
     {
         $supervisor = User::factory()->create()->syncRoles('supervisor');
@@ -20,16 +187,16 @@ class ShowTest extends TestCase
         // This investigation should not return as it was not made by the supervisor
         Investigation::factory()->create(['incident_id' => $incident->id]);
 
-        $investigation = Investigation::factory()->create([
-            'supervisor_id' => $supervisor->id,
-            'incident_id' => $incident->id
+        Investigation::factory()->create([
+           'supervisor_id' => $supervisor->id,
+           'incident_id' => $incident->id
         ]);
 
         $response = $this->get(route('incidents.show', ['incident' => $incident->id]));
 
         $response->assertOk();
 
-        $response->assertInertia(function (AssertableInertia $page) use ($investigation) {
+        $response->assertInertia(function (AssertableInertia $page) {
             $page->component('Incident/Show')
                 ->has('incident.investigations', 1)
                 ->has('incident.investigations.0.supervisor');
@@ -43,7 +210,7 @@ class ShowTest extends TestCase
         $this->actingAs($admin);
 
         $incident = Incident::factory()->create();
-        $investigation = Investigation::factory()->create(['incident_id' => $incident->id]);
+        Investigation::factory()->create(['incident_id' => $incident->id]);
         Investigation::factory()->create(['incident_id' => $incident->id]);
 
 
@@ -51,7 +218,7 @@ class ShowTest extends TestCase
 
         $response->assertOk();
 
-        $response->assertInertia(function (AssertableInertia $page) use ($investigation) {
+        $response->assertInertia(function (AssertableInertia $page) {
             $page->component('Incident/Show')
                 ->has('incident.investigations', 2)
                 ->has('incident.investigations.0.supervisor');

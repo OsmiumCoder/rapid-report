@@ -8,10 +8,145 @@ use App\Models\RootCauseAnalysis;
 use App\Models\User;
 use App\Policies\IncidentPolicy;
 use App\States\IncidentStatus\Assigned;
+use App\States\IncidentStatus\Closed;
+use App\States\IncidentStatus\InReview;
+use App\States\IncidentStatus\Opened;
+use App\States\IncidentStatus\Reopened;
+use App\States\IncidentStatus\Returned;
 use Tests\TestCase;
 
 class IncidentPolicyTest extends TestCase
 {
+    public function test_user_can_not_provide_follow_up_on_assigned_incident()
+    {
+        $user = User::factory()->create()->syncRoles('user');
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $user->id,
+            'status' => Assigned::class
+        ]);
+
+        $result = $this->getPolicy()->provideFollowUp($user, $incident);
+
+        $this->assertFalse($result);
+    }
+
+    public function test_user_can_not_provide_follow_up_on_returned_incident()
+    {
+        $user = User::factory()->create()->syncRoles('user');
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $user->id,
+            'status' => Returned::class
+        ]);
+
+        $result = $this->getPolicy()->provideFollowUp($user, $incident);
+
+        $this->assertFalse($result);
+    }
+
+    public function test_admin_can_not_provide_follow_up_on_assigned_incident()
+    {
+        $admin = User::factory()->create()->syncRoles('admin');
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $admin->id,
+            'status' => Assigned::class
+        ]);
+
+        $result = $this->getPolicy()->provideFollowUp($admin, $incident);
+
+        $this->assertFalse($result);
+    }
+
+    public function test_admin_can_not_provide_follow_up_on_returned_incident()
+    {
+        $admin = User::factory()->create()->syncRoles('admin');
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $admin->id,
+            'status' => Returned::class
+        ]);
+
+        $result = $this->getPolicy()->provideFollowUp($admin, $incident);
+
+        $this->assertFalse($result);
+    }
+
+    public function test_supervisor_can_not_provide_follow_up_on_closed_incident()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Closed::class
+        ]);
+
+        $result = $this->getPolicy()->provideFollowUp($supervisor, $incident);
+
+        $this->assertFalse($result);
+    }
+
+    public function test_supervisor_can_not_provide_follow_up_on_reopened_incident()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Reopened::class
+        ]);
+
+        $result = $this->getPolicy()->provideFollowUp($supervisor, $incident);
+
+        $this->assertFalse($result);
+    }
+
+    public function test_supervisor_can_not_provide_follow_up_on_in_review_incident()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => InReview::class
+        ]);
+
+        $result = $this->getPolicy()->provideFollowUp($supervisor, $incident);
+
+        $this->assertFalse($result);
+    }
+
+    public function test_supervisor_can_not_provide_follow_up_on_open_incident()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Opened::class
+        ]);
+
+        $result = $this->getPolicy()->provideFollowUp($supervisor, $incident);
+
+        $this->assertFalse($result);
+    }
+
+    public function test_supervisor_can_provide_follow_up_on_returned_incident()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Returned::class
+        ]);
+
+        $result = $this->getPolicy()->provideFollowUp($supervisor, $incident);
+
+        $this->assertTrue($result);
+    }
+
+    public function test_supervisor_can_provide_follow_up_on_assigned_incident()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Assigned::class
+        ]);
+
+        $result = $this->getPolicy()->provideFollowUp($supervisor, $incident);
+
+        $this->assertTrue($result);
+    }
+
     public function test_supervisor_can_request_review()
     {
         $supervisor = User::factory()->create()->syncRoles('supervisor');
@@ -21,12 +156,12 @@ class IncidentPolicyTest extends TestCase
             'status' => Assigned::class
         ]);
 
-        $investigation = Investigation::factory()->create([
+        Investigation::factory()->create([
             'incident_id' => $incident->id,
             'supervisor_id' => $supervisor->id,
         ]);
 
-        $rca = RootCauseAnalysis::factory()->create([
+        RootCauseAnalysis::factory()->create([
             'incident_id' => $incident->id,
             'supervisor_id' => $supervisor->id,
         ]);
@@ -44,12 +179,12 @@ class IncidentPolicyTest extends TestCase
             'status' => Assigned::class
         ]);
 
-        $investigation = Investigation::factory()->create([
+        Investigation::factory()->create([
             'incident_id' => $incident->id,
             'supervisor_id' => $supervisor->id,
         ]);
 
-        $rca = RootCauseAnalysis::factory()->create([
+        RootCauseAnalysis::factory()->create([
             'incident_id' => $incident->id,
             'supervisor_id' => $supervisor->id,
         ]);
@@ -67,12 +202,12 @@ class IncidentPolicyTest extends TestCase
             'supervisor_id' => $supervisor->id,
         ]);
 
-        $investigation = Investigation::factory()->create([
+        Investigation::factory()->create([
             'incident_id' => $incident->id,
             'supervisor_id' => $supervisor->id,
         ]);
 
-        $rca = RootCauseAnalysis::factory()->create([
+        RootCauseAnalysis::factory()->create([
             'incident_id' => $incident->id,
             'supervisor_id' => $supervisor->id,
         ]);
@@ -91,11 +226,11 @@ class IncidentPolicyTest extends TestCase
             'status' => Assigned::class
         ]);
 
-        $investigation = Investigation::factory()->create([
+        Investigation::factory()->create([
             'incident_id' => $incident->id,
         ]);
 
-        $rca = RootCauseAnalysis::factory()->create([
+        RootCauseAnalysis::factory()->create([
             'incident_id' => $incident->id,
         ]);
 
@@ -113,12 +248,12 @@ class IncidentPolicyTest extends TestCase
             'status' => Assigned::class
         ]);
 
-        $investigation = Investigation::factory()->create([
+        Investigation::factory()->create([
             'incident_id' => $incident->id,
             'supervisor_id' => $supervisor->id,
         ]);
 
-        $rca = RootCauseAnalysis::factory()->create([
+        RootCauseAnalysis::factory()->create([
             'incident_id' => $incident->id,
         ]);
 
@@ -136,11 +271,11 @@ class IncidentPolicyTest extends TestCase
             'status' => Assigned::class
         ]);
 
-        $investigation = Investigation::factory()->create([
+        Investigation::factory()->create([
             'incident_id' => $incident->id,
         ]);
 
-        $rca = RootCauseAnalysis::factory()->create([
+        RootCauseAnalysis::factory()->create([
             'incident_id' => $incident->id,
             'supervisor_id' => $supervisor->id,
         ]);
@@ -173,7 +308,7 @@ class IncidentPolicyTest extends TestCase
             'status' => Assigned::class
         ]);
 
-        $investigation = Investigation::factory()->create([
+        Investigation::factory()->create([
             'incident_id' => $incident->id,
             'supervisor_id' => $supervisor->id,
         ]);
@@ -192,7 +327,7 @@ class IncidentPolicyTest extends TestCase
             'status' => Assigned::class
         ]);
 
-        $rca = RootCauseAnalysis::factory()->create([
+        RootCauseAnalysis::factory()->create([
             'incident_id' => $incident->id,
             'supervisor_id' => $supervisor->id,
         ]);
@@ -213,12 +348,12 @@ class IncidentPolicyTest extends TestCase
             'status' => Assigned::class
         ]);
 
-        $investigation = Investigation::factory()->create([
+        Investigation::factory()->create([
             'incident_id' => $incident->id,
             'supervisor_id' => $supervisor->id,
         ]);
 
-        $rca = RootCauseAnalysis::factory()->create([
+        RootCauseAnalysis::factory()->create([
             'incident_id' => $incident->id,
             'supervisor_id' => $supervisor->id,
         ]);
@@ -239,12 +374,12 @@ class IncidentPolicyTest extends TestCase
             'status' => Assigned::class
         ]);
 
-        $investigation = Investigation::factory()->create([
+        Investigation::factory()->create([
             'incident_id' => $incident->id,
             'supervisor_id' => $supervisor->id,
         ]);
 
-        $rca = RootCauseAnalysis::factory()->create([
+        RootCauseAnalysis::factory()->create([
             'incident_id' => $incident->id,
             'supervisor_id' => $supervisor->id,
         ]);
