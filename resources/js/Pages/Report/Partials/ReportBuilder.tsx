@@ -36,7 +36,8 @@ export default function ReportBuilder({ formData, setFormData }: ReportBuilderPr
         endDate: currentDate,
     });
 
-    const formRef = useRef<HTMLFormElement>(null);
+    const csvFormRef = useRef<HTMLFormElement>(null);
+    const excelFormRef = useRef<HTMLFormElement>(null);
 
     const setRelativeTimeline = (iter: number, unit: ManipulateType) => {
         if (unit !== 'millisecond') {
@@ -82,7 +83,7 @@ export default function ReportBuilder({ formData, setFormData }: ReportBuilderPr
         setFormData('timeline_start', timeline.startDate.format('YYYY-MM-DD'));
         setFormData('timeline_end', timeline.endDate.format('YYYY-MM-DD'));
 
-        formRef?.current?.submit();
+        csvFormRef?.current?.requestSubmit();
     };
 
     const timelineLengths: TimeLengthsCollection = {
@@ -236,7 +237,7 @@ export default function ReportBuilder({ formData, setFormData }: ReportBuilderPr
             <div className="flex justify-end gap-5 my-3 mx-5">
                 <form
                     action={route('report.downloadFileCSV', { ...formData })}
-                    ref={formRef}
+                    ref={csvFormRef}
                     method="POST"
                     target="_blank"
                 >
@@ -247,7 +248,7 @@ export default function ReportBuilder({ formData, setFormData }: ReportBuilderPr
                 </form>
                 <form
                     action={route('report.downloadFileXL', { ...formData })}
-                    ref={formRef}
+                    ref={excelFormRef}
                     method="POST"
                     target="_blank"
                 >
