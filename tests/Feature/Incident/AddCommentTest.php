@@ -7,6 +7,8 @@ use App\Enum\CommentType;
 use App\Models\Comment;
 use App\Models\Incident;
 use App\Models\User;
+use App\Notifications\Comment\CommentMade;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
@@ -98,5 +100,64 @@ class AddCommentTest extends TestCase
         $this->assertEquals($user->id, $comment->user_id);
         $this->assertEquals($commentData->content, $comment->content);
         $this->assertEquals(CommentType::NOTE, $comment->type);
+    }
+
+    public function test_comment_notifies_admins_on_creation()
+    {
+        Notification::fake();
+
+        $incident = Incident::factory()->create();
+
+        $commentData = CommentData::from([
+            'content' => 'Test comment for admin notification',
+        ]);
+
+        $response = $this->post(route('incidents.comments.store', ['incident' => $incident->id]), $commentData->toArray());
+
+        $response->assertRedirect();
+
+        Notification::assertNothingSent();
+    }
+
+    public function test_comment_notifies_supervisor_when_supervisor_is_set()
+    {
+        Notification::fake();
+
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+        ]);
+
+        $commentData = CommentData::from([
+            'content' => 'Test comment for supervisor notification',
+        ]);
+
+        $this->actingAs($supervisor);
+
+        $response = $this->post(route('incidents.comments.store', ['incident' => $incident->id]), $commentData->toArray());
+
+        $response->assertRedirect();
+
+        Notification::assertSentTo($supervisor, CommentMade::class);
+    }
+
+    public function test_comment_does_not_notify_supervisor_when_not_set()
+    {
+        Notification::fake();
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => null,
+        ]);
+
+        $commentData = CommentData::from([
+            'content' => 'Test comment with no supervisor',
+        ]);
+
+        $response = $this->post(route('incidents.comments.store', ['incident' => $incident->id]), $commentData->toArray());
+
+        $response->assertRedirect();
+
+        Notification::assertNothingSent(); // should only send to admin
     }
 }
