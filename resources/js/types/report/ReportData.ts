@@ -5,7 +5,6 @@ export default interface ReportData {
     work_related?: boolean;
     personal_individual_information?: boolean;
     workers_comp_submitted?: boolean;
-    happened_at?: boolean;
     location?: boolean;
     room_number?: boolean;
     incident_type?: boolean;
