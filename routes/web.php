@@ -41,10 +41,10 @@ Route::get('/notification', function () {
         supervisor: $supervisor,
     );
 
-//    return $incidentReceived->render();
+    //    return $incidentReceived->render();
     // return $userAdded->render();
     // return $incidentSubmitted->toMail($supervisor);
-//     return $investigationSubmitted->toMail($supervisor);
+    //     return $investigationSubmitted->toMail($supervisor);
     return $investigationReturned->toMail();
     // return $rcaSubmitted->toMail($supervisor);
 

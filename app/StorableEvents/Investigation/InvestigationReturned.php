@@ -10,7 +10,7 @@ use App\Models\User;
 use App\States\IncidentStatus\Returned;
 use App\StorableEvents\StoredEvent;
 use Illuminate\Support\Facades\Notification;
-use \App\Notifications\Investigation\InvestigationReturnedNotification;
+use App\Notifications\Investigation\InvestigationReturnedNotification;
 
 class InvestigationReturned extends StoredEvent
 {
