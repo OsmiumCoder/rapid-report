@@ -324,6 +324,8 @@ class IncidentAggregateRootTest extends TestCase
 
     public function test_add_comment_adds_comment_to_incident()
     {
+        $user = User::factory()->create()->syncRoles('supervisor');
+        $this->actingAs($user);
         $incident = Incident::factory()->create();
 
         $commentData = CommentData::validateAndCreate([
@@ -871,6 +873,8 @@ class IncidentAggregateRootTest extends TestCase
     {
         Notification::fake();
 
+        $user = User::factory()->create()->syncRoles('user');
+        $this->actingAs($user);
         $admins = User::factory(3)->create()->each(function (User $user) {
             $user->syncRoles('admin');
         });
@@ -880,7 +884,7 @@ class IncidentAggregateRootTest extends TestCase
         $commentData = CommentData::from([
             'content' => 'Test comment for admin notification',
             'type' => CommentType::NOTE,
-            'user_id' => $incident->user_id,
+            'user_id' => $user->id,
         ]);
 
         $uuid = $incident->id;
@@ -896,6 +900,8 @@ class IncidentAggregateRootTest extends TestCase
     {
         Notification::fake();
 
+        $user = User::factory()->create()->syncRoles('user');
+        $this->actingAs($user);
         $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $incident = Incident::factory()->create([
@@ -905,6 +911,7 @@ class IncidentAggregateRootTest extends TestCase
         $commentData = CommentData::from([
             'content' => 'Test comment for supervisor notification',
             'type' => CommentType::NOTE,
+            'user_id' => $user->id,
         ]);
 
         $uuid = $incident->id;
@@ -921,6 +928,7 @@ class IncidentAggregateRootTest extends TestCase
     {
         Notification::fake();
 
+        $user = User::factory()->create()->syncRoles('user');
         $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $incident = Incident::factory()->create([
@@ -930,6 +938,7 @@ class IncidentAggregateRootTest extends TestCase
         $commentData = CommentData::from([
             'content' => 'Test comment with no supervisor notification',
             'type' => CommentType::NOTE,
+            'user_id' => $user->id,
         ]);
 
         $uuid = Str::uuid()->toString();
@@ -945,6 +954,8 @@ class IncidentAggregateRootTest extends TestCase
     {
         Notification::fake();
 
+        $user = User::factory()->create()->syncRoles('user');
+        $this->actingAs($user);
         $supervisor = User::factory()->create()->syncRoles('supervisor');
         $admins = User::factory(3)->create()->each(function (User $user) {
             $user->syncRoles('admin');
@@ -957,6 +968,7 @@ class IncidentAggregateRootTest extends TestCase
         $commentData = CommentData::from([
             'content' => 'Test comment for admin and supervisor notification',
             'type' => CommentType::NOTE,
+            'user_id' => $user->id,
         ]);
 
         $uuid = $incident->id;

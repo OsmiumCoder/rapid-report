@@ -36,7 +36,7 @@ class CommentCreated extends StoredEvent
     public function react()
     {
         $commentable = $this->commentable_type::find($this->commentable_id);
-        $commenter = isset($this->metaData['user_id']) ? User::find($this->metaData['user_id']) : null;
+        $commenter = User::find($this->metaData['user_id'] ?? null);
 
 
         if ($commentable) {

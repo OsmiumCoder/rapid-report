@@ -17,14 +17,10 @@ class CommentAdded extends Notification
      */
     public function __construct(
         public string $comment,
-        public ?User $user,
+        public User $user,
         public string $url  // Add the URL to the constructor
     ) {
-        if ($this->comment == null) {
-            $this->message = "An empty comment was made by $this->user->name.";
-        } else {
-            $this->message = "$this->user->name commented: $this->comment";
-        }
+        $this->message = "$this->user->name commented: $this->comment";
     }
 
     /**
@@ -69,8 +65,6 @@ class CommentAdded extends Notification
     {
         return [
             'message' => $this->message,
-            'comment' => $this->comment,
-            'name' => $this->user->name,
             'url' => $this->url
         ];
     }

@@ -118,6 +118,8 @@ class CommentCreatedTest extends TestCase
             commentable_type: get_class($incident),
         );
 
+        $event->setMetaData(['user_id' => $user->id]);
+
         Notification::assertNothingSent();
 
         $event->react();
@@ -140,10 +142,7 @@ class CommentCreatedTest extends TestCase
             commentable_type: get_class($incident),
         );
 
-        $event->setMetaData([
-            'user_id' => $user->id,
-            'supervisor' => null,
-        ]);
+        $event->setMetaData(['user_id' => $user->id]);
 
         Notification::assertNothingSent();
 
@@ -156,6 +155,7 @@ class CommentCreatedTest extends TestCase
     {
         Notification::fake();
 
+        $user = User::factory()->create()->syncRoles(['user']);
         $admins = User::factory(3)->create()->each(function (User $user) {
             $user->assignRole('admin');
         });
@@ -168,6 +168,8 @@ class CommentCreatedTest extends TestCase
             commentable_id: $incident->id,
             commentable_type: get_class($incident),
         );
+
+        $event->setMetaData(['user_id' => $user->id]);
 
         Notification::assertNothingSent();
 
