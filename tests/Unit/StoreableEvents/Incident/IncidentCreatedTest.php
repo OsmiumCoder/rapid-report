@@ -7,7 +7,7 @@ use App\Enum\IncidentType;
 use App\Mail\IncidentReceived;
 use App\Models\Incident;
 use App\Models\User;
-use App\Notifications\Incident\IncidentSubmitted;
+use App\Notifications\Incident\IncidentSubmittedNotification;
 use App\States\IncidentStatus\Opened;
 use App\StorableEvents\Incident\IncidentCreated;
 use Carbon\Carbon;
@@ -235,8 +235,8 @@ class IncidentCreatedTest extends TestCase
         Mail::assertSent(IncidentReceived::class, 1);
         Mail::assertSent(IncidentReceived::class, $user->email);
 
-        Notification::assertSentTo($admins, IncidentSubmitted::class);
-        Notification::assertNotSentTo($user, IncidentSubmitted::class);
+        Notification::assertSentTo($admins, IncidentSubmittedNotification::class);
+        Notification::assertNotSentTo($user, IncidentSubmittedNotification::class);
     }
 
     public function test_new_incident_does_not_notify_reporter_if_reporters_email_not_set(): void
@@ -318,7 +318,7 @@ class IncidentCreatedTest extends TestCase
 
         Notification::assertCount(3);
 
-        Notification::assertSentTo($admins, IncidentSubmitted::class);
-        Notification::assertNotSentTo($user, IncidentSubmitted::class);
+        Notification::assertSentTo($admins, IncidentSubmittedNotification::class);
+        Notification::assertNotSentTo($user, IncidentSubmittedNotification::class);
     }
 }

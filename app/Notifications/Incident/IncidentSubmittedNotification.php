@@ -2,19 +2,12 @@
 
 namespace App\Notifications\Incident;
 
-use Illuminate\Bus\Queueable;
+use App\Notifications\BaseNotification;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\VonageMessage;
-use Illuminate\Notifications\Notification;
 
-class IncidentSubmitted extends Notification
+class IncidentSubmittedNotification extends BaseNotification
 {
-    use Queueable;
-
-    public string $message;
-    public string $url;
-
-
     /**
      * Create a new notification instance.
      */

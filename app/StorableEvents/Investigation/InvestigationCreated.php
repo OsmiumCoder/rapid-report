@@ -7,7 +7,7 @@ use App\Models\Comment;
 use App\Models\Incident;
 use App\Models\Investigation;
 use App\Models\User;
-use App\Notifications\Investigation\InvestigationSubmitted;
+use App\Notifications\Investigation\InvestigationSubmittedNotification;
 use App\StorableEvents\StoredEvent;
 use Illuminate\Support\Facades\Notification;
 
@@ -79,6 +79,6 @@ class InvestigationCreated extends StoredEvent
 
         $supervisor = User::find($this->metaData['user_id']);
 
-        Notification::send($admins, new InvestigationSubmitted($this->incident_id, $this->aggregateRootUuid(), $supervisor));
+        Notification::send($admins, new InvestigationSubmittedNotification($this->incident_id, $this->aggregateRootUuid(), $supervisor));
     }
 }

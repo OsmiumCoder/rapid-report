@@ -1,10 +1,10 @@
 <x-mail::message>
-# Incident Submitted
+# Investigation Returned
 
-A new incident has been submitted.
+{!! $message !!}
 
 <x-mail::button :url="$url">
-View Incident
+View Investigation
 </x-mail::button>
 
 Thanks,<br>

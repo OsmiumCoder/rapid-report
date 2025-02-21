@@ -3,18 +3,12 @@
 namespace App\Notifications\RootCauseAnalysis;
 
 use App\Models\User;
-use Illuminate\Bus\Queueable;
+use App\Notifications\BaseNotification;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\VonageMessage;
-use Illuminate\Notifications\Notification;
 
-class RootCauseAnalysisSubmitted extends Notification
+class RootCauseAnalysisSubmittedNotification extends BaseNotification
 {
-    use Queueable;
-
-    public string $message;
-    public string $url;
-
     /**
      * Create a new notification instance.
      */
