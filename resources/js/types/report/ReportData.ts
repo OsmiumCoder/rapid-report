@@ -1,6 +1,6 @@
 export default interface ReportData {
-    timeline_start?: string;
-    timeline_end?: string;
+    start?: string;
+    end?: string;
     happened_at?: boolean;
     work_related?: boolean;
     personal_individual_information?: boolean;
@@ -15,5 +15,4 @@ export default interface ReportData {
     closed_at?: boolean;
     created_at?: boolean;
     updated_at?: boolean;
-    deleted_at?: boolean;
 }

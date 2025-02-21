@@ -7,8 +7,8 @@ import {Head, useForm} from '@inertiajs/react';
 
 export default function Index() {
     const { data: formData, setData } = useForm({
-        timeline_start: dateFormat(dayjs(Date.now()).subtract(1).toDate()),
-        timeline_end: dateFormat(Date.now()),
+        start: dateFormat(dayjs(Date.now()).subtract(1).toDate()),
+        end: dateFormat(Date.now()),
         happened_at: false,
         work_related: false,
         personal_individual_information: false,
@@ -23,7 +23,6 @@ export default function Index() {
         closed_at: false,
         created_at: false,
         updated_at: false,
-        deleted_at: false,
     });
 
     const setFormData = (key: keyof ReportData, value: any) => setData(key, value);

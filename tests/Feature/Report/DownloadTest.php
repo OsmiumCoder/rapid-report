@@ -7,7 +7,7 @@ use App\Models\User;
 use Inertia\Testing\AssertableInertia;
 use Tests\TestCase;
 
-class ReportDataTest extends TestCase
+class DownloadTest extends TestCase
 {
     public function test_statistics_page_receives_all_incidents()
     {
@@ -27,7 +27,7 @@ class ReportDataTest extends TestCase
         });
     }
 
-    public function test_forbidden_if_basic_user_access_reports_page()
+    public function test_forbidden_if_basic_user_access_stats_page()
     {
         $user = User::factory()->create([
             'name' => 'user',
@@ -38,11 +38,11 @@ class ReportDataTest extends TestCase
 
         Incident::factory()->count(10)->create();
 
-        $response = $this->get(route('report.index'));
+        $response = $this->get(route('report.stats'));
 
         $response->assertForbidden();
     }
-    public function test_forbidden_if_supervisor_access_reports_page()
+    public function test_forbidden_if_supervisor_access_stats_page()
     {
         $supervisor = User::factory()->create()->syncRoles('supervisor');
 
@@ -50,7 +50,7 @@ class ReportDataTest extends TestCase
 
         Incident::factory()->count(10)->create();
 
-        $response = $this->get(route('report.index'));
+        $response = $this->get(route('report.stats'));
 
         $response->assertForbidden();
     }

@@ -56,10 +56,10 @@ class ReportController extends Controller
                 $headers = array_merge($headers, $person_headers);
             }
 
-            $timeline_start = DateTimeImmutable::createFromFormat("Y-m-d", $exportData->timeline_start);
-            $timeline_end = DateTimeImmutable::createFromFormat("Y-m-d", $exportData->timeline_end);
+            $start = DateTimeImmutable::createFromFormat("Y-m-d", $exportData->start);
+            $end = DateTimeImmutable::createFromFormat("Y-m-d", $exportData->end);
 
-            unset($export_array_data['timeline_start'], $export_array_data['timeline_end'],$export_array_data['personal_individual_information']);
+            unset($export_array_data['start'], $export_array_data['end'],$export_array_data['personal_individual_information']);
 
             $i = 1;
             foreach ($export_array_data as $key => $value) {
@@ -73,9 +73,9 @@ class ReportController extends Controller
                 $i++;
             }
 
-            Incident::where('created_at', '>', $timeline_start)
-                ->where('created_at', '<', $timeline_end)
-                ->chunk(1000, function ($incidents) use ($exportData, $spreadsheet, $sheet, $headers, $timeline_start, $timeline_end) {
+            Incident::where('created_at', '>', $start)
+                ->where('created_at', '<', $end)
+                ->chunk(1000, function ($incidents) use ($exportData, $spreadsheet, $sheet, $headers, $start, $end) {
                     $row = 2;
                     foreach ($incidents as $incident) {
                         $col = 1;
@@ -154,8 +154,8 @@ class ReportController extends Controller
                 $headers = array_merge($headers, $person_headers);
             }
 
-            $timeline_start = DateTimeImmutable::createFromFormat("Y-m-d", $exportData -> timeline_start);
-            $timeline_end = DateTimeImmutable::createFromFormat("Y-m-d", $exportData -> timeline_end);
+            $timeline_start = DateTimeImmutable::createFromFormat("Y-m-d", $exportData -> start);
+            $timeline_end = DateTimeImmutable::createFromFormat("Y-m-d", $exportData -> end);
             unset($arrayData['timeline_start'], $arrayData['timeline_end'],$arrayData['personal_individual_information']);
 
             foreach ($arrayData as $key => $value) {

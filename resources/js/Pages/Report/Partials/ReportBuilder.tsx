@@ -81,8 +81,8 @@ export default function ReportBuilder({ formData, setFormData }: ReportBuilderPr
     };
 
     useEffect(() => {
-        setFormData('timeline_start', timeline.startDate.format('YYYY-MM-DD'));
-        setFormData('timeline_end', timeline.endDate.format('YYYY-MM-DD'));
+        setFormData('start', timeline.startDate.format('YYYY-MM-DD'));
+        setFormData('end', timeline.endDate.format('YYYY-MM-DD'));
     }, [timeline]);
 
     const downloadExcel = async () => {
@@ -142,17 +142,20 @@ export default function ReportBuilder({ formData, setFormData }: ReportBuilderPr
     const numIters = Array.from({ length: 12 }, (_, i) => i + 1);
 
     const formItems = (Object.keys(formData) as Array<keyof ReportData>).filter(
-        (key) => key !== 'timeline_start' && key !== 'timeline_end'
+        (key) => key !== 'start' && key !== 'end'
+
     );
 
     const formBlocks = formItems.map((key) => (
+
         <li key={key}>
-            <ReportBuildingBlock
-                reportDataKey={key}
-                formData={formData}
-                setFormData={setFormData}
-            />
-        </li>
+        <ReportBuildingBlock
+            reportDataKey={key}
+            formData={formData}
+            setFormData={setFormData}
+        />
+    </li>
+
     ));
 
     return (

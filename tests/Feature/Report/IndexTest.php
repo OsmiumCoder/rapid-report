@@ -1,0 +1,66 @@
+<?php
+
+namespace Report;
+
+use App\Models\Incident;
+use App\Models\User;
+use Inertia\Testing\AssertableInertia;
+use Tests\TestCase;
+
+class IndexTest extends TestCase
+{
+    public function test_report_index_returns_correct_component()
+    {
+        $user = User::factory()->create()->syncRoles('admin');
+
+        $this->actingAs($user);
+
+        Incident::factory()->count(10)->create();
+
+        $response = $this->get(route('report.index'));
+
+        $response->assertOk();
+        $response->assertInertia(function (AssertableInertia $page) {
+            $page->component('Report/Index');
+        });
+    }
+    public function test_admin_can_view_report_index()
+    {
+        $user = User::factory()->create()->syncRoles('admin');
+
+        $this->actingAs($user);
+
+        Incident::factory()->count(10)->create();
+
+        $response = $this->get(route('report.index'));
+
+        $response->assertOk();
+    }
+    public function test_forbidden_if_basic_user_access_reports_page()
+    {
+        $user = User::factory()->create([
+            'name' => 'user',
+            'email' => 'user@b.com',
+        ])->syncRoles('user');
+
+        $this->actingAs($user);
+
+        Incident::factory()->count(10)->create();
+
+        $response = $this->get(route('report.index'));
+
+        $response->assertForbidden();
+    }
+    public function test_forbidden_if_supervisor_access_reports_page()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
+        $this->actingAs($supervisor);
+
+        Incident::factory()->count(10)->create();
+
+        $response = $this->get(route('report.index'));
+
+        $response->assertForbidden();
+    }
+}
