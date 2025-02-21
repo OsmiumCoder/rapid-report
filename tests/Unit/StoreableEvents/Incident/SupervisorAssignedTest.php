@@ -19,6 +19,7 @@ class SupervisorAssignedTest extends TestCase
 
         $event = new SupervisorAssigned($supervisor->id);
         $event->setAggregateRootUuid($incident->id);
+        $event->setMetaData([...$event->metaData(), 'user_id' => $supervisor->id]);
 
         $this->assertDatabaseCount('comments', 0);
 
@@ -43,10 +44,12 @@ class SupervisorAssignedTest extends TestCase
     {
         $supervisor = User::factory()->create()->syncRoles('supervisor');
         $incident = Incident::factory()->create();
+
         $this->assertEquals(Opened::class, $incident->status::class);
 
         $event = new SupervisorAssigned($supervisor->id);
         $event->setAggregateRootUuid($incident->id);
+        $event->setMetaData([...$event->metaData(), 'user_id' => $supervisor->id]);
         $event->handle();
 
         $incident->refresh();
@@ -59,6 +62,7 @@ class SupervisorAssignedTest extends TestCase
 
         $event = new SupervisorAssigned($supervisor->id);
         $event->setAggregateRootUuid($incident->id);
+        $event->setMetaData([...$event->metaData(), 'user_id' => $supervisor->id]);
         $event->handle();
 
         $incident->refresh();

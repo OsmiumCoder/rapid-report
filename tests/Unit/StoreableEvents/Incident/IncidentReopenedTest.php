@@ -27,6 +27,7 @@ class IncidentReopenedTest extends TestCase
 
         $event = new IncidentReopened;
         $event->setAggregateRootUuid($incident->id);
+        $event->setMetaData([...$event->metaData(), 'user_id' => $supervisor->id]);
         $event->handle();
     }
 
@@ -41,6 +42,7 @@ class IncidentReopenedTest extends TestCase
 
         $event = new IncidentReopened;
         $event->setAggregateRootUuid($incident->id);
+        $event->setMetaData([...$event->metaData(), 'user_id' => $supervisor->id]);
         $event->handle();
 
         $incident->refresh();
@@ -65,6 +67,7 @@ class IncidentReopenedTest extends TestCase
 
         $event = new IncidentReopened;
         $event->setAggregateRootUuid($incident->id);
+        $event->setMetaData([...$event->metaData(), 'user_id' => $supervisor->id]);
         $event->handle();
 
         $incident->refresh();

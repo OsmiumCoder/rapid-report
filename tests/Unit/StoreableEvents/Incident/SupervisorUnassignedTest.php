@@ -23,6 +23,7 @@ class SupervisorUnassignedTest extends TestCase
         $event = new SupervisorUnassigned;
 
         $event->setAggregateRootUuid($incident->id);
+        $event->setMetaData([...$event->metaData(), 'user_id' => $supervisor->id]);
         $event->handle();
 
         $incident->refresh();
@@ -46,6 +47,7 @@ class SupervisorUnassignedTest extends TestCase
         $event = new SupervisorUnassigned;
 
         $event->setAggregateRootUuid($incident->id);
+        $event->setMetaData([...$event->metaData(), 'user_id' => $supervisor->id]);
         $event->handle();
 
         $incident->refresh();
