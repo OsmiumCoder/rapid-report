@@ -10,6 +10,7 @@ use App\Enum\IncidentType;
 use App\Exceptions\UserNotSupervisorException;
 use App\Mail\IncidentReceived;
 use App\Models\Incident;
+use App\Models\Investigation;
 use App\Models\User;
 use App\Notifications\Incident\IncidentReviewRequestNotification;
 use App\Notifications\Incident\IncidentSubmittedNotification;
@@ -163,8 +164,15 @@ class IncidentAggregateRootTest extends TestCase
 
     public function test_return_investigation_sets_returned_status()
     {
+        $admin = User::factory()->create()->syncRoles('admin');
+        $this->actingAs($admin);
+
         $incident = Incident::factory()->create([
             'status' => InReview::class,
+        ]);
+
+        Investigation::factory()->create([
+            'incident_id' => $incident->id,
         ]);
 
         IncidentAggregateRoot::retrieve($incident->id)
@@ -178,8 +186,18 @@ class IncidentAggregateRootTest extends TestCase
 
     public function test_return_investigation_adds_returned_comment()
     {
+        $admin = User::factory()->create()->syncRoles('admin');
+        $this->actingAs($admin);
+
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
         $incident = Incident::factory()->create([
             'status' => InReview::class,
+            'supervisor_id' => $supervisor->id,
+        ]);
+
+        Investigation::factory()->create([
+            'incident_id' => $incident->id,
         ]);
 
         IncidentAggregateRoot::retrieve($incident->id)

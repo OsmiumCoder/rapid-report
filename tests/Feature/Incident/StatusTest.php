@@ -47,7 +47,7 @@ class StatusTest extends TestCase
         Notification::assertNothingSent();
 
         $response = $this->patch(route('incidents.return-investigation', ['incident' => $incident]));
-        $response->assertOk();
+        $response->assertRedirect();
 
         $incident->refresh();
 
@@ -511,6 +511,10 @@ class StatusTest extends TestCase
             'status' => InReview::class,
         ]);
 
+        Investigation::factory()->create([
+            'incident_id' => $incident->id,
+        ]);
+
         $response = $this->patch(route('incidents.return-investigation', ['incident' => $incident]));
 
         $response->assertRedirect();
@@ -619,6 +623,10 @@ class StatusTest extends TestCase
             'status' => InReview::class,
         ]);
 
+        Investigation::factory()->create([
+            'incident_id' => $incident->id,
+        ]);
+
         $response = $this->patch(route('incidents.return-investigation', ['incident' => $incident]));
 
         $response->assertRedirect();
@@ -643,6 +651,10 @@ class StatusTest extends TestCase
 
         $incident = Incident::factory()->create([
             'status' => InReview::class,
+        ]);
+
+        Investigation::factory()->create([
+            'incident_id' => $incident->id,
         ]);
 
         $response = $this->patch(route('incidents.return-investigation', ['incident' => $incident]));
