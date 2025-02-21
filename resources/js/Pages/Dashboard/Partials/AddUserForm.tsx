@@ -4,12 +4,12 @@ import TextInput from '@/Components/TextInput';
 import InputError from '@/Components/InputError';
 import SecondaryButton from '@/Components/SecondaryButton';
 import React, { FormEventHandler, useRef, useState } from 'react';
-import {router, useForm} from '@inertiajs/react';
+import { router, useForm } from '@inertiajs/react';
 import PrimaryButton from '@/Components/PrimaryButton';
 import DangerButton from '@/Components/DangerButton';
-import {Role} from "@/types";
-import {uppercaseWordFormat} from "@/Filters/uppercaseWordFormat";
-import SelectInput from "@/Components/SelectInput";
+import { Role } from '@/types';
+import { uppercaseWordFormat } from '@/Filters/uppercaseWordFormat';
+import SelectInput from '@/Components/SelectInput';
 
 interface AddUserFormProps {
     roles: Role[];
@@ -160,6 +160,7 @@ export default function AddUserForm({ roles }: AddUserFormProps) {
                         <SelectInput
                             value={data.role}
                             onChange={(e) => setData('role', e.target.value)}
+                            className="w-full"
                         >
                             {roles.map(({ name }, index) => (
                                 <option

@@ -103,6 +103,7 @@ export default function IncidentInformationStage({
                                 descriptors.find(({ name }) => name === e.target.value)?.value
                             );
                         }}
+                        className="w-full"
                     >
                         {descriptors.map(({ name }, index) => (
                             <option key={index}>{name}</option>
@@ -121,6 +122,7 @@ export default function IncidentInformationStage({
                     <SelectInput
                         value={formData.descriptor}
                         onChange={(e) => setFormData('descriptor', e.target.value)}
+                        className="w-full"
                     >
                         {descriptors.map(
                             ({ options, value }) =>

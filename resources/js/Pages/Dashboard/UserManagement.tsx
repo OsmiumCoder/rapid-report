@@ -103,6 +103,7 @@ export default function UserManagement({ users, roles }: UserManagementProps) {
                                                                 { role: e.target.value }
                                                             );
                                                         }}
+                                                        className="w-full"
                                                     >
                                                         {roles.map(({ name }, index) => (
                                                             <option

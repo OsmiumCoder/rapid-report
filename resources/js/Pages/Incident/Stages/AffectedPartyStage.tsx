@@ -258,6 +258,7 @@ export default function AffectedPartyStage({
                                         roles.find(({ name }) => name === e.target.value)?.value
                                     )
                                 }
+                                className="w-full"
                             >
                                 {roles.map(({ name }, index) => (
                                     <option key={index}>{name}</option>

@@ -1,10 +1,35 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Incident } from '@/types/incident/Incident';
+import type ReportData from '@/types/report/ReportData';
+import ReportBuilder from '@/Pages/Report/Partials/ReportBuilder';
+import dateFormat from '@/Filters/dateFormat';
+import dayjs from 'dayjs';
+import {Head, useForm} from '@inertiajs/react';
 
-export default function Index({ incidents }: { incidents: Incident[] }) {
+export default function Index() {
+    const { data: formData, setData } = useForm({
+        start: dateFormat(dayjs(Date.now()).subtract(1).toDate()),
+        end: dateFormat(Date.now()),
+        happened_at: false,
+        work_related: false,
+        personal_individual_information: false,
+        workers_comp_submitted: false,
+        location: false,
+        room_number: false,
+        incident_type: false,
+        descriptor: false,
+        description: false,
+        injury_description: false,
+        first_aid_description: false,
+        closed_at: false,
+        created_at: false,
+        updated_at: false,
+    });
+
+    const setFormData = (key: keyof ReportData, value: any) => setData(key, value);
     return (
         <AuthenticatedLayout>
-            <pre>{JSON.stringify(incidents, null, 2)}</pre>
+            <Head title="Reports" />
+            <ReportBuilder formData={formData} setFormData={setFormData} />
         </AuthenticatedLayout>
     );
 }

@@ -7,9 +7,9 @@ use App\Models\User;
 use Inertia\Testing\AssertableInertia;
 use Tests\TestCase;
 
-class ReportDataTest extends TestCase
+class StatsTest extends TestCase
 {
-    public function test_report_page_receives_all_incidents()
+    public function test_statistics_page_receives_all_incidents()
     {
         $admin = User::factory()->create()->syncRoles('admin');
 
@@ -17,17 +17,17 @@ class ReportDataTest extends TestCase
 
         Incident::factory()->count(40)->create();
 
-        $response = $this->get(route('reports.index'));
+        $response = $this->get(route('report.stats'));
 
         $response->assertStatus(200);
 
         $response->assertInertia(function (AssertableInertia $page) {
-            $page->component('Report/Index')
+            $page->component('Report/Stats')
                 ->has('incidents', 40);
         });
     }
 
-    public function test_forbidden_if_basic_user_access_reports_page()
+    public function test_forbidden_if_basic_user_access_stats_page()
     {
         $user = User::factory()->create([
             'name' => 'user',
@@ -38,11 +38,11 @@ class ReportDataTest extends TestCase
 
         Incident::factory()->count(10)->create();
 
-        $response = $this->get(route('reports.index'));
+        $response = $this->get(route('report.stats'));
 
         $response->assertForbidden();
     }
-    public function test_forbidden_if_supervisor_access_reports_page()
+    public function test_forbidden_if_supervisor_access_stats_page()
     {
         $supervisor = User::factory()->create()->syncRoles('supervisor');
 
@@ -50,7 +50,7 @@ class ReportDataTest extends TestCase
 
         Incident::factory()->count(10)->create();
 
-        $response = $this->get(route('reports.index'));
+        $response = $this->get(route('report.stats'));
 
         $response->assertForbidden();
     }
