@@ -4,8 +4,8 @@ namespace Tests\Unit\StoreableEvents\Investigation;
 
 use App\Enum\CommentType;
 use App\Models\Incident;
-use App\Models\Investigation;
 use App\Models\User;
+use App\Models\Investigation;
 use App\Notifications\Investigation\InvestigationReturnedNotification;
 use App\States\IncidentStatus\Assigned;
 use App\States\IncidentStatus\InReview;
@@ -54,23 +54,29 @@ class InvestigationReturnedTest extends TestCase
     {
         $this->expectException(TransitionNotFound::class);
 
+        $admin = User::factory()->create();
+
         $incident = Incident::factory()->create([
             'status' => Assigned::class,
         ]);
 
         $event = new InvestigationReturned;
         $event->setAggregateRootUuid($incident->id);
+        $event->setMetaData([...$event->metaData(), 'user_id' => $admin->id]);
         $event->handle();
     }
 
     public function test_returning_investigation_adds_returned_comment()
     {
+        $admin = User::factory()->create();
+
         $incident = Incident::factory()->create([
             'status' => InReview::class,
         ]);
 
         $event = new InvestigationReturned;
         $event->setAggregateRootUuid($incident->id);
+        $event->setMetaData([...$event->metaData(), 'user_id' => $admin->id]);
         $event->handle();
 
         $incident->refresh();
@@ -86,12 +92,15 @@ class InvestigationReturnedTest extends TestCase
 
     public function test_returns_incident_investigation()
     {
+        $admin = User::factory()->create();
+
         $incident = Incident::factory()->create([
             'status' => InReview::class,
         ]);
 
         $event = new InvestigationReturned;
         $event->setAggregateRootUuid($incident->id);
+        $event->setMetaData([...$event->metaData(), 'user_id' => $admin->id]);
         $event->handle();
 
         $incident->refresh();

@@ -28,7 +28,7 @@ class InvestigationReturned extends StoredEvent
 
         $comment = new Comment;
 
-        $comment->user_id = $this->metaData['user_id'] ?? null;
+        $comment->user_id = $this->metaData['user_id'];
         $comment->type = CommentType::ACTION;
         $comment->content = 'Incident was returned for re-investigation.';
 

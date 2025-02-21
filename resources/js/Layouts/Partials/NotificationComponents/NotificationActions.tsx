@@ -10,7 +10,11 @@ export default function NotificationActions() {
         try {
             router.delete(route('notifications.destroy-all'), {
                 onSuccess: () =>
-                    router.reload({ only: ['notifications, notifications_paginator'] }),
+                    router.reload({
+                        only: ['notifications', 'notifications_paginator'],
+                        reset: ['notifications', 'notifications_paginator'],
+                        data: { notifications: 1 },
+                    }),
             });
         } catch (error) {
             console.error(error);
@@ -22,8 +26,9 @@ export default function NotificationActions() {
             router.put(route('notifications.mark-all-read'), undefined, {
                 onSuccess: () =>
                     router.reload({
-                        only: ['notifications, notifications_paginator'],
-                        reset: ['notifications'],
+                        only: ['notifications', 'notifications_paginator'],
+                        reset: ['notifications', 'notifications_paginator'],
+                        data: { notifications: 1 },
                     }),
             });
         } catch (error) {
