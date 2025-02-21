@@ -23,6 +23,12 @@ Route::get('/notification', function () {
         lastName: null,
     );
 
+    $incidentAssigned = new \App\Notifications\Incident\SupervisorAssignedNotification(
+        incidentId: $incident->id,
+        admin: $admin,
+        supervisor: $supervisor,
+    );
+
     $investigationSubmitted = new \App\Notifications\Investigation\InvestigationSubmittedNotification(
         incidentId: $incident->id,
         investigationId: $investigation->id,
@@ -45,7 +51,8 @@ Route::get('/notification', function () {
     // return $userAdded->render();
     // return $incidentSubmitted->toMail($supervisor);
     //     return $investigationSubmitted->toMail($supervisor);
-    return $investigationReturned->toMail();
+    //    return $investigationReturned->toMail();
+    //    return $incidentAssigned->toMail();
     // return $rcaSubmitted->toMail($supervisor);
 
 });
