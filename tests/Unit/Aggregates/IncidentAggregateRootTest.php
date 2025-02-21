@@ -11,8 +11,8 @@ use App\Exceptions\UserNotSupervisorException;
 use App\Mail\IncidentReceived;
 use App\Models\Incident;
 use App\Models\User;
-use App\Notifications\Incident\IncidentReviewRequest;
-use App\Notifications\Incident\IncidentSubmitted;
+use App\Notifications\Incident\IncidentReviewRequestNotification;
+use App\Notifications\Incident\IncidentSubmittedNotification;
 use App\States\IncidentStatus\Assigned;
 use App\States\IncidentStatus\Closed;
 use App\States\IncidentStatus\InReview;
@@ -61,7 +61,7 @@ class IncidentAggregateRootTest extends TestCase
 
         Notification::assertSentTo(
             $admins,
-            function (IncidentReviewRequest $notification, array $channels) use ($incident, $admins, $supervisor) {
+            function (IncidentReviewRequestNotification $notification, array $channels) use ($incident, $admins, $supervisor) {
                 $databaseStore = $notification->toArray($admins->first());
 
                 $this->assertEquals(route('incidents.show', $incident->id), $databaseStore['url']);
@@ -94,11 +94,11 @@ class IncidentAggregateRootTest extends TestCase
 
         Notification::assertCount(3);
 
-        Notification::assertSentTo($admins, IncidentReviewRequest::class);
+        Notification::assertSentTo($admins, IncidentReviewRequestNotification::class);
 
         Notification::assertSentTo(
             $admins,
-            function (IncidentReviewRequest $notification, array $channels) use ($incident, $supervisor) {
+            function (IncidentReviewRequestNotification $notification, array $channels) use ($incident, $supervisor) {
                 return $notification->incidentId === $incident->id && $notification->supervisor->id === $supervisor->id;
             }
         );
@@ -780,8 +780,8 @@ class IncidentAggregateRootTest extends TestCase
         Mail::assertSent(IncidentReceived::class, 1);
         Mail::assertSent(IncidentReceived::class, $user->email);
 
-        Notification::assertSentTo($admins, IncidentSubmitted::class);
-        Notification::assertNotSentTo($user, IncidentSubmitted::class);
+        Notification::assertSentTo($admins, IncidentSubmittedNotification::class);
+        Notification::assertNotSentTo($user, IncidentSubmittedNotification::class);
     }
 
     public function test_create_incident_sends_no_mail_on_reporters_email_not_set(): void
@@ -863,6 +863,6 @@ class IncidentAggregateRootTest extends TestCase
             ->createIncident($incidentData)
             ->persist();
 
-        Notification::assertSentTo($admins, IncidentSubmitted::class);
+        Notification::assertSentTo($admins, IncidentSubmittedNotification::class);
     }
 }
