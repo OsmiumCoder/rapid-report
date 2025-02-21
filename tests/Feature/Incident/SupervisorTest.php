@@ -6,11 +6,89 @@ use App\Enum\CommentType;
 use App\Exceptions\UserNotSupervisorException;
 use App\Models\Incident;
 use App\Models\User;
+use App\Notifications\Incident\SupervisorAssignedNotification;
 use App\States\IncidentStatus\Assigned;
+use App\States\IncidentStatus\Opened;
+use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 class SupervisorTest extends TestCase
 {
+    public function test_assigning_incident_stores_notification_in_database()
+    {
+        Notification::fake();
+
+        $admin = User::factory()->create()->syncRoles('admin');
+
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
+        $this->actingAs($admin);
+
+        $incident = Incident::factory()->create([
+            'status' => Opened::class
+        ]);
+
+
+        Notification::assertNothingSent();
+
+        $response = $this->patch(route('incidents.assign-supervisor', ['incident' => $incident, 'supervisor_id' => $supervisor->id]));
+        $response->assertRedirect();
+
+        $incident->refresh();
+
+        Notification::assertCount(1);
+
+        Notification::assertSentTo(
+            $supervisor,
+            function (SupervisorAssignedNotification $notification, array $channels) use ($incident, $supervisor) {
+                $databaseStore = $notification->toArray($supervisor);
+
+                $this->assertEquals(
+                    route('incidents.show', ['incident' => $incident->id]),
+                    $databaseStore['url']
+                );
+
+                return array_key_exists('message', $databaseStore);
+            }
+        );
+    }
+
+    public function test_assigning_incident_sends_notification_to_supervisor()
+    {
+        Notification::fake();
+
+        $admin = User::factory()->create()->syncRoles('admin');
+
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
+        $this->actingAs($admin);
+
+        $incident = Incident::factory()->create([
+            'status' => Opened::class
+        ]);
+
+
+        Notification::assertNothingSent();
+
+        $response = $this->patch(route('incidents.assign-supervisor', ['incident' => $incident, 'supervisor_id' => $supervisor->id]));
+        $response->assertRedirect();
+
+        $incident->refresh();
+
+        Notification::assertCount(1);
+
+        Notification::assertSentTo(
+            $supervisor,
+            function (SupervisorAssignedNotification $notification, array $channels) use ($incident, $supervisor, $admin) {
+                return (
+                    $notification->incidentId === $incident->id &&
+                    $notification->admin->id === $admin->id &&
+                    $notification->supervisor->id == $supervisor->id
+                );
+            }
+        );
+    }
+
     public function test_adds_unassigned_comment()
     {
         $admin = User::factory()->create()->syncRoles('admin');
