@@ -36,8 +36,7 @@ class CommentCreated extends StoredEvent
     public function react()
     {
         $commentable = $this->commentable_type::find($this->commentable_id);
-        $commenter = User::find($this->metaData['user_id'] ?? null);
-
+        $commenter = User::find($this->metaData['user_id']);
 
         if ($commentable) {
             $url = route('incidents.show', ['incident' => $this->commentable_id]);
