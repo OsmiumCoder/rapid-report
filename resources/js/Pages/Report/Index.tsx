@@ -3,7 +3,7 @@ import type ReportData from '@/types/report/ReportData';
 import ReportBuilder from '@/Pages/Report/Partials/ReportBuilder';
 import dateFormat from '@/Filters/dateFormat';
 import dayjs from 'dayjs';
-import { useForm } from '@inertiajs/react';
+import {Head, useForm} from '@inertiajs/react';
 
 export default function Index() {
     const { data: formData, setData } = useForm({
@@ -29,6 +29,7 @@ export default function Index() {
     const setFormData = (key: keyof ReportData, value: any) => setData(key, value);
     return (
         <AuthenticatedLayout>
+            <Head title="Reports" />
             <ReportBuilder formData={formData} setFormData={setFormData} />
         </AuthenticatedLayout>
     );
