@@ -9,7 +9,7 @@ use App\Mail\IncidentReceived;
 use App\Models\CustomStoredEvent;
 use App\Models\Incident;
 use App\Models\User;
-use App\Notifications\Incident\IncidentSubmitted;
+use App\Notifications\Incident\IncidentSubmittedNotification;
 use App\States\IncidentStatus\Opened;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
@@ -486,6 +486,6 @@ class StoreTest extends TestCase
 
         $response = $this->post(route('incidents.store'), $incidentData->toArray());
 
-        Notification::assertSentTo($admins, IncidentSubmitted::class);
+        Notification::assertSentTo($admins, IncidentSubmittedNotification::class);
     }
 }

@@ -6,7 +6,7 @@ use App\Enum\CommentType;
 use App\Models\Comment;
 use App\Models\Incident;
 use App\Models\User;
-use App\Notifications\Incident\IncidentReviewRequest;
+use App\Notifications\Incident\IncidentReviewRequestNotification;
 use App\States\IncidentStatus\InReview;
 use App\StorableEvents\StoredEvent;
 use Illuminate\Support\Facades\Notification;
@@ -42,6 +42,6 @@ class IncidentReviewRequested extends StoredEvent
 
         $supervisor = User::find($this->metaData['user_id']);
 
-        Notification::send($admins, new IncidentReviewRequest($this->aggregateRootUuid(), $supervisor));
+        Notification::send($admins, new IncidentReviewRequestNotification($this->aggregateRootUuid(), $supervisor));
     }
 }

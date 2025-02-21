@@ -1,11 +1,11 @@
 <?php
 
-namespace StoreableEvents\Incident;
+namespace Tests\Unit\StoreableEvents\Incident;
 
 use App\Enum\CommentType;
 use App\Models\Incident;
 use App\Models\User;
-use App\Notifications\Incident\IncidentReviewRequest;
+use App\Notifications\Incident\IncidentReviewRequestNotification;
 use App\States\IncidentStatus\Assigned;
 use App\States\IncidentStatus\InReview;
 use App\States\IncidentStatus\Opened;
@@ -42,7 +42,7 @@ class IncidentReviewRequestedTest extends TestCase
 
         Notification::assertSentTo(
             $admins,
-            function (IncidentReviewRequest $notification, array $channels) use ($incident, $admins, $supervisor) {
+            function (IncidentReviewRequestNotification $notification, array $channels) use ($incident, $admins, $supervisor) {
                 $databaseStore = $notification->toArray($admins->first());
 
                 $this->assertEquals(route('incidents.show', $incident->id), $databaseStore['url']);
@@ -78,7 +78,7 @@ class IncidentReviewRequestedTest extends TestCase
 
         Notification::assertSentTo(
             $admins,
-            function (IncidentReviewRequest $notification, array $channels) use ($incident, $supervisor) {
+            function (IncidentReviewRequestNotification $notification, array $channels) use ($incident, $supervisor) {
                 return $notification->incidentId === $incident->id && $notification->supervisor->id === $supervisor->id;
             }
         );

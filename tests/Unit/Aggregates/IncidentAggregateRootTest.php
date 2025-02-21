@@ -10,9 +10,11 @@ use App\Enum\IncidentType;
 use App\Exceptions\UserNotSupervisorException;
 use App\Mail\IncidentReceived;
 use App\Models\Incident;
+use App\Models\Investigation;
 use App\Models\User;
-use App\Notifications\Incident\IncidentReviewRequest;
-use App\Notifications\Incident\IncidentSubmitted;
+use App\Notifications\Incident\IncidentReviewRequestNotification;
+use App\Notifications\Incident\IncidentSubmittedNotification;
+use App\Notifications\Investigation\InvestigationReturnedNotification;
 use App\States\IncidentStatus\Assigned;
 use App\States\IncidentStatus\Closed;
 use App\States\IncidentStatus\InReview;
@@ -34,6 +36,32 @@ use Tests\TestCase;
 
 class IncidentAggregateRootTest extends TestCase
 {
+    public function test_sends_investigation_returned_notification_to_supervisor()
+    {
+        Notification::fake();
+        $admin = User::factory()->create()->syncRoles('admin');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+        $this->actingAs($admin);
+
+        $incident = Incident::factory()->create(['status' => InReview::class, 'supervisor_id' => $supervisor->id]);
+
+        Investigation::factory()->create([
+            'incident_id' => $incident->id,
+            'supervisor_id' => $supervisor->id
+        ]);
+
+        Notification::assertNothingSent();
+
+        IncidentAggregateRoot::retrieve($incident->id)
+            ->returnInvestigation()
+            ->persist();
+
+        Notification::assertCount(1);
+
+        Notification::assertSentTo($supervisor, InvestigationReturnedNotification::class);
+
+    }
+
     public function test_stores_request_notification_in_database()
     {
         Notification::fake();
@@ -61,7 +89,7 @@ class IncidentAggregateRootTest extends TestCase
 
         Notification::assertSentTo(
             $admins,
-            function (IncidentReviewRequest $notification, array $channels) use ($incident, $admins, $supervisor) {
+            function (IncidentReviewRequestNotification $notification, array $channels) use ($incident, $admins, $supervisor) {
                 $databaseStore = $notification->toArray($admins->first());
 
                 $this->assertEquals(route('incidents.show', $incident->id), $databaseStore['url']);
@@ -94,11 +122,11 @@ class IncidentAggregateRootTest extends TestCase
 
         Notification::assertCount(3);
 
-        Notification::assertSentTo($admins, IncidentReviewRequest::class);
+        Notification::assertSentTo($admins, IncidentReviewRequestNotification::class);
 
         Notification::assertSentTo(
             $admins,
-            function (IncidentReviewRequest $notification, array $channels) use ($incident, $supervisor) {
+            function (IncidentReviewRequestNotification $notification, array $channels) use ($incident, $supervisor) {
                 return $notification->incidentId === $incident->id && $notification->supervisor->id === $supervisor->id;
             }
         );
@@ -163,8 +191,15 @@ class IncidentAggregateRootTest extends TestCase
 
     public function test_return_investigation_sets_returned_status()
     {
+        $admin = User::factory()->create()->syncRoles('admin');
+        $this->actingAs($admin);
+
         $incident = Incident::factory()->create([
             'status' => InReview::class,
+        ]);
+
+        Investigation::factory()->create([
+            'incident_id' => $incident->id,
         ]);
 
         IncidentAggregateRoot::retrieve($incident->id)
@@ -178,8 +213,18 @@ class IncidentAggregateRootTest extends TestCase
 
     public function test_return_investigation_adds_returned_comment()
     {
+        $admin = User::factory()->create()->syncRoles('admin');
+        $this->actingAs($admin);
+
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
         $incident = Incident::factory()->create([
             'status' => InReview::class,
+            'supervisor_id' => $supervisor->id,
+        ]);
+
+        Investigation::factory()->create([
+            'incident_id' => $incident->id,
         ]);
 
         IncidentAggregateRoot::retrieve($incident->id)
@@ -299,6 +344,9 @@ class IncidentAggregateRootTest extends TestCase
 
     public function test_assign_supervisor_adds_assigned_comment()
     {
+        $admin = User::factory()->create()->syncRoles('admin');
+        $this->actingAs($admin);
+
         $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $incident = Incident::factory()->create();
@@ -500,6 +548,9 @@ class IncidentAggregateRootTest extends TestCase
 
     public function test_assign_supervisor_assigns_supervisor_to_incident()
     {
+        $admin = User::factory()->create()->syncRoles('admin');
+        $this->actingAs($admin);
+
         $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $incident = Incident::factory()->create();
@@ -780,8 +831,8 @@ class IncidentAggregateRootTest extends TestCase
         Mail::assertSent(IncidentReceived::class, 1);
         Mail::assertSent(IncidentReceived::class, $user->email);
 
-        Notification::assertSentTo($admins, IncidentSubmitted::class);
-        Notification::assertNotSentTo($user, IncidentSubmitted::class);
+        Notification::assertSentTo($admins, IncidentSubmittedNotification::class);
+        Notification::assertNotSentTo($user, IncidentSubmittedNotification::class);
     }
 
     public function test_create_incident_sends_no_mail_on_reporters_email_not_set(): void
@@ -863,6 +914,6 @@ class IncidentAggregateRootTest extends TestCase
             ->createIncident($incidentData)
             ->persist();
 
-        Notification::assertSentTo($admins, IncidentSubmitted::class);
+        Notification::assertSentTo($admins, IncidentSubmittedNotification::class);
     }
 }

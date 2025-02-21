@@ -5,13 +5,43 @@ namespace Tests\Unit\StoreableEvents\Incident;
 use App\Enum\CommentType;
 use App\Models\Incident;
 use App\Models\User;
+use App\Notifications\Incident\SupervisorAssignedNotification;
 use App\States\IncidentStatus\Assigned;
 use App\States\IncidentStatus\Opened;
 use App\StorableEvents\Incident\SupervisorAssigned;
+use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 class SupervisorAssignedTest extends TestCase
 {
+    public function test_returning_investigation_sends_investigation_returned_notification_to_supervisor()
+    {
+        Notification::fake();
+
+        $admin = User::factory()->create()->syncRoles('admin');
+
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
+        $incident = Incident::factory()->create([
+            'status' => Assigned::class,
+            'supervisor_id' => $supervisor->id
+        ]);
+
+        $event = new SupervisorAssigned($supervisor->id);
+
+        $event->setMetaData(['user_id' => $admin->id]);
+
+        $event->setAggregateRootUuid($incident->id);
+
+        Notification::assertNothingSent();
+
+        $event->react();
+
+        Notification::assertCount(1);
+
+        Notification::assertSentTo($supervisor, SupervisorAssignedNotification::class);
+    }
+
     public function test_adds_assigned_comment()
     {
         $supervisor = User::factory()->create()->syncRoles('supervisor');
@@ -19,6 +49,7 @@ class SupervisorAssignedTest extends TestCase
 
         $event = new SupervisorAssigned($supervisor->id);
         $event->setAggregateRootUuid($incident->id);
+        $event->setMetaData([...$event->metaData(), 'user_id' => $supervisor->id]);
 
         $this->assertDatabaseCount('comments', 0);
 
@@ -43,10 +74,12 @@ class SupervisorAssignedTest extends TestCase
     {
         $supervisor = User::factory()->create()->syncRoles('supervisor');
         $incident = Incident::factory()->create();
+
         $this->assertEquals(Opened::class, $incident->status::class);
 
         $event = new SupervisorAssigned($supervisor->id);
         $event->setAggregateRootUuid($incident->id);
+        $event->setMetaData([...$event->metaData(), 'user_id' => $supervisor->id]);
         $event->handle();
 
         $incident->refresh();
@@ -59,6 +92,7 @@ class SupervisorAssignedTest extends TestCase
 
         $event = new SupervisorAssigned($supervisor->id);
         $event->setAggregateRootUuid($incident->id);
+        $event->setMetaData([...$event->metaData(), 'user_id' => $supervisor->id]);
         $event->handle();
 
         $incident->refresh();

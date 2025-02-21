@@ -1,6 +1,6 @@
 <?php
 
-namespace Projectors;
+namespace Tests\Unit\Projectors;
 
 use App\Projectors\StoredEventProjector;
 use App\StorableEvents\StoredEvent;

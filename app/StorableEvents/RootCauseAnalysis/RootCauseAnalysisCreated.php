@@ -7,7 +7,7 @@ use App\Models\Comment;
 use App\Models\Incident;
 use App\Models\RootCauseAnalysis;
 use App\Models\User;
-use App\Notifications\RootCauseAnalysis\RootCauseAnalysisSubmitted;
+use App\Notifications\RootCauseAnalysis\RootCauseAnalysisSubmittedNotification;
 use App\StorableEvents\StoredEvent;
 use Illuminate\Support\Facades\Notification;
 
@@ -83,6 +83,6 @@ class RootCauseAnalysisCreated extends StoredEvent
 
         $supervisor = User::find($this->metaData['user_id']);
 
-        Notification::send($admins, new RootCauseAnalysisSubmitted($this->incident_id, $this->aggregateRootUuid(), $supervisor));
+        Notification::send($admins, new RootCauseAnalysisSubmittedNotification($this->incident_id, $this->aggregateRootUuid(), $supervisor));
     }
 }
