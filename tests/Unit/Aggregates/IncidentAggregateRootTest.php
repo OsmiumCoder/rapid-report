@@ -317,6 +317,9 @@ class IncidentAggregateRootTest extends TestCase
 
     public function test_assign_supervisor_adds_assigned_comment()
     {
+        $admin = User::factory()->create()->syncRoles('admin');
+        $this->actingAs($admin);
+
         $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $incident = Incident::factory()->create();
@@ -518,6 +521,9 @@ class IncidentAggregateRootTest extends TestCase
 
     public function test_assign_supervisor_assigns_supervisor_to_incident()
     {
+        $admin = User::factory()->create()->syncRoles('admin');
+        $this->actingAs($admin);
+
         $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $incident = Incident::factory()->create();

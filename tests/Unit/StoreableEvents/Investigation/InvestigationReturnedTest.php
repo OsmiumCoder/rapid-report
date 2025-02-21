@@ -7,14 +7,11 @@ use App\Models\Incident;
 use App\Models\Investigation;
 use App\Models\User;
 use App\Notifications\Investigation\InvestigationReturnedNotification;
-use App\Notifications\Investigation\InvestigationSubmittedNotification;
 use App\States\IncidentStatus\Assigned;
 use App\States\IncidentStatus\InReview;
 use App\States\IncidentStatus\Returned;
-use App\StorableEvents\Investigation\InvestigationCreated;
 use App\StorableEvents\Investigation\InvestigationReturned;
 use Illuminate\Support\Facades\Notification;
-use Illuminate\Support\Str;
 use Spatie\ModelStates\Exceptions\TransitionNotFound;
 use Tests\TestCase;
 

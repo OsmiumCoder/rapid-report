@@ -83,10 +83,10 @@ class StatusTest extends TestCase
             'status' => InReview::class
         ]);
 
-       Investigation::factory()->create([
-            'incident_id' => $incident->id,
-            'supervisor_id' => $supervisor->id,
-        ]);
+        Investigation::factory()->create([
+             'incident_id' => $incident->id,
+             'supervisor_id' => $supervisor->id,
+         ]);
 
         RootCauseAnalysis::factory()->create([
             'incident_id' => $incident->id,
