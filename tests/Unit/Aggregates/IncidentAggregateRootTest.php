@@ -14,6 +14,7 @@ use App\Models\Investigation;
 use App\Models\User;
 use App\Notifications\Incident\IncidentReviewRequestNotification;
 use App\Notifications\Incident\IncidentSubmittedNotification;
+use App\Notifications\Investigation\InvestigationReturnedNotification;
 use App\States\IncidentStatus\Assigned;
 use App\States\IncidentStatus\Closed;
 use App\States\IncidentStatus\InReview;
@@ -35,6 +36,32 @@ use Tests\TestCase;
 
 class IncidentAggregateRootTest extends TestCase
 {
+    public function test_sends_investigation_returned_notification_to_supervisor()
+    {
+        Notification::fake();
+        $admin = User::factory()->create()->syncRoles('admin');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+        $this->actingAs($admin);
+
+        $incident = Incident::factory()->create(['status' => InReview::class, 'supervisor_id' => $supervisor->id]);
+
+        Investigation::factory()->create([
+            'incident_id' => $incident->id,
+            'supervisor_id' => $supervisor->id
+        ]);
+
+        Notification::assertNothingSent();
+
+        IncidentAggregateRoot::retrieve($incident->id)
+            ->returnInvestigation()
+            ->persist();
+
+        Notification::assertCount(1);
+
+        Notification::assertSentTo($supervisor, InvestigationReturnedNotification::class);
+
+    }
+
     public function test_stores_request_notification_in_database()
     {
         Notification::fake();

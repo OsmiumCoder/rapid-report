@@ -13,8 +13,9 @@ export default function NotificationList({ notifications, title }: NotificationL
             router.delete(route('notifications.destroy', { notification: id }), {
                 onSuccess: () =>
                     router.reload({
-                        only: ['notifications, notifications_paginator'],
-                        reset: ['notifications'],
+                        only: ['notifications', 'notifications_paginator'],
+                        reset: ['notifications', 'notifications_paginator'],
+                        data: { notifications: 1 },
                     }),
             });
         } catch (error) {
@@ -40,6 +41,7 @@ export default function NotificationList({ notifications, title }: NotificationL
                             <div className="w-full px-2">
                                 <p className="text-sm/6 font-semibold text-gray-900">
                                     {notification.data.message}
+                                    <div>{notification.id}</div>
                                 </p>
                                 <p className="mt-1 truncate text-xs/5 text-gray-500">
                                     {timeSince(notification.created_at)}

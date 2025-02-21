@@ -50,9 +50,9 @@ Route::get('/notification', function () {
     //    return $incidentReceived->render();
     // return $userAdded->render();
     // return $incidentSubmitted->toMail($supervisor);
-    return $incidentAssigned->toMail();
     //     return $investigationSubmitted->toMail($supervisor);
     //    return $investigationReturned->toMail();
+    //    return $incidentAssigned->toMail();
     // return $rcaSubmitted->toMail($supervisor);
 
 });
