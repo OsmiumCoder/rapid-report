@@ -15,6 +15,19 @@ export const returnInvestigation = (
     });
 };
 
+export const returnRCA = (
+    incident: Incident,
+    setIsLoading: Dispatch<SetStateAction<boolean>>,
+    onSuccess: () => void
+) => {
+    setIsLoading(true);
+    router.patch(route('incidents.return-rca', { incident: incident.id }), undefined, {
+        onSuccess: (_) => onSuccess(),
+        onFinish: (_) => setIsLoading(false),
+        preserveScroll: true,
+    });
+};
+
 export const closeIncident = (
     incident: Incident,
     setIsLoading: Dispatch<SetStateAction<boolean>>,

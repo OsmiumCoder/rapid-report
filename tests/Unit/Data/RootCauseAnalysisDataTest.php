@@ -1,6 +1,6 @@
 <?php
 
-namespace Data;
+namespace Tests\Unit\Data;
 
 use App\Data\RootCauseAnalysisData;
 use Illuminate\Validation\ValidationException;

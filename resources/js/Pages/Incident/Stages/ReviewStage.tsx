@@ -1,9 +1,9 @@
-import AffectedPartyInformation from '@/Pages/Incident/Partials/InformationComponents/AffectedPartyInformation';
-import GeneralDescription from '@/Pages/Incident/Partials/InformationComponents/GeneralDescription';
-import IncidentInformation from '@/Pages/Incident/Partials/InformationComponents/IncidentInformation';
-import VictimInformation from '@/Pages/Incident/Partials/InformationComponents/VictimInformation';
-import SupervisorInformation from '@/Pages/Incident/Partials/InformationComponents/SupervisorInformation';
-import WitnessInformation from '@/Pages/Incident/Partials/InformationComponents/WitnessInformation';
+import AffectedPartyInformation from '@/Pages/Incident/Partials/ShowComponents/InformationComponents/AffectedPartyInformation';
+import GeneralDescription from '@/Pages/Incident/Partials/ShowComponents/InformationComponents/GeneralDescription';
+import IncidentInformation from '@/Pages/Incident/Partials/ShowComponents/InformationComponents/IncidentInformation';
+import VictimInformation from '@/Pages/Incident/Partials/ShowComponents/InformationComponents/VictimInformation';
+import SupervisorInformation from '@/Pages/Incident/Partials/ShowComponents/InformationComponents/SupervisorInformation';
+import WitnessInformation from '@/Pages/Incident/Partials/ShowComponents/InformationComponents/WitnessInformation';
 import { Incident } from '@/types/incident/Incident';
 import Badge from '@/Components/Badge';
 import { uppercaseWordFormat } from '@/Filters/uppercaseWordFormat';

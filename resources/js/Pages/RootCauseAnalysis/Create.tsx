@@ -40,7 +40,7 @@ export default function Create({ incident }: { incident: Incident }) {
         solutions_and_actions: [
             { cause: '', control: '', remedial_action: '', by_who: '', by_when: '', manager: '' },
         ],
-        peoples_position: [] as string[],
+        peoples_positions: [] as string[],
         attention_to_work: [] as string[],
         communication: [] as string[],
         ppe_in_good_condition: null as boolean | null,

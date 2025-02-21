@@ -1,7 +1,7 @@
 import { Incident } from '@/types/incident/Incident';
 import { User } from '@/types';
-import SupervisorUpdate from '@/Pages/Incident/Partials/AdminActionComponents/SupervisorUpdate';
-import StatusUpdate from '@/Pages/Incident/Partials/AdminActionComponents/StatusUpdate';
+import SupervisorUpdate from '@/Pages/Incident/Partials/ShowComponents/AdminActionComponents/SupervisorUpdate';
+import StatusUpdate from '@/Pages/Incident/Partials/ShowComponents/AdminActionComponents/StatusUpdate';
 import { IncidentStatus } from '@/Enums/IncidentStatus';
 
 interface AdminActionsProps {
@@ -11,7 +11,7 @@ interface AdminActionsProps {
 export default function IncidentAdminActions({ incident, supervisors }: AdminActionsProps) {
     return (
         <>
-            <div className="lg:col-start-3 lg:row-end-1 bg-white">
+            <div className="lg:col-start-3 lg:row-end-1 bg-white rounded-lg">
                 <div className="rounded-lg  shadow-sm ring-1 ring-gray-900/5">
                     <div className="flex flex-wrap flex-col items-center justify-between">
                         <div className="mt-1 pt-6 text-base font-semibold text-gray-900">

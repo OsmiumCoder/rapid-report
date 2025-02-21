@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature\Incident;
+namespace Tests\Feature\Incident;
 
 use App\Models\Incident;
 use App\Models\User;

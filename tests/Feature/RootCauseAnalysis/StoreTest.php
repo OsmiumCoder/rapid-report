@@ -1,6 +1,6 @@
 <?php
 
-namespace RootCauseAnalysis;
+namespace Tests\Feature\RootCauseAnalysis;
 
 use App\Data\RootCauseAnalysisData;
 use App\Enum\CommentType;

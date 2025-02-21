@@ -6,7 +6,7 @@ export default function SupervisorInformation({ incident }: { incident: Incident
             {(incident.supervisor_name || incident.supervisor) && (
                 <dl className="mt-6 border-t border-gray-900/5 pt-6 sm:pr-4">
                     <dt className="font-semibold text-gray-900 text-xl">Supervisor</dt>
-                    <dd className="mt-2">
+                    <dd className="mt-2 ml-6">
                         {incident.supervisor && (
                             <>
                                 <div>

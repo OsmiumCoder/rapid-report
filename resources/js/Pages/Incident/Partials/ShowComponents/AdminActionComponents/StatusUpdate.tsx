@@ -10,6 +10,7 @@ import {
     closeIncident,
     reopenIncident,
     returnInvestigation,
+    returnRCA,
 } from '@/Helpers/Incident/statusUpdates';
 import dateTimeFormat from '@/Filters/dateTimeFormat';
 import { useConfirmationModal } from '@/Components/ConfirmationModal/ConfirmationModalProvider';
@@ -64,23 +65,66 @@ export default function StatusUpdate({ incident }: { incident: Incident }) {
                                 </div>
                             </>
                         )}
-                        {incident.status === IncidentStatus.IN_REVIEW && (
-                            <PrimaryButton
-                                onClick={() =>
-                                    setModalProps({
-                                        title: 'Request Re-Investigation',
-                                        text: `Are you sure you want to request ${incident.supervisor?.name} to further investigate this incident? They will be notified.`,
-                                        action: () =>
-                                            incident.supervisor_id &&
-                                            returnInvestigation(incident, setIsLoading, () =>
-                                                router.reload({ only: ['incident'] })
-                                            ),
-                                        show: true,
-                                    })
-                                }
-                            >
-                                Request Re-Investigation
-                            </PrimaryButton>
+                        {incident.root_cause_analyses.length > 0 && (
+                            <>
+                                <div className="font-semibold">
+                                    Root Cause Analyses
+                                    {incident.root_cause_analyses.map((rca, index) => (
+                                        <div className="font-normal">
+                                            <Link
+                                                className="text-sm cursor-pointer text-blue-500 hover:text-blue-400"
+                                                href={route('incidents.root-cause-analyses.show', {
+                                                    incident: rca.incident_id,
+                                                    root_cause_analysis: rca.id,
+                                                })}
+                                            >
+                                                {rca.supervisor.name}:{' '}
+                                                {dateTimeFormat(rca.created_at)}
+                                            </Link>
+                                        </div>
+                                    ))}
+                                </div>
+                            </>
+                        )}
+                        {incident.status === IncidentStatus.IN_REVIEW && incident.supervisor && (
+                            <>
+                                <PrimaryButton
+                                    onClick={() =>
+                                        setModalProps({
+                                            title: 'Request Re-Investigation',
+                                            text: `Are you sure you want to request ${incident.supervisor?.name} to further investigate this incident? They will be notified.`,
+                                            action: () =>
+                                                incident.supervisor_id &&
+                                                returnInvestigation(incident, setIsLoading, () =>
+                                                    router.reload({ only: ['incident'] })
+                                                ),
+                                            show: true,
+                                        })
+                                    }
+                                >
+                                    Request Re-Investigation
+                                </PrimaryButton>
+                                <PrimaryButton
+                                    onClick={() =>
+                                        setModalProps({
+                                            title: 'Request New Root Cause Analysis',
+                                            text: `Are you sure you want to request ${incident.supervisor?.name} to submit a new Root Cause Analysis? They will be notified.`,
+                                            action: () =>
+                                                incident.supervisor_id &&
+                                                returnRCA(incident, setIsLoading, () =>
+                                                    router.get(
+                                                        route('incidents.show', {
+                                                            incident: incident.id,
+                                                        })
+                                                    )
+                                                ),
+                                            show: true,
+                                        })
+                                    }
+                                >
+                                    Re-Request RCA
+                                </PrimaryButton>
+                            </>
                         )}
                         {incident.status !== IncidentStatus.CLOSED && (
                             <DangerButton

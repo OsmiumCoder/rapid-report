@@ -23,6 +23,7 @@ class IncidentClosedTest extends TestCase
 
         $event = new IncidentClosed;
         $event->setAggregateRootUuid($incident->id);
+        $event->setMetaData([...$event->metaData(), 'user_id' => $supervisor->id]);
         $event->handle();
 
         $incident->refresh();
@@ -47,6 +48,7 @@ class IncidentClosedTest extends TestCase
 
         $event = new IncidentClosed;
         $event->setAggregateRootUuid($incident->id);
+        $event->setMetaData([...$event->metaData(), 'user_id' => $supervisor->id]);
         $event->handle();
 
         $incident->refresh();
