@@ -3,11 +3,9 @@
 namespace Report;
 
 use App\Data\ReportExportData;
-use App\Models\Incident;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
-use Inertia\Testing\AssertableInertia;
 use Tests\TestCase;
 
 class DownloadCSVTest extends TestCase

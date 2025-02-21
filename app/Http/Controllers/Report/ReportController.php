@@ -10,15 +10,12 @@ use App\Models\Incident;
 use DateTime;
 use DateTimeImmutable;
 use Exception;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use PhpOffice\PhpSpreadsheet\Cell\AdvancedValueBinder;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use function PHPUnit\Framework\throwException;
 
 class ReportController extends Controller
 {
