@@ -6,8 +6,10 @@ use App\Enum\CommentType;
 use App\Models\Comment;
 use App\Models\Incident;
 use App\Models\User;
+use App\Notifications\Incident\SupervisorAssignedNotification;
 use App\States\IncidentStatus\Assigned;
 use App\StorableEvents\StoredEvent;
+use Illuminate\Support\Facades\Notification;
 
 class SupervisorAssigned extends StoredEvent
 {
@@ -39,5 +41,12 @@ class SupervisorAssigned extends StoredEvent
         $comment->commentable()->associate($incident);
 
         $comment->save();
+    }
+
+    public function react()
+    {
+        $admin = User::find($this->metaData['user_id']);
+
+        Notification::send($this->supervisor(), new SupervisorAssignedNotification($this->aggregateRootUuid(), $this->supervisor(), $admin));
     }
 }

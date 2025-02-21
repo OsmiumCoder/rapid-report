@@ -6,7 +6,7 @@ use App\Enum\CommentType;
 use App\Models\Incident;
 use App\Models\RootCauseAnalysis;
 use App\Models\User;
-use App\Notifications\RootCauseAnalysis\RootCauseAnalysisSubmitted;
+use App\Notifications\RootCauseAnalysis\RootCauseAnalysisSubmittedNotification;
 use App\States\IncidentStatus\Assigned;
 use App\StorableEvents\RootCauseAnalysis\RootCauseAnalysisCreated;
 use Illuminate\Support\Facades\Notification;
@@ -79,11 +79,11 @@ class RootCauseAnalysisCreatedTest extends TestCase
 
         Notification::assertCount(3);
 
-        Notification::assertSentTo($admins, RootCauseAnalysisSubmitted::class);
+        Notification::assertSentTo($admins, RootCauseAnalysisSubmittedNotification::class);
 
         Notification::assertSentTo(
             $admins,
-            function (RootCauseAnalysisSubmitted $notification, array $channels) use ($aggregateUuid, $supervisor) {
+            function (RootCauseAnalysisSubmittedNotification $notification, array $channels) use ($aggregateUuid, $supervisor) {
                 return $notification->rootCauseAnalysisId === $aggregateUuid && $notification->supervisor->id === $supervisor->id;
             }
         );

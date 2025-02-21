@@ -7,7 +7,8 @@ use App\Models\Incident;
 use App\Models\Investigation;
 use App\Models\RootCauseAnalysis;
 use App\Models\User;
-use App\Notifications\Incident\IncidentReviewRequest;
+use App\Notifications\Incident\IncidentReviewRequestNotification;
+use App\Notifications\Investigation\InvestigationReturnedNotification;
 use App\States\IncidentStatus\Assigned;
 use App\States\IncidentStatus\Closed;
 use App\States\IncidentStatus\InReview;
@@ -18,6 +19,97 @@ use Tests\TestCase;
 
 class StatusTest extends TestCase
 {
+    public function test_return_investigation_stores_notification_in_database()
+    {
+        Notification::fake();
+
+        $admin = User::factory()->create()->syncRoles('admin');
+
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
+        $this->actingAs($admin);
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => InReview::class
+        ]);
+
+        $investigation = Investigation::factory()->create([
+            'incident_id' => $incident->id,
+            'supervisor_id' => $supervisor->id,
+        ]);
+
+        RootCauseAnalysis::factory()->create([
+            'incident_id' => $incident->id,
+            'supervisor_id' => $supervisor->id,
+        ]);
+
+        Notification::assertNothingSent();
+
+        $response = $this->patch(route('incidents.return-investigation', ['incident' => $incident]));
+        $response->assertRedirect();
+
+        $incident->refresh();
+
+        Notification::assertCount(1);
+
+        Notification::assertSentTo(
+            $supervisor,
+            function (InvestigationReturnedNotification $notification, array $channels) use ($incident, $investigation, $supervisor) {
+                $databaseStore = $notification->toArray($supervisor);
+
+                $this->assertEquals(
+                    route('incidents.investigations.show', ['incident' => $incident->id, 'investigation' => $investigation->id]),
+                    $databaseStore['url']
+                );
+
+                return array_key_exists('message', $databaseStore);
+            }
+        );
+    }
+
+    public function test_return_investigation_sends_notification_to_supervisor()
+    {
+        Notification::fake();
+
+        $admin = User::factory()->create()->syncRoles('admin');
+
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
+        $this->actingAs($admin);
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => InReview::class
+        ]);
+
+        Investigation::factory()->create([
+             'incident_id' => $incident->id,
+             'supervisor_id' => $supervisor->id,
+         ]);
+
+        RootCauseAnalysis::factory()->create([
+            'incident_id' => $incident->id,
+            'supervisor_id' => $supervisor->id,
+        ]);
+
+        Notification::assertNothingSent();
+
+        $response = $this->patch(route('incidents.return-investigation', ['incident' => $incident]));
+        $response->assertRedirect();
+
+        $incident->refresh();
+
+        Notification::assertCount(1);
+
+        Notification::assertSentTo(
+            $supervisor,
+            function (InvestigationReturnedNotification $notification, array $channels) use ($incident, $admin) {
+                return $notification->incidentId === $incident->id && $notification->admin->id === $admin->id;
+            }
+        );
+    }
+
     public function test_supervisor_forbidden_to_request_review_if_not_assigned_to_incident()
     {
         $supervisor = User::factory()->create()->syncRoles('supervisor');
@@ -293,7 +385,7 @@ class StatusTest extends TestCase
 
         Notification::assertSentTo(
             $admins,
-            function (IncidentReviewRequest $notification, array $channels) use ($incident, $admins, $supervisor) {
+            function (IncidentReviewRequestNotification $notification, array $channels) use ($incident, $admins, $supervisor) {
                 $databaseStore = $notification->toArray($admins->first());
 
                 $this->assertEquals(route('incidents.show', $incident->id), $databaseStore['url']);
@@ -336,11 +428,11 @@ class StatusTest extends TestCase
 
         Notification::assertCount(3);
 
-        Notification::assertSentTo($admins, IncidentReviewRequest::class);
+        Notification::assertSentTo($admins, IncidentReviewRequestNotification::class);
 
         Notification::assertSentTo(
             $admins,
-            function (IncidentReviewRequest $notification, array $channels) use ($incident, $supervisor) {
+            function (IncidentReviewRequestNotification $notification, array $channels) use ($incident, $supervisor) {
                 return $notification->incidentId === $incident->id && $notification->supervisor->id === $supervisor->id;
             }
         );
@@ -417,6 +509,10 @@ class StatusTest extends TestCase
 
         $incident = Incident::factory()->create([
             'status' => InReview::class,
+        ]);
+
+        Investigation::factory()->create([
+            'incident_id' => $incident->id,
         ]);
 
         $response = $this->patch(route('incidents.return-investigation', ['incident' => $incident]));
@@ -527,6 +623,10 @@ class StatusTest extends TestCase
             'status' => InReview::class,
         ]);
 
+        Investigation::factory()->create([
+            'incident_id' => $incident->id,
+        ]);
+
         $response = $this->patch(route('incidents.return-investigation', ['incident' => $incident]));
 
         $response->assertRedirect();
@@ -551,6 +651,10 @@ class StatusTest extends TestCase
 
         $incident = Incident::factory()->create([
             'status' => InReview::class,
+        ]);
+
+        Investigation::factory()->create([
+            'incident_id' => $incident->id,
         ]);
 
         $response = $this->patch(route('incidents.return-investigation', ['incident' => $incident]));

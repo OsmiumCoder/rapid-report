@@ -13,7 +13,6 @@ To sign in follow the steps below:
 Login
 </x-mail::button>
 
-Best regards,
-
-UPEI Health, Safety, and Environment
+Best regards,<br>
+{{ config('app.name') }}
 </x-mail::message>

@@ -8,6 +8,7 @@ use Inertia\Inertia;
 
 // TODO: Remove, used for demo purposes
 Route::get('/notification', function () {
+    $admin = \App\Models\User::factory()->create()->syncRoles('admin');
     $supervisor = \App\Models\User::factory()->create()->syncRoles('supervisor');
     $incident = \App\Models\Incident::factory()->create();
     $investigation = \App\Models\Investigation::factory()->create();
@@ -16,28 +17,42 @@ Route::get('/notification', function () {
     $incidentReceived = new \App\Mail\IncidentReceived;
     $userAdded = new \App\Mail\UserAdded;
 
-    $incidentSubmitted = new \App\Notifications\Incident\IncidentSubmitted(
+    $incidentSubmitted = new \App\Notifications\Incident\IncidentSubmittedNotification(
         incidentId: $incident->id,
         firstName: null,
         lastName: null,
     );
 
-    $investigationSubmitted = new \App\Notifications\Investigation\InvestigationSubmitted(
+    $incidentAssigned = new \App\Notifications\Incident\SupervisorAssignedNotification(
+        incidentId: $incident->id,
+        admin: $admin,
+        supervisor: $supervisor,
+    );
+
+    $investigationSubmitted = new \App\Notifications\Investigation\InvestigationSubmittedNotification(
         incidentId: $incident->id,
         investigationId: $investigation->id,
         supervisor: $supervisor,
     );
 
-    $rcaSubmitted = new \App\Notifications\RootCauseAnalysis\RootCauseAnalysisSubmitted(
+    $investigationReturned = new \App\Notifications\Investigation\InvestigationReturnedNotification(
+        incidentId: $incident->id,
+        investigationId: $investigation->id,
+        admin: $admin
+    );
+
+    $rcaSubmitted = new \App\Notifications\RootCauseAnalysis\RootCauseAnalysisSubmittedNotification(
         incidentId: $incident->id,
         rootCauseAnalysisId: $rca->id,
         supervisor: $supervisor,
     );
 
-    return $incidentReceived->render();
+    //    return $incidentReceived->render();
     // return $userAdded->render();
     // return $incidentSubmitted->toMail($supervisor);
-    // return $investigationSubmitted->toMail($supervisor);
+    //     return $investigationSubmitted->toMail($supervisor);
+    //    return $investigationReturned->toMail();
+    //    return $incidentAssigned->toMail();
     // return $rcaSubmitted->toMail($supervisor);
 
 });

@@ -1,29 +1,28 @@
 <?php
 
-namespace App\Notifications\Incident;
+namespace App\Notifications\RootCauseAnalysis;
 
 use App\Models\User;
-use Illuminate\Bus\Queueable;
+use App\Notifications\BaseNotification;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\VonageMessage;
-use Illuminate\Notifications\Notification;
 
-class IncidentReviewRequest extends Notification
+class RootCauseAnalysisSubmittedNotification extends BaseNotification
 {
-    use Queueable;
-
-    public string $message;
-    public string $url;
-
     /**
      * Create a new notification instance.
      */
     public function __construct(
         public string $incidentId,
+        public string $rootCauseAnalysisId,
         public User $supervisor,
     ) {
-        $this->message = "{$this->supervisor->name} has requested an incident follow up review.";
-        $this->url = route('incidents.show', ['incident' => $this->incidentId]);
+        $this->message = "A new root cause analysis was submitted by {$this->supervisor->name}";
+        $this->url = route('incidents.root-cause-analyses.show', [
+            'incident' => $this->incidentId,
+            'root_cause_analysis' => $this->rootCauseAnalysisId
+        ]);
+
     }
 
     /**
@@ -42,8 +41,8 @@ class IncidentReviewRequest extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Incident Follow Up Review Request')
-            ->markdown('mail.incident-review-request', ['url' => $this->url]);
+            ->subject('Root Cause Analysis Submitted')
+            ->markdown('mail.root-cause-analysis-submitted', ['url' => $this->url]);
     }
 
     /**
@@ -65,6 +64,7 @@ class IncidentReviewRequest extends Notification
         return [
             'url' => $this->url,
             'message' => $this->message,
+            'supervisor_name' => $this->supervisor->name,
         ];
     }
 }

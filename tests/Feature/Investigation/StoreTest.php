@@ -7,7 +7,7 @@ use App\Enum\CommentType;
 use App\Models\Incident;
 use App\Models\Investigation;
 use App\Models\User;
-use App\Notifications\Investigation\InvestigationSubmitted;
+use App\Notifications\Investigation\InvestigationSubmittedNotification;
 use App\States\IncidentStatus\Assigned;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\ValidationException;
@@ -47,13 +47,13 @@ class StoreTest extends TestCase
 
         Notification::assertCount(3);
 
-        Notification::assertSentTo($admins, InvestigationSubmitted::class);
+        Notification::assertSentTo($admins, InvestigationSubmittedNotification::class);
 
         $investigation = Investigation::first();
 
         Notification::assertSentTo(
             $admins,
-            function (InvestigationSubmitted $notification, array $channels) use ($investigation, $supervisor) {
+            function (InvestigationSubmittedNotification $notification, array $channels) use ($investigation, $supervisor) {
                 return $notification->investigationId === $investigation->id && $notification->supervisor->id === $supervisor->id;
             }
         );

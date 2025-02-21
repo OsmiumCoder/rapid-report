@@ -1,33 +1,24 @@
 <?php
 
-namespace App\Notifications\Investigation;
+namespace App\Notifications\Incident;
 
 use App\Models\User;
-use Illuminate\Bus\Queueable;
+use App\Notifications\BaseNotification;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\VonageMessage;
-use Illuminate\Notifications\Notification;
 
-class InvestigationSubmitted extends Notification
+class SupervisorAssignedNotification extends BaseNotification
 {
-    use Queueable;
-
-    public string $message;
-    public string $url;
-
     /**
      * Create a new notification instance.
      */
     public function __construct(
         public string $incidentId,
-        public string $investigationId,
         public User $supervisor,
+        public User $admin,
     ) {
-        $this->message = "A new investigation was submitted by {$this->supervisor->name}";
-        $this->url = route('incidents.investigations.show', [
-            'incident' => $this->incidentId,
-            'investigation' => $this->investigationId
-        ]);
+        $this->url = route('incidents.show', ['incident' => $this->incidentId]);
+        $this->message = "$admin->name has assigned you to a new Incident";
     }
 
     /**
@@ -43,11 +34,15 @@ class InvestigationSubmitted extends Notification
     /**
      * Get the mail representation of the notification.
      */
-    public function toMail(object $notifiable): MailMessage
+    public function toMail(): MailMessage
     {
         return (new MailMessage)
-            ->subject('Investigation Submitted')
-            ->markdown('mail.investigation-submitted', ['url' => $this->url]);
+            ->subject('Incident Assigned')
+            ->markdown('mail.incident-assigned', [
+                'url' => $this->url,
+                'supervisorName' => $this->supervisor->name,
+                'adminName' => $this->admin->name
+            ]);
     }
 
     /**
@@ -69,7 +64,6 @@ class InvestigationSubmitted extends Notification
         return [
             'url' => $this->url,
             'message' => $this->message,
-            'supervisor_name' => $this->supervisor->name,
         ];
     }
 }
