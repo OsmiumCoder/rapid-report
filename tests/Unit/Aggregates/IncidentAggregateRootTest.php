@@ -12,6 +12,7 @@ use App\Mail\IncidentReceived;
 use App\Models\Incident;
 use App\Models\Investigation;
 use App\Models\User;
+use App\Notifications\Comment\CommentAdded;
 use App\Notifications\Incident\IncidentReviewRequestNotification;
 use App\Notifications\Incident\IncidentSubmittedNotification;
 use App\Notifications\Investigation\InvestigationReturnedNotification;
@@ -25,9 +26,9 @@ use App\StorableEvents\Comment\CommentCreated;
 use App\StorableEvents\Incident\IncidentClosed;
 use App\StorableEvents\Incident\IncidentCreated;
 use App\StorableEvents\Incident\IncidentReopened;
+use App\StorableEvents\Investigation\InvestigationReturned;
 use App\StorableEvents\Incident\SupervisorAssigned;
 use App\StorableEvents\Incident\SupervisorUnassigned;
-use App\StorableEvents\Investigation\InvestigationReturned;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
@@ -371,6 +372,8 @@ class IncidentAggregateRootTest extends TestCase
 
     public function test_add_comment_adds_comment_to_incident()
     {
+        $user = User::factory()->create()->syncRoles('supervisor');
+        $this->actingAs($user);
         $incident = Incident::factory()->create();
 
         $commentData = CommentData::validateAndCreate([
@@ -915,5 +918,118 @@ class IncidentAggregateRootTest extends TestCase
             ->persist();
 
         Notification::assertSentTo($admins, IncidentSubmittedNotification::class);
+    }
+
+    public function test_comment_notifies_admin_team(): void
+    {
+        Notification::fake();
+
+        $user = User::factory()->create()->syncRoles('user');
+        $this->actingAs($user);
+        $admins = User::factory(3)->create()->each(function (User $user) {
+            $user->syncRoles('admin');
+        });
+
+        $incident = Incident::factory()->create();
+
+        $commentData = CommentData::from([
+            'content' => 'Test comment for admin notification',
+            'type' => CommentType::NOTE,
+            'user_id' => $user->id,
+        ]);
+
+        $uuid = $incident->id;
+
+        $aggregate = IncidentAggregateRoot::retrieve($uuid)
+            ->addComment($commentData)
+            ->persist();
+
+        Notification::assertSentTo($admins, CommentAdded::class);
+    }
+
+    public function test_comment_notifies_supervisor_when_supervisor_is_set(): void
+    {
+        Notification::fake();
+
+        $user = User::factory()->create()->syncRoles('user');
+        $this->actingAs($user);
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+        ]);
+
+        $commentData = CommentData::from([
+            'content' => 'Test comment for supervisor notification',
+            'type' => CommentType::NOTE,
+            'user_id' => $user->id,
+        ]);
+
+        $uuid = $incident->id;
+
+        $aggregate = IncidentAggregateRoot::retrieve($uuid)
+            ->assignSupervisor($supervisor->id)
+            ->addComment($commentData)
+            ->persist();
+
+        Notification::assertSentTo($supervisor, CommentAdded::class);
+    }
+
+    public function test_comment_does_not_notify_supervisor_when_supervisor_is_not_set(): void
+    {
+        Notification::fake();
+
+        $user = User::factory()->create()->syncRoles('user');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => null,
+        ]);
+
+        $commentData = CommentData::from([
+            'content' => 'Test comment with no supervisor notification',
+            'type' => CommentType::NOTE,
+            'user_id' => $user->id,
+        ]);
+
+        $uuid = Str::uuid()->toString();
+
+        $aggregate = IncidentAggregateRoot::retrieve($uuid)
+            ->addComment($commentData)
+            ->persist();
+
+        Notification::assertNotSentTo($supervisor, CommentAdded::class);
+    }
+
+    public function test_comment_notifies_admin_team_and_supervisor_when_supervisor_is_set(): void
+    {
+        Notification::fake();
+
+        $user = User::factory()->create()->syncRoles('user');
+        $this->actingAs($user);
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+        $admins = User::factory(3)->create()->each(function (User $user) {
+            $user->syncRoles('admin');
+        });
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+        ]);
+
+        $commentData = CommentData::from([
+            'content' => 'Test comment for admin and supervisor notification',
+            'type' => CommentType::NOTE,
+            'user_id' => $user->id,
+        ]);
+
+        $uuid = $incident->id;
+
+        $aggregate = IncidentAggregateRoot::retrieve($uuid)
+            ->assignSupervisor($supervisor->id)
+            ->addComment($commentData)
+            ->persist();
+
+        Notification::assertSentTo($supervisor, CommentAdded::class);
+        Notification::assertSentTo($admins, CommentAdded::class);
     }
 }

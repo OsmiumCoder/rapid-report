@@ -7,6 +7,9 @@ use App\Enum\CommentType;
 use App\Models\Comment;
 use App\Models\Incident;
 use App\Models\User;
+use App\Notifications\Comment\CommentAdded;
+use App\StorableEvents\Comment\CommentCreated;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
@@ -98,5 +101,100 @@ class AddCommentTest extends TestCase
         $this->assertEquals($user->id, $comment->user_id);
         $this->assertEquals($commentData->content, $comment->content);
         $this->assertEquals(CommentType::NOTE, $comment->type);
+    }
+
+    public function test_comment_notifies_admins_on_creation()
+    {
+        Notification::fake();
+
+        $user = User::factory()->create()->syncRoles('user');
+        $admins = User::factory(3)->create()->each(function (User $user) {
+            $user->assignRole('admin');
+        });
+
+        $incident = Incident::factory()->create();
+
+        $this->assertCount(3, User::role('admin')->get());
+
+        $commentData = CommentData::from([
+            'content' => 'Test comment for admin notification',
+        ]);
+
+        $response = $this->post(route('incidents.comments.store', ['incident' => $incident->id]), $commentData->toArray());
+
+        $response->assertRedirect();
+
+        $event = new CommentCreated(
+            content: $commentData->content,
+            type: CommentType::NOTE,
+            commentable_id: $incident->id,
+            commentable_type: Incident::class
+        );
+
+        $event->setMetaData(['user_id' => $user->id]);
+
+        $event->react();
+
+        Notification::assertSentTo($admins, CommentAdded::class);
+    }
+
+    public function test_comment_notifies_supervisor_when_supervisor_is_set()
+    {
+        Notification::fake();
+
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+        ]);
+
+        $commentData = CommentData::from([
+            'content' => 'Test comment for supervisor notification',
+        ]);
+
+        $this->actingAs($supervisor);
+
+        $response = $this->post(route('incidents.comments.store', ['incident' => $incident->id]), $commentData->toArray());
+
+        $response->assertRedirect();
+
+        Notification::assertSentTo($supervisor, CommentAdded::class);
+    }
+
+    public function test_comment_does_not_notify_supervisor_when_not_set()
+    {
+        Notification::fake();
+
+        $user = User::factory()->create()->syncRoles('user');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+        $admins = User::factory(3)->create()->each(function (User $user) {
+            $user->syncRoles('admin');
+        });
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => null,
+        ]);
+
+        $commentData = CommentData::from([
+            'content' => 'Test comment with no supervisor',
+        ]);
+
+        $response = $this->post(route('incidents.comments.store', ['incident' => $incident->id]), $commentData->toArray());
+
+        $response->assertRedirect();
+
+        $event = new CommentCreated(
+            content: $commentData->content,
+            type: CommentType::NOTE,
+            commentable_id: $incident->id,
+            commentable_type: Incident::class
+        );
+
+        $event->setMetaData(['user_id' => $user->id]);
+
+        $event->react();
+
+        Notification::assertNotSentTo($supervisor, CommentAdded::class);
+        Notification::assertSentTo($admins, CommentAdded::class);
     }
 }
