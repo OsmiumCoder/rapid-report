@@ -86,7 +86,7 @@ export default function ReportBuilder({ formData, setFormData }: ReportBuilderPr
     }, [timeline]);
 
     const downloadExcel = async () => {
-        const response = await axios.post(route('report.downloadFileXL'), formData, {
+        const response = await axios.post(route('report.downloadFileXLSX'), formData, {
             responseType: 'arraybuffer',
         });
 

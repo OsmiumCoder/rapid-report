@@ -3,6 +3,7 @@
 namespace Data;
 
 use App\Data\ReportExportData;
+use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
 class ReportDataTest extends TestCase
@@ -34,7 +35,7 @@ class ReportDataTest extends TestCase
 
     public function test_investigation_data_throws_invalid_with_bad_data()
     {
-        $this->expectException(ReportExportData::class);
+        $this->expectException(ValidationException::class);
 
         $exportData = ReportExportData::validateAndCreate([
             'start' => now()->toString(),
