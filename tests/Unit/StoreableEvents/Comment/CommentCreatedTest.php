@@ -6,7 +6,7 @@ use App\Enum\CommentType;
 use App\Models\Comment;
 use App\Models\Incident;
 use App\Models\User;
-use App\Notifications\Comment\CommentMade;
+use App\Notifications\Comment\CommentAdded;
 use App\StorableEvents\Comment\CommentCreated;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
@@ -99,8 +99,8 @@ class CommentCreatedTest extends TestCase
         $event->react();
 
         Notification::assertCount(3);
-        Notification::assertSentTo($admins, CommentMade::class);
-        Notification::assertNotSentTo($user, CommentMade::class);
+        Notification::assertSentTo($admins, CommentAdded::class);
+        Notification::assertNotSentTo($user, CommentAdded::class);
     }
 
     public function test_new_comment_notifies_supervisor_when_supervisor_is_set()
@@ -122,8 +122,8 @@ class CommentCreatedTest extends TestCase
 
         $event->react();
 
-        Notification::assertSentTo($supervisor, CommentMade::class);
-        Notification::assertNotSentTo($user, CommentMade::class);
+        Notification::assertSentTo($supervisor, CommentAdded::class);
+        Notification::assertNotSentTo($user, CommentAdded::class);
     }
 
     public function test_new_comment_does_not_notify_supervisor_when_supervisor_is_not_set()
@@ -174,7 +174,7 @@ class CommentCreatedTest extends TestCase
         $event->react();
 
         Notification::assertCount(4);
-        Notification::assertSentTo($admins, CommentMade::class);
-        Notification::assertSentTo($supervisor, CommentMade::class);
+        Notification::assertSentTo($admins, CommentAdded::class);
+        Notification::assertSentTo($supervisor, CommentAdded::class);
     }
 }

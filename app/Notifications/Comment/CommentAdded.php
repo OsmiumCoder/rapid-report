@@ -2,12 +2,13 @@
 
 namespace App\Notifications\Comment;
 
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\VonageMessage;
 
-class CommentMade extends Notification
+class CommentAdded extends Notification
 {
     use Queueable;
 
@@ -16,17 +17,13 @@ class CommentMade extends Notification
      */
     public function __construct(
         public string $comment,
-        public ?string $commenterName,
+        public ?User $user,
         public string $url  // Add the URL to the constructor
     ) {
-        if ($this->commenterName == null) {
-            $this->commenterName = 'Anonymous User';
-        }
-
         if ($this->comment == null) {
-            $this->message = "An empty comment was made by $this->commenterName";
+            $this->message = "An empty comment was made by $this->user->name.";
         } else {
-            $this->message = "$this->commenterName commented: $this->comment";
+            $this->message = "$this->user->name commented: $this->comment";
         }
     }
 
@@ -58,8 +55,7 @@ class CommentMade extends Notification
             ->subject('Comment Created')
             ->line($this->message)
             ->markdown('mail.comment-made', [
-                'recipient' => $notifiable->name,
-                'commenter' => $this->commenterName,
+                'commenter' => $this->user->name,
                 'content' => $this->comment,
             ]);
     }
@@ -74,7 +70,7 @@ class CommentMade extends Notification
         return [
             'message' => $this->message,
             'comment' => $this->comment,
-            'name' => $this->commenterName,
+            'name' => $this->user->name,
             'url' => $this->url
         ];
     }
