@@ -13,8 +13,6 @@ use App\Models\Incident;
 use App\Models\Investigation;
 use App\Models\User;
 use App\Notifications\Comment\CommentAdded;
-use App\Notifications\Incident\IncidentReviewRequest;
-use App\Notifications\Incident\IncidentSubmitted;
 use App\Notifications\Incident\IncidentReviewRequestNotification;
 use App\Notifications\Incident\IncidentSubmittedNotification;
 use App\Notifications\Investigation\InvestigationReturnedNotification;
