@@ -36,7 +36,7 @@ use Tests\TestCase;
 
 class IncidentAggregateRootTest extends TestCase
 {
-    public function test_sends_investigation_returned_notification_to_admin()
+    public function test_sends_investigation_returned_notification_to_supervisor()
     {
         Notification::fake();
         $admin = User::factory()->create()->syncRoles('admin');
@@ -45,7 +45,7 @@ class IncidentAggregateRootTest extends TestCase
 
         $incident = Incident::factory()->create(['status' => InReview::class, 'supervisor_id' => $supervisor->id]);
 
-        $investigation = Investigation::factory()->create([
+        Investigation::factory()->create([
             'incident_id' => $incident->id,
             'supervisor_id' => $supervisor->id
         ]);
