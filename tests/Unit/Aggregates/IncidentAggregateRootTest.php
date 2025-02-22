@@ -13,6 +13,7 @@ use App\Models\Incident;
 use App\Models\Investigation;
 use App\Models\User;
 use App\Notifications\Comment\CommentAdded;
+use App\Notifications\Incident\AdditionalInformationNotification;
 use App\Notifications\Incident\IncidentReviewRequestNotification;
 use App\Notifications\Incident\IncidentSubmittedNotification;
 use App\Notifications\Investigation\InvestigationReturnedNotification;
@@ -29,6 +30,7 @@ use App\StorableEvents\Incident\IncidentReopened;
 use App\StorableEvents\Investigation\InvestigationReturned;
 use App\StorableEvents\Incident\SupervisorAssigned;
 use App\StorableEvents\Incident\SupervisorUnassigned;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
@@ -37,6 +39,121 @@ use Tests\TestCase;
 
 class IncidentAggregateRootTest extends TestCase
 {
+    public function test_first_additional_information_on_incident_creates_new_array()
+    {
+        Carbon::setTestNow(Carbon::now());
+
+        $user = User::factory()->create([
+            'email' => 'user@b.com'
+        ]);
+
+        $incident = Incident::factory()->create([
+            'reporters_email' => $user->email,
+        ]);
+
+        $this->assertNull($incident->additional_information);
+
+        IncidentAggregateRoot::retrieve($incident->id)
+            ->addAdditionalInformation('information')
+            ->persist();
+
+        $incident->refresh();
+
+        $this->assertCount(1, $incident->additional_information);
+
+        $this->assertEquals('information', $incident->additional_information[0]['information']);
+        $this->assertEquals(
+            Carbon::now()->timestamp,
+            Carbon::parse($incident->additional_information[0]['created_at'])->timestamp
+        );
+    }
+
+    public function test_additional_information_appends_to_current_additional_information_on_incident()
+    {
+        Carbon::setTestNow(Carbon::now());
+
+        $user = User::factory()->create([
+            'email' => 'user@b.com'
+        ]);
+
+        $incident = Incident::factory()->create([
+            'reporters_email' => $user->email,
+            'additional_information' => [
+                ['information' => 'information 1', 'created_at' => Carbon::now()->timestamp],
+            ]
+        ]);
+
+        IncidentAggregateRoot::retrieve($incident->id)
+            ->addAdditionalInformation('information 2')
+            ->persist();
+
+        $incident->refresh();
+
+        $this->assertCount(2, $incident->additional_information);
+
+        $this->assertEquals('information 1', $incident->additional_information[0]['information']);
+        $this->assertEquals(
+            Carbon::now()->timestamp,
+            Carbon::parse($incident->additional_information[0]['created_at'])->timestamp
+        );
+
+        $this->assertEquals('information 2', $incident->additional_information[1]['information']);
+        $this->assertEquals(
+            Carbon::now()->timestamp,
+            Carbon::parse($incident->additional_information[1]['created_at'])->timestamp
+        );
+    }
+
+    public function test_sends_additional_information_added_to_admins()
+    {
+        Notification::fake();
+
+        $admins = User::factory(3)->create()->each(function ($user) {
+            $user->syncRoles('admin');
+        });
+
+        $incident = Incident::factory()->create();
+
+        Notification::assertNothingSent();
+
+        IncidentAggregateRoot::retrieve($incident->id)
+            ->addAdditionalInformation('information')
+            ->persist();
+
+        Notification::assertCount(3);
+        Notification::assertSentTo($admins, AdditionalInformationNotification::class);
+    }
+
+    public function test_additional_information_notification_stored_in_database()
+    {
+        Notification::fake();
+
+        $admins = User::factory(3)->create()->each(function ($user) {
+            $user->syncRoles('admin');
+        });
+
+        $incident = Incident::factory()->create();
+
+        Notification::assertNothingSent();
+
+        IncidentAggregateRoot::retrieve($incident->id)
+            ->addAdditionalInformation('information')
+            ->persist();
+
+        Notification::assertCount(3);
+
+        Notification::assertSentTo(
+            $admins,
+            function (AdditionalInformationNotification $notification, array $channels) use ($incident, $admins) {
+                $databaseStore = $notification->toArray();
+
+                $this->assertEquals(route('incidents.show', $incident->id), $databaseStore['url']);
+
+                return array_key_exists('message', $databaseStore);
+            }
+        );
+    }
+
     public function test_sends_investigation_returned_notification_to_supervisor()
     {
         Notification::fake();
@@ -60,7 +177,6 @@ class IncidentAggregateRootTest extends TestCase
         Notification::assertCount(1);
 
         Notification::assertSentTo($supervisor, InvestigationReturnedNotification::class);
-
     }
 
     public function test_stores_request_notification_in_database()

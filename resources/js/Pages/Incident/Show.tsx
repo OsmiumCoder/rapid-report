@@ -9,6 +9,7 @@ import { Incident } from '@/types/incident/Incident';
 import { FormEvent, useEffect } from 'react';
 import IncidentSupervisorActions from '@/Pages/Incident/Partials/ShowComponents/IncidentSupervisorActions';
 import { IncidentStatus } from '@/Enums/IncidentStatus';
+import IncidentUserActions from '@/Pages/Incident/Partials/ShowComponents/IncidentUserActions';
 
 interface ShowProps extends PageProps {
     incident: Incident;
@@ -71,16 +72,23 @@ export default function Show({
                                     canProvideFollowup={canProvideFollowup}
                                 ></IncidentSupervisorActions>
                             )}
+                            {user.roles.some((role) => role.name === 'user') && (
+                                <IncidentUserActions incident={incident}></IncidentUserActions>
+                            )}
 
                             <IncidentInformationPanel incident={incident} />
 
-                            <ActivityLog
-                                data={data}
-                                setData={setData}
-                                processing={processing}
-                                comments={incident.comments}
-                                addComment={addComment}
-                            />
+                            {user.roles.some(
+                                (role) => role.name === 'admin' || role.name === 'supervisor'
+                            ) && (
+                                <ActivityLog
+                                    data={data}
+                                    setData={setData}
+                                    processing={processing}
+                                    comments={incident.comments}
+                                    addComment={addComment}
+                                />
+                            )}
                         </div>
                     </div>
                 </main>

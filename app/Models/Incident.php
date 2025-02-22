@@ -27,6 +27,7 @@ class Incident extends Model
             'on_behalf_anonymous' => 'boolean',
             'work_related' => 'boolean',
             'witnesses' => 'array',
+            'additional_information' => 'array',
             'status' => IncidentStatusState::class,
             'incident_type' => IncidentType::class,
         ];
