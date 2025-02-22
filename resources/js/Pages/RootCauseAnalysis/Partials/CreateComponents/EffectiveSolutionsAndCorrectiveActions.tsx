@@ -22,7 +22,7 @@ export default function EffectiveSolutionsAndCorrectiveActions({
             </div>
             <div className="flex flex-col w-full">
                 {formData.solutions_and_actions.map(
-                    ({ cause, control, remedial_action, by_who, by_when, manager }, i) => (
+                    ({ cause, control, remedial_action, by_who, by_when }, i) => (
                         <div
                             key={i}
                             className={classNames(
@@ -159,49 +159,28 @@ export default function EffectiveSolutionsAndCorrectiveActions({
                                 }
                                 className="mb-1"
                             />
-                            <InputLabel>Manager Name</InputLabel>
-                            <TextInput
-                                onChange={(e) => {
-                                    formData.solutions_and_actions[i].manager = e.target.value;
-                                    setFormData(
-                                        'solutions_and_actions',
-                                        formData.solutions_and_actions
-                                    );
-                                }}
-                                value={manager}
-                            />
-                            <InputError
-                                message={
-                                    errors[
-                                        `solutions_and_actions.${i}.manager` as keyof RootCauseAnalysisData
-                                    ]
-                                }
-                                className="mb-1"
-                            />
                         </div>
                     )
                 )}
-                {formData.solutions_and_actions.length !== 3 && (
-                    <PrimaryButtonDivider
-                        type="button"
-                        onClick={() => {
-                            setFormData('solutions_and_actions', [
-                                ...formData.solutions_and_actions,
-                                {
-                                    cause: '',
-                                    control: '',
-                                    remedial_action: '',
-                                    by_who: '',
-                                    by_when: '',
-                                    manager: '',
-                                },
-                            ]);
-                        }}
-                    >
-                        <PlusIcon className="size-5" />
-                        Add Solution/Correction
-                    </PrimaryButtonDivider>
-                )}
+
+                <PrimaryButtonDivider
+                    type="button"
+                    onClick={() => {
+                        setFormData('solutions_and_actions', [
+                            ...formData.solutions_and_actions,
+                            {
+                                cause: '',
+                                control: '',
+                                remedial_action: '',
+                                by_who: '',
+                                by_when: '',
+                            },
+                        ]);
+                    }}
+                >
+                    <PlusIcon className="size-5" />
+                    Add Solution/Correction
+                </PrimaryButtonDivider>
             </div>
         </div>
     );

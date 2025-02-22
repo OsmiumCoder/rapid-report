@@ -37,6 +37,7 @@ export default function Show({
             onSuccess: () => reset(),
         });
     }
+
     useEffect(() => {
         // Refresh incidents prop (if exists) when browser back navigation occurs.
         const reloadIncidents = () => router.reload({ only: ['incidents'] });
@@ -57,9 +58,7 @@ export default function Show({
 
                     <div className="mx-auto px-4 py-10 sm:px-6 lg:px-8">
                         <div className="mx-auto grid max-w-2xl grid-cols-1 grid-rows-1 items-start gap-x-8 gap-y-8 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-                            {user.roles.some(
-                                (role) => role.name === 'admin' || role.name === 'super-admin'
-                            ) && (
+                            {user.roles.some((role) => role.name === 'admin') && (
                                 <IncidentAdminActions
                                     incident={incident}
                                     supervisors={supervisors}

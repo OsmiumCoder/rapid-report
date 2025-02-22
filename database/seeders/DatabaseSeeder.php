@@ -22,11 +22,6 @@ class DatabaseSeeder extends Seeder
             RolesAndPermissionsSeeder::class,
         ]);
 
-        $superAdmin = User::factory()->create([
-            'name' => 'Super Admin',
-            'email' => 'admin@super.com',
-        ])->syncRoles(['super-admin']);
-
         $admin = User::factory()->create([
             'name' => 'Admin',
             'email' => 'admin@b.com',
@@ -80,10 +75,6 @@ class DatabaseSeeder extends Seeder
         Incident::factory(5)->hasComments(5)->create([
             'supervisor_id' => $supervisor->id,
             'status' => Closed::class,
-        ]);
-
-        Incident::factory(5)->create([
-            'reporters_email' => $superAdmin->email,
         ]);
 
         Incident::factory(5)->create([
