@@ -46,8 +46,5 @@ class RolesAndPermissionsSeeder extends Seeder
             ->syncPermissions([
                 'view own incidents'
             ]);
-
-        Role::firstOrCreate(['name' => 'super-admin'])
-            ->syncPermissions(Permission::all());
     }
 }

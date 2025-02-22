@@ -2,9 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 // TODO: Remove, used for demo purposes
 Route::get('/notification', function () {
@@ -47,24 +45,17 @@ Route::get('/notification', function () {
         supervisor: $supervisor,
     );
 
-    //    return $incidentReceived->render();
+    // return $incidentReceived->render();
     // return $userAdded->render();
     // return $incidentSubmitted->toMail($supervisor);
-    //     return $investigationSubmitted->toMail($supervisor);
-    //    return $investigationReturned->toMail();
-    //    return $incidentAssigned->toMail();
+    // return $investigationSubmitted->toMail($supervisor);
+    // return $investigationReturned->toMail();
+    // return $incidentAssigned->toMail();
     // return $rcaSubmitted->toMail($supervisor);
 
 });
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+Route::permanentRedirect('/', '/login');
 
 
 Route::middleware('auth')->group(function () {

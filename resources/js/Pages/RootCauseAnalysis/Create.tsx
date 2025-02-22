@@ -38,7 +38,7 @@ export default function Create({ incident }: { incident: Incident }) {
         whys: Array(5).fill(''),
         primary_effect: '',
         solutions_and_actions: [
-            { cause: '', control: '', remedial_action: '', by_who: '', by_when: '', manager: '' },
+            { cause: '', control: '', remedial_action: '', by_who: '', by_when: '' },
         ],
         peoples_positions: [] as string[],
         attention_to_work: [] as string[],

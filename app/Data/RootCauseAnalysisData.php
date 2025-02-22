@@ -48,7 +48,6 @@ class RootCauseAnalysisData extends Data
             'solutions_and_actions.*.remedial_action' => ['required', 'string'],
             'solutions_and_actions.*.by_who' => ['required', 'string'],
             'solutions_and_actions.*.by_when' => ['required', Rule::date()->format('Y-m-d')],
-            'solutions_and_actions.*.manager' => ['required', 'string'],
 
             'peoples_positions.*' => ['string'],
             'attention_to_work.*' => ['string'],

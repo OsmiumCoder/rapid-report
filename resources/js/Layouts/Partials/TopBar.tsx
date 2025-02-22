@@ -1,23 +1,23 @@
-import { Bars3Icon, BellIcon, UserCircleIcon } from '@heroicons/react/24/outline';
-import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid';
-import { Menu, MenuButton, MenuItem, MenuItems, Transition } from '@headlessui/react';
-import { Link, router, usePage } from '@inertiajs/react';
-import { Method } from '@/types/Method';
-import { useEffect, useRef, useState } from 'react';
+import {Bars3Icon, BellIcon, UserCircleIcon} from '@heroicons/react/24/outline';
+import {ChevronDownIcon, MagnifyingGlassIcon} from '@heroicons/react/20/solid';
+import {Menu, MenuButton, MenuItem, MenuItems, Transition} from '@headlessui/react';
+import {Link, router, usePage} from '@inertiajs/react';
+import {Method} from '@/types/Method';
+import {useEffect, useRef, useState} from 'react';
 import Searchbar from '@/Layouts/Partials/Searchbar';
 import Notifications from '@/Layouts/Partials/Notifications';
 import useDismiss from '@/hooks/useDismiss';
-import { useConfirmationModal } from '@/Components/ConfirmationModal/ConfirmationModalProvider';
+import {useConfirmationModal} from '@/Components/ConfirmationModal/ConfirmationModalProvider';
 
 const userNavigation: { name: string; href: string; method?: Method }[] = [
-    { name: 'Your profile', href: route('profile.edit') },
-    { name: 'Sign out', href: route('logout'), method: 'post' },
+    {name: 'Your profile', href: route('profile.edit')},
+    {name: 'Sign out', href: route('logout'), method: 'post'},
 ];
 
-export default function TopBar({ onClick }: { onClick: () => void }) {
+export default function TopBar({onClick}: { onClick: () => void }) {
     const user = usePage().props.auth.user;
 
-    const { modalRef } = useConfirmationModal();
+    const {modalRef} = useConfirmationModal();
 
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [isNotificationOpen, setIsNotificationOpen] = useState(false);
@@ -30,27 +30,27 @@ export default function TopBar({ onClick }: { onClick: () => void }) {
     });
 
     const hasUnreadNotifications =
-        usePage().props.notifications?.some(({ read_at }) => read_at === null) ?? false;
+        usePage().props.notifications?.some(({read_at}) => read_at === null) ?? false;
     return (
         <>
-            <Searchbar isOpen={isSearchOpen} setIsOpen={setIsSearchOpen} />
+            <Searchbar isOpen={isSearchOpen} setIsOpen={setIsSearchOpen}/>
 
-            <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
+            <div
+                className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
                 <button
                     type="button"
                     onClick={onClick}
                     className="-m-2.5 p-2.5 text-gray-700 lg:hidden"
                 >
                     <span className="sr-only">Open sidebar</span>
-                    <Bars3Icon aria-hidden="true" className="size-6" />
+                    <Bars3Icon aria-hidden="true" className="size-6"/>
                 </button>
 
                 {/* Separator */}
-                <div aria-hidden="true" className="h-6 w-px bg-gray-900/10 lg:hidden" />
+                <div aria-hidden="true" className="h-6 w-px bg-gray-900/10 lg:hidden"/>
 
                 <div className="flex flex-1 self-stretch justify-end items-center lg:gap-x-6">
-                    {(user.roles.some((role) => role.name === 'admin') ||
-                        user.roles.some((role) => role.name === 'super-admin')) && (
+                    {(user.roles.some((role) => role.name === 'admin')) && (
                         <button
                             type="button"
                             className="text-gray-400 hover:text-gray-500"
@@ -71,9 +71,10 @@ export default function TopBar({ onClick }: { onClick: () => void }) {
                                 onClick={() => setIsNotificationOpen((prev) => !prev)}
                             >
                                 <span className="sr-only">View notifications</span>
-                                <BellIcon aria-hidden="true" className="size-6" />
+                                <BellIcon aria-hidden="true" className="size-6"/>
                                 {hasUnreadNotifications && (
-                                    <span className="absolute top-0 right-0 flex items-center justify-center h-2 w-2 font-semibold text-white bg-red-500 rounded-full" />
+                                    <span
+                                        className="absolute top-0 right-0 flex items-center justify-center h-2 w-2 font-semibold text-white bg-red-500 rounded-full"/>
                                 )}
                             </button>
 
@@ -87,7 +88,7 @@ export default function TopBar({ onClick }: { onClick: () => void }) {
                                 leaveTo="opacity-0"
                             >
                                 <div ref={notificationRef}>
-                                    <Notifications />
+                                    <Notifications/>
                                 </div>
                             </Transition>
                         </div>
@@ -101,7 +102,7 @@ export default function TopBar({ onClick }: { onClick: () => void }) {
                         <Menu as="div" className="relative">
                             <MenuButton className="-m-1.5 flex items-center p-1.5">
                                 <span className="sr-only">Open user menu</span>
-                                <UserCircleIcon className="size-8 rounded-full bg-gray-50" />
+                                <UserCircleIcon className="size-8 rounded-full bg-gray-50"/>
                                 <span className="hidden lg:flex lg:items-center">
                                     <span
                                         aria-hidden="true"

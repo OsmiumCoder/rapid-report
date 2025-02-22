@@ -23,7 +23,6 @@ class RootCauseAnalysisDataTest extends TestCase
                     'remedial_action' => 'action 1',
                     'by_who' => 'who 1',
                     'by_when' => now()->format('Y-m-d'),
-                    'manager' => 'manager 1',
                 ],
                 [
                     "cause" => 'cause 2',
@@ -31,7 +30,6 @@ class RootCauseAnalysisDataTest extends TestCase
                     'remedial_action' => 'action 2',
                     'by_who' => 'who 2',
                     'by_when' => now()->format('Y-m-d'),
-                    'manager' => 'manager 2',
                 ]
             ],
             'ppe_in_good_condition' => true,
@@ -63,7 +61,6 @@ class RootCauseAnalysisDataTest extends TestCase
                     'remedial_action' => 'action 1',
                     'by_who' => 'who 1',
                     'by_when' => now()->format('Y-m-d'),
-                    'manager' => 'manager 1',
                 ],
                 [
                     "cause" => 'cause 2',
@@ -71,7 +68,6 @@ class RootCauseAnalysisDataTest extends TestCase
                     'remedial_action' => 'action 2',
                     'by_who' => 'who 2',
                     'by_when' => now()->format('Y-m-d'),
-                    'manager' => 'manager 2',
                 ]
             ],
             'peoples_positions' => ['position 1', 'position 2', 'position 3', 'position 4'],
@@ -135,7 +131,6 @@ class RootCauseAnalysisDataTest extends TestCase
                     'remedial_action' => '',
                     'by_who' => '',
                     'by_when' => '',
-                    'manager' => '',
                 ],
             ],
             'peoples_positions' => ['position 1', 'position 2', 'position 3', 'position 4'],
