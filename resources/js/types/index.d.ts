@@ -18,7 +18,7 @@ export interface Role {
     name: RoleName;
 }
 
-type RoleName = 'super-admin' | 'admin' | 'supervisor' | 'user' | 'all';
+type RoleName = 'admin' | 'supervisor' | 'user' | 'all';
 
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {
     auth: {

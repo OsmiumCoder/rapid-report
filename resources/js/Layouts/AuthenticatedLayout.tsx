@@ -16,20 +16,20 @@ export default function Authenticated({ children }: PropsWithChildren<{ header?:
         {
             name: 'Admin Overview',
             href: 'dashboard.admin',
-            roles: ['admin', 'super-admin'],
+            roles: ['admin'],
         },
-        { name: 'User Management', href: 'dashboard.user-management', roles: ['admin', 'super-admin'] },
+        { name: 'User Management', href: 'dashboard.user-management', roles: ['admin'] },
     ];
     const reportNav: NavigationItem[] = [
         {
             name: 'Report Builder',
             href: 'report.index',
-            roles: ['admin', 'super-admin'],
+            roles: ['admin'],
         },
         {
             name: 'Statistics Portal',
             href: 'report.stats',
-            roles: ['admin', 'super-admin'],
+            roles: ['admin'],
         },
     ];
     return (

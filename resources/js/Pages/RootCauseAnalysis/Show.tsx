@@ -22,9 +22,9 @@ export default function Show({ rca, incident }: { rca: RootCauseAnalysis; incide
                                 : 'lg:grid-cols-3'
                         )}
                     >
-                        {user.roles.some(
-                            (role) => role.name === 'admin' || role.name === 'super-admin'
-                        ) && <RootCauseAnalysisAdminActions rca={rca} />}
+                        {user.roles.some((role) => role.name === 'admin') && (
+                            <RootCauseAnalysisAdminActions rca={rca} />
+                        )}
                         <RootCauseAnalysisInformationPanel rca={rca} />
                     </div>
                 </div>

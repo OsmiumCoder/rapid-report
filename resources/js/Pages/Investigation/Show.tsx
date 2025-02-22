@@ -26,9 +26,9 @@ export default function Show({ investigation }: PageProps<ShowProps>) {
                                     : 'lg:grid-cols-3'
                             )}
                         >
-                            {user.roles.some(
-                                (role) => role.name === 'admin' || role.name === 'super-admin'
-                            ) && <InvestigationAdminActions investigation={investigation} />}
+                            {user.roles.some((role) => role.name === 'admin') && (
+                                <InvestigationAdminActions investigation={investigation} />
+                            )}
 
                             <InvestigationInformationPanel investigation={investigation} />
                         </div>

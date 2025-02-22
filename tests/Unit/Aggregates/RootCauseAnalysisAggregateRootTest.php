@@ -43,7 +43,6 @@ class RootCauseAnalysisAggregateRootTest extends TestCase
                     'remedial_action' => 'action 1',
                     'by_who' => 'who 1',
                     'by_when' => now()->format('Y-m-d'),
-                    'manager' => 'manager 1',
                 ],
                 [
                     "cause" => 'cause 2',
@@ -51,7 +50,6 @@ class RootCauseAnalysisAggregateRootTest extends TestCase
                     'remedial_action' => 'action 2',
                     'by_who' => 'who 2',
                     'by_when' => now()->format('Y-m-d'),
-                    'manager' => 'manager 2',
                 ]
             ],
             'peoples_positions' => ['position 1', 'position 2', 'position 3', 'position 4'],
@@ -111,7 +109,6 @@ class RootCauseAnalysisAggregateRootTest extends TestCase
                     'remedial_action' => 'action 1',
                     'by_who' => 'who 1',
                     'by_when' => now()->format('Y-m-d'),
-                    'manager' => 'manager 1',
                 ],
                 [
                     "cause" => 'cause 2',
@@ -119,7 +116,6 @@ class RootCauseAnalysisAggregateRootTest extends TestCase
                     'remedial_action' => 'action 2',
                     'by_who' => 'who 2',
                     'by_when' => now()->format('Y-m-d'),
-                    'manager' => 'manager 2',
                 ]
             ],
             'peoples_positions' => ['position 1', 'position 2', 'position 3', 'position 4'],
@@ -175,7 +171,6 @@ class RootCauseAnalysisAggregateRootTest extends TestCase
                     'remedial_action' => 'action 1',
                     'by_who' => 'who 1',
                     'by_when' => now()->format('Y-m-d'),
-                    'manager' => 'manager 1',
                 ],
                 [
                     "cause" => 'cause 2',
@@ -183,7 +178,6 @@ class RootCauseAnalysisAggregateRootTest extends TestCase
                     'remedial_action' => 'action 2',
                     'by_who' => 'who 2',
                     'by_when' => now()->format('Y-m-d'),
-                    'manager' => 'manager 2',
                 ]
             ],
             'peoples_positions' => ['position 1', 'position 2', 'position 3', 'position 4'],
@@ -219,7 +213,6 @@ class RootCauseAnalysisAggregateRootTest extends TestCase
                             'remedial_action' => 'action 1',
                             'by_who' => 'who 1',
                             'by_when' => now()->format('Y-m-d'),
-                            'manager' => 'manager 1',
                         ],
                         [
                             "cause" => 'cause 2',
@@ -227,7 +220,6 @@ class RootCauseAnalysisAggregateRootTest extends TestCase
                             'remedial_action' => 'action 2',
                             'by_who' => 'who 2',
                             'by_when' => now()->format('Y-m-d'),
-                            'manager' => 'manager 2',
                         ]
                     ],
                     peoples_positions: ['position 1', 'position 2', 'position 3', 'position 4'],
@@ -267,7 +259,6 @@ class RootCauseAnalysisAggregateRootTest extends TestCase
                     'remedial_action' => 'action 1',
                     'by_who' => 'who 1',
                     'by_when' => now()->format('Y-m-d'),
-                    'manager' => 'manager 1',
                 ],
                 [
                     "cause" => 'cause 2',
@@ -275,7 +266,6 @@ class RootCauseAnalysisAggregateRootTest extends TestCase
                     'remedial_action' => 'action 2',
                     'by_who' => 'who 2',
                     'by_when' => now()->format('Y-m-d'),
-                    'manager' => 'manager 2',
                 ]
             ],
             'peoples_positions' => ['position 1', 'position 2', 'position 3', 'position 4'],
@@ -328,7 +318,6 @@ class RootCauseAnalysisAggregateRootTest extends TestCase
                     'remedial_action' => 'action 1',
                     'by_who' => 'who 1',
                     'by_when' => now()->format('Y-m-d'),
-                    'manager' => 'manager 1',
                 ],
                 [
                     "cause" => 'cause 2',
@@ -336,7 +325,6 @@ class RootCauseAnalysisAggregateRootTest extends TestCase
                     'remedial_action' => 'action 2',
                     'by_who' => 'who 2',
                     'by_when' => now()->format('Y-m-d'),
-                    'manager' => 'manager 2',
                 ]
             ],
             'peoples_positions' => ['position 1', 'position 2', 'position 3', 'position 4'],

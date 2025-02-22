@@ -62,7 +62,7 @@ export default function RootCauseAnalysisInformationPanel({ rca }: { rca: RootCa
                     <div className="font-semibold text-lg">Solutions and Actions: </div>
                     <div className="ml-6 space-y-2">
                         {rca.solutions_and_actions.map(
-                            ({ cause, control, remedial_action, by_who, by_when, manager }, i) => (
+                            ({ cause, control, remedial_action, by_who, by_when }, i) => (
                                 <div key={i + cause}>
                                     <div>
                                         <span>Cause: </span>
@@ -83,10 +83,6 @@ export default function RootCauseAnalysisInformationPanel({ rca }: { rca: RootCa
                                     <div>
                                         <span>By When: </span>
                                         <span>{by_when}</span>
-                                    </div>
-                                    <div>
-                                        <span>Manager Name: </span>
-                                        <span>{manager}</span>
                                     </div>
                                 </div>
                             )
