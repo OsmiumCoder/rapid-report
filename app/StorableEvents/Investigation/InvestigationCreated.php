@@ -15,12 +15,12 @@ class InvestigationCreated extends StoredEvent
 {
     public function __construct(
         public string $incident_id,
-        public string $immediate_causes,
-        public string $basic_causes,
+        public ?string $immediate_causes,
+        public ?string $basic_causes,
         public string $remedial_actions,
-        public string $prevention,
+        public ?string $prevention,
         public int $risk_rank,
-        public ?array $resulted_in,
+        public array $resulted_in,
         public ?array $substandard_acts,
         public ?array $substandard_conditions,
         public ?array $energy_transfer_causes,

@@ -145,10 +145,7 @@ class StoreTest extends TestCase
         $this->assertInstanceOf(ValidationException::class, $response->exception);
 
         $response->assertInvalid([
-            'immediate_causes',
-            'basic_causes',
             'remedial_actions',
-            'prevention',
             'resulted_in',
         ]);
     }
