@@ -11,8 +11,6 @@ use Illuminate\Support\Facades\Mail;
 
 class UserCreated extends StoredEvent
 {
-    public ?User $user;
-
     public function __construct(
         public string    $name,
         public string    $email,
