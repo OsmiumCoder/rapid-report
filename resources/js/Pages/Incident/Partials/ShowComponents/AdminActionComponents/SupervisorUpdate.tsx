@@ -45,8 +45,10 @@ export default function SupervisorUpdate({ incident, supervisors, roles }: Super
             <AddUserModal
                 roles={roles}
                 isOpen={isUserFormOpen}
-                onClose={() => {
-                    router.reload({ only: ['incidents', 'supervisors'] });
+                onClose={(userCreated) => {
+                    if (userCreated) {
+                        router.reload({ only: ['incidents', 'supervisors'] });
+                    }
                     setIsUserFormOpen(false);
                 }}
                 assignToIncidentId={incident.id}

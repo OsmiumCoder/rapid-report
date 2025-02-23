@@ -11,11 +11,12 @@ import { Role } from '@/types';
 import { uppercaseWordFormat } from '@/Filters/uppercaseWordFormat';
 import SelectInput from '@/Components/SelectInput';
 import validatePhoneInput from '@/Filters/validatePhoneInput';
+import LoadingIndicator from '@/Components/LoadingIndicator';
 
 interface AddUserFormProps {
     roles: Role[];
     isOpen: boolean;
-    onClose: () => void;
+    onClose: (userCreated: boolean) => void;
     assignToIncidentId?: string;
 }
 
@@ -25,7 +26,7 @@ export default function AddUserModal({
     onClose,
     assignToIncidentId,
 }: AddUserFormProps) {
-    const { data, setData, post, processing, errors, clearErrors, reset } = useForm({
+    const { data, setData, post, processing, errors, clearErrors, reset, cancel } = useForm({
         name: '',
         email: '',
         password: '',
@@ -42,14 +43,17 @@ export default function AddUserModal({
         post(route('users.store'), {
             preserveScroll: true,
             onSuccess: () => {
-                closeModal();
+                closeModal(true);
                 reset();
             },
         });
     };
 
-    const closeModal = () => {
-        onClose();
+    const closeModal = (userCreated: boolean) => {
+        if (processing) {
+            cancel();
+        }
+        onClose(userCreated);
         clearErrors();
         reset();
     };
@@ -179,12 +183,13 @@ export default function AddUserModal({
                 </div>
 
                 <div className="mt-6 flex justify-between">
-                    <DangerButton onClick={() => closeModal()}>Cancel</DangerButton>
+                    <DangerButton onClick={() => closeModal(false)}>Cancel</DangerButton>
 
                     <PrimaryButton className="ms-3" disabled={processing}>
                         Add User
                     </PrimaryButton>
                 </div>
+                {processing && <LoadingIndicator className="w-full text-center" />}
             </form>
         </Modal>
     );
