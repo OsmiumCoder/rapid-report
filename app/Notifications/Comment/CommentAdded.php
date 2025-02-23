@@ -5,9 +5,9 @@ namespace App\Notifications\Comment;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
+use App\Notifications\BaseNotification;
 
-class CommentAdded extends Notification
+class CommentAdded extends BaseNotification
 {
     use Queueable;
 
@@ -17,7 +17,7 @@ class CommentAdded extends Notification
     public function __construct(
         public string $comment,
         public User $user,
-        public string $url  // Add the URL to the constructor
+        public string $url
     ) {
         $this->message = "$this->user->name commented: $this->comment";
     }
