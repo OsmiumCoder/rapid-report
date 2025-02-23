@@ -12,10 +12,66 @@ use App\States\IncidentStatus\Opened;
 use App\States\IncidentStatus\Reopened;
 use App\States\IncidentStatus\Returned;
 use Inertia\Testing\AssertableInertia;
+use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class ShowTest extends TestCase
 {
+    public function test_admin_gets_roles_prop()
+    {
+        $admin = User::factory()->create()->syncRoles('admin');
+        $this->actingAs($admin);
+
+        $incident = Incident::factory()->create();
+
+        $response = $this->get(route('incidents.show', ['incident' => $incident->id]));
+
+        $response->assertOk();
+
+        $response->assertInertia(function (AssertableInertia $page) use ($incident) {
+            $page->component('Incident/Show')
+                ->count('roles', count(Role::all()));
+        });
+    }
+
+    public function test_supervisor_gets_empty_roles_prop()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+        $this->actingAs($supervisor);
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+        ]);
+
+        $response = $this->get(route('incidents.show', ['incident' => $incident->id]));
+
+        $response->assertOk();
+
+        $response->assertInertia(function (AssertableInertia $page) use ($incident) {
+            $page->component('Incident/Show')
+                ->count('roles', 0);
+        });
+    }
+
+    public function test_user_gets_empty_roles_prop()
+    {
+        $user = User::factory()->create(['email' => 'email@b.com'])->syncRoles('user');
+        $this->actingAs($user);
+
+        $incident = Incident::factory()->create([
+            'reporters_email' => $user->email,
+        ]);
+
+        $response = $this->get(route('incidents.show', ['incident' => $incident->id]));
+
+        $response->assertOk();
+
+        $response->assertInertia(function (AssertableInertia $page) use ($incident) {
+            $page->component('Incident/Show')
+                ->count('roles', 0);
+        });
+    }
+
     public function test_show_incident_canProvideFollowup_prop_true_for_supervisor_assigned_incident()
     {
         $supervisor = User::factory()->create()->syncRoles('supervisor');

@@ -4,6 +4,7 @@ namespace Tests\Feature\User;
 
 use App\Enum\RolesEnum;
 use App\Mail\UserAdded;
+use App\Models\Incident;
 use App\Models\User;
 use App\StorableEvents\User\UserCreated;
 use Illuminate\Support\Facades\Event;
@@ -12,6 +13,89 @@ use Tests\TestCase;
 
 class StoreTest extends TestCase
 {
+    public function test_creating_supervisor_with_incident_id_assigns_to_incident()
+    {
+        $admin = User::factory()->create()->assignRole('admin');
+        $this->actingAs($admin);
+
+        $incident = Incident::factory()->create();
+
+        $response = $this->post(route('users.store'), [
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'password' => 'password',
+            'password_confirmation' => 'password',
+            'upei_id' => '123456',
+            'phone' => '12346565',
+            'role' => RolesEnum::SUPERVISOR->value,
+            'incident_id' => $incident->id,
+        ]);
+
+        $response->assertRedirect();
+
+        $incident->refresh();
+
+        $supervisor = User::role('supervisor')->firstOrFail();
+
+        $this->assertEquals($supervisor->id, $incident->supervisor->id);
+    }
+
+    public function test_creating_admin_with_incident_id_does_not_assign_incident()
+    {
+        $admin = User::factory()->create()->assignRole('admin');
+        $this->actingAs($admin);
+
+        $incident = Incident::factory()->create();
+
+        $this->assertDatabaseCount('users', 1);
+
+        $response = $this->post(route('users.store'), [
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'password' => 'password',
+            'password_confirmation' => 'password',
+            'upei_id' => '123456',
+            'phone' => '12346565',
+            'role' => RolesEnum::ADMIN->value,
+            'incident_id' => $incident->id,
+        ]);
+
+        $response->assertRedirect();
+        $this->assertDatabaseCount('users', 2);
+
+        $incident->refresh();
+
+        $this->assertNull($incident->supervisor_id);
+    }
+
+    public function test_creating_user_with_incident_id_does_not_assign_incident()
+    {
+        $admin = User::factory()->create()->assignRole('admin');
+        $this->actingAs($admin);
+
+        $incident = Incident::factory()->create();
+
+        $this->assertDatabaseCount('users', 1);
+
+        $response = $this->post(route('users.store'), [
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'password' => 'password',
+            'password_confirmation' => 'password',
+            'upei_id' => '123456',
+            'phone' => '12346565',
+            'role' => RolesEnum::USER->value,
+            'incident_id' => $incident->id,
+        ]);
+
+        $response->assertRedirect();
+        $this->assertDatabaseCount('users', 2);
+
+        $incident->refresh();
+
+        $this->assertNull($incident->supervisor_id);
+    }
+
     public function test_notifies_user()
     {
         Mail::fake();

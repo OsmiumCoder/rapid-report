@@ -27,7 +27,8 @@ class UserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'upei_id' => ['required', 'string'],
             'phone' => ['sometimes', 'nullable', 'string'],
-            'role' => ['required', Rule::enum(RolesEnum::class)]
+            'role' => ['required', Rule::enum(RolesEnum::class)],
+            'incident_id' => ['sometimes', 'nullable', 'string'],
         ]);
 
         $event = new UserCreated(
@@ -37,6 +38,7 @@ class UserController extends Controller
             upei_id: $request->upei_id,
             phone: $request->phone,
             role: $request->enum('role', RolesEnum::class),
+            incident_id: $request->incident_id,
         );
 
         event($event);

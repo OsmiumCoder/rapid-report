@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
+use Spatie\Permission\Models\Role;
 
 class IncidentController extends Controller
 {
@@ -77,8 +78,10 @@ class IncidentController extends Controller
 
         if ($user->can('perform admin actions')) {
             $supervisors = User::role('supervisor')->get();
+            $roles = Role::all();
         } else {
             $supervisors = [];
+            $roles = [];
         }
 
         if ($user->can('view any incident follow-up')) {
@@ -97,6 +100,7 @@ class IncidentController extends Controller
         return Inertia::render('Incident/Show', [
             'incident' => $incident->load(['comments.user', 'supervisor']),
             'supervisors' => $supervisors,
+            'roles' => $roles,
             'canRequestReview' => $user->can('requestReview', $incident),
             'canProvideFollowup' => $user->can('provideFollowup', $incident),
         ]);

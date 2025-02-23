@@ -3,7 +3,7 @@ import IncidentAdminActions from '@/Pages/Incident/Partials/ShowComponents/Incid
 import ActivityLog from '@/Pages/Incident/Partials/ShowComponents/ActivityLog';
 import IncidentHeader from '@/Pages/Incident/Partials/ShowComponents/IncidentHeader';
 import { Head, router, useForm } from '@inertiajs/react';
-import { PageProps, User } from '@/types';
+import { PageProps, Role, User } from '@/types';
 import IncidentInformationPanel from '@/Pages/Incident/Partials/ShowComponents/IncidentInformationPanel';
 import { Incident } from '@/types/incident/Incident';
 import { FormEvent, useEffect } from 'react';
@@ -14,6 +14,7 @@ import IncidentUserActions from '@/Pages/Incident/Partials/ShowComponents/Incide
 interface ShowProps extends PageProps {
     incident: Incident;
     supervisors: User[];
+    roles: Role[];
     canRequestReview: boolean;
     canProvideFollowup: boolean;
 }
@@ -22,6 +23,7 @@ export default function Show({
     auth,
     incident,
     supervisors,
+    roles,
     canRequestReview,
     canProvideFollowup,
 }: PageProps<ShowProps>) {
@@ -63,6 +65,7 @@ export default function Show({
                                 <IncidentAdminActions
                                     incident={incident}
                                     supervisors={supervisors}
+                                    roles={roles}
                                 ></IncidentAdminActions>
                             )}
                             {user.roles.some((role) => role.name === 'supervisor') && (
