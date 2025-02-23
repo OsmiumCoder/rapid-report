@@ -10,7 +10,6 @@ use App\Models\User;
 use App\Notifications\Incident\IncidentSubmittedNotification;
 use App\States\IncidentStatus\Opened;
 use App\StorableEvents\Incident\IncidentCreated;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
