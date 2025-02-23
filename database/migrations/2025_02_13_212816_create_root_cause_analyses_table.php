@@ -16,33 +16,33 @@ return new class () extends Migration {
             $table->foreignId('supervisor_id')->constrained('users');
             $table->foreignUuid('incident_id')->constrained('incidents');
 
-            $table->jsonb('individuals_involved');
+            $table->jsonb('individuals_involved')->nullable();
 
-            $table->text('primary_effect');
+            $table->text('primary_effect')->nullable();
 
-            $table->jsonb('whys');
+            $table->jsonb('whys')->nullable();
 
             // effective_solutions and corrective_actions were combined
-            $table->jsonb('solutions_and_actions');
+            $table->jsonb('solutions_and_actions')->nullable();
 
             $table->jsonb('peoples_positions')->nullable();
             $table->jsonb('attention_to_work')->nullable();
             $table->jsonb('communication')->nullable();
 
             // Using PPE
-            $table->boolean('ppe_in_good_condition');
-            $table->boolean('ppe_in_use');
-            $table->boolean('ppe_correct_type');
+            $table->boolean('ppe_in_good_condition')->nullable();
+            $table->boolean('ppe_in_use')->nullable();
+            $table->boolean('ppe_correct_type')->nullable();
 
             // Execution of Work
-            $table->boolean('correct_tool_used');
-            $table->boolean('policies_followed');
-            $table->boolean('worked_safely');
-            $table->boolean('used_tool_properly');
-            $table->boolean('tool_in_good_condition');
+            $table->boolean('correct_tool_used')->nullable();
+            $table->boolean('policies_followed')->nullable();
+            $table->boolean('worked_safely')->nullable();
+            $table->boolean('used_tool_properly')->nullable();
+            $table->boolean('tool_in_good_condition')->nullable();
 
             $table->jsonb('working_conditions')->nullable();
-            $table->jsonb('root_causes');
+            $table->jsonb('root_causes')->nullable();
 
             $table->softDeletes();
             $table->timestamps();
