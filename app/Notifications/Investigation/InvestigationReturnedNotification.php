@@ -32,7 +32,7 @@ class InvestigationReturnedNotification extends BaseNotification
      */
     public function via(object $notifiable): array
     {
-        return ['mail', 'database', 'vonage'];
+        return ['mail', 'database'];
     }
 
     /**
@@ -43,15 +43,6 @@ class InvestigationReturnedNotification extends BaseNotification
         return (new MailMessage)
             ->subject('Investigation Returned')
             ->markdown('mail.investigation-returned', ['url' => $this->url, 'message' => $this->message]);
-    }
-
-    /**
-     * Get the Vonage / SMS representation of the notification.
-     */
-    public function toVonage(object $notifiable): VonageMessage
-    {
-        return (new VonageMessage)
-            ->content($this->message);
     }
 
     /**

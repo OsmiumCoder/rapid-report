@@ -28,7 +28,7 @@ class SupervisorAssignedNotification extends BaseNotification
      */
     public function via(object $notifiable): array
     {
-        return ['mail', 'database', 'vonage'];
+        return ['mail', 'database'];
     }
 
     /**
@@ -43,15 +43,6 @@ class SupervisorAssignedNotification extends BaseNotification
                 'supervisorName' => $this->supervisor->name,
                 'adminName' => $this->admin->name
             ]);
-    }
-
-    /**
-     * Get the Vonage / SMS representation of the notification.
-     */
-    public function toVonage(object $notifiable): VonageMessage
-    {
-        return (new VonageMessage)
-            ->content($this->message);
     }
 
     /**

@@ -30,16 +30,7 @@ class CommentAdded extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['mail', 'database', 'vonage'];
-    }
-
-    /**
-     * Get the Vonage / SMS representation of the notification.
-     */
-    public function toVonage(object $notifiable): VonageMessage
-    {
-        return (new VonageMessage)
-            ->content($this->message);
+        return ['mail', 'database'];
     }
 
     /**
