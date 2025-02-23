@@ -6,7 +6,6 @@ use App\Models\Incident;
 use App\Models\User;
 use App\Notifications\Incident\AdditionalInformationNotification;
 use App\StorableEvents\StoredEvent;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Notification;
 
 class AdditionalInformation extends StoredEvent
@@ -21,7 +20,7 @@ class AdditionalInformation extends StoredEvent
         $incident = Incident::find($this->aggregateRootUuid());
 
         $newInfo = [
-            'created_at' => Carbon::now(),
+            'created_at' => now(),
             'information' => $this->additionalInformation,
         ];
 

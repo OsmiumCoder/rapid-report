@@ -13,8 +13,6 @@ class AdditionalInformationTest extends TestCase
 {
     public function test_first_additional_information_on_incident_creates_new_array()
     {
-        Carbon::setTestNow(now());
-
         $user = User::factory()->create([
             'email' => 'user@b.com'
         ]);
@@ -38,7 +36,7 @@ class AdditionalInformationTest extends TestCase
 
         $this->assertEquals('information', $incident->additional_information[0]['information']);
         $this->assertEquals(
-            Carbon::now()->timestamp,
+            now()->timestamp,
             Carbon::parse($incident->additional_information[0]['created_at'])->timestamp
         );
 
@@ -46,8 +44,6 @@ class AdditionalInformationTest extends TestCase
 
     public function test_additional_information_appends_to_current_additional_information_on_incident()
     {
-        Carbon::setTestNow(now());
-
         $user = User::factory()->create([
             'email' => 'user@b.com'
         ]);
@@ -56,7 +52,7 @@ class AdditionalInformationTest extends TestCase
         $incident = Incident::factory()->create([
             'reporters_email' => $user->email,
             'additional_information' => [
-                ['information' => 'information 1', 'created_at' => Carbon::now()->timestamp]
+                ['information' => 'information 1', 'created_at' => now()->timestamp]
             ]
         ]);
 
@@ -74,21 +70,19 @@ class AdditionalInformationTest extends TestCase
 
         $this->assertEquals('information 1', $incident->additional_information[0]['information']);
         $this->assertEquals(
-            Carbon::now()->timestamp,
+            now()->timestamp,
             Carbon::parse($incident->additional_information[0]['created_at'])->timestamp
         );
 
         $this->assertEquals('information 2', $incident->additional_information[1]['information']);
         $this->assertEquals(
-            Carbon::now()->timestamp,
+            now()->timestamp,
             Carbon::parse($incident->additional_information[1]['created_at'])->timestamp
         );
     }
 
     public function test_incident_reporter_can_add_additional_information_to_incident()
     {
-        Carbon::setTestNow(now());
-
         $user = User::factory()->create([
             'email' => 'user@b.com'
         ]);
@@ -112,7 +106,7 @@ class AdditionalInformationTest extends TestCase
 
         $this->assertEquals('information', $incident->additional_information[0]['information']);
         $this->assertEquals(
-            Carbon::now()->timestamp,
+            now()->timestamp,
             Carbon::parse($incident->additional_information[0]['created_at'])->timestamp
         );
     }
