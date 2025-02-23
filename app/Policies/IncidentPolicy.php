@@ -61,12 +61,8 @@ class IncidentPolicy
             ($incident->status::class == Assigned::class || $incident->status::class == Returned::class)
         ) {
             $latestInvestigation = $incident->investigations()->latest()->first();
-            $latestRootCauseAnalysis = $incident->rootCauseAnalyses()->latest()->first();
 
-            return $latestInvestigation
-                && $latestRootCauseAnalysis
-                && $latestInvestigation->supervisor_id == $incident->supervisor_id
-                && $latestRootCauseAnalysis->supervisor_id == $incident->supervisor_id;
+            return $latestInvestigation && $latestInvestigation->supervisor_id == $incident->supervisor_id;
         }
 
         return false;
