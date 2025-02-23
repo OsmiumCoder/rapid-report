@@ -5,7 +5,6 @@ namespace App\Notifications\RootCauseAnalysis;
 use App\Models\User;
 use App\Notifications\BaseNotification;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Messages\VonageMessage;
 
 class RootCauseAnalysisSubmittedNotification extends BaseNotification
 {
@@ -32,7 +31,7 @@ class RootCauseAnalysisSubmittedNotification extends BaseNotification
      */
     public function via(object $notifiable): array
     {
-        return ['mail', 'database', 'vonage'];
+        return ['mail', 'database'];
     }
 
     /**
@@ -43,15 +42,6 @@ class RootCauseAnalysisSubmittedNotification extends BaseNotification
         return (new MailMessage)
             ->subject('Root Cause Analysis Submitted')
             ->markdown('mail.root-cause-analysis-submitted', ['url' => $this->url]);
-    }
-
-    /**
-     * Get the Vonage / SMS representation of the notification.
-     */
-    public function toVonage(object $notifiable): VonageMessage
-    {
-        return (new VonageMessage)
-            ->content($this->message);
     }
 
     /**
