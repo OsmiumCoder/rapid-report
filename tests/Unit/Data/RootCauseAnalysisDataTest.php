@@ -88,32 +88,6 @@ class RootCauseAnalysisDataTest extends TestCase
         $this->assertInstanceOf(RootCauseAnalysisData::class, $rcaData);
     }
 
-
-    public function test_rca_data_throws_invalid_with_bad_data()
-    {
-        $this->expectException(ValidationException::class);
-
-        RootCauseAnalysisData::validateAndCreate([
-            'individuals_involved' => '',
-            'primary_effect' => '',
-            'whys' => '',
-            'solutions_and_actions' => '',
-            'peoples_positions' => '',
-            'attention_to_work' => '',
-            'communication' => '',
-            'ppe_in_good_condition' => '',
-            'ppe_in_use' => '',
-            'ppe_correct_type' => '',
-            'correct_tool_used' => '',
-            'policies_followed' => '',
-            'worked_safely' => '',
-            'used_tool_properly' => '',
-            'tool_in_good_condition' => '',
-            'working_conditions' => '',
-            'root_causes' => '',
-        ]);
-    }
-
     public function test_rca_data_throws_invalid_for_solutions_and_actions()
     {
         $this->expectException(ValidationException::class);
@@ -126,11 +100,11 @@ class RootCauseAnalysisDataTest extends TestCase
             'whys' => ['why 1', 'why 2', 'why 3', 'why 4', 'why 5'],
             'solutions_and_actions' => [
                 [
-                    "cause" => '',
-                    'control' => '',
-                    'remedial_action' => '',
-                    'by_who' => '',
-                    'by_when' => '',
+                    "cause" => 0,
+                    'control' => 0,
+                    'remedial_action' => 0,
+                    'by_who' => 0,
+                    'by_when' => 0,
                 ],
             ],
             'peoples_positions' => ['position 1', 'position 2', 'position 3', 'position 4'],

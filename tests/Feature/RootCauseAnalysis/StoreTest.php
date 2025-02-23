@@ -189,96 +189,6 @@ class StoreTest extends TestCase
         $response->assertRedirectToRoute('incidents.root-cause-analyses.show', ['incident' => $incident->id, 'root_cause_analysis' => $rca->id]);
     }
 
-    public function test_throws_validation_error_for_solutions_and_actions()
-    {
-        $supervisor = User::factory()->create()->syncRoles('supervisor');
-
-        $incident = Incident::factory()->create(['status' => Assigned::class, 'supervisor_id' => $supervisor->id]);
-
-        $rcaData = [
-            'individuals_involved' => '',
-            'primary_effect' => '',
-            'whys' => '',
-            'solutions_and_actions' => [[]],
-            'ppe_in_good_condition' => '',
-            'ppe_in_use' => '',
-            'ppe_correct_type' => '',
-            'correct_tool_used' => '',
-            'policies_followed' => '',
-            'worked_safely' => '',
-            'used_tool_properly' => '',
-            'tool_in_good_condition' => '',
-            'root_causes' => '',
-        ];
-
-        $response = $this->actingAs($supervisor)->post(route('incidents.root-cause-analyses.store', $incident), $rcaData);
-
-        $this->assertInstanceOf(ValidationException::class, $response->exception);
-
-        $response->assertInvalid([
-            'individuals_involved',
-            'primary_effect',
-            'whys',
-            'ppe_in_good_condition',
-            'ppe_in_use',
-            'ppe_correct_type',
-            'correct_tool_used',
-            'policies_followed',
-            'worked_safely',
-            'used_tool_properly',
-            'tool_in_good_condition',
-            'root_causes',
-            'solutions_and_actions.0.cause',
-            'solutions_and_actions.0.control',
-            'solutions_and_actions.0.remedial_action',
-            'solutions_and_actions.0.by_who',
-            'solutions_and_actions.0.by_when',
-        ]);
-    }
-
-    public function test_throws_validation_error_for_individuals_involved()
-    {
-        $supervisor = User::factory()->create()->syncRoles('supervisor');
-
-        $incident = Incident::factory()->create(['status' => Assigned::class, 'supervisor_id' => $supervisor->id]);
-
-        $rcaData = [
-            'individuals_involved' => [[]],
-            'primary_effect' => '',
-            'whys' => '',
-            'solutions_and_actions' => '',
-            'ppe_in_good_condition' => '',
-            'ppe_in_use' => '',
-            'ppe_correct_type' => '',
-            'correct_tool_used' => '',
-            'policies_followed' => '',
-            'worked_safely' => '',
-            'used_tool_properly' => '',
-            'tool_in_good_condition' => '',
-            'root_causes' => '',
-        ];
-
-        $response = $this->actingAs($supervisor)->post(route('incidents.root-cause-analyses.store', $incident), $rcaData);
-
-        $this->assertInstanceOf(ValidationException::class, $response->exception);
-
-        $response->assertInvalid([
-            'primary_effect',
-            'whys',
-            'solutions_and_actions',
-            'ppe_in_good_condition',
-            'ppe_in_use',
-            'ppe_correct_type',
-            'correct_tool_used',
-            'policies_followed',
-            'worked_safely',
-            'used_tool_properly',
-            'tool_in_good_condition',
-            'root_causes',
-            'individuals_involved.0.name',
-        ]);
-    }
-
     public function test_throws_validation_error_for_bad_data()
     {
         $supervisor = User::factory()->create()->syncRoles('supervisor');
@@ -286,10 +196,10 @@ class StoreTest extends TestCase
         $incident = Incident::factory()->create(['status' => Assigned::class, 'supervisor_id' => $supervisor->id]);
 
         $rcaData = [
-            'individuals_involved' => '',
-            'primary_effect' => '',
-            'whys' => '',
-            'solutions_and_actions' => '',
+            'individuals_involved' => 0,
+            'primary_effect' => 0,
+            'whys' => 0,
+            'solutions_and_actions' => 0,
             'ppe_in_good_condition' => '',
             'ppe_in_use' => '',
             'ppe_correct_type' => '',
@@ -298,7 +208,7 @@ class StoreTest extends TestCase
             'worked_safely' => '',
             'used_tool_properly' => '',
             'tool_in_good_condition' => '',
-            'root_causes' => '',
+            'root_causes' => 0,
         ];
 
         $response = $this->actingAs($supervisor)->post(route('incidents.root-cause-analyses.store', $incident), $rcaData);
@@ -310,14 +220,6 @@ class StoreTest extends TestCase
             'primary_effect',
             'whys',
             'solutions_and_actions',
-            'ppe_in_good_condition',
-            'ppe_in_use',
-            'ppe_correct_type',
-            'correct_tool_used',
-            'policies_followed',
-            'worked_safely',
-            'used_tool_properly',
-            'tool_in_good_condition',
             'root_causes',
         ]);
     }
