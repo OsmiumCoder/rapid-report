@@ -13,6 +13,16 @@ class IncidentReceived extends Mailable
     use Queueable;
     use SerializesModels;
 
+    public string $incidentUrl;
+
+    /**
+     * Create a new message instance.
+     */
+    public function __construct(public string $incidentUuid)
+    {
+        $this->incidentUrl = route('incidents.show', ['incident' => $this->incidentUuid]);
+    }
+
     /**
      * Get the message envelope.
      */
@@ -30,6 +40,9 @@ class IncidentReceived extends Mailable
     {
         return new Content(
             markdown: 'mail.incident-received',
+            with: [
+                'incidentUrl' => $this->incidentUrl,
+            ],
         );
     }
 
