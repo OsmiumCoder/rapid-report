@@ -9,6 +9,7 @@ use App\Exceptions\UserNotSupervisorException;
 use App\Models\Incident;
 use App\Models\User;
 use App\StorableEvents\Comment\CommentCreated;
+use App\StorableEvents\Incident\AdditionalInformation;
 use App\StorableEvents\Incident\IncidentClosed;
 use App\StorableEvents\Incident\IncidentCreated;
 use App\StorableEvents\Incident\IncidentReopened;
@@ -117,6 +118,13 @@ class IncidentAggregateRoot extends AggregateRoot
             commentable_id: $this->uuid(),
             commentable_type: Incident::class
         ));
+
+        return $this;
+    }
+
+    public function addAdditionalInformation(string $additionalInformation)
+    {
+        $this->recordThat(new AdditionalInformation($additionalInformation));
 
         return $this;
     }

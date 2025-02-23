@@ -5,7 +5,6 @@ namespace App\Notifications\Investigation;
 use App\Models\User;
 use App\Notifications\BaseNotification;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Messages\VonageMessage;
 
 class InvestigationSubmittedNotification extends BaseNotification
 {
@@ -31,7 +30,7 @@ class InvestigationSubmittedNotification extends BaseNotification
      */
     public function via(object $notifiable): array
     {
-        return ['mail', 'database', 'vonage'];
+        return ['mail', 'database'];
     }
 
     /**
@@ -42,15 +41,6 @@ class InvestigationSubmittedNotification extends BaseNotification
         return (new MailMessage)
             ->subject('Investigation Submitted')
             ->markdown('mail.investigation-submitted', ['url' => $this->url]);
-    }
-
-    /**
-     * Get the Vonage / SMS representation of the notification.
-     */
-    public function toVonage(object $notifiable): VonageMessage
-    {
-        return (new VonageMessage)
-            ->content($this->message);
     }
 
     /**

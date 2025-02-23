@@ -17,6 +17,29 @@ use Tests\TestCase;
 
 class IncidentPolicyTest extends TestCase
 {
+    public function test_incident_reporter_can_add_additional_information()
+    {
+        $user = User::factory()->create([
+            'email' => 'user@b.com'
+        ]);
+
+        $incident = Incident::factory()->create([
+            'reporters_email' => $user->email,
+        ]);
+
+        $result = $this->getPolicy()->addAdditionalInformation($user, $incident);
+        $this->assertTrue($result);
+    }
+
+    public function test_user_can_not_add_additional_information_to_incident_they_did_not_report()
+    {
+        $user = User::factory()->create();
+        $incident = Incident::factory()->create();
+
+        $result = $this->getPolicy()->addAdditionalInformation($user, $incident);
+        $this->assertFalse($result);
+    }
+
     public function test_user_can_not_provide_follow_up_on_assigned_incident()
     {
         $user = User::factory()->create()->syncRoles('user');

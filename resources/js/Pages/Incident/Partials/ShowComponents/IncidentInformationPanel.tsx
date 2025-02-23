@@ -9,6 +9,7 @@ import IncidentInformation from '@/Pages/Incident/Partials/ShowComponents/Inform
 import Badge, { BadgeColor } from '@/Components/Badge';
 import { IncidentStatus } from '@/Enums/IncidentStatus';
 import { incidentBadgeColor } from '@/Filters/incidentBadgeColor';
+import AdditionalInformation from '@/Pages/Incident/Partials/ShowComponents/InformationComponents/AdditionalInformation';
 
 export default function IncidentInformationPanel({ incident }: { incident: Incident }) {
     return (
@@ -28,6 +29,7 @@ export default function IncidentInformationPanel({ incident }: { incident: Incid
             <VictimInformation incident={incident} />
             <SupervisorInformation incident={incident} />
             <WitnessInformation incident={incident} />
+            <AdditionalInformation incident={incident} />
         </div>
     );
 }
