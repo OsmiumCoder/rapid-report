@@ -262,29 +262,6 @@ class IncidentPolicyTest extends TestCase
         $this->assertFalse($result);
     }
 
-    public function test_supervisor_cant_request_review_if_latest_root_cause_analyses_not_his()
-    {
-        $supervisor = User::factory()->create()->syncRoles('supervisor');
-
-        $incident = Incident::factory()->create([
-            'supervisor_id' => $supervisor->id,
-            'status' => Assigned::class
-        ]);
-
-        Investigation::factory()->create([
-            'incident_id' => $incident->id,
-            'supervisor_id' => $supervisor->id,
-        ]);
-
-        RootCauseAnalysis::factory()->create([
-            'incident_id' => $incident->id,
-        ]);
-
-        $result = $this->getPolicy()->requestReview($supervisor, $incident);
-
-        $this->assertFalse($result);
-    }
-
     public function test_supervisor_cant_request_review_if_latest_investigation_not_his()
     {
         $supervisor = User::factory()->create()->syncRoles('supervisor');
@@ -322,7 +299,7 @@ class IncidentPolicyTest extends TestCase
         $this->assertFalse($result);
     }
 
-    public function test_supervisor_cant_request_review_if_no_root_cause_analyses()
+    public function test_supervisor_can_request_review_if_no_root_cause_analyses()
     {
         $supervisor = User::factory()->create()->syncRoles('supervisor');
 
@@ -338,7 +315,7 @@ class IncidentPolicyTest extends TestCase
 
         $result = $this->getPolicy()->requestReview($supervisor, $incident);
 
-        $this->assertFalse($result);
+        $this->assertTrue($result);
     }
 
     public function test_supervisor_cant_request_review_if_no_investigations()

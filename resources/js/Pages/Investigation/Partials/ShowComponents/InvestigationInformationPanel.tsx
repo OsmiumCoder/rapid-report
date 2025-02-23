@@ -15,10 +15,13 @@ export default function InvestigationInformationPanel({
                 </Link>
                 <h2 className="font-semibold text-gray-900 text-2xl">Investigation</h2>
             </div>
-            <h3 className='className="font-semibold text-gray-800 my-4'>
+            <div className='className="font-semibold text-gray-800 my-4'>
                 Incident: {investigation.incident_id}
-            </h3>
-            <br />
+            </div>
+            <div className='className="font-semibold text-gray-800 my-4'>
+                Investigation provided by: {investigation.supervisor.name}
+            </div>
+
             <div className="space-y-6 text-gray-900">
                 <div className="space-y-2">
                     <div className="font-semibold text-xl">General Information</div>
@@ -30,27 +33,27 @@ export default function InvestigationInformationPanel({
 
                         <div>
                             <span className="font-semibold">Substandard Acts: </span>
-                            <span>{investigation.substandard_acts.join(', ')}</span>
+                            <span>{investigation.substandard_acts.join(', ') ?? 'N/A'}</span>
                         </div>
 
                         <div>
                             <span className="font-semibold">Substandard Conditions: </span>
-                            <span>{investigation.substandard_conditions.join(', ')}</span>
+                            <span>{investigation.substandard_conditions.join(', ') ?? 'N/A'}</span>
                         </div>
 
                         <div>
                             <span className="font-semibold">Energy Transfer Causes: </span>
-                            <span>{investigation.energy_transfer_causes.join(', ')}</span>
+                            <span>{investigation.energy_transfer_causes.join(', ') ?? 'N/A'}</span>
                         </div>
 
                         <div>
                             <span className="font-semibold">Personal Factors: </span>
-                            <span>{investigation.personal_factors.join(', ')}</span>
+                            <span>{investigation.personal_factors.join(', ') ?? 'N/A'}</span>
                         </div>
 
                         <div>
                             <span className="font-semibold">Job Factors: </span>
-                            <span>{investigation.job_factors.join(', ')}</span>
+                            <span>{investigation.job_factors.join(', ') ?? 'N/A'}</span>
                         </div>
 
                         <div>
@@ -68,21 +71,21 @@ export default function InvestigationInformationPanel({
                     <div className="space-y-2 ml-6">
                         <div>
                             <span className="font-semibold">Immediate Causes: </span>
-                            <span>{investigation.immediate_causes}</span>
+                            <span>{investigation.immediate_causes ?? 'N/A'}</span>
                         </div>
                         <div>
                             <span className="font-semibold">Basic Causes: </span>
-                            <span>{investigation.basic_causes}</span>
+                            <span>{investigation.basic_causes ?? 'N/A'}</span>
                         </div>
                         <div>
-                            <span className="font-semibold">Remedial Causes: </span>
-                            <span>{investigation.immediate_causes}</span>
+                            <span className="font-semibold">Remedial Actions: </span>
+                            <span>{investigation.remedial_actions}</span>
                         </div>
                     </div>
                 </div>
                 <div>
                     <div className="font-semibold text-xl">Prevention</div>
-                    <span className="ml-6">{investigation.prevention}</span>
+                    <span className="ml-6">{investigation.prevention ?? 'N/A'}</span>
                 </div>
             </div>
         </div>

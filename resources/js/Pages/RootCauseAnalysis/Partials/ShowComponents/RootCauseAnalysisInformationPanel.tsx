@@ -11,82 +11,95 @@ export default function RootCauseAnalysisInformationPanel({ rca }: { rca: RootCa
                 </Link>
                 <h2 className="font-semibold text-gray-900 text-2xl">Root Cause Analysis</h2>
             </div>
-            <h3 className='className="font-semibold text-gray-800 my-4'>
+            <div className='className="font-semibold text-gray-800 my-4'>
                 Incident: {rca.incident_id}
-            </h3>
-            <br />
+            </div>
+            <div className='className="font-semibold text-gray-800 my-4'>
+                Root Cause Analysis provided by: {rca.supervisor.name}
+            </div>
+
             <div className="space-y-6 text-gray-900">
                 <div className="space-y-2">
                     <div className="font-semibold text-lg">Primary Effect:</div>
-                    <div className="ml-6">{rca.primary_effect}</div>
+                    <div className="ml-6">{rca.primary_effect ?? 'N/A'}</div>
                 </div>
 
                 <div className="space-y-2">
                     <div className="font-semibold text-lg">5 Whys:</div>
                     <div className="ml-6">
-                        {rca.whys.map(
-                            (why, i) =>
-                                why && (
-                                    <div key={why}>
-                                        <span>{`${i + 1}. `}</span>
-                                        <span>{why}</span>
-                                    </div>
-                                )
-                        )}
+                        {rca.whys[0]
+                            ? rca.whys.map(
+                                  (why, i) =>
+                                      why && (
+                                          <div key={why}>
+                                              <span>{`${i + 1}. `}</span>
+                                              <span>{why}</span>
+                                          </div>
+                                      )
+                              )
+                            : 'None Specified'}
                     </div>
                 </div>
 
                 <div className="space-y-2">
-                    <div className="font-semibold text-lg">Individuals Involved: </div>
+                    <div className="font-semibold text-lg">Individuals Involved:</div>
                     <div className="space-y-2 ml-6">
-                        {rca.individuals_involved.map(({ name, email, phone }, i) => (
-                            <div key={i + name}>
-                                <div>
-                                    <span>Name: </span>
-                                    <span>{name}</span>
-                                </div>
-                                <div>
-                                    <span>Email: </span>
-                                    <span>{email}</span>
-                                </div>
-                                <div>
-                                    <span>Phone: </span>
-                                    <span>{phone}</span>
-                                </div>
-                            </div>
-                        ))}
+                        {Object.values(rca.individuals_involved[0]).some((value) => {
+                            return value !== undefined && value !== null && value !== '';
+                        })
+                            ? rca.individuals_involved.map(({ name, email, phone }, i) => (
+                                  <div key={i + name}>
+                                      <div>
+                                          <span>Name: </span>
+                                          <span>{name}</span>
+                                      </div>
+                                      <div>
+                                          <span>Email: </span>
+                                          <span>{email}</span>
+                                      </div>
+                                      <div>
+                                          <span>Phone: </span>
+                                          <span>{phone}</span>
+                                      </div>
+                                  </div>
+                              ))
+                            : 'None Specified'}
                     </div>
                 </div>
 
                 <div className="space-y-2">
-                    <div className="font-semibold text-lg">Solutions and Actions: </div>
+                    <div className="font-semibold text-lg">Solutions and Actions:</div>
                     <div className="ml-6 space-y-2">
-                        {rca.solutions_and_actions.map(
-                            ({ cause, control, remedial_action, by_who, by_when }, i) => (
-                                <div key={i + cause}>
-                                    <div>
-                                        <span>Cause: </span>
-                                        <span>{cause}</span>
-                                    </div>
-                                    <div>
-                                        <span>Control: </span>
-                                        <span>{control}</span>
-                                    </div>
-                                    <div>
-                                        <span>Remedial Action: </span>
-                                        <span>{remedial_action}</span>
-                                    </div>
-                                    <div>
-                                        <span>By Who: </span>
-                                        <span>{by_who}</span>
-                                    </div>
-                                    <div>
-                                        <span>By When: </span>
-                                        <span>{by_when}</span>
-                                    </div>
-                                </div>
-                            )
-                        )}
+                        {Object.values(rca.solutions_and_actions[0]).some((value) => {
+                            return value !== undefined && value !== null && value !== '';
+                        })
+                            ? rca.solutions_and_actions.map(
+                                  ({ cause, control, remedial_action, by_who, by_when }, i) => (
+                                      <div key={i + cause}>
+                                          <div>
+                                              <span>Cause: </span>
+                                              <span>{cause}</span>
+                                          </div>
+                                          <div>
+                                              <span>Control: </span>
+                                              <span>{control}</span>
+                                          </div>
+                                          <div>
+                                              <span>Remedial Action: </span>
+                                              <span>{remedial_action}</span>
+                                          </div>
+                                          <div>
+                                              <span>By Who: </span>
+                                              <span>{by_who}</span>
+                                          </div>
+                                          <div>
+                                              <span>By When: </span>
+                                              <span>{by_when}</span>
+                                          </div>
+                                      </div>
+                                  )
+                              )
+                            : 'None Specified'}
                     </div>
                 </div>
 
@@ -117,33 +130,96 @@ export default function RootCauseAnalysisInformationPanel({ rca }: { rca: RootCa
                     </span>
                 </div>
                 <div>
-                    <div className="font-semibold text-lg">Personal Protective Equipment: </div>
+                    <div className="font-semibold text-lg">Personal Protective Equipment:</div>
                     <div className="ml-6">
-                        <div>Good Condition: {rca.ppe_in_good_condition ? 'Yes' : 'No'}</div>
-                        <div>In Use: {rca.ppe_in_use ? 'Yes' : 'No'}</div>
-                        <div>Correct Type: {rca.ppe_correct_type ? 'Yes' : 'No'}</div>
+                        <div>
+                            Good Condition:{' '}
+                            {rca.ppe_in_good_condition !== null
+                                ? rca.ppe_in_good_condition
+                                    ? 'Yes'
+                                    : 'No'
+                                : 'N/A'}
+                        </div>
+                        <div>
+                            In Use:{' '}
+                            {rca.ppe_in_use !== null ? (rca.ppe_in_use ? 'Yes' : 'No') : 'N/A'}
+                        </div>
+                        <div>
+                            Correct Type:{' '}
+                            {rca.ppe_correct_type !== null
+                                ? rca.ppe_correct_type
+                                    ? 'Yes'
+                                    : 'No'
+                                : 'N/A'}
+                        </div>
                     </div>
                 </div>
                 <div>
-                    <div className="font-semibold text-lg">Execution of Work: </div>
+                    <div className="font-semibold text-lg">Execution of Work:</div>
                     <div className="ml-6">
-                        <div>Correct Tool Used: {rca.correct_tool_used ? 'Yes' : 'No'}</div>
-                        <div>Policies Followed: {rca.policies_followed ? 'Yes' : 'No'}</div>
-                        <div>Worked Safely: {rca.worked_safely ? 'Yes' : 'No'}</div>
-                        <div>Used Tool Properly: {rca.used_tool_properly ? 'Yes' : 'No'}</div>
                         <div>
-                            Tool in Good Condition: {rca.tool_in_good_condition ? 'Yes' : 'No'}
+                            Correct Tool Used:{' '}
+                            {rca.correct_tool_used !== null
+                                ? rca.correct_tool_used
+                                    ? 'Yes'
+                                    : 'No'
+                                : 'N/A'}
                         </div>
-                        <div>Worked Safely: {rca.worked_safely ? 'Yes' : 'No'}</div>
+                        <div>
+                            Policies Followed:{' '}
+                            {rca.policies_followed !== null
+                                ? rca.policies_followed
+                                    ? 'Yes'
+                                    : 'No'
+                                : 'N/A'}
+                        </div>
+                        <div>
+                            Worked Safely:{' '}
+                            {rca.worked_safely !== null
+                                ? rca.worked_safely
+                                    ? 'Yes'
+                                    : 'No'
+                                : 'N/A'}
+                        </div>
+                        <div>
+                            Used Tool Properly:{' '}
+                            {rca.used_tool_properly !== null
+                                ? rca.used_tool_properly
+                                    ? 'Yes'
+                                    : 'No'
+                                : 'N/A'}
+                        </div>
+                        <div>
+                            Tool in Good Condition:{' '}
+                            {rca.tool_in_good_condition !== null
+                                ? rca.tool_in_good_condition
+                                    ? 'Yes'
+                                    : 'No'
+                                : 'N/A'}
+                        </div>
+                        <div>
+                            Worked Safely:{' '}
+                            {rca.worked_safely !== null
+                                ? rca.worked_safely
+                                    ? 'Yes'
+                                    : 'No'
+                                : 'N/A'}
+                        </div>
                     </div>
                 </div>
                 <div>
                     <span className="font-semibold text-lg">Working Conditions: </span>
-                    <span>{rca.working_conditions.join(', ')}</span>
+                    <span>
+                        {rca.working_conditions.length > 0
+                            ? rca.working_conditions.join(', ')
+                            : 'None Specified'}
+                    </span>
                 </div>
                 <div>
                     <span className="font-semibold text-lg">Root Causes: </span>
-                    <span>{rca.root_causes.join(', ')}</span>
+                    <span>
+                        {rca.root_causes.length > 0 ? rca.root_causes.join(', ') : 'None Specified'}
+                    </span>
                 </div>
             </div>
         </div>

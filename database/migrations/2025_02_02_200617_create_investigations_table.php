@@ -13,10 +13,10 @@ return new class () extends Migration {
             $table->foreignUuid('incident_id')->constrained('incidents');
             $table->foreignId('supervisor_id')->constrained('users');
 
-            $table->text('immediate_causes');
-            $table->text('basic_causes');
+            $table->text('immediate_causes')->nullable();
+            $table->text('basic_causes')->nullable();
             $table->text('remedial_actions');
-            $table->text('prevention');
+            $table->text('prevention')->nullable();
 
             $table->char('hazard_class');
             $table->integer('risk_rank');

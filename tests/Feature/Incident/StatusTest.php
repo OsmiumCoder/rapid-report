@@ -184,7 +184,7 @@ class StatusTest extends TestCase
         $response->assertForbidden();
     }
 
-    public function test_supervisor_forbidden_to_request_review_if_latest_root_cause_analyses_not_his()
+    public function test_supervisor_can_request_review_if_latest_root_cause_analyses_not_his()
     {
         $supervisor = User::factory()->create()->syncRoles('supervisor');
 
@@ -206,7 +206,7 @@ class StatusTest extends TestCase
 
         $response = $this->patch(route('incidents.request-review', ['incident' => $incident]));
 
-        $response->assertForbidden();
+        $response->assertRedirect();
     }
 
     public function test_supervisor_forbidden_to_request_review_if_latest_investigation_not_his()
@@ -250,7 +250,7 @@ class StatusTest extends TestCase
         $response->assertForbidden();
     }
 
-    public function test_supervisor_forbidden_to_request_review_if_no_root_cause_analyses()
+    public function test_supervisor_can_request_review_if_no_root_cause_analyses()
     {
         $supervisor = User::factory()->create()->syncRoles('supervisor');
 
@@ -268,7 +268,7 @@ class StatusTest extends TestCase
 
         $response = $this->patch(route('incidents.request-review', ['incident' => $incident]));
 
-        $response->assertForbidden();
+        $response->assertRedirect();
     }
 
     public function test_supervisor_forbidden_to_request_review_if_no_investigations()
