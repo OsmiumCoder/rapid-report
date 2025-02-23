@@ -1,5 +1,5 @@
 import { Incident } from '@/types/incident/Incident';
-import { User } from '@/types';
+import { Role, User } from '@/types';
 import SupervisorUpdate from '@/Pages/Incident/Partials/ShowComponents/AdminActionComponents/SupervisorUpdate';
 import StatusUpdate from '@/Pages/Incident/Partials/ShowComponents/AdminActionComponents/StatusUpdate';
 import { IncidentStatus } from '@/Enums/IncidentStatus';
@@ -7,8 +7,9 @@ import { IncidentStatus } from '@/Enums/IncidentStatus';
 interface AdminActionsProps {
     incident: Incident;
     supervisors: User[];
+    roles: Role[];
 }
-export default function IncidentAdminActions({ incident, supervisors }: AdminActionsProps) {
+export default function IncidentAdminActions({ incident, supervisors, roles }: AdminActionsProps) {
     return (
         <>
             <div className="lg:col-start-3 lg:row-end-1 bg-white rounded-lg">
@@ -21,7 +22,11 @@ export default function IncidentAdminActions({ incident, supervisors }: AdminAct
                             incident.status === IncidentStatus.ASSIGNED ||
                             incident.status === IncidentStatus.REOPENED ||
                             incident.status === IncidentStatus.IN_REVIEW) && (
-                            <SupervisorUpdate incident={incident} supervisors={supervisors} />
+                            <SupervisorUpdate
+                                incident={incident}
+                                supervisors={supervisors}
+                                roles={roles}
+                            />
                         )}
                         <StatusUpdate incident={incident} />
                     </div>

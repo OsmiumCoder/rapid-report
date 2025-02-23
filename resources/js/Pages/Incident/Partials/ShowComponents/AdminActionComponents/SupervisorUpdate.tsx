@@ -1,4 +1,4 @@
-import { User } from '@/types';
+import { Role, User } from '@/types';
 import { Incident } from '@/types/incident/Incident';
 import {
     Combobox,
@@ -15,18 +15,20 @@ import { CheckIcon } from '@heroicons/react/20/solid';
 import { assignSupervisor, unassignSupervisor } from '@/Helpers/Incident/statusUpdates';
 import { router } from '@inertiajs/react';
 import { useConfirmationModal } from '@/Components/ConfirmationModal/ConfirmationModalProvider';
+import AddUserForm from '@/Pages/Dashboard/Partials/AddUserForm';
 
-export default function SupervisorUpdate({
-    incident,
-    supervisors,
-}: {
+interface SupervisorUpdateProps {
     incident: Incident;
     supervisors: User[];
-}) {
+    roles: Role[];
+}
+
+export default function SupervisorUpdate({ incident, supervisors, roles }: SupervisorUpdateProps) {
     const [isLoading, setIsLoading] = useState(false);
     const { setModalProps } = useConfirmationModal();
     const [query, setQuery] = useState('');
     const [defaultText, setDefaultText] = useState<'Unassigned' | ''>('Unassigned');
+    const [isUserFormOpen, setIsUserFormOpen] = useState(false);
 
     const filteredSupervisors =
         query === ''
@@ -40,6 +42,15 @@ export default function SupervisorUpdate({
 
     return (
         <>
+            <AddUserForm
+                roles={roles}
+                isOpen={isUserFormOpen}
+                onClose={() => {
+                    router.reload({ only: ['incidents', 'supervisors'] });
+                    setIsUserFormOpen(false);
+                }}
+                assignToIncidentId={incident.id}
+            />
             <label className="block text-sm/6 font-medium text-gray-900 mt-6">
                 Supervisor Management
             </label>
@@ -90,15 +101,15 @@ export default function SupervisorUpdate({
                             />
                         </ComboboxButton>
 
-                        {supervisors.length > 0 && (
-                            <ComboboxOptions className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
-                                {filteredSupervisors.map((supervisor) => (
+                        <ComboboxOptions className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
+                            {filteredSupervisors.length > 0 ? (
+                                filteredSupervisors.map((supervisor) => (
                                     <ComboboxOption
                                         key={supervisor.id}
                                         value={supervisor.id}
                                         className="group relative cursor-default select-none py-2 pl-3 pr-9 text-gray-900 data-[focus]:bg-upei-green-500 data-[focus]:text-white data-[focus]:outline-none"
                                     >
-                                        <div className="">
+                                        <div>
                                             <div className="group-data-[selected]:font-semibold">
                                                 {supervisor.name}
                                             </div>
@@ -113,9 +124,23 @@ export default function SupervisorUpdate({
                                             </span>
                                         )}
                                     </ComboboxOption>
-                                ))}
-                            </ComboboxOptions>
-                        )}
+                                ))
+                            ) : (
+                                <div className="group relative cursor-default select-none py-2 pl-3 pr-9 text-gray-900   data-[focus]:outline-none">
+                                    <div>
+                                        <div className="group-data-[selected]:font-semibold">
+                                            Supervisor Not Found
+                                        </div>
+                                        <div
+                                            onClick={() => setIsUserFormOpen(true)}
+                                            className="text-upei-green-500 hover:text-upei-green-600 cursor-pointer underline hover:no-underline"
+                                        >
+                                            Create Account and Assign
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </ComboboxOptions>
                     </div>
                 </Combobox>
                 {isLoading ? (

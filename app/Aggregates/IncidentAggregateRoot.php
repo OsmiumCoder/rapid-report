@@ -17,6 +17,7 @@ use App\StorableEvents\Incident\SupervisorAssigned;
 use App\StorableEvents\Incident\SupervisorUnassigned;
 use App\StorableEvents\Investigation\InvestigationReturned;
 use App\StorableEvents\RootCauseAnalysis\RootCauseAnalysisReturned;
+use Illuminate\Support\Facades\Log;
 use Spatie\EventSourcing\AggregateRoots\AggregateRoot;
 
 class IncidentAggregateRoot extends AggregateRoot
@@ -56,6 +57,7 @@ class IncidentAggregateRoot extends AggregateRoot
      */
     public function assignSupervisor(int $supervisorId)
     {
+        Log::info("ENTERING ASSIGN SUPERVISOR");
         $user = User::find($supervisorId);
 
         if (! $user->hasRole('supervisor')) {
