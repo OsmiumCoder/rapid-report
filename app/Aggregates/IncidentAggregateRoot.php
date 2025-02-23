@@ -57,7 +57,6 @@ class IncidentAggregateRoot extends AggregateRoot
      */
     public function assignSupervisor(int $supervisorId)
     {
-        Log::info("ENTERING ASSIGN SUPERVISOR");
         $user = User::find($supervisorId);
 
         if (! $user->hasRole('supervisor')) {
