@@ -5,7 +5,6 @@ namespace App\Notifications\Incident;
 use App\Models\User;
 use App\Notifications\BaseNotification;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Messages\VonageMessage;
 
 class IncidentReviewRequestNotification extends BaseNotification
 {
@@ -27,7 +26,7 @@ class IncidentReviewRequestNotification extends BaseNotification
      */
     public function via(object $notifiable): array
     {
-        return ['mail', 'database', 'vonage'];
+        return ['mail', 'database'];
     }
 
     /**
@@ -38,15 +37,6 @@ class IncidentReviewRequestNotification extends BaseNotification
         return (new MailMessage)
             ->subject('Incident Follow Up Review Request')
             ->markdown('mail.incident-review-request', ['url' => $this->url]);
-    }
-
-    /**
-     * Get the Vonage / SMS representation of the notification.
-     */
-    public function toVonage(object $notifiable): VonageMessage
-    {
-        return (new VonageMessage)
-            ->content($this->message);
     }
 
     /**

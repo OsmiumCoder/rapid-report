@@ -10,7 +10,6 @@ use App\Models\User;
 use App\Notifications\Incident\IncidentSubmittedNotification;
 use App\States\IncidentStatus\Opened;
 use App\StorableEvents\Incident\IncidentCreated;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
@@ -20,8 +19,6 @@ class IncidentCreatedTest extends TestCase
 {
     public function test_adds_created_comment()
     {
-        Carbon::setTestNow('2024-05-01 12:12:00');
-
         $event = new IncidentCreated(
             anonymous: false,
             on_behalf: false,
@@ -66,8 +63,6 @@ class IncidentCreatedTest extends TestCase
 
     public function test_creates_new_incident(): void
     {
-        Carbon::setTestNow('2024-05-01 12:12:00');
-
         $event = new IncidentCreated(
             anonymous: false,
             on_behalf: false,
@@ -129,8 +124,6 @@ class IncidentCreatedTest extends TestCase
 
     public function test_creates_new_incident_anonymous(): void
     {
-        Carbon::setTestNow('2024-05-01 12:12:00');
-
         $event = new IncidentCreated(
             anonymous: true,
             on_behalf: false,

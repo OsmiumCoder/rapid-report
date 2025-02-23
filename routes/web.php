@@ -45,6 +45,8 @@ Route::get('/notification', function () {
         supervisor: $supervisor,
     );
 
+    $additionalInfo = new \App\Notifications\Incident\AdditionalInformationNotification($incident->id, 'Some additional information');
+
     // return $incidentReceived->render();
     // return $userAdded->render();
     // return $incidentSubmitted->toMail($supervisor);
@@ -52,6 +54,7 @@ Route::get('/notification', function () {
     // return $investigationReturned->toMail();
     // return $incidentAssigned->toMail();
     // return $rcaSubmitted->toMail($supervisor);
+    return $additionalInfo->toMail();
 
 });
 

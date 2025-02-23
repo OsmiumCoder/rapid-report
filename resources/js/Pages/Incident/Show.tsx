@@ -3,16 +3,18 @@ import IncidentAdminActions from '@/Pages/Incident/Partials/ShowComponents/Incid
 import ActivityLog from '@/Pages/Incident/Partials/ShowComponents/ActivityLog';
 import IncidentHeader from '@/Pages/Incident/Partials/ShowComponents/IncidentHeader';
 import { Head, router, useForm } from '@inertiajs/react';
-import { PageProps, User } from '@/types';
+import { PageProps, Role, User } from '@/types';
 import IncidentInformationPanel from '@/Pages/Incident/Partials/ShowComponents/IncidentInformationPanel';
 import { Incident } from '@/types/incident/Incident';
 import { FormEvent, useEffect } from 'react';
 import IncidentSupervisorActions from '@/Pages/Incident/Partials/ShowComponents/IncidentSupervisorActions';
 import { IncidentStatus } from '@/Enums/IncidentStatus';
+import IncidentUserActions from '@/Pages/Incident/Partials/ShowComponents/IncidentUserActions';
 
 interface ShowProps extends PageProps {
     incident: Incident;
     supervisors: User[];
+    roles: Role[];
     canRequestReview: boolean;
     canProvideFollowup: boolean;
 }
@@ -21,6 +23,7 @@ export default function Show({
     auth,
     incident,
     supervisors,
+    roles,
     canRequestReview,
     canProvideFollowup,
 }: PageProps<ShowProps>) {
@@ -62,6 +65,7 @@ export default function Show({
                                 <IncidentAdminActions
                                     incident={incident}
                                     supervisors={supervisors}
+                                    roles={roles}
                                 ></IncidentAdminActions>
                             )}
                             {user.roles.some((role) => role.name === 'supervisor') && (
@@ -71,16 +75,23 @@ export default function Show({
                                     canProvideFollowup={canProvideFollowup}
                                 ></IncidentSupervisorActions>
                             )}
+                            {user.roles.some((role) => role.name === 'user') && (
+                                <IncidentUserActions incident={incident}></IncidentUserActions>
+                            )}
 
                             <IncidentInformationPanel incident={incident} />
 
-                            <ActivityLog
-                                data={data}
-                                setData={setData}
-                                processing={processing}
-                                comments={incident.comments}
-                                addComment={addComment}
-                            />
+                            {user.roles.some(
+                                (role) => role.name === 'admin' || role.name === 'supervisor'
+                            ) && (
+                                <ActivityLog
+                                    data={data}
+                                    setData={setData}
+                                    processing={processing}
+                                    comments={incident.comments}
+                                    addComment={addComment}
+                                />
+                            )}
                         </div>
                     </div>
                 </main>

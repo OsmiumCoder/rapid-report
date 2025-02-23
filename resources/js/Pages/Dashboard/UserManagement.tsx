@@ -5,12 +5,13 @@ import { Role, User } from '@/types';
 import Pagination from '@/Components/Pagination';
 import DangerButton from '@/Components/DangerButton';
 import SelectInput from '@/Components/SelectInput';
-import React from 'react';
+import React, { useState } from 'react';
 import { uppercaseWordFormat } from '@/Filters/uppercaseWordFormat';
 import TextInput from '@/Components/TextInput';
 import _ from 'underscore';
-import AddUserForm from '@/Pages/Dashboard/Partials/AddUserForm';
+import AddUserModal from '@/Pages/Dashboard/Partials/AddUserModal';
 import { useConfirmationModal } from '@/Components/ConfirmationModal/ConfirmationModalProvider';
+import PrimaryButton from '@/Components/PrimaryButton';
 
 interface UserManagementProps {
     users: PaginatedResponse<User>;
@@ -19,7 +20,7 @@ interface UserManagementProps {
 
 export default function UserManagement({ users, roles }: UserManagementProps) {
     const { setModalProps } = useConfirmationModal();
-
+    const [isAddUserFormOpen, setIsAddUserFormOpen] = useState(false);
     const searchUsers = _.debounce((search: string) => {
         router.reload({
             data: { search: search, page: 1 },
@@ -47,7 +48,9 @@ export default function UserManagement({ users, roles }: UserManagementProps) {
                         </div>
                     </div>
                     <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-                        <AddUserForm roles={roles} />
+                        <PrimaryButton onClick={() => setIsAddUserFormOpen(true)}>
+                            Add User
+                        </PrimaryButton>
                     </div>
                 </div>
                 <div className="mt-8 flow-root">
@@ -146,6 +149,12 @@ export default function UserManagement({ users, roles }: UserManagementProps) {
                     </div>
                 </div>
             </div>
+
+            <AddUserModal
+                roles={roles}
+                isOpen={isAddUserFormOpen}
+                onClose={() => setIsAddUserFormOpen(false)}
+            />
         </Authenticated>
     );
 }
