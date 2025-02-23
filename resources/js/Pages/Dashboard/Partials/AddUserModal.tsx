@@ -19,7 +19,7 @@ interface AddUserFormProps {
     assignToIncidentId?: string;
 }
 
-export default function AddUserForm({
+export default function AddUserModal({
     roles,
     isOpen,
     onClose,

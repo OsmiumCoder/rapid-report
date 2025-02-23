@@ -15,7 +15,7 @@ import { CheckIcon } from '@heroicons/react/20/solid';
 import { assignSupervisor, unassignSupervisor } from '@/Helpers/Incident/statusUpdates';
 import { router } from '@inertiajs/react';
 import { useConfirmationModal } from '@/Components/ConfirmationModal/ConfirmationModalProvider';
-import AddUserForm from '@/Pages/Dashboard/Partials/AddUserForm';
+import AddUserModal from '@/Pages/Dashboard/Partials/AddUserModal';
 
 interface SupervisorUpdateProps {
     incident: Incident;
@@ -42,7 +42,7 @@ export default function SupervisorUpdate({ incident, supervisors, roles }: Super
 
     return (
         <>
-            <AddUserForm
+            <AddUserModal
                 roles={roles}
                 isOpen={isUserFormOpen}
                 onClose={() => {

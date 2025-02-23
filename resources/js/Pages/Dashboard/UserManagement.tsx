@@ -9,7 +9,7 @@ import React, { useState } from 'react';
 import { uppercaseWordFormat } from '@/Filters/uppercaseWordFormat';
 import TextInput from '@/Components/TextInput';
 import _ from 'underscore';
-import AddUserForm from '@/Pages/Dashboard/Partials/AddUserForm';
+import AddUserModal from '@/Pages/Dashboard/Partials/AddUserModal';
 import { useConfirmationModal } from '@/Components/ConfirmationModal/ConfirmationModalProvider';
 import PrimaryButton from '@/Components/PrimaryButton';
 
@@ -150,7 +150,7 @@ export default function UserManagement({ users, roles }: UserManagementProps) {
                 </div>
             </div>
 
-            <AddUserForm
+            <AddUserModal
                 roles={roles}
                 isOpen={isAddUserFormOpen}
                 onClose={() => setIsAddUserFormOpen(false)}
