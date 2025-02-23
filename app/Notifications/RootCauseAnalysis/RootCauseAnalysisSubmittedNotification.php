@@ -5,7 +5,6 @@ namespace App\Notifications\RootCauseAnalysis;
 use App\Models\User;
 use App\Notifications\BaseNotification;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Messages\VonageMessage;
 
 class RootCauseAnalysisSubmittedNotification extends BaseNotification
 {
