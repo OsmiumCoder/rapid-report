@@ -93,6 +93,11 @@ class IncidentPolicy
         return $user->can('view all incidents');
     }
 
+    public function addAdditionalInformation(User $user, Incident $incident): bool
+    {
+        return $incident->reporters_email == $user->email;
+    }
+
     /**
      * Determine whether the user can create incidents.
      */

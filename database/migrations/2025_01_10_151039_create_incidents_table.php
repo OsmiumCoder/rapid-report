@@ -65,6 +65,8 @@ return new class () extends Migration {
             $table->string('status');
             $table->index('status');
 
+            $table->jsonb('additional_information')->nullable();
+
             $table->timestamp('closed_at')->nullable();
 
             $table->timestamps();

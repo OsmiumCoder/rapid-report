@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Incident\AssignedIncidentsController;
+use App\Http\Controllers\Incident\IncidentAdditionalInformationController;
 use App\Http\Controllers\Incident\IncidentCommentController;
 use App\Http\Controllers\Incident\IncidentController;
 use App\Http\Controllers\Incident\IncidentStatusController;
@@ -26,7 +27,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/incidents/{incident}/close', [IncidentStatusController::class, 'closeIncident'])->name('incidents.close');
     Route::patch('/incidents/{incident}/reopen', [IncidentStatusController::class, 'reopenIncident'])->name('incidents.reopen');
     Route::patch('/incidents/{incident}/request-review', [IncidentStatusController::class, 'requestReview'])->name('incidents.request-review');
-
+    Route::patch('/incidents/{incident}/additional-information', IncidentAdditionalInformationController::class)->name('incidents.additional-information');
     Route::resource('incidents', IncidentController::class)->except([
         'create',
         'store'
