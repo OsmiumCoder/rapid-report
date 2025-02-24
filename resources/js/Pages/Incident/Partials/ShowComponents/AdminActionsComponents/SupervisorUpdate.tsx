@@ -51,7 +51,7 @@ export default function SupervisorUpdate({ incident, supervisors, roles }: Super
                     }
                     setIsUserFormOpen(false);
                 }}
-                assignToIncidentId={incident.id}
+                assignToIncidentId={incident.slug}
             />
             <label className="block text-sm/6 font-medium text-gray-900 mt-6">
                 Supervisor Management
