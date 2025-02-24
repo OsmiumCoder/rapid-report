@@ -13,15 +13,45 @@ use Tests\TestCase;
 
 class CommentCreatedTest extends TestCase
 {
+    public function test_supervisor_comment_does_not_sent_notification_to_self()
+    {
+        Notification::fake();
+
+        $admins = User::factory(3)->create()->each(function ($user) {
+            $user->syncRoles('admin');
+        });
+
+        $commenter = User::factory()->create()->syncRoles('supervisor');
+
+        $incident = Incident::factory()->create();
+
+        Notification::assertNothingSent();
+
+        $event = new CommentCreated(
+            content: "comments",
+            type: CommentType::NOTE,
+            commentable_id: $incident->id,
+            commentable_type: get_class($incident),
+        );
+
+        $event->setMetaData(['user_id' => $commenter->id]);
+
+        $event->react();
+
+        Notification::assertCount(3);
+        Notification::assertSentTo($admins, CommentAdded::class);
+        Notification::assertNotSentTo($commenter, CommentAdded::class);
+    }
+
     public function test_admin_comment_does_not_send_notification_to_self()
     {
         Notification::fake();
+
         $admins = User::factory(3)->create()->each(function ($user) {
             $user->syncRoles('admin');
         });
 
         $commenter = User::factory()->create()->syncRoles('admin');
-
 
         $incident = Incident::factory()->create();
 

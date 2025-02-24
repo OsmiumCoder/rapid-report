@@ -77,7 +77,7 @@ class IncidentPolicy
 
     public function addComment(User $user, Incident $incident): bool
     {
-        return $this->view($user, $incident);
+        return $this->view($user, $incident) && $user->can('add comments');
     }
 
     public function searchIncidents(User $user, Builder $incidentQuery): bool
