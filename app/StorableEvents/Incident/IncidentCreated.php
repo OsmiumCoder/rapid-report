@@ -88,7 +88,7 @@ class IncidentCreated extends StoredEvent
     public function react()
     {
         if ($this->reporters_email) {
-            Mail::to($this->reporters_email)->send(new IncidentReceived);
+            Mail::to($this->reporters_email)->send(new IncidentReceived($this->aggregateRootUuid()));
         }
 
         $admins = User::role('admin')->get();

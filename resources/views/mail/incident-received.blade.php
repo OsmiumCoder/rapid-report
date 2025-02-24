@@ -1,9 +1,12 @@
 <x-mail::message>
 # Incident Received
 
-We have received your incident and appreciate you taking the time to inform us.
-Our team will review the details and take appropriate action as soon as possible.
+Thank you for submitting this incident report. HSE may reach out to you for follow up or additional questions. You may add any additional information to this file by clicking the below link:
+
+<x-mail::button :url="$url">
+    View Incident
+</x-mail::button>
 
 Thanks,<br>
-{{ config('app.name') }}
+UPEI Health, Safety, and Environment
 </x-mail::message>
