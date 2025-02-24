@@ -10,13 +10,13 @@ export default function InvestigationInformationPanel({
     return (
         <div className="bg-white -mx-4 px-4 py-8 shadow-sm ring-1 ring-gray-900/5 sm:mx-0 sm:rounded-lg sm:px-8 sm:pb-14 lg:col-span-2 lg:row-span-2 lg:row-end-2 xl:px-16 xl:pb-20 xl:pt-16">
             <div className="flex items-center space-x-2">
-                <Link href={route('incidents.show', { incident: investigation.incident_id })}>
+                <Link href={route('incidents.show', { incident: investigation.incident.slug })}>
                     <ArrowLeftIcon className="size-6 text-gray-900 hover:text-gray-500" />
                 </Link>
                 <h2 className="font-semibold text-gray-900 text-2xl">Investigation</h2>
             </div>
             <div className='className="font-semibold text-gray-800 my-4'>
-                Incident: {investigation.incident_id}
+                Incident: {investigation.incident.slug}
             </div>
             <div className='className="font-semibold text-gray-800 my-4'>
                 Investigation provided by: {investigation.supervisor.name}

@@ -5,8 +5,6 @@ import TextArea from '@/Components/TextArea';
 
 export default function VictimInformationStage({ formData, setFormData }: StageProps) {
     useEffect(() => {
-        console.log('RUNS');
-
         if (!(formData.work_related && formData.has_injury) && formData.workers_comp_submitted) {
             setFormData('workers_comp_submitted', false);
         }

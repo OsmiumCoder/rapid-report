@@ -11,10 +11,36 @@ use App\States\IncidentStatus\InReview;
 use App\States\IncidentStatus\Opened;
 use App\States\IncidentStatus\Reopened;
 use App\States\IncidentStatus\Returned;
+use Carbon\Carbon;
 use Tests\TestCase;
 
 class IncidentTest extends TestCase
 {
+    public function test_slug_count_resets_on_year_change()
+    {
+        $incident = Incident::factory()->create();
+        $next = Incident::factory()->create();
+
+        $this->assertEquals('2025-000001', $incident->slug);
+        $this->assertEquals('2025-000002', $next->slug);
+
+        Carbon::setTestNow('2026-04-09');
+
+        $incident = Incident::factory()->create();
+        $next = Incident::factory()->create();
+
+        $this->assertEquals('2026-000001', $incident->slug);
+        $this->assertEquals('2026-000002', $next->slug);
+    }
+    public function test_slug_generates_on_create()
+    {
+        $incident = Incident::factory()->create();
+        $next = Incident::factory()->create();
+
+        $this->assertEquals('2025-000001', $incident->slug);
+
+        $this->assertEquals('2025-000002', $next->slug);
+    }
     public function test_sort_scope_status_sorts_by_custom_order()
     {
         Incident::factory()->create(['status' => Assigned::class]);

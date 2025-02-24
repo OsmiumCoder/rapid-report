@@ -50,9 +50,9 @@ export default function OverviewTable({ incidents }: { incidents: Incident[] }) 
                                         as="tr"
                                         className="cursor-pointer hover:bg-gray-50"
                                         href={route('incidents.show', {
-                                            incident: incident.id,
+                                            incident: incident.slug,
                                         })}
-                                        key={incident.id}
+                                        key={incident.slug}
                                     >
                                         <td className="px-3 py-4 text-sm text-gray-500 ">
                                             {nameFilter(incident)[0]} {nameFilter(incident)[1]}
@@ -75,7 +75,7 @@ export default function OverviewTable({ incidents }: { incidents: Incident[] }) 
                                         <td className="py-4 pl-3 pr-4 text-right text-sm font-medium md:pr-6">
                                             <Link
                                                 href={route('incidents.show', {
-                                                    incident: incident.id,
+                                                    incident: incident.slug,
                                                 })}
                                                 className="text-upei-green-500 hover:text-upei-green-600"
                                             >

@@ -13,6 +13,8 @@ return new class () extends Migration {
         Schema::create('incidents', function (Blueprint $table) {
             $table->uuid('id')->primary();
 
+            $table->string('slug')->unique();
+
             $table->boolean('anonymous');
             $table->boolean('on_behalf');
             $table->boolean('on_behalf_anonymous');
