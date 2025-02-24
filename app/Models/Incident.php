@@ -19,6 +19,30 @@ class Incident extends Model
     use SoftDeletes;
     use Searchable;
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($incident) {
+            $year = now()->format('Y-');
+
+            $latestId = self::getNextIdForYear($year);
+
+            $incident->slug = $year . str_pad($latestId, 6, '0', STR_PAD_LEFT);
+        });
+    }
+
+    private static function getNextIdForYear(string $year): int
+    {
+        // Fetch the latest ID for the current year
+        $latestItem = self::where('slug', 'like', $year . '%')
+            ->orderBy('slug', 'desc')
+            ->first();
+
+        // If no record exists for the current year, start from 1
+        return $latestItem ? (int) substr($latestItem->slug, -6) + 1 : 1;
+    }
+
     protected function casts(): array
     {
         return [
