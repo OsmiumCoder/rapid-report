@@ -16,11 +16,12 @@ class CommentCreatedTest extends TestCase
     public function test_admin_comment_does_not_send_notification_to_self()
     {
         Notification::fake();
-        $admins = User::factory()->create(3)->each(function ($user) {
+        $admins = User::factory(3)->create()->each(function ($user) {
             $user->syncRoles('admin');
         });
 
         $commenter = User::factory()->create()->syncRoles('admin');
+
 
         $incident = Incident::factory()->create();
 
@@ -33,11 +34,13 @@ class CommentCreatedTest extends TestCase
             commentable_type: get_class($incident),
         );
 
+        $event->setMetaData(['user_id' => $commenter->id]);
+
         $event->react();
 
         Notification::assertCount(3);
-//        Notification::assertSentTo($admins, CommentAdded::class);
-//        Notification::assertNotSentTo($commenter, CommentAdded::class);
+        Notification::assertSentTo($admins, CommentAdded::class);
+        Notification::assertNotSentTo($commenter, CommentAdded::class);
     }
 
 

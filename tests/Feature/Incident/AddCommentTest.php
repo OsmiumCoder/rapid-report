@@ -144,6 +144,8 @@ class AddCommentTest extends TestCase
 
         $supervisor = User::factory()->create()->syncRoles('supervisor');
 
+        $commenter = User::factory()->create()->syncRoles('admin');
+
         $incident = Incident::factory()->create([
             'supervisor_id' => $supervisor->id,
         ]);
@@ -152,7 +154,7 @@ class AddCommentTest extends TestCase
             'content' => 'Test comment for supervisor notification',
         ]);
 
-        $this->actingAs($supervisor);
+        $this->actingAs($commenter);
 
         $response = $this->post(route('incidents.comments.store', ['incident' => $incident->id]), $commentData->toArray());
 
