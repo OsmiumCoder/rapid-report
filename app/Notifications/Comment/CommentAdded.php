@@ -19,7 +19,7 @@ class CommentAdded extends BaseNotification
         public User $user,
         public string $url
     ) {
-        $this->message = "$this->user->name commented: $this->comment";
+        $this->message = "{$this->user->name} commented: $this->comment";
     }
 
     /**
