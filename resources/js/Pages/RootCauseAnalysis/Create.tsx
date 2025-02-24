@@ -60,7 +60,7 @@ export default function Create({ incident }: { incident: Incident }) {
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        post(route('incidents.root-cause-analyses.store', { incident: incident.id }));
+        post(route('incidents.root-cause-analyses.store', { incident: incident.slug }));
     };
     return (
         <Authenticated>

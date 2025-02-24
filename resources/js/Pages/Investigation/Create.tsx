@@ -39,7 +39,7 @@ export default function Create({ incident }: { incident: Incident }) {
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        post(route('incidents.investigations.store', { incident: incident.id }));
+        post(route('incidents.investigations.store', { incident: incident.slug }));
     };
 
     const toggleCheckbox = (category: keyof InvestigationData, value: string) => {

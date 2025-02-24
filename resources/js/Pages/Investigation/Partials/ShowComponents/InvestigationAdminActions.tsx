@@ -46,7 +46,7 @@ export default function InvestigationAdminActions({
                                                                 router.get(
                                                                     route('incidents.show', {
                                                                         incident:
-                                                                            investigation.incident_id,
+                                                                            investigation.incident.slug,
                                                                     })
                                                                 )
                                                         ),
@@ -71,7 +71,7 @@ export default function InvestigationAdminActions({
                                                             router.get(
                                                                 route('incidents.show', {
                                                                     incident:
-                                                                        investigation.incident_id,
+                                                                        investigation.incident.slug,
                                                                 })
                                                             )
                                                     ),

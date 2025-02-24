@@ -164,9 +164,9 @@ export default function UserDashboard({
                                                         as="tr"
                                                         className="cursor-pointer hover:bg-gray-50"
                                                         href={route('incidents.show', {
-                                                            incident: incident.id,
+                                                            incident: incident.slug,
                                                         })}
-                                                        key={incident.id}
+                                                        key={incident.slug}
                                                     >
                                                         <td className="px-3 py-4 text-sm w-[70rem] text-gray-500 ">
                                                             <div className="line-clamp-3">
@@ -187,7 +187,7 @@ export default function UserDashboard({
                                                         <td className="py-4 pl-3 pr-4 text-right text-sm font-medium md:pr-6">
                                                             <Link
                                                                 href={route('incidents.show', {
-                                                                    incident: incident.id,
+                                                                    incident: incident.slug,
                                                                 })}
                                                                 className="text-upei-green-500 hover:text-upei-green-600"
                                                             >

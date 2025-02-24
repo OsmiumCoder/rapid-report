@@ -6,9 +6,9 @@ import classNames from '@/Filters/classNames';
 import RootCauseAnalysisAdminActions from '@/Pages/RootCauseAnalysis/Partials/ShowComponents/RootCauseAnalysisAdminActions';
 import RootCauseAnalysisInformationPanel from '@/Pages/RootCauseAnalysis/Partials/ShowComponents/RootCauseAnalysisInformationPanel';
 
-export default function Show({ rca, incident }: { rca: RootCauseAnalysis; incident: Incident }) {
+export default function Show({ rca }: { rca: RootCauseAnalysis; incident: Incident }) {
     const { user } = usePage().props.auth;
-    console.log(rca);
+
     return (
         <Authenticated>
             <Head title="Root Cause Analysis" />
