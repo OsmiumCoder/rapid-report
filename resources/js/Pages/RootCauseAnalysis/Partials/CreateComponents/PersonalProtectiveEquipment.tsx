@@ -11,7 +11,7 @@ export default function PersonalProtectiveEquipment({ setFormData, errors }: Roo
         <div>
             <InputLabel className="mb-1 text-base text-gray-900">Using PPE</InputLabel>
             <div className="flex justify-evenly">
-                {Object.entries(ppeValues).map(([key, label], i) => (
+                {Object.entries(ppeValues).map(([key, label]) => (
                     <>
                         <RadioGroup legend={label}>
                             <InputError message={errors ? errors[key as keyof RootCauseAnalysisData] : ''} />

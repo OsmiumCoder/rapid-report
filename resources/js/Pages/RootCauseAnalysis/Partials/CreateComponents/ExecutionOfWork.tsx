@@ -12,7 +12,7 @@ export default function ExecutionOfWork({ setFormData, errors }: RootCauseAnalys
             <InputLabel className="mb-1 text-base text-gray-900">Execution of Work</InputLabel>
 
             <div className="flex justify-evenly">
-                {Object.entries(executionOfWorkValues).map(([key, label], i) => (
+                {Object.entries(executionOfWorkValues).map(([key, label]) => (
                     <>
                         <RadioGroup legend={label}>
                             <InputError message={errors ? errors[key as keyof RootCauseAnalysisData] : ''} className="max-w-32" />
