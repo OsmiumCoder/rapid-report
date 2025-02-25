@@ -12,7 +12,7 @@ interface SupervisorActionsProps {
 export default function IncidentSupervisorActions({ incident, canRequestReview, canProvideFollowup }: SupervisorActionsProps) {
     return (
         <div className="rounded-lg bg-white lg:col-start-3 lg:row-end-1">
-            <div className="rounded-lg shadow-sm ring-1 ring-gray-900/5">
+            <div className="rounded-lg shadow-xs ring-1 ring-gray-900/5">
                 <div className="flex flex-col flex-wrap items-center justify-between">
                     <div className="mt-1 pt-6 text-base font-semibold text-gray-900">Supervisor Actions</div>
                     {incident.investigations.length > 0 && (
@@ -66,7 +66,7 @@ export default function IncidentSupervisorActions({ incident, canRequestReview, 
                                             incident: incident.slug,
                                         })}
                                         as="button"
-                                        className="bg-upei-green-500 hover:bg-upei-green-400 focus-visible:outline-upei-green-600 rounded-md px-3 py-2 text-center text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                                        className="bg-upei-green-500 hover:bg-upei-green-400 focus-visible:outline-upei-green-600 rounded-md px-3 py-2 text-center text-sm font-semibold text-white shadow-xs focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                                     >
                                         Submit Investigation
                                     </Link>
@@ -75,7 +75,7 @@ export default function IncidentSupervisorActions({ incident, canRequestReview, 
                                             incident: incident.slug,
                                         })}
                                         as="button"
-                                        className="bg-upei-green-500 hover:bg-upei-green-400 focus-visible:outline-upei-green-600 rounded-md px-3 py-2 text-center text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                                        className="bg-upei-green-500 hover:bg-upei-green-400 focus-visible:outline-upei-green-600 rounded-md px-3 py-2 text-center text-sm font-semibold text-white shadow-xs focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                                     >
                                         Submit Root Cause Analysis
                                     </Link>
@@ -88,7 +88,7 @@ export default function IncidentSupervisorActions({ incident, canRequestReview, 
                                     })}
                                     method="patch"
                                     as="button"
-                                    className="bg-upei-red-500 hover:bg-upei-red-400 focus-visible:outline-upei-red-600 rounded-md px-3 py-2 text-center text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                                    className="bg-upei-red-500 hover:bg-upei-red-400 focus-visible:outline-upei-red-600 rounded-md px-3 py-2 text-center text-sm font-semibold text-white shadow-xs focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                                 >
                                     Request Review
                                 </Link>

@@ -64,7 +64,7 @@ export default function SupervisorUpdate({ incident, supervisors, roles }: Super
                 >
                     <div className="relative">
                         <ComboboxInput
-                            className="focus:border-upei-green-600 focus:ring-upei-green-600 block w-full rounded-md bg-white py-1.5 pr-12 pl-3 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:shadow-none focus:ring-0 focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 sm:text-sm/6"
+                            className="focus:border-upei-green-600 focus:ring-upei-green-600 block w-full rounded-md bg-white py-1.5 pr-12 pl-3 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:shadow-none focus:ring-0 focus:outline-hidden focus-visible:ring-0 focus-visible:ring-offset-0 sm:text-sm/6"
                             onChange={(event) => setQuery(event.target.value)}
                             onClick={() => setDefaultText('')}
                             onBlur={() => {
@@ -73,17 +73,17 @@ export default function SupervisorUpdate({ incident, supervisors, roles }: Super
                             }}
                             displayValue={() => incident.supervisor?.name ?? defaultText}
                         />
-                        <ComboboxButton className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
+                        <ComboboxButton className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-hidden">
                             <ChevronUpDownIcon className="size-5 text-gray-400" aria-hidden="true" />
                         </ComboboxButton>
 
-                        <ComboboxOptions className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
+                        <ComboboxOptions className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-hidden sm:text-sm">
                             {filteredSupervisors.length > 0 ? (
                                 filteredSupervisors.map((supervisor) => (
                                     <ComboboxOption
                                         key={supervisor.id}
                                         value={supervisor.id}
-                                        className="group data-[focus]:bg-upei-green-500 relative cursor-default py-2 pr-9 pl-3 text-gray-900 select-none data-[focus]:text-white data-[focus]:outline-none"
+                                        className="group data-[focus]:bg-upei-green-500 relative cursor-default py-2 pr-9 pl-3 text-gray-900 select-none data-[focus]:text-white data-[focus]:outline-hidden"
                                     >
                                         <div>
                                             <div className="group-data-[selected]:font-semibold">{supervisor.name}</div>
@@ -98,7 +98,7 @@ export default function SupervisorUpdate({ incident, supervisors, roles }: Super
                                     </ComboboxOption>
                                 ))
                             ) : (
-                                <div className="group relative cursor-default py-2 pr-9 pl-3 text-gray-900 select-none data-[focus]:outline-none">
+                                <div className="group relative cursor-default py-2 pr-9 pl-3 text-gray-900 select-none data-[focus]:outline-hidden">
                                     <div>
                                         <div className="group-data-[selected]:font-semibold">Supervisor Not Found</div>
                                         <div

@@ -18,7 +18,7 @@ export default function Created({ can_view, incident_id }: PageProps<{ can_view:
                         <Link
                             href={route('login')}
                             as="button"
-                            className="bg-upei-red-500 hover:bg-upei-red-600 focus-visible:outline-upei-red-600 rounded-md px-3 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                            className="bg-upei-red-500 hover:bg-upei-red-600 focus-visible:outline-upei-red-600 rounded-md px-3 py-2 text-sm font-semibold text-white shadow-xs focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                         >
                             Return Home
                         </Link>
@@ -31,7 +31,7 @@ export default function Created({ can_view, incident_id }: PageProps<{ can_view:
                                     incident: incident_id,
                                 })}
                                 as="button"
-                                className="bg-upei-green-500 hover:bg-upei-green-600 focus-visible:outline-upei-green-600 rounded-md px-3 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                                className="bg-upei-green-500 hover:bg-upei-green-600 focus-visible:outline-upei-green-600 rounded-md px-3 py-2 text-sm font-semibold text-white shadow-xs focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                             >
                                 View Incident
                             </Link>

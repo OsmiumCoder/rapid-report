@@ -167,7 +167,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
                             <button
                                 type="button"
                                 onClick={prevStep}
-                                className="bg-upei-red-400 hover:bg-upei-red-600 rounded px-4 py-2 font-bold text-white"
+                                className="bg-upei-red-400 hover:bg-upei-red-600 rounded-sm px-4 py-2 font-bold text-white"
                             >
                                 Back
                             </button>
@@ -178,7 +178,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
                                 type="button"
                                 disabled={processing}
                                 onClick={submit}
-                                className="bg-upei-green-500 hover:bg-upei-green-700 rounded px-4 py-2 font-bold text-white"
+                                className="bg-upei-green-500 hover:bg-upei-green-700 rounded-sm px-4 py-2 font-bold text-white"
                             >
                                 Submit
                             </button>
@@ -188,7 +188,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
                             <button
                                 type="button"
                                 onClick={nextStep}
-                                className="bg-upei-green-500 hover:bg-upei-green-700 rounded px-4 py-2 font-bold text-white"
+                                className="bg-upei-green-500 hover:bg-upei-green-700 rounded-sm px-4 py-2 font-bold text-white"
                             >
                                 Next
                             </button>

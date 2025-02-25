@@ -13,7 +13,7 @@ export default function PrimaryButtonDivider({ children, ...props }: PropsWithCh
                     {...props}
                     className={classNames(
                         'inline-flex items-center gap-x-1.5 rounded-full px-3 py-1.5 text-sm',
-                        'bg-upei-green-500 font-semibold text-white shadow-sm',
+                        'bg-upei-green-500 font-semibold text-white shadow-xs',
                         'hover:bg-upei-green-600 focus-visible:outline-upei-green-600 focus-visible:outline-2 focus-visible:outline-offset-2',
                         'disabled:hover:bg-upei-green-500 disabled:opacity-25',
                     )}

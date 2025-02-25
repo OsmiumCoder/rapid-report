@@ -31,7 +31,7 @@ export default function ActivityLog({ comments, addComment, setData, processing,
 
     return (
         <>
-            <div className="rounded-lg bg-white p-5 shadow-sm ring-1 ring-gray-900/5 lg:col-start-3">
+            <div className="rounded-lg bg-white p-5 shadow-xs ring-1 ring-gray-900/5 lg:col-start-3">
                 <h2 className="text-sm/6 font-semibold text-gray-900">Activity</h2>
                 <ul ref={commentFormRef} role="list" className="mt-6 max-h-[55rem] space-y-6 overflow-y-scroll">
                     {comments.map((comment, index) => (
