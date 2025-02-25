@@ -6,7 +6,7 @@ import { Incident } from '@/types/incident/Incident';
 import { RootCauseAnalysis } from '@/types/rootCauseAnalysis/RootCauseAnalysis';
 import { Head, usePage } from '@inertiajs/react';
 
-export default function Show({ rca, incident }: { rca: RootCauseAnalysis; incident: Incident }) {
+export default function Show({ rca }: { rca: RootCauseAnalysis; incident: Incident }) {
     const { user } = usePage().props.auth;
     console.log(rca);
     return (

@@ -1,7 +1,7 @@
 import classNames from '@/Filters/classNames';
 import { ButtonHTMLAttributes, PropsWithChildren } from 'react';
 
-export default function PrimaryButtonDivider({ children, className, ...props }: PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement>>) {
+export default function PrimaryButtonDivider({ children, ...props }: PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement>>) {
     return (
         <div className="relative">
             <div aria-hidden="true" className="absolute inset-0 flex items-center">
@@ -14,7 +14,7 @@ export default function PrimaryButtonDivider({ children, className, ...props }: 
                     className={classNames(
                         'inline-flex items-center gap-x-1.5 rounded-full px-3 py-1.5 text-sm',
                         'bg-upei-green-500 font-semibold text-white shadow-sm',
-                        'hover:bg-upei-green-600 focus-visible:outline-upei-green-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2',
+                        'hover:bg-upei-green-600 focus-visible:outline-upei-green-600 focus-visible:outline-2 focus-visible:outline-offset-2',
                         'disabled:hover:bg-upei-green-500 disabled:opacity-25',
                     )}
                 >
