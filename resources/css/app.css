@@ -1,3 +1,56 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+
+@theme {
+    --font-sans: InterVariable, sans-serif;
+
+    --color-upei-red-100: #7c2d1c;
+    --color-upei-red-200: #8a3d32;
+    --color-upei-red-300: #b84e3e;
+    --color-upei-red-400: #9f3a29;
+    --color-upei-red-500: #661702;
+    --color-upei-red-600: #4e0f10;
+    --color-upei-red-700: #3d0c0b;
+    --color-upei-red-800: #2b0907;
+    --color-upei-red-900: #1a0604;
+
+    --color-upei-green-100: #7fa33f;
+    --color-upei-green-200: #88b44b;
+    --color-upei-green-300: #a3c85f;
+    --color-upei-green-400: #7f9d31;
+    --color-upei-green-500: #5c8727;
+    --color-upei-green-600: #4a6e21;
+    --color-upei-green-700: #3b5c1b;
+    --color-upei-green-800: #2d4a16;
+    --color-upei-green-900: #1f3912;
+
+    --color-upei-yellow-100: #fcd177;
+    --color-upei-yellow-200: #fcd95e;
+    --color-upei-yellow-300: #fbdb44;
+    --color-upei-yellow-400: #fbbd2d;
+    --color-upei-yellow-500: #fbb040;
+    --color-upei-yellow-600: #e69a34;
+    --color-upei-yellow-700: #d2872b;
+    --color-upei-yellow-800: #be7322;
+    --color-upei-yellow-900: #a76119;
+}
+
+@layer base {
+    .transparent-scrollbar {
+        /* This will apply the transparent background to the scrollbar */
+        &::-webkit-scrollbar {
+            width: 3px;
+        }
+        &::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        &::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        &::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    }
+}
