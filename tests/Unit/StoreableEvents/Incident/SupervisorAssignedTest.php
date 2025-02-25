@@ -5,16 +5,164 @@ namespace Tests\Unit\StoreableEvents\Incident;
 use App\Enum\CommentType;
 use App\Models\Incident;
 use App\Models\User;
+use App\Notifications\Incident\IncidentFollowUpOverdueNotification;
 use App\Notifications\Incident\SupervisorAssignedNotification;
 use App\States\IncidentStatus\Assigned;
 use App\States\IncidentStatus\Opened;
+use App\States\IncidentStatus\Returned;
 use App\StorableEvents\Incident\SupervisorAssigned;
+use Illuminate\Notifications\SendQueuedNotifications;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
 
 class SupervisorAssignedTest extends TestCase
 {
-    public function test_returning_investigation_sends_investigation_returned_notification_to_supervisor()
+    public function test_overdue_does_not_send_to_supervisor_if_not_assigned_or_returned()
+    {
+        Notification::fake();
+
+        $admin = User::factory()->create()->syncRoles('admin');
+
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
+        $incident = Incident::factory()->create([
+            'status' => Assigned::class,
+            'supervisor_id' => $supervisor->id,
+        ]);
+
+        $event = new SupervisorAssigned($supervisor->id);
+
+        $event->setMetaData(['user_id' => $admin->id]);
+
+        $event->setAggregateRootUuid($incident->id);
+
+        $event->react();
+
+        $incident->status = Returned::class;
+
+        $this->travel(80)->hours();
+
+        Notification::assertNotSentTo(
+            $supervisor,
+            IncidentFollowUpOverdueNotification::class
+        );
+    }
+
+    public function test_overdue_does_not_send_to_supervisor_if_no_longer_assigned()
+    {
+        Notification::fake();
+
+        $admin = User::factory()->create()->syncRoles('admin');
+
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
+        $incident = Incident::factory()->create([
+            'status' => Assigned::class,
+            'supervisor_id' => $supervisor->id,
+        ]);
+
+        $event = new SupervisorAssigned($supervisor->id);
+
+        $event->setMetaData(['user_id' => $admin->id]);
+
+        $event->setAggregateRootUuid($incident->id);
+
+        $event->react();
+
+        $incident->supervisor_id = $admin->id;
+
+        $this->travel(72)->hours();
+
+        Notification::assertNotSentTo(
+            $supervisor,
+            IncidentFollowUpOverdueNotification::class
+        );
+    }
+
+    public function test_overdue_sends_to_supervisor_if_returned_state_and_still_assigned()
+    {
+        Notification::fake();
+
+        $admin = User::factory()->create()->syncRoles('admin');
+
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
+        $incident = Incident::factory()->create([
+            'status' => Assigned::class,
+            'supervisor_id' => $supervisor->id,
+        ]);
+
+        $event = new SupervisorAssigned($supervisor->id);
+
+        $event->setMetaData(['user_id' => $admin->id]);
+
+        $event->setAggregateRootUuid($incident->id);
+
+        $event->react();
+
+        $incident->status = Returned::class;
+
+        Notification::assertSentTo(
+            $supervisor,
+            IncidentFollowUpOverdueNotification::class
+        );
+    }
+
+    public function test_overdue_sends_to_supervisor_if_assigned_state_and_still_assigned()
+    {
+        Notification::fake();
+
+        $admin = User::factory()->create()->syncRoles('admin');
+
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
+        $incident = Incident::factory()->create([
+            'status' => Assigned::class,
+            'supervisor_id' => $supervisor->id,
+        ]);
+
+        $event = new SupervisorAssigned($supervisor->id);
+
+        $event->setMetaData(['user_id' => $admin->id]);
+
+        $event->setAggregateRootUuid($incident->id);
+
+        $event->react();
+
+        Notification::assertSentTo(
+            $supervisor,
+            IncidentFollowUpOverdueNotification::class
+        );
+    }
+
+    public function test_overdue_notifications_delayed_by_72_hours()
+    {
+        Queue::fake();
+
+        $admin = User::factory()->create()->syncRoles('admin');
+
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
+        $incident = Incident::factory()->create([
+            'status' => Assigned::class,
+            'supervisor_id' => $supervisor->id,
+        ]);
+
+        $event = new SupervisorAssigned($supervisor->id);
+
+        $event->setMetaData(['user_id' => $admin->id]);
+
+        $event->setAggregateRootUuid($incident->id);
+
+        $event->react();
+
+        Queue::assertPushed(SendQueuedNotifications::class, function ($job) {
+            return $job->delay == now()->addHours(72);
+        });
+    }
+
+    public function test_assigning_supervisor_sends_assigned_notification_to_supervisor()
     {
         Notification::fake();
 
@@ -36,8 +184,6 @@ class SupervisorAssignedTest extends TestCase
         Notification::assertNothingSent();
 
         $event->react();
-
-        Notification::assertCount(1);
 
         Notification::assertSentTo($supervisor, SupervisorAssignedNotification::class);
     }

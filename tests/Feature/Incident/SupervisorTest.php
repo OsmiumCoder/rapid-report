@@ -36,7 +36,7 @@ class SupervisorTest extends TestCase
 
         $incident->refresh();
 
-        Notification::assertCount(1);
+        Notification::assertCount(2);
 
         Notification::assertSentTo(
             $supervisor,
@@ -75,7 +75,7 @@ class SupervisorTest extends TestCase
 
         $incident->refresh();
 
-        Notification::assertCount(1);
+        Notification::assertCount(2);
 
         Notification::assertSentTo(
             $supervisor,

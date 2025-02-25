@@ -141,7 +141,7 @@ class IncidentAggregateRootTest extends TestCase
         Notification::assertSentTo(
             $admins,
             function (AdditionalInformationNotification $notification, array $channels) use ($incident, $admins) {
-                $databaseStore = $notification->toArray();
+                $databaseStore = $notification->toArray($admins->first());
 
                 $this->assertEquals(route('incidents.show', $incident->id), $databaseStore['url']);
 
