@@ -1,7 +1,7 @@
 import TextArea from '@/Components/TextArea';
 import { InvestigationComponentProps } from '@/Pages/Investigation/Create';
 
-export default function Prevention({ formData, setFormData, errors }: InvestigationComponentProps) {
+export default function Prevention({ formData, setFormData }: InvestigationComponentProps) {
     return (
         <>
             <div className="mb-4">

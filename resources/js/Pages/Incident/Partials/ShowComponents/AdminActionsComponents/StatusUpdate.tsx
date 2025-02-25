@@ -41,7 +41,7 @@ export default function StatusUpdate({ incident }: { incident: Incident }) {
                                 <div className="font-semibold">
                                     Investigations
                                     {incident.investigations.map((investigation, index) => (
-                                        <div className="font-normal">
+                                        <div key={index} className="font-normal">
                                             <Link
                                                 className="cursor-pointer text-sm text-blue-500 hover:text-blue-400"
                                                 href={route('incidents.investigations.show', {
@@ -61,7 +61,7 @@ export default function StatusUpdate({ incident }: { incident: Incident }) {
                                 <div className="font-semibold">
                                     Root Cause Analyses
                                     {incident.root_cause_analyses.map((rca, index) => (
-                                        <div className="font-normal">
+                                        <div key={index} className="font-normal">
                                             <Link
                                                 className="cursor-pointer text-sm text-blue-500 hover:text-blue-400"
                                                 href={route('incidents.root-cause-analyses.show', {
@@ -103,8 +103,8 @@ export default function StatusUpdate({ incident }: { incident: Incident }) {
                                                     router.get(
                                                         route('incidents.show', {
                                                             incident: incident.slug,
-                                                        })
-                                                    )
+                                                        }),
+                                                    ),
                                                 ),
                                             show: true,
                                         })

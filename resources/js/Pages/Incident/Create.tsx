@@ -13,7 +13,7 @@ import { PageProps } from '@/types';
 import { Incident } from '@/types/incident/Incident';
 import IncidentData from '@/types/incident/IncidentData';
 import { Head, useForm } from '@inertiajs/react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 export default function Create({ form }: PageProps<{ form: IncidentData }>) {
     const { data: formData, setData, post, processing } = useForm<Partial<IncidentData>>(form);
@@ -25,7 +25,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
     const [validStep, setValidStep] = useState(true);
     const [failedStep, setFailedStep] = useState(false);
     const [showButtons, setShowButtons] = useState(true);
-    const setFormData = (key: keyof IncidentData, value: any) => setData(key, value);
+    const setFormData = useCallback((key: keyof IncidentData, value: IncidentData[keyof IncidentData]) => setData(key, value), [setData]);
     const nextStep = () => {
         if (validStep) {
             setCurrentStepNumber((prev) => prev + 1);
@@ -67,7 +67,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
         setFormData('has_injury', false);
         setFormData('workers_comp_submitted', false);
         setFormData('supervisor_name', '');
-    }, []);
+    }, [setFormData]);
 
     useEffect(() => {
         if (
@@ -84,7 +84,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
             setFormData('role', roles[0].value);
             setFormData('upei_id', '');
         }
-    }, [formData.on_behalf, formData.on_behalf_anonymous]);
+    }, [formData.on_behalf, formData.on_behalf_anonymous, formData.anonymous, setFormData]);
 
     useEffect(() => {
         if (formData.anonymous && !formData.on_behalf) {
@@ -96,7 +96,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
             setFormData('role', roles[0].value);
             setFormData('upei_id', '');
         }
-    }, [formData.anonymous]);
+    }, [formData.anonymous, formData.on_behalf, setFormData]);
 
     return (
         <GuestLayout>

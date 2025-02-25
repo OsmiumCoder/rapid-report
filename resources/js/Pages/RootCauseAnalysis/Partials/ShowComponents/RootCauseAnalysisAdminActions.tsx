@@ -35,8 +35,8 @@ export default function RootCauseAnalysisAdminActions({ rca }: { rca: RootCauseA
                                                             router.get(
                                                                 route('incidents.show', {
                                                                     incident: rca.incident.slug,
-                                                                })
-                                                            )
+                                                                }),
+                                                            ),
                                                         ),
                                                     show: true,
                                                 })
@@ -56,8 +56,8 @@ export default function RootCauseAnalysisAdminActions({ rca }: { rca: RootCauseA
                                                         router.get(
                                                             route('incidents.show', {
                                                                 incident: rca.incident.slug,
-                                                            })
-                                                        )
+                                                            }),
+                                                        ),
                                                     ),
                                                 show: true,
                                             })

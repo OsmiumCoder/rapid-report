@@ -13,7 +13,7 @@ import { PaginatedResponse } from '@/types/PaginatedResponse';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/20/solid';
 import { PencilIcon } from '@heroicons/react/24/outline';
 import { Head, Link, router } from '@inertiajs/react';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 type IndexType = 'owned' | 'assigned' | 'all';
 
@@ -143,16 +143,7 @@ export default function Index({ incidents, indexType, currentFilters, currentSor
         setSortedDirection(sortDirection);
     };
 
-    useEffect(() => {
-        // Do not sort and filter on initial render
-        if (hasMounted.current) {
-            handleSortAndFilter();
-        } else {
-            hasMounted.current = true;
-        }
-    }, [filters, sortedDirection, sortedBy]);
-
-    const handleSortAndFilter = () => {
+    const handleSortAndFilter = useCallback(() => {
         const processedFilters = Object.entries(filters).reduce<ProcessedFilter[]>((acc, [key, value]) => {
             const checkedValues = value
                 .filter((filter) => filter.checked)
@@ -182,7 +173,16 @@ export default function Index({ incidents, indexType, currentFilters, currentSor
                 only: ['incidents'],
             },
         );
-    };
+    }, [filters, indexType, sortedBy, sortedDirection]);
+
+    useEffect(() => {
+        // Do not sort and filter on initial render
+        if (hasMounted.current) {
+            handleSortAndFilter();
+        } else {
+            hasMounted.current = true;
+        }
+    }, [filters, sortedDirection, sortedBy, handleSortAndFilter]);
 
     return (
         <AuthenticatedLayout>

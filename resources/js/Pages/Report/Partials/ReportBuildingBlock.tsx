@@ -5,7 +5,7 @@ import ReportData from '@/types/report/ReportData';
 interface ReportBuildingBlockProps {
     reportDataKey: keyof ReportData;
     formData: ReportData;
-    setFormData: Function;
+    setFormData: (key: keyof ReportData, value: ReportData[keyof ReportData]) => void;
 }
 
 export default function ReportBuildingBlock({ reportDataKey, formData, setFormData }: ReportBuildingBlockProps) {

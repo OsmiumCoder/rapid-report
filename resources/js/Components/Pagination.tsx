@@ -2,11 +2,11 @@ import { PaginatedResponse } from '@/types/PaginatedResponse';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid';
 import { Link } from '@inertiajs/react';
 
-interface PaginationProps {
-    pagination: PaginatedResponse<any>;
+interface PaginationProps<T> {
+    pagination: PaginatedResponse<T>;
 }
 
-export default function Pagination({ pagination }: PaginationProps) {
+export default function Pagination<T>({ pagination }: PaginationProps<T>) {
     return (
         <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 md:px-6">
             <div className="flex flex-1 justify-between sm:hidden">

@@ -4,7 +4,7 @@ import { Dispatch, PropsWithChildren, SetStateAction } from 'react';
 
 export interface StageProps extends PropsWithChildren {
     formData: Partial<IncidentData>;
-    setFormData: (key: keyof IncidentData, value: any) => void;
+    setFormData: (key: keyof IncidentData, value: IncidentData[keyof IncidentData]) => void;
     validStep: boolean;
     setValidStep: Dispatch<SetStateAction<boolean>>;
     failedStep: boolean;

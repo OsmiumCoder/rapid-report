@@ -6,7 +6,7 @@ import dateFormat from '@/Filters/dateFormat';
 import { descriptors } from '@/Pages/Incident/Stages/IncidentDropDownValues';
 import { StageProps } from '@/Pages/Incident/Stages/StageWrapper';
 
-export default function IncidentInformationStage({ formData, setFormData, failedStep, setValidStep }: StageProps) {
+export default function IncidentInformationStage({ formData, setFormData }: StageProps) {
     return (
         <div className="min-w-0 flex-1 text-sm/6">
             <label className="flex justify-center text-lg font-bold text-gray-900">Incident Information</label>

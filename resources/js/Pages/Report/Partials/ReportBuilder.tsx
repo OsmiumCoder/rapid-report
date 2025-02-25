@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react';
 
 export interface ReportBuilderProps {
     formData: ReportData;
-    setFormData: Function;
+    setFormData: (key: keyof ReportData, value: ReportData[keyof ReportData]) => void;
 }
 
 interface TimelineLengths {
@@ -83,7 +83,7 @@ export default function ReportBuilder({ formData, setFormData }: ReportBuilderPr
     useEffect(() => {
         setFormData('start', timeline.startDate.format('YYYY-MM-DD'));
         setFormData('end', timeline.endDate.format('YYYY-MM-DD'));
-    }, [timeline]);
+    }, [setFormData, timeline]);
 
     const downloadExcel = async () => {
         const response = await axios.post(route('report.downloadFileXLSX'), formData, {

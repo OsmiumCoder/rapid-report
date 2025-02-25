@@ -4,10 +4,6 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import NavigationItems from '@/Layouts/Partials/NavigationItems';
 
-function classNames(...classes: string[]) {
-    return classes.filter(Boolean).join(' ');
-}
-
 export default function MobileSidebar(props: {
     open: boolean;
     onClose: (value: ((prevState: boolean) => boolean) | boolean) => void;

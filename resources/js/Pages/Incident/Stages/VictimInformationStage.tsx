@@ -8,7 +8,7 @@ export default function VictimInformationStage({ formData, setFormData }: StageP
         if (!(formData.work_related && formData.has_injury) && formData.workers_comp_submitted) {
             setFormData('workers_comp_submitted', false);
         }
-    }, [formData.work_related, formData.has_injury]);
+    }, [formData.work_related, formData.has_injury, formData.workers_comp_submitted, setFormData]);
 
     return (
         <div className="min-w-0 flex-1 text-sm/6">

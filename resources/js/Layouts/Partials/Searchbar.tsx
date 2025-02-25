@@ -96,7 +96,38 @@ export default function Searchbar({ isOpen, setIsOpen }: CommandPaletteProps) {
 
             return filteredLabels.map(({ value }) => value).join(', ');
         });
-    }, [labels]);
+    }, [labels, allLabelsChecked]);
+
+    const fetchIncidents = useCallback(
+        () =>
+            _.debounce(async () => {
+                if (abortControllerRef.current) {
+                    abortControllerRef.current.abort();
+                }
+
+                const abortController = new AbortController();
+                abortControllerRef.current = abortController;
+
+                setIsLoading(true);
+                try {
+                    const response = await axios.get<Incident[]>(
+                        route('incidents.search', {
+                            search: searchRef.current,
+                            search_by: searchByRef.current,
+                        }),
+                        {
+                            signal: abortController.signal,
+                        },
+                    );
+                    setIncidents(response.data);
+                } catch (err) {
+                    console.error(err);
+                } finally {
+                    setIsLoading(false);
+                }
+            }, 250),
+        [],
+    );
 
     useEffect(() => {
         searchRef.current = search;
@@ -109,37 +140,7 @@ export default function Searchbar({ isOpen, setIsOpen }: CommandPaletteProps) {
         }
 
         return () => abortControllerRef.current?.abort();
-    }, [search, searchBy]);
-
-    const fetchIncidents = useCallback(
-        _.debounce(async () => {
-            if (abortControllerRef.current) {
-                abortControllerRef.current.abort();
-            }
-
-            const abortController = new AbortController();
-            abortControllerRef.current = abortController;
-
-            setIsLoading(true);
-            try {
-                const response = await axios.get<Incident[]>(
-                    route('incidents.search', {
-                        search: searchRef.current,
-                        search_by: searchByRef.current,
-                    }),
-                    {
-                        signal: abortController.signal,
-                    },
-                );
-                setIncidents(response.data);
-            } catch (err) {
-                console.error(err);
-            } finally {
-                setIsLoading(false);
-            }
-        }, 250),
-        [],
-    );
+    }, [search, searchBy, fetchIncidents]);
 
     useEffect(() => {
         setLabels((prev) => prev.map((label) => ({ ...label, checked: allLabelsChecked })));
@@ -208,14 +209,8 @@ export default function Searchbar({ isOpen, setIsOpen }: CommandPaletteProps) {
                                     <ComboboxOption
                                         key={incident.slug}
                                         value={incident.slug}
-                                        className="select-none px-4 py-2
-                                       hover:bg-upei-green-500 hover:text-white hover:cursor-pointer
-                                       focus:outline-none focus:ring-0 focus:shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
-                                        onClick={() =>
-                                            router.get(
-                                                route('incidents.show', { incident: incident.slug })
-                                            )
-                                        }
+                                        className="hover:bg-upei-green-500 px-4 py-2 select-none hover:cursor-pointer hover:text-white focus:shadow-none focus:ring-0 focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                                        onClick={() => router.get(route('incidents.show', { incident: incident.slug }))}
                                     >
                                         <div className="mx-1 flex items-center justify-between">
                                             <div className="max-w-[80%]">

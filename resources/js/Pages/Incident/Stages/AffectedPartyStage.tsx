@@ -5,7 +5,7 @@ import validatePhoneInput from '@/Filters/validatePhoneInput';
 import { roles } from '@/Pages/Incident/Stages/IncidentDropDownValues';
 import { StageProps } from '@/Pages/Incident/Stages/StageWrapper';
 import { usePage } from '@inertiajs/react';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
 export default function AffectedPartyStage({ formData, setFormData, failedStep, setValidStep }: StageProps) {
     const { auth } = usePage().props;
@@ -13,6 +13,13 @@ export default function AffectedPartyStage({ formData, setFormData, failedStep, 
     useEffect(() => {
         handleValidStep();
     });
+
+    const getNames = useCallback(() => {
+        const names = auth.user.name.split(' ');
+        const firstName = names.length > 1 ? names[0] : auth.user.name;
+        const lastName = names.length > 1 ? names[names.length - 1] : '.';
+        return [firstName, lastName];
+    }, [auth.user.name]);
 
     useEffect(() => {
         if (auth.user && !formData.on_behalf) {
@@ -34,7 +41,7 @@ export default function AffectedPartyStage({ formData, setFormData, failedStep, 
             setFormData('phone', '');
             setFormData('upei_id', '');
         }
-    }, [formData.on_behalf]);
+    }, [formData.on_behalf, auth.user, formData.anonymous, setFormData, getNames]);
 
     const handleValidStep = () => {
         if (!formData.anonymous && !formData.on_behalf) {
@@ -49,13 +56,6 @@ export default function AffectedPartyStage({ formData, setFormData, failedStep, 
     function checkForm() {
         return !(formData.first_name == '' || formData.last_name == '' || (formData.phone == '' && formData.email == ''));
     }
-
-    const getNames = () => {
-        const names = auth.user.name.split(' ');
-        const firstName = names.length > 1 ? names[0] : auth.user.name;
-        const lastName = names.length > 1 ? names[names.length - 1] : '.';
-        return [firstName, lastName];
-    };
 
     return (
         <div className="min-w-0 flex-1 text-sm/6">

@@ -11,7 +11,7 @@ import { InvestigationData } from '@/types/investigation/InvestigationData';
 
 export interface InvestigationComponentProps {
     formData: InvestigationData;
-    setFormData: (key: keyof InvestigationData, value: any) => void;
+    setFormData: (key: keyof InvestigationData, value: InvestigationData[keyof InvestigationData]) => void;
     errors: Partial<Record<keyof InvestigationData, string>>;
     toggleCheckbox: (category: keyof InvestigationData, value: string) => void;
 }
@@ -35,7 +35,7 @@ export default function Create({ incident }: { incident: Incident }) {
         personal_factors: [] as string[],
         job_factors: [] as string[],
     });
-    const setFormData = (key: keyof InvestigationData, value: any) => setData(key, value);
+    const setFormData = (key: keyof InvestigationData, value: InvestigationData[keyof InvestigationData]) => setData(key, value);
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();

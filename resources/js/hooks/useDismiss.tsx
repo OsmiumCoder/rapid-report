@@ -30,7 +30,7 @@ export default function useDismiss<T extends HTMLElement>({ onDismiss, ignoreRef
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
-    }, []);
+    }, [ignoreRefs, onDismiss]);
 
     return ref;
 }

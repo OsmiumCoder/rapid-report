@@ -1,6 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
-export default function Stats(data: any) {
-    const incidents = data.incidents;
+export default function Stats() {
     return <AuthenticatedLayout>{}</AuthenticatedLayout>;
 }

@@ -17,7 +17,7 @@ import { FormEvent } from 'react';
 
 export interface RootCauseAnalysisComponentProps {
     formData: RootCauseAnalysisData;
-    setFormData: (key: keyof RootCauseAnalysisData, value: any) => void;
+    setFormData: (key: keyof RootCauseAnalysisData, value: RootCauseAnalysisData[keyof RootCauseAnalysisData]) => void;
     errors: Partial<Record<keyof RootCauseAnalysisData, string>>;
 }
 
@@ -53,7 +53,7 @@ export default function Create({ incident }: { incident: Incident }) {
         root_causes: [] as string[],
     });
 
-    const setFormData = (key: keyof RootCauseAnalysisData, value: any) => setData(key, value);
+    const setFormData = (key: keyof RootCauseAnalysisData, value: RootCauseAnalysisData[keyof RootCauseAnalysisData]) => setData(key, value);
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();

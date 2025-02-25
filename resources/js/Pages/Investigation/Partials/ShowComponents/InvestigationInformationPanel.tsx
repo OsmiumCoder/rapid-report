@@ -9,14 +9,10 @@ export default function InvestigationInformationPanel({ investigation }: { inves
                 <Link href={route('incidents.show', { incident: investigation.incident.slug })}>
                     <ArrowLeftIcon className="size-6 text-gray-900 hover:text-gray-500" />
                 </Link>
-                <h2 className="font-semibold text-gray-900 text-2xl">Investigation</h2>
+                <h2 className="text-2xl font-semibold text-gray-900">Investigation</h2>
             </div>
-            <div className='className="font-semibold text-gray-800 my-4'>
-                Incident: {investigation.incident.slug}
-            </div>
-            <div className='className="font-semibold text-gray-800 my-4'>
-                Investigation provided by: {investigation.supervisor.name}
-            </div>
+            <div className='className="font-semibold my-4 text-gray-800'>Incident: {investigation.incident.slug}</div>
+            <div className='className="font-semibold my-4 text-gray-800'>Investigation provided by: {investigation.supervisor.name}</div>
             <div className='className="font-semibold my-4 text-gray-800'>Incident: {investigation.incident_id}</div>
             <div className='className="font-semibold my-4 text-gray-800'>Investigation provided by: {investigation.supervisor.name}</div>
 
