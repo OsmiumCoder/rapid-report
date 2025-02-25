@@ -119,7 +119,7 @@ export default function UserManagement({ users, roles }: UserManagementProps) {
                                         ))}
                                     </tbody>
                                 </table>
-                                <Pagination pagination={users} />
+                                <Pagination<User> pagination={users} />
                             </div>
                         </div>
                     </div>

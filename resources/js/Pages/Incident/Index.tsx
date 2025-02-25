@@ -432,7 +432,7 @@ export default function Index({ incidents, indexType, currentFilters, currentSor
                                     </tbody>
                                 </table>
 
-                                <Pagination pagination={incidents} />
+                                <Pagination<Incident> pagination={incidents} />
                             </div>
                         </div>
                     </div>
