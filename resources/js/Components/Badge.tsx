@@ -1,14 +1,6 @@
 import classNames from '@/Filters/classNames';
 
-export type BadgeColor =
-    | 'gray'
-    | 'red'
-    | 'green'
-    | 'blue'
-    | 'yellow'
-    | 'indigo'
-    | 'purple'
-    | 'pink';
+export type BadgeColor = 'gray' | 'red' | 'green' | 'blue' | 'yellow' | 'indigo' | 'purple' | 'pink';
 
 type BadgeProperty = {
     [k in BadgeColor]: {
@@ -75,7 +67,7 @@ export default function Badge({ color, text, className }: BadgeProps) {
                 badgeColors[color].backgroundColor,
                 badgeColors[color].textColor,
                 badgeColors[color].ringColor,
-                className ?? ''
+                className ?? '',
             )}
         >
             {text}

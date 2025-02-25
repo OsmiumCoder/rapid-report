@@ -1,10 +1,10 @@
-import { Link, usePage } from '@inertiajs/react';
-import { DocumentChartBarIcon, FolderIcon, HomeIcon } from '@heroicons/react/24/outline';
 import classNames from '@/Filters/classNames';
-import { useState } from 'react';
-import NavigationItem, { NavigationItemInterface } from '@/Layouts/Partials/NavigationItem';
 import NavigationDropDownItem from '@/Layouts/Partials/NavigationDropDownItem';
+import NavigationItem, { NavigationItemInterface } from '@/Layouts/Partials/NavigationItem';
 import { Role } from '@/types';
+import { DocumentChartBarIcon, FolderIcon, HomeIcon } from '@heroicons/react/24/outline';
+import { Link, usePage } from '@inertiajs/react';
+import { useState } from 'react';
 
 const navigationItems: NavigationItemInterface[] = [
     {
@@ -44,14 +44,11 @@ const navigationItems: NavigationItemInterface[] = [
 ];
 
 export default function NavigationItems() {
-    const [incidentDropDownIsOpen, setIncidentDropDownIsOpen] = useState(
-        route().current('incidents.*')
-    );
+    const [incidentDropDownIsOpen, setIncidentDropDownIsOpen] = useState(route().current('incidents.*'));
     const { auth } = usePage().props;
 
     const canView = (navigationItem: NavigationItemInterface, userRoles: Role[]): boolean =>
-        userRoles.some(({ name }) => navigationItem.roles.includes(name)) ||
-        navigationItem.roles.includes('all');
+        userRoles.some(({ name }) => navigationItem.roles.includes(name)) || navigationItem.roles.includes('all');
 
     return (
         <nav className="flex flex-1 flex-col">
@@ -65,20 +62,13 @@ export default function NavigationItems() {
                                         <NavigationDropDownItem
                                             item={item}
                                             isOpen={incidentDropDownIsOpen}
-                                            onClick={() =>
-                                                setIncidentDropDownIsOpen((prev) => !prev)
-                                            }
+                                            onClick={() => setIncidentDropDownIsOpen((prev) => !prev)}
                                         />
                                         {incidentDropDownIsOpen && (
                                             <div>
                                                 {item.subItems.map(
                                                     (item, index) =>
-                                                        canView(item, auth.user.roles) && (
-                                                            <NavigationItem
-                                                                key={`${item.name}${index}`}
-                                                                item={item}
-                                                            />
-                                                        )
+                                                        canView(item, auth.user.roles) && <NavigationItem key={`${item.name}${index}`} item={item} />,
                                                 )}
                                             </div>
                                         )}
@@ -91,16 +81,11 @@ export default function NavigationItems() {
                                                 className={classNames(
                                                     route().current(item.route + '*')
                                                         ? 'bg-upei-red-700 text-white'
-                                                        : 'text-gray-200 hover:bg-upei-red-700 hover:text-white',
-                                                    'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold'
+                                                        : 'hover:bg-upei-red-700 text-gray-200 hover:text-white',
+                                                    'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold',
                                                 )}
                                             >
-                                                {item.icon && (
-                                                    <item.icon
-                                                        aria-hidden="true"
-                                                        className="size-6 shrink-0"
-                                                    />
-                                                )}
+                                                {item.icon && <item.icon aria-hidden="true" className="size-6 shrink-0" />}
                                                 {item.name}
                                             </Link>
                                         </li>

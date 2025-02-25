@@ -1,6 +1,6 @@
-import { Incident } from '@/types/incident/Incident';
 import { BadgeColor } from '@/Components/Badge';
 import { IncidentStatus } from '@/Enums/IncidentStatus';
+import { Incident } from '@/types/incident/Incident';
 
 export function incidentBadgeColor(incident: Incident): BadgeColor {
     return incident.status === IncidentStatus.OPENED

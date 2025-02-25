@@ -1,31 +1,25 @@
-import InputLabel from '@/Components/InputLabel';
-import TextInput from '@/Components/TextInput';
 import DangerButton from '@/Components/DangerButton';
-import { RootCauseAnalysisComponentProps } from '@/Pages/RootCauseAnalysis/Create';
-import validatePhoneInput from '@/Filters/validatePhoneInput';
-import classNames from '@/Filters/classNames';
-import { PlusIcon } from '@heroicons/react/20/solid';
-import PrimaryButtonDivider from '@/Components/PrimaryButtonDivider';
 import InputError from '@/Components/InputError';
+import InputLabel from '@/Components/InputLabel';
+import PrimaryButtonDivider from '@/Components/PrimaryButtonDivider';
+import TextInput from '@/Components/TextInput';
+import classNames from '@/Filters/classNames';
+import validatePhoneInput from '@/Filters/validatePhoneInput';
+import { RootCauseAnalysisComponentProps } from '@/Pages/RootCauseAnalysis/Create';
 import { RootCauseAnalysisData } from '@/types/rootCauseAnalysis/RootCauseAnalysisData';
+import { PlusIcon } from '@heroicons/react/20/solid';
 
-export default function IndividualsInvolved({
-    formData,
-    setFormData,
-    errors,
-}: RootCauseAnalysisComponentProps) {
+export default function IndividualsInvolved({ formData, setFormData, errors }: RootCauseAnalysisComponentProps) {
     return (
         <div>
-            <div className="font-medium text-lg">Individuals Involved</div>
-            <div className="flex flex-col w-full">
+            <div className="text-lg font-medium">Individuals Involved</div>
+            <div className="flex w-full flex-col">
                 {formData.individuals_involved.map(({ name, email, phone }, i) => (
                     <div
                         key={i}
                         className={classNames(
                             'flex flex-col gap-y-2 py-4',
-                            i !== formData.individuals_involved.length - 1
-                                ? 'border-b border-gray-200'
-                                : ''
+                            i !== formData.individuals_involved.length - 1 ? 'border-b border-gray-200' : '',
                         )}
                     >
                         <div className="flex justify-between">
@@ -34,11 +28,7 @@ export default function IndividualsInvolved({
                                 <DangerButton
                                     type="button"
                                     onClick={() =>
-                                        setFormData('individuals_involved', [
-                                            ...formData.individuals_involved.filter(
-                                                (_, index) => i !== index
-                                            ),
-                                        ])
+                                        setFormData('individuals_involved', [...formData.individuals_involved.filter((_, index) => i !== index)])
                                     }
                                 >
                                     Delete
@@ -53,14 +43,7 @@ export default function IndividualsInvolved({
                                 setFormData('individuals_involved', formData.individuals_involved);
                             }}
                         />
-                        <InputError
-                            message={
-                                errors[
-                                    `individuals_involved.${i}.name` as keyof RootCauseAnalysisData
-                                ]
-                            }
-                            className="mb-1"
-                        />
+                        <InputError message={errors[`individuals_involved.${i}.name` as keyof RootCauseAnalysisData]} className="mb-1" />
                         <InputLabel>Email</InputLabel>
                         <TextInput
                             onChange={(e) => {
@@ -69,43 +52,22 @@ export default function IndividualsInvolved({
                             }}
                             value={email}
                         />
-                        <InputError
-                            message={
-                                errors[
-                                    `individuals_involved.${i}.email` as keyof RootCauseAnalysisData
-                                ]
-                            }
-                            className="mb-1"
-                        />
+                        <InputError message={errors[`individuals_involved.${i}.email` as keyof RootCauseAnalysisData]} className="mb-1" />
                         <InputLabel>Phone</InputLabel>
                         <TextInput
                             onChange={(e) => {
-                                formData.individuals_involved[i].phone = validatePhoneInput(
-                                    e.target.value
-                                );
+                                formData.individuals_involved[i].phone = validatePhoneInput(e.target.value);
                                 setFormData('individuals_involved', formData.individuals_involved);
                             }}
                             value={phone}
                         />
-                        <InputError
-                            message={
-                                errors[
-                                    `individuals_involved.${i}.phone` as keyof RootCauseAnalysisData
-                                ]
-                            }
-                            className="mb-1"
-                        />
+                        <InputError message={errors[`individuals_involved.${i}.phone` as keyof RootCauseAnalysisData]} className="mb-1" />
                     </div>
                 ))}
                 <PrimaryButtonDivider
                     type="button"
                     className="self-end"
-                    onClick={() =>
-                        setFormData('individuals_involved', [
-                            ...formData.individuals_involved,
-                            { name: '', email: '', phone: '' },
-                        ])
-                    }
+                    onClick={() => setFormData('individuals_involved', [...formData.individuals_involved, { name: '', email: '', phone: '' }])}
                 >
                     <PlusIcon className="size-5" />
                     Add Individual

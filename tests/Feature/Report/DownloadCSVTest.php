@@ -1,6 +1,6 @@
 <?php
 
-namespace Report;
+namespace Tests\Feature\Report;
 
 use App\Data\ReportExportData;
 use App\Models\User;

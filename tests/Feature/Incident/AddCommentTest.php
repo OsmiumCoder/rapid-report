@@ -15,6 +15,92 @@ use Tests\TestCase;
 
 class AddCommentTest extends TestCase
 {
+    public function test_admin_can_comment_on_incidents()
+    {
+        $admin = User::factory()->create()->syncRoles('admin');
+
+        $this->actingAs($admin);
+
+        $incident = Incident::factory()->create();
+
+        $commentData = CommentData::from([
+            'content' => 'test comment'
+        ]);
+
+        $this->assertDatabaseCount('comments', 0);
+
+        $response = $this->post(route('incidents.comments.store', ['incident' => $incident->id]), $commentData->toArray());
+
+        $response->assertRedirect();
+        $this->assertDatabaseCount('comments', 1);
+    }
+
+    public function test_supervisor_cant_comment_on_unassigned_incident()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
+        $this->actingAs($supervisor);
+
+        $incident = Incident::factory()->create();
+
+        $commentData = CommentData::from([
+            'content' => 'test comment'
+        ]);
+
+        $this->assertDatabaseCount('comments', 0);
+
+        $response = $this->post(route('incidents.comments.store', ['incident' => $incident->id]), $commentData->toArray());
+
+        $response->assertForbidden();
+        $this->assertDatabaseCount('comments', 0);
+    }
+
+    public function test_supervisor_can_comment_on_assigned_incident()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
+        $this->actingAs($supervisor);
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+        ]);
+
+        $commentData = CommentData::from([
+            'content' => 'test comment'
+        ]);
+
+        $this->assertDatabaseCount('comments', 0);
+
+        $response = $this->post(route('incidents.comments.store', ['incident' => $incident->id]), $commentData->toArray());
+
+        $response->assertRedirect();
+        $this->assertDatabaseCount('comments', 1);
+    }
+
+    public function test_user_can_not_create_comments()
+    {
+        $user = User::factory()->create([
+            'email' => 'a@b.com'
+        ])->syncRoles('user');
+
+        $this->actingAs($user);
+
+        $incident = Incident::factory()->create([
+            'reporters_email' => $user->email,
+        ]);
+
+        $commentData = CommentData::from([
+            'content' => 'test comment'
+        ]);
+
+        $this->assertDatabaseCount('comments', 0);
+
+        $response = $this->post(route('incidents.comments.store', ['incident' => $incident->id]), $commentData->toArray());
+
+        $response->assertForbidden();
+        $this->assertDatabaseCount('comments', 0);
+    }
+
     public function test_comment_belongs_to_current_signed_in_user()
     {
         $user = User::factory()->create()->syncRoles('admin');
@@ -144,6 +230,8 @@ class AddCommentTest extends TestCase
 
         $supervisor = User::factory()->create()->syncRoles('supervisor');
 
+        $commenter = User::factory()->create()->syncRoles('admin');
+
         $incident = Incident::factory()->create([
             'supervisor_id' => $supervisor->id,
         ]);
@@ -152,7 +240,7 @@ class AddCommentTest extends TestCase
             'content' => 'Test comment for supervisor notification',
         ]);
 
-        $this->actingAs($supervisor);
+        $this->actingAs($commenter);
 
         $response = $this->post(route('incidents.comments.store', ['incident' => $incident->id]), $commentData->toArray());
 

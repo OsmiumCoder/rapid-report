@@ -1,7 +1,7 @@
-import { InvestigationComponentProps } from '@/Pages/Investigation/Create';
-import TextArea from '@/Components/TextArea';
-import React from 'react';
 import InputError from '@/Components/InputError';
+import LabeledCheckbox from '@/Components/LabeledCheckbox';
+import TextArea from '@/Components/TextArea';
+import { InvestigationComponentProps } from '@/Pages/Investigation/Create';
 import {
     energyTransferCauses,
     jobFactors,
@@ -9,75 +9,63 @@ import {
     substandardActs,
     substandardConditions,
 } from '@/Pages/Investigation/Partials/createDropdownValues';
-import LabeledCheckbox from '@/Components/LabeledCheckbox';
 
-export default function Causes({
-    formData,
-    setFormData,
-    errors,
-    toggleCheckbox,
-}: InvestigationComponentProps) {
+export default function Causes({ formData, setFormData, errors, toggleCheckbox }: InvestigationComponentProps) {
     return (
         <>
             <div className="mb-4">
                 <label className="font-semibold text-gray-700">Immediate Causes:</label>
-                <p className="text-sm text-gray-600 italic">
-                    What substandard acts/practices and conditions caused or could cause the event?
-                </p>
+                <p className="text-sm text-gray-600 italic">What substandard acts/practices and conditions caused or could cause the event?</p>
                 <TextArea
                     value={formData.immediate_causes}
                     onChange={(e) => setFormData('immediate_causes', e.target.value)}
-                    className="p-2 border border-gray-300 rounded-md "
+                    className="rounded-md border border-gray-300 p-2"
                 />
                 <InputError className="mt-1" message={errors?.immediate_causes} />
             </div>
 
             <div className="mb-4">
                 <label className="font-semibold text-gray-700">Basic Causes:</label>
-                <p className="text-sm text-gray-600 italic">
-                    What specific personal or job/system factors caused or could cause this event?
-                </p>
+                <p className="text-sm text-gray-600 italic">What specific personal or job/system factors caused or could cause this event?</p>
                 <TextArea
                     value={formData.basic_causes}
                     onChange={(e) => setFormData('basic_causes', e.target.value)}
-                    className="p-2 border border-gray-300 rounded-md"
+                    className="rounded-md border border-gray-300 p-2"
                 />
                 <InputError className="mt-1" message={errors?.basic_causes} />
             </div>
 
             <div className="mb-4">
                 <label className="font-semibold text-gray-700">Remedial Actions:</label>
-                <p className="text-sm text-gray-600 italic">
-                    What has and/or should be done to control the causes listed?
-                </p>
+                <p className="text-sm text-gray-600 italic">What has and/or should be done to control the causes listed?</p>
                 <TextArea
                     value={formData.remedial_actions}
                     onChange={(e) => setFormData('remedial_actions', e.target.value)}
-                    className="p-2 border border-gray-300 rounded-md w-full"
+                    className="w-full rounded-md border border-gray-300 p-2"
                 />
                 <InputError className="mt-1" message={errors?.remedial_actions} />
             </div>
 
-            <h3 className="text-lg font-semibold text-gray-700 mt-6">Prevention of Recurrence</h3>
+            <h3 className="mt-6 text-lg font-semibold text-gray-700">Prevention of Recurrence</h3>
             <div className="mb-4">
                 <label className="text-gray-700">Prevention Measures:</label>
                 <p className="text-sm text-gray-600 italic">
-                    Describe what action is planned or has been taken to prevent a recurrence of the
-                    incident, based on the key contributing factors (both immediate and long term).
+                    Describe what action is planned or has been taken to prevent a recurrence of the incident, based on the key contributing factors
+                    (both immediate and long term).
                 </p>
                 <TextArea
                     value={formData.prevention}
                     onChange={(e) => setFormData('prevention', e.target.value)}
-                    className="p-2 border border-gray-300 rounded-md w-full"
+                    className="w-full rounded-md border border-gray-300 p-2"
                 />
                 <InputError className="mt-1" message={errors?.prevention} />
             </div>
 
             <fieldset className="mb-4">
-                <legend className="font-semibold text-gray-700 mb-2">Immediate Causes:</legend>
-                <div className="grid grid-cols-2 ">
+                <legend className="mb-2 font-semibold text-gray-700">Immediate Causes:</legend>
+                <div className="grid grid-cols-2">
                     <div>
-                        <h4 className="text-gray-600 font-semibold mb-2">Substandard Acts</h4>
+                        <h4 className="mb-2 font-semibold text-gray-600">Substandard Acts</h4>
                         {substandardActs.map((cause) => (
                             <LabeledCheckbox
                                 key={cause}
@@ -91,7 +79,7 @@ export default function Causes({
                     </div>
 
                     <div>
-                        <h4 className="text-gray-600 font-semibold mb-2">Substandard Conditions</h4>
+                        <h4 className="mb-2 font-semibold text-gray-600">Substandard Conditions</h4>
                         {substandardConditions.map((condition) => (
                             <LabeledCheckbox
                                 key={condition}
@@ -107,9 +95,7 @@ export default function Causes({
             </fieldset>
 
             <fieldset className="mb-4">
-                <legend className="font-semibold text-gray-700 mb-2">
-                    Energy transfer or contact with a hazardous subject:
-                </legend>
+                <legend className="mb-2 font-semibold text-gray-700">Energy transfer or contact with a hazardous subject:</legend>
                 <div className="grid grid-cols-1">
                     {energyTransferCauses.map((cause) => (
                         <LabeledCheckbox
@@ -125,10 +111,10 @@ export default function Causes({
             </fieldset>
 
             <fieldset className="mb-4">
-                <legend className="font-semibold text-gray-700 mb-2">Basic/Root Causes:</legend>
-                <div className="grid grid-cols-2 ">
+                <legend className="mb-2 font-semibold text-gray-700">Basic/Root Causes:</legend>
+                <div className="grid grid-cols-2">
                     <div>
-                        <h4 className="text-gray-600 font-semibold mb-2">Personal factors</h4>
+                        <h4 className="mb-2 font-semibold text-gray-600">Personal factors</h4>
                         {personalFactors.map((cause) => (
                             <LabeledCheckbox
                                 key={cause}
@@ -142,7 +128,7 @@ export default function Causes({
                     </div>
 
                     <div>
-                        <h4 className="text-gray-600 font-semibold mb-2">Job factors</h4>
+                        <h4 className="mb-2 font-semibold text-gray-600">Job factors</h4>
                         {jobFactors.map((cause) => (
                             <LabeledCheckbox
                                 key={cause}

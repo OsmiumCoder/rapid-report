@@ -1,5 +1,4 @@
 import { Witness } from '@/types/incident/Witness';
-import React from 'react';
 import { XMarkIcon } from '@heroicons/react/20/solid';
 
 interface WitnessListProps {
@@ -11,19 +10,13 @@ export default function WitnessList({ witnesses, removeWitness }: WitnessListPro
     return (
         <>
             {witnesses.length > 0 && (
-                <ul className="px-4 divide-y divide-gray-100">
+                <ul className="divide-y divide-gray-100 px-4">
                     {witnesses.map((person, index) => (
-                        <li key={index} className="py-2 flex justify-between gap-x-12 items-center">
+                        <li key={index} className="flex items-center justify-between gap-x-12 py-2">
                             <div>
-                                <p className="text-sm/6 font-semibold text-gray-900">
-                                    {person.name}
-                                </p>
-                                <p className="mt-1 truncate text-xs/5 text-gray-500">
-                                    {person.email}
-                                </p>
-                                <p className="mt-1 truncate text-xs/5 text-gray-500">
-                                    {person.phone}
-                                </p>
+                                <p className="text-sm/6 font-semibold text-gray-900">{person.name}</p>
+                                <p className="mt-1 truncate text-xs/5 text-gray-500">{person.email}</p>
+                                <p className="mt-1 truncate text-xs/5 text-gray-500">{person.phone}</p>
                             </div>
                             <div>
                                 <button
@@ -40,11 +33,7 @@ export default function WitnessList({ witnesses, removeWitness }: WitnessListPro
                     ))}
                 </ul>
             )}
-            {witnesses.length === 0 && (
-                <p className=" flex justify-center text-gray-500">
-                    No individuals have been added.
-                </p>
-            )}
+            {witnesses.length === 0 && <p className="flex justify-center text-gray-500">No individuals have been added.</p>}
         </>
     );
 }

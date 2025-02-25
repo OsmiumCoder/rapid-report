@@ -1,25 +1,25 @@
-import { StageProps } from '@/Pages/Incident/Stages/StageWrapper';
-import { roles } from '@/Pages/Incident/Stages/IncidentDropDownValues';
-import React, { useEffect } from 'react';
+import SelectInput from '@/Components/SelectInput';
+import TextInput from '@/Components/TextInput';
 import ToggleSwitch from '@/Components/ToggleSwitch';
 import validatePhoneInput from '@/Filters/validatePhoneInput';
+import { roles } from '@/Pages/Incident/Stages/IncidentDropDownValues';
+import { StageProps } from '@/Pages/Incident/Stages/StageWrapper';
 import { usePage } from '@inertiajs/react';
-import { Incident } from '@/types/incident/Incident';
-import { User } from '@/types';
-import TextInput from '@/Components/TextInput';
-import SelectInput from '@/Components/SelectInput';
+import { useCallback, useEffect } from 'react';
 
-export default function AffectedPartyStage({
-    formData,
-    setFormData,
-    failedStep,
-    setValidStep,
-}: StageProps) {
+export default function AffectedPartyStage({ formData, setFormData, failedStep, setValidStep }: StageProps) {
     const { auth } = usePage().props;
 
     useEffect(() => {
         handleValidStep();
     });
+
+    const getNames = useCallback(() => {
+        const names = auth.user.name.split(' ');
+        const firstName = names.length > 1 ? names[0] : auth.user.name;
+        const lastName = names.length > 1 ? names[names.length - 1] : '.';
+        return [firstName, lastName];
+    }, [auth.user.name]);
 
     useEffect(() => {
         if (auth.user && !formData.on_behalf) {
@@ -41,7 +41,7 @@ export default function AffectedPartyStage({
             setFormData('phone', '');
             setFormData('upei_id', '');
         }
-    }, [formData.on_behalf]);
+    }, [formData.on_behalf, auth.user, formData.anonymous, setFormData, getNames]);
 
     const handleValidStep = () => {
         if (!formData.anonymous && !formData.on_behalf) {
@@ -54,28 +54,15 @@ export default function AffectedPartyStage({
     };
 
     function checkForm() {
-        return !(
-            formData.first_name == '' ||
-            formData.last_name == '' ||
-            (formData.phone == '' && formData.email == '')
-        );
+        return !(formData.first_name == '' || formData.last_name == '' || (formData.phone == '' && formData.email == ''));
     }
-
-    const getNames = () => {
-        const names = auth.user.name.split(' ');
-        const firstName = names.length > 1 ? names[0] : auth.user.name;
-        const lastName = names.length > 1 ? names[names.length - 1] : '.';
-        return [firstName, lastName];
-    };
 
     return (
         <div className="min-w-0 flex-1 text-sm/6">
             <div>
                 <div className="flex-row text-center">
                     <div className="min-w-0 flex-1 text-sm/6">
-                        <label className="font-medium text-gray-900">
-                            Are you reporting on behalf of someone else?
-                        </label>
+                        <label className="font-medium text-gray-900">Are you reporting on behalf of someone else?</label>
                     </div>
                     <ToggleSwitch
                         checked={formData.on_behalf}
@@ -96,12 +83,8 @@ export default function AffectedPartyStage({
                     <div>
                         <div className="flex-row text-center">
                             <div className="min-w-0 flex-1 text-sm/6">
-                                <label
-                                    htmlFor="onbehalf_anon"
-                                    className="font-medium text-gray-900"
-                                >
-                                    Would the person you are reporting on behalf of like to remain
-                                    anonymous?
+                                <label htmlFor="onbehalf_anon" className="font-medium text-gray-900">
+                                    Would the person you are reporting on behalf of like to remain anonymous?
                                 </label>
                             </div>
                             <ToggleSwitch
@@ -123,25 +106,17 @@ export default function AffectedPartyStage({
                 (!formData.anonymous && formData.on_behalf && !formData.on_behalf_anonymous) ||
                 (formData.anonymous && formData.on_behalf && !formData.on_behalf_anonymous)) && (
                 <>
-                    <label className="flex justify-center font-bold text-lg text-gray-900">
-                        Affected Party Information
-                    </label>
+                    <label className="flex justify-center text-lg font-bold text-gray-900">Affected Party Information</label>
 
                     <div className="mt-2">
                         <div>
-                            <label className="block text-sm/6 font-medium text-gray-900">
-                                First Name
-                            </label>
+                            <label className="block text-sm/6 font-medium text-gray-900">First Name</label>
                         </div>
 
                         <div className="mt-1">
                             <TextInput
                                 disabled={!formData.on_behalf && auth.user !== undefined}
-                                value={
-                                    !formData.on_behalf && auth.user
-                                        ? getNames()[0]
-                                        : formData.first_name
-                                }
+                                value={!formData.on_behalf && auth.user ? getNames()[0] : formData.first_name}
                                 onChange={(e) => {
                                     setFormData('first_name', e.target.value);
                                     handleValidStep();
@@ -157,19 +132,13 @@ export default function AffectedPartyStage({
 
                     <div className="mt-2">
                         <div>
-                            <label className="block text-sm/6 font-medium text-gray-900">
-                                Last Name
-                            </label>
+                            <label className="block text-sm/6 font-medium text-gray-900">Last Name</label>
                         </div>
 
                         <div className="mt-1">
                             <TextInput
                                 disabled={!formData.on_behalf && auth.user !== undefined}
-                                value={
-                                    !formData.on_behalf && auth.user
-                                        ? getNames()[1]
-                                        : formData.last_name
-                                }
+                                value={!formData.on_behalf && auth.user ? getNames()[1] : formData.last_name}
                                 onChange={(e) => {
                                     setFormData('last_name', e.target.value);
                                     handleValidStep();
@@ -185,25 +154,15 @@ export default function AffectedPartyStage({
 
                     <div className="mt-2">
                         <div>
-                            <label className="block text-sm/6 font-medium text-gray-900">
-                                Phone Number
-                            </label>
+                            <label className="block text-sm/6 font-medium text-gray-900">Phone Number</label>
                         </div>
 
                         <div className="mt-1">
                             <TextInput
-                                disabled={
-                                    !formData.on_behalf &&
-                                    auth.user &&
-                                    auth.user.phone !== undefined
-                                }
+                                disabled={!formData.on_behalf && auth.user && auth.user.phone !== undefined}
                                 type="tel"
                                 placeholder="123-456-7890"
-                                value={
-                                    (!formData.on_behalf && auth.user
-                                        ? auth.user.phone
-                                        : formData.phone) ?? ''
-                                }
+                                value={(!formData.on_behalf && auth.user ? auth.user.phone : formData.phone) ?? ''}
                                 onChange={(e) => {
                                     setFormData('phone', validatePhoneInput(e.target.value));
                                     handleValidStep();
@@ -214,9 +173,7 @@ export default function AffectedPartyStage({
                     {(!auth.user || formData.on_behalf) && (
                         <div className="mt-2">
                             <div>
-                                <label className="block text-sm/6 font-medium text-gray-900">
-                                    Email
-                                </label>
+                                <label className="block text-sm/6 font-medium text-gray-900">Email</label>
                             </div>
 
                             <div className="mt-1">
@@ -241,23 +198,13 @@ export default function AffectedPartyStage({
 
                     <div className="mt-2">
                         <div>
-                            <label className="block text-sm/6 font-medium text-gray-900">
-                                Incident Role
-                            </label>
+                            <label className="block text-sm/6 font-medium text-gray-900">Incident Role</label>
                         </div>
 
                         <div className="mt-1 grid grid-cols-1">
                             <SelectInput
-                                value={
-                                    roles.find(({ value }) => value === formData?.role)?.name ??
-                                    roles[0].name
-                                }
-                                onChange={(e) =>
-                                    setFormData(
-                                        'role',
-                                        roles.find(({ name }) => name === e.target.value)?.value
-                                    )
-                                }
+                                value={roles.find(({ value }) => value === formData?.role)?.name ?? roles[0].name}
+                                onChange={(e) => setFormData('role', roles.find(({ name }) => name === e.target.value)?.value)}
                                 className="w-full"
                             >
                                 {roles.map(({ name }, index) => (
@@ -270,19 +217,13 @@ export default function AffectedPartyStage({
                     {(formData.role === 1 || formData.role === 2) && (
                         <div className="mt-2">
                             <div>
-                                <label className="block text-sm/6 font-medium text-gray-900">
-                                    UPEI ID
-                                </label>
+                                <label className="block text-sm/6 font-medium text-gray-900">UPEI ID</label>
                             </div>
 
                             <div className="mt-1">
                                 <TextInput
                                     disabled={!formData.on_behalf && auth.user !== undefined}
-                                    value={
-                                        !formData.on_behalf && auth.user
-                                            ? auth.user.upei_id
-                                            : formData.upei_id
-                                    }
+                                    value={!formData.on_behalf && auth.user ? auth.user.upei_id : formData.upei_id}
                                     onChange={(e) => setFormData('upei_id', e.target.value)}
                                 />
                             </div>

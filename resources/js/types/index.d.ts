@@ -1,7 +1,6 @@
-import { Config } from 'ziggy-js';
 import { PaginatedResponse } from '@/types/PaginatedResponse';
-import { Incident } from '@/types/incident/Incident';
 import { Notification } from '@/types/notification/Notification';
+import { Config } from 'ziggy-js';
 
 export interface User {
     id: number;

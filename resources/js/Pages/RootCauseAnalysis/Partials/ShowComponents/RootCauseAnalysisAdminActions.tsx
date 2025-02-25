@@ -1,12 +1,12 @@
-import { useState } from 'react';
 import { useConfirmationModal } from '@/Components/ConfirmationModal/ConfirmationModalProvider';
+import DangerButton from '@/Components/DangerButton';
 import LoadingIndicator from '@/Components/LoadingIndicator';
 import PrimaryButton from '@/Components/PrimaryButton';
-import { closeIncident, returnRCA } from '@/Helpers/Incident/statusUpdates';
-import { router } from '@inertiajs/react';
-import DangerButton from '@/Components/DangerButton';
-import { RootCauseAnalysis } from '@/types/rootCauseAnalysis/RootCauseAnalysis';
 import { IncidentStatus } from '@/Enums/IncidentStatus';
+import { closeIncident, returnRCA } from '@/Helpers/Incident/statusUpdates';
+import { RootCauseAnalysis } from '@/types/rootCauseAnalysis/RootCauseAnalysis';
+import { router } from '@inertiajs/react';
+import { useState } from 'react';
 
 export default function RootCauseAnalysisAdminActions({ rca }: { rca: RootCauseAnalysis }) {
     const [isLoading, setIsLoading] = useState(false);
@@ -14,13 +14,11 @@ export default function RootCauseAnalysisAdminActions({ rca }: { rca: RootCauseA
 
     return (
         <>
-            <div className="lg:col-start-3 lg:row-end-1 bg-white">
-                <div className="rounded-lg  shadow-sm ring-1 ring-gray-900/5">
-                    <div className="flex flex-wrap flex-col items-center justify-between">
-                        <div className="mt-1 pt-6 text-base font-semibold text-gray-900">
-                            Administrative Actions
-                        </div>
-                        <div className="flex justify-evenly items-center w-full mt-6 border-t border-gray-900/5 p-6">
+            <div className="bg-white lg:col-start-3 lg:row-end-1">
+                <div className="rounded-lg shadow-sm ring-1 ring-gray-900/5">
+                    <div className="flex flex-col flex-wrap items-center justify-between">
+                        <div className="mt-1 pt-6 text-base font-semibold text-gray-900">Administrative Actions</div>
+                        <div className="mt-6 flex w-full items-center justify-evenly border-t border-gray-900/5 p-6">
                             {isLoading ? (
                                 <LoadingIndicator />
                             ) : (
@@ -37,8 +35,8 @@ export default function RootCauseAnalysisAdminActions({ rca }: { rca: RootCauseA
                                                             router.get(
                                                                 route('incidents.show', {
                                                                     incident: rca.incident.slug,
-                                                                })
-                                                            )
+                                                                }),
+                                                            ),
                                                         ),
                                                     show: true,
                                                 })
@@ -58,8 +56,8 @@ export default function RootCauseAnalysisAdminActions({ rca }: { rca: RootCauseA
                                                         router.get(
                                                             route('incidents.show', {
                                                                 incident: rca.incident.slug,
-                                                            })
-                                                        )
+                                                            }),
+                                                        ),
                                                     ),
                                                 show: true,
                                             })

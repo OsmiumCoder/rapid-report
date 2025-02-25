@@ -1,16 +1,10 @@
-import { StageProps } from '@/Pages/Incident/Stages/StageWrapper';
-import React from 'react';
+import TextInput from '@/Components/TextInput';
 import ToggleSwitch from '@/Components/ToggleSwitch';
 import { isValidEmail } from '@/Filters/isValidEmail';
+import { StageProps } from '@/Pages/Incident/Stages/StageWrapper';
 import { usePage } from '@inertiajs/react';
-import TextInput from '@/Components/TextInput';
 
-export default function AnonymousStage({
-    formData,
-    setFormData,
-    failedStep,
-    setValidStep,
-}: StageProps) {
+export default function AnonymousStage({ formData, setFormData, failedStep, setValidStep }: StageProps) {
     const { auth } = usePage().props;
 
     return (
@@ -18,9 +12,7 @@ export default function AnonymousStage({
             <div>
                 <div className="flex-row text-center">
                     <div className="min-w-0 flex-1 text-sm/6">
-                        <label className="font-medium text-gray-900">
-                            Would you as the reporter like to remain anonymous?
-                        </label>
+                        <label className="font-medium text-gray-900">Would you as the reporter like to remain anonymous?</label>
                     </div>
 
                     <ToggleSwitch
@@ -31,11 +23,7 @@ export default function AnonymousStage({
                             if (!e.valueOf() && auth.user) {
                                 setFormData('reporters_email', auth.user.email);
                                 setValidStep(true);
-                            } else if (
-                                (formData.reporters_email === '' ||
-                                    isValidEmail(formData.reporters_email ?? '')) &&
-                                !e.valueOf()
-                            ) {
+                            } else if ((formData.reporters_email === '' || isValidEmail(formData.reporters_email ?? '')) && !e.valueOf()) {
                                 setValidStep(false);
                             } else {
                                 setValidStep(true);
@@ -46,19 +34,14 @@ export default function AnonymousStage({
 
                 {!formData.anonymous && (
                     <div>
-                        <label
-                            htmlFor="email"
-                            className="block text-sm/6 font-medium text-gray-900"
-                        >
+                        <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
                             Reporter's Email
                         </label>
                         <div className="mt-2">
                             <TextInput
                                 type="email"
                                 disabled={auth.user !== null}
-                                value={
-                                    auth.user ? auth.user.email : (formData.reporters_email ?? '')
-                                }
+                                value={auth.user ? auth.user.email : (formData.reporters_email ?? '')}
                                 onChange={(e) => {
                                     setFormData('reporters_email', e.target.value);
                                     if (e.target.value !== '' && isValidEmail(e.target.value)) {

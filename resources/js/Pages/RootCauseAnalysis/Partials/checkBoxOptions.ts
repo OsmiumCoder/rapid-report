@@ -1,35 +1,12 @@
 import { RootCauseAnalysisData } from '@/types/rootCauseAnalysis/RootCauseAnalysisData';
 
-export const peoplesPositionsValues = [
-    'Alignment',
-    'Line of fire',
-    'Overreaching',
-    'Over exertion',
-    'Repetition',
-];
+export const peoplesPositionsValues = ['Alignment', 'Line of fire', 'Overreaching', 'Over exertion', 'Repetition'];
 
-export const attentionToWorkValues = [
-    'Awareness of surroundings',
-    'Eyes on task',
-    'Mind on task',
-    'Pace',
-    'Work plan design',
-];
+export const attentionToWorkValues = ['Awareness of surroundings', 'Eyes on task', 'Mind on task', 'Pace', 'Work plan design'];
 
-export const communicationValues = [
-    'JHA',
-    'Plan',
-    'Recognize change',
-    'Task coordination',
-    'Tools/equipment put away',
-];
+export const communicationValues = ['JHA', 'Plan', 'Recognize change', 'Task coordination', 'Tools/equipment put away'];
 
-export const workingConditions = [
-    'Ambient conditions',
-    'Clean/clear of clutter',
-    'Footing',
-    'Guards & barriers',
-];
+export const workingConditions = ['Ambient conditions', 'Clean/clear of clutter', 'Footing', 'Guards & barriers'];
 
 export const followingProcedures = [
     'Poor/inadequate/improper planning',
@@ -132,13 +109,7 @@ export const workPlaceEnvironment = [
     'Tripping hazard',
 ];
 
-export const ppeValues: Record<
-    Extract<
-        keyof RootCauseAnalysisData,
-        'ppe_in_good_condition' | 'ppe_in_use' | 'ppe_correct_type'
-    >,
-    string
-> = {
+export const ppeValues: Record<Extract<keyof RootCauseAnalysisData, 'ppe_in_good_condition' | 'ppe_in_use' | 'ppe_correct_type'>, string> = {
     ppe_in_good_condition: 'In Good Condition:',
     ppe_in_use: 'In Use:',
     ppe_correct_type: 'The Right Type:',

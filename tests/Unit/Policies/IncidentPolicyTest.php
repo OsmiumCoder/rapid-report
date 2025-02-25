@@ -447,7 +447,7 @@ class IncidentPolicyTest extends TestCase
         $this->assertFalse($result);
     }
 
-    public function test_user_can_comment_on_own_incident()
+    public function test_user_cant_comment_on_incidents()
     {
         $user = User::factory()->create([
             'name' => 'User',
@@ -459,7 +459,7 @@ class IncidentPolicyTest extends TestCase
         ]);
 
         $result = $this->getPolicy()->addComment($user, $incident);
-        $this->assertTrue($result);
+        $this->assertFalse($result);
     }
 
     public function test_supervisor_cant_comment_on_incident_not_assigned_to_them()
