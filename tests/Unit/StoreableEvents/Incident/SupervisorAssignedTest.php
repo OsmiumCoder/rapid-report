@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Notifications\Incident\IncidentFollowUpOverdueNotification;
 use App\Notifications\Incident\SupervisorAssignedNotification;
 use App\States\IncidentStatus\Assigned;
+use App\States\IncidentStatus\InReview;
 use App\States\IncidentStatus\Opened;
 use App\States\IncidentStatus\Returned;
 use App\StorableEvents\Incident\SupervisorAssigned;
@@ -27,7 +28,7 @@ class SupervisorAssignedTest extends TestCase
         $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $incident = Incident::factory()->create([
-            'status' => Assigned::class,
+            'status' => InReview::class,
             'supervisor_id' => $supervisor->id,
         ]);
 
@@ -38,10 +39,6 @@ class SupervisorAssignedTest extends TestCase
         $event->setAggregateRootUuid($incident->id);
 
         $event->react();
-
-        $incident->status = Returned::class;
-
-        $this->travel(80)->hours();
 
         Notification::assertNotSentTo(
             $supervisor,
@@ -59,7 +56,6 @@ class SupervisorAssignedTest extends TestCase
 
         $incident = Incident::factory()->create([
             'status' => Assigned::class,
-            'supervisor_id' => $supervisor->id,
         ]);
 
         $event = new SupervisorAssigned($supervisor->id);
@@ -69,10 +65,6 @@ class SupervisorAssignedTest extends TestCase
         $event->setAggregateRootUuid($incident->id);
 
         $event->react();
-
-        $incident->supervisor_id = $admin->id;
-
-        $this->travel(72)->hours();
 
         Notification::assertNotSentTo(
             $supervisor,
@@ -89,7 +81,7 @@ class SupervisorAssignedTest extends TestCase
         $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $incident = Incident::factory()->create([
-            'status' => Assigned::class,
+            'status' => Returned::class,
             'supervisor_id' => $supervisor->id,
         ]);
 
@@ -100,8 +92,6 @@ class SupervisorAssignedTest extends TestCase
         $event->setAggregateRootUuid($incident->id);
 
         $event->react();
-
-        $incident->status = Returned::class;
 
         Notification::assertSentTo(
             $supervisor,
