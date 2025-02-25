@@ -40,11 +40,16 @@ class CommentCreated extends StoredEvent
 
         if ($commentable) {
             $url = route('incidents.show', ['incident' => $this->commentable_id]);
-            if ($commentable->supervisor) {
-                Notification::send($commentable->supervisor, new CommentAdded($this->content, $commenter, $url));
+
+            $notification = new CommentAdded($this->content, $commenter, $url);
+
+            if ($commentable->supervisor && $commentable->supervisor->id !== $this->metaData['user_id']) {
+                Notification::send($commentable->supervisor, $notification);
             }
-            $admins = User::role('admin')->get();
-            Notification::send($admins, new CommentAdded($this->content, $commenter, $url));
+
+            $admins = User::role('admin')->whereKeyNot($this->metaData['user_id'])->get();
+
+            Notification::send($admins, $notification);
         }
     }
 }
