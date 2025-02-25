@@ -13,12 +13,20 @@ class AdditionalInformationNotification extends BaseNotification
         $this->message = 'Additional information was added to an incident';
     }
 
-    public function via(): array
+    /**
+     * Get the notification's delivery channels.
+     *
+     * @return array<int, string>
+     */
+    public function via(object $notifiable): array
     {
         return ['mail', 'database'];
     }
 
-    public function toMail(): MailMessage
+    /**
+     * Get the mail representation of the notification.
+     */
+    public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
             ->subject('Incident Additional Information Added')
@@ -26,13 +34,5 @@ class AdditionalInformationNotification extends BaseNotification
                 'url' => $this->url,
                 'additionalInformation' => $this->additionalInformation,
             ]);
-    }
-
-    public function toArray(): array
-    {
-        return [
-            'url' => $this->url,
-            'message' => $this->message,
-        ];
     }
 }

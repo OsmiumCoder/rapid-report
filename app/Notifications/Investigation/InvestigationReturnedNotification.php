@@ -37,25 +37,10 @@ class InvestigationReturnedNotification extends BaseNotification
     /**
      * Get the mail representation of the notification.
      */
-    public function toMail(): MailMessage
+    public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
             ->subject('Investigation Returned')
             ->markdown('mail.investigation-returned', ['url' => $this->url, 'message' => $this->message]);
     }
-
-    /**
-     * Get the array representation of the notification.
-     *
-     * @return array<string, mixed>
-     */
-    public function toArray(object $notifiable): array
-    {
-        return [
-            'url' => $this->url,
-            'message' => $this->message,
-        ];
-    }
-
-
 }

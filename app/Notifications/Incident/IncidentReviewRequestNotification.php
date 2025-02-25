@@ -38,17 +38,4 @@ class IncidentReviewRequestNotification extends BaseNotification
             ->subject('Incident Follow Up Review Request')
             ->markdown('mail.incident-review-request', ['url' => $this->url]);
     }
-
-    /**
-     * Get the array representation of the notification.
-     *
-     * @return array<string, mixed>
-     */
-    public function toArray(object $notifiable): array
-    {
-        return [
-            'url' => $this->url,
-            'message' => $this->message,
-        ];
-    }
 }
