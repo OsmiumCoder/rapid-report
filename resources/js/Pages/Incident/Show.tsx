@@ -1,15 +1,14 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import IncidentAdminActions from '@/Pages/Incident/Partials/ShowComponents/IncidentAdminActions';
 import ActivityLog from '@/Pages/Incident/Partials/ShowComponents/ActivityLog';
+import IncidentAdminActions from '@/Pages/Incident/Partials/ShowComponents/IncidentAdminActions';
 import IncidentHeader from '@/Pages/Incident/Partials/ShowComponents/IncidentHeader';
-import { Head, router, useForm } from '@inertiajs/react';
-import { PageProps, Role, User } from '@/types';
 import IncidentInformationPanel from '@/Pages/Incident/Partials/ShowComponents/IncidentInformationPanel';
-import { Incident } from '@/types/incident/Incident';
-import { FormEvent, useEffect } from 'react';
 import IncidentSupervisorActions from '@/Pages/Incident/Partials/ShowComponents/IncidentSupervisorActions';
-import { IncidentStatus } from '@/Enums/IncidentStatus';
 import IncidentUserActions from '@/Pages/Incident/Partials/ShowComponents/IncidentUserActions';
+import { PageProps, Role, User } from '@/types';
+import { Incident } from '@/types/incident/Incident';
+import { Head, router, useForm } from '@inertiajs/react';
+import { FormEvent, useEffect } from 'react';
 
 interface ShowProps extends PageProps {
     incident: Incident;
@@ -19,14 +18,7 @@ interface ShowProps extends PageProps {
     canProvideFollowup: boolean;
 }
 
-export default function Show({
-    auth,
-    incident,
-    supervisors,
-    roles,
-    canRequestReview,
-    canProvideFollowup,
-}: PageProps<ShowProps>) {
+export default function Show({ auth, incident, supervisors, roles, canRequestReview, canProvideFollowup }: PageProps<ShowProps>) {
     const user = auth.user;
 
     const { data, setData, post, processing, reset } = useForm({
@@ -62,11 +54,7 @@ export default function Show({
                     <div className="mx-auto px-4 py-10 sm:px-6 lg:px-8">
                         <div className="mx-auto grid max-w-2xl grid-cols-1 grid-rows-1 items-start gap-x-8 gap-y-8 lg:mx-0 lg:max-w-none lg:grid-cols-3">
                             {user.roles.some((role) => role.name === 'admin') && (
-                                <IncidentAdminActions
-                                    incident={incident}
-                                    supervisors={supervisors}
-                                    roles={roles}
-                                ></IncidentAdminActions>
+                                <IncidentAdminActions incident={incident} supervisors={supervisors} roles={roles}></IncidentAdminActions>
                             )}
                             {user.roles.some((role) => role.name === 'supervisor') && (
                                 <IncidentSupervisorActions
@@ -75,15 +63,11 @@ export default function Show({
                                     canProvideFollowup={canProvideFollowup}
                                 ></IncidentSupervisorActions>
                             )}
-                            {user.roles.some((role) => role.name === 'user') && (
-                                <IncidentUserActions incident={incident}></IncidentUserActions>
-                            )}
+                            {user.roles.some((role) => role.name === 'user') && <IncidentUserActions incident={incident}></IncidentUserActions>}
 
                             <IncidentInformationPanel incident={incident} />
 
-                            {user.roles.some(
-                                (role) => role.name === 'admin' || role.name === 'supervisor'
-                            ) && (
+                            {user.roles.some((role) => role.name === 'admin' || role.name === 'supervisor') && (
                                 <ActivityLog
                                     data={data}
                                     setData={setData}

@@ -2,30 +2,22 @@ import { Investigation } from '@/types/investigation/Investigation';
 import { ArrowLeftIcon } from '@heroicons/react/24/solid';
 import { Link } from '@inertiajs/react';
 
-export default function InvestigationInformationPanel({
-    investigation,
-}: {
-    investigation: Investigation;
-}) {
+export default function InvestigationInformationPanel({ investigation }: { investigation: Investigation }) {
     return (
-        <div className="bg-white -mx-4 px-4 py-8 shadow-sm ring-1 ring-gray-900/5 sm:mx-0 sm:rounded-lg sm:px-8 sm:pb-14 lg:col-span-2 lg:row-span-2 lg:row-end-2 xl:px-16 xl:pb-20 xl:pt-16">
+        <div className="-mx-4 bg-white px-4 py-8 shadow-sm ring-1 ring-gray-900/5 sm:mx-0 sm:rounded-lg sm:px-8 sm:pb-14 lg:col-span-2 lg:row-span-2 lg:row-end-2 xl:px-16 xl:pt-16 xl:pb-20">
             <div className="flex items-center space-x-2">
                 <Link href={route('incidents.show', { incident: investigation.incident_id })}>
                     <ArrowLeftIcon className="size-6 text-gray-900 hover:text-gray-500" />
                 </Link>
-                <h2 className="font-semibold text-gray-900 text-2xl">Investigation</h2>
+                <h2 className="text-2xl font-semibold text-gray-900">Investigation</h2>
             </div>
-            <div className='className="font-semibold text-gray-800 my-4'>
-                Incident: {investigation.incident_id}
-            </div>
-            <div className='className="font-semibold text-gray-800 my-4'>
-                Investigation provided by: {investigation.supervisor.name}
-            </div>
+            <div className='className="font-semibold my-4 text-gray-800'>Incident: {investigation.incident_id}</div>
+            <div className='className="font-semibold my-4 text-gray-800'>Investigation provided by: {investigation.supervisor.name}</div>
 
             <div className="space-y-6 text-gray-900">
                 <div className="space-y-2">
-                    <div className="font-semibold text-xl">General Information</div>
-                    <div className="space-y-2 ml-6">
+                    <div className="text-xl font-semibold">General Information</div>
+                    <div className="ml-6 space-y-2">
                         <div>
                             <span className="font-semibold">Resulted In: </span>
                             <span>{investigation.resulted_in.join(', ')}</span>
@@ -67,8 +59,8 @@ export default function InvestigationInformationPanel({
                     </div>
                 </div>
                 <div className="space-y-2">
-                    <div className="font-semibold text-xl">Root Causes</div>
-                    <div className="space-y-2 ml-6">
+                    <div className="text-xl font-semibold">Root Causes</div>
+                    <div className="ml-6 space-y-2">
                         <div>
                             <span className="font-semibold">Immediate Causes: </span>
                             <span>{investigation.immediate_causes ?? 'N/A'}</span>
@@ -84,7 +76,7 @@ export default function InvestigationInformationPanel({
                     </div>
                 </div>
                 <div>
-                    <div className="font-semibold text-xl">Prevention</div>
+                    <div className="text-xl font-semibold">Prevention</div>
                     <span className="ml-6">{investigation.prevention ?? 'N/A'}</span>
                 </div>
             </div>

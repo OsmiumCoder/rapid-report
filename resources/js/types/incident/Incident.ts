@@ -1,11 +1,11 @@
 import { IncidentStatus } from '@/Enums/IncidentStatus';
-import { User } from '@/types';
 import { IncidentType } from '@/Enums/IncidentType';
+import { User } from '@/types';
 import { Comment } from '@/types/Comment';
+import { AdditionalInformation } from '@/types/incident/AdditionalInformation';
 import { Witness } from '@/types/incident/Witness';
 import { Investigation } from '@/types/investigation/Investigation';
 import { RootCauseAnalysis } from '@/types/rootCauseAnalysis/RootCauseAnalysis';
-import { AdditionalInformation } from '@/types/incident/AdditionalInformation';
 
 export interface Incident {
     id: string;

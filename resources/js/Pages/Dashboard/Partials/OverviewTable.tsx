@@ -1,10 +1,10 @@
+import Badge from '@/Components/Badge';
+import dateFormat from '@/Filters/dateFormat';
+import { incidentBadgeColor } from '@/Filters/incidentBadgeColor';
+import { nameFilter } from '@/Filters/nameFilter';
+import { uppercaseWordFormat } from '@/Filters/uppercaseWordFormat';
 import { Incident } from '@/types/incident/Incident';
 import { Link } from '@inertiajs/react';
-import { nameFilter } from '@/Filters/nameFilter';
-import Badge from '@/Components/Badge';
-import { incidentBadgeColor } from '@/Filters/incidentBadgeColor';
-import { uppercaseWordFormat } from '@/Filters/uppercaseWordFormat';
-import dateFormat from '@/Filters/dateFormat';
 
 export default function OverviewTable({ incidents }: { incidents: Incident[] }) {
     return (
@@ -15,31 +15,19 @@ export default function OverviewTable({ incidents }: { incidents: Incident[] }) 
                         <table className="min-w-full divide-y divide-gray-300">
                             <thead>
                                 <tr>
-                                    <th
-                                        scope="col"
-                                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 "
-                                    >
+                                    <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                                         Reporter
                                     </th>
-                                    <th
-                                        scope="col"
-                                        className="px-4 py-3.5 text-left text-sm font-semibold text-gray-900 "
-                                    >
+                                    <th scope="col" className="px-4 py-3.5 text-left text-sm font-semibold text-gray-900">
                                         Description
                                     </th>
-                                    <th
-                                        scope="col"
-                                        className="px-4 py-3.5 text-left text-sm font-semibold text-gray-900 "
-                                    >
+                                    <th scope="col" className="px-4 py-3.5 text-left text-sm font-semibold text-gray-900">
                                         Status
                                     </th>
-                                    <th
-                                        scope="col"
-                                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                                    >
+                                    <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                                         Reported
                                     </th>
-                                    <th scope="col" className="py-3.5 pl-3 pr-4 md:pr-6">
+                                    <th scope="col" className="py-3.5 pr-4 pl-3 md:pr-6">
                                         <span className="sr-only">View</span>
                                     </th>
                                 </tr>
@@ -54,25 +42,18 @@ export default function OverviewTable({ incidents }: { incidents: Incident[] }) 
                                         })}
                                         key={incident.id}
                                     >
-                                        <td className="px-3 py-4 text-sm text-gray-500 ">
+                                        <td className="px-3 py-4 text-sm text-gray-500">
                                             {nameFilter(incident)[0]} {nameFilter(incident)[1]}
                                         </td>
 
-                                        <td className="px-3 py-4 text-sm w-[65rem] text-gray-500 ">
-                                            <div className="w-full line-clamp-3">
-                                                {incident.description}
-                                            </div>
+                                        <td className="w-[65rem] px-3 py-4 text-sm text-gray-500">
+                                            <div className="line-clamp-3 w-full">{incident.description}</div>
                                         </td>
                                         <td className="px-3 py-4 text-sm">
-                                            <Badge
-                                                color={incidentBadgeColor(incident)}
-                                                text={uppercaseWordFormat(incident.status)}
-                                            />
+                                            <Badge color={incidentBadgeColor(incident)} text={uppercaseWordFormat(incident.status)} />
                                         </td>
-                                        <td className="px-3 py-4 text-sm text-gray-500">
-                                            {dateFormat(incident.created_at)}
-                                        </td>
-                                        <td className="py-4 pl-3 pr-4 text-right text-sm font-medium md:pr-6">
+                                        <td className="px-3 py-4 text-sm text-gray-500">{dateFormat(incident.created_at)}</td>
+                                        <td className="py-4 pr-4 pl-3 text-right text-sm font-medium md:pr-6">
                                             <Link
                                                 href={route('incidents.show', {
                                                     incident: incident.id,
@@ -80,9 +61,7 @@ export default function OverviewTable({ incidents }: { incidents: Incident[] }) 
                                                 className="text-upei-green-500 hover:text-upei-green-600"
                                             >
                                                 View
-                                                <span className="sr-only">
-                                                    , {incident.descriptor}
-                                                </span>
+                                                <span className="sr-only">, {incident.descriptor}</span>
                                             </Link>
                                         </td>
                                     </Link>

@@ -1,11 +1,7 @@
-import { HTMLAttributes } from 'react';
 import classNames from '@/Filters/classNames';
+import { HTMLAttributes } from 'react';
 
-export default function InputError({
-    message,
-    className = '',
-    ...props
-}: HTMLAttributes<HTMLParagraphElement> & { message?: string }) {
+export default function InputError({ message, className = '', ...props }: HTMLAttributes<HTMLParagraphElement> & { message?: string }) {
     return message ? (
         <p {...props} className={classNames('text-sm text-red-600', className)}>
             {message}

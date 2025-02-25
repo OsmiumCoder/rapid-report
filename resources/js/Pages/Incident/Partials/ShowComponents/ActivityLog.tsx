@@ -1,9 +1,9 @@
-import classNames from '@/Filters/classNames';
-import { Comment } from '@/types/Comment';
-import AddCommentForm from '@/Pages/Incident/Partials/ShowComponents/ActivityLogComponents/AddCommentForm';
 import { CommentType } from '@/Enums/CommentType';
-import NoteComment from '@/Pages/Incident/Partials/ShowComponents/ActivityLogComponents/CommentComponents/NoteComment';
+import classNames from '@/Filters/classNames';
+import AddCommentForm from '@/Pages/Incident/Partials/ShowComponents/ActivityLogComponents/AddCommentForm';
 import ActionComment from '@/Pages/Incident/Partials/ShowComponents/ActivityLogComponents/CommentComponents/ActionComment';
+import NoteComment from '@/Pages/Incident/Partials/ShowComponents/ActivityLogComponents/CommentComponents/NoteComment';
+import { Comment } from '@/types/Comment';
 import { FormEvent, useEffect, useRef } from 'react';
 
 interface ActivityLogProps {
@@ -13,20 +13,14 @@ interface ActivityLogProps {
         ((
             data: (previousData: { content: string }) => {
                 content: string;
-            }
+            },
         ) => void) &
         (<K extends keyof { content: string }>(key: K, value: { content: string }[K]) => void);
     processing: boolean;
     data: { content: string };
 }
 
-export default function ActivityLog({
-    comments,
-    addComment,
-    setData,
-    processing,
-    data,
-}: ActivityLogProps) {
+export default function ActivityLog({ comments, addComment, setData, processing, data }: ActivityLogProps) {
     const commentFormRef = useRef<HTMLUListElement>(null);
 
     useEffect(() => {
@@ -37,19 +31,15 @@ export default function ActivityLog({
 
     return (
         <>
-            <div className="lg:col-start-3 p-5 rounded-lg bg-white shadow-sm ring-1 ring-gray-900/5">
+            <div className="rounded-lg bg-white p-5 shadow-sm ring-1 ring-gray-900/5 lg:col-start-3">
                 <h2 className="text-sm/6 font-semibold text-gray-900">Activity</h2>
-                <ul
-                    ref={commentFormRef}
-                    role="list"
-                    className="mt-6 space-y-6 max-h-[55rem] overflow-y-scroll"
-                >
+                <ul ref={commentFormRef} role="list" className="mt-6 max-h-[55rem] space-y-6 overflow-y-scroll">
                     {comments.map((comment, index) => (
                         <li key={index} className="relative flex gap-x-4">
                             <div
                                 className={classNames(
                                     index === comments.length - 1 ? 'h-6' : '-bottom-6',
-                                    'absolute left-0 top-0 flex w-6 justify-center'
+                                    'absolute top-0 left-0 flex w-6 justify-center',
                                 )}
                             >
                                 <div className="w-px bg-gray-200" />
@@ -66,12 +56,7 @@ export default function ActivityLog({
                     ))}
                 </ul>
 
-                <AddCommentForm
-                    data={data}
-                    setData={setData}
-                    processing={processing}
-                    submit={addComment}
-                />
+                <AddCommentForm data={data} setData={setData} processing={processing} submit={addComment} />
             </div>
         </>
     );

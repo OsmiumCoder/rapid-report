@@ -1,7 +1,5 @@
+import ConfirmationModal, { ConfirmationModalProps } from '@/Components/ConfirmationModal/ConfirmationModal';
 import { createContext, PropsWithChildren, RefObject, useContext, useRef, useState } from 'react';
-import ConfirmationModal, {
-    ConfirmationModalProps,
-} from '@/Components/ConfirmationModal/ConfirmationModal';
 
 interface ConfirmationModalContextType {
     setModalProps: (props: Partial<ConfirmationModalProps>) => void;
@@ -12,8 +10,7 @@ const ConfirmationModalContext = createContext<ConfirmationModalContextType | un
 
 export const useConfirmationModal = () => {
     const context = useContext(ConfirmationModalContext);
-    if (!context)
-        throw new Error('useConfirmationModal must be used within a ConfirmationModalProvider');
+    if (!context) throw new Error('useConfirmationModal must be used within a ConfirmationModalProvider');
     return context;
 };
 
@@ -27,9 +24,7 @@ export default function ConfirmationModalProvider({ children }: PropsWithChildre
         setShow: (show) => setModalProps((prev) => ({ ...prev, show })),
     });
 
-    const setModalProps = (
-        props: Partial<ConfirmationModalProps> | ((prev: ConfirmationModalProps) => void)
-    ) => {
+    const setModalProps = (props: Partial<ConfirmationModalProps> | ((prev: ConfirmationModalProps) => void)) => {
         setProps((prev) => ({
             ...prev,
             ...(typeof props === 'function' ? props(prev) : props),

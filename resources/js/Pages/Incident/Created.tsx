@@ -1,30 +1,24 @@
 import GuestLayout from '@/Layouts/GuestLayout';
 import { PageProps } from '@/types';
-import React from 'react';
 import { CheckCircleIcon } from '@heroicons/react/24/outline';
 import { Head, Link } from '@inertiajs/react';
 
-export default function Created({
-    can_view,
-    incident_id,
-}: PageProps<{ can_view: boolean; incident_id: string }>) {
+export default function Created({ can_view, incident_id }: PageProps<{ can_view: boolean; incident_id: string }>) {
     return (
         <GuestLayout>
             <Head title="Submitted Incident" />
-            <div className="flex flex-col items-center w-full">
+            <div className="flex w-full flex-col items-center">
                 <div>
-                    <CheckCircleIcon className="size-16 text-upei-green-500" />
+                    <CheckCircleIcon className="text-upei-green-500 size-16" />
                 </div>
-                <div className="text-xl my-2">Thank you for submitting an Incident report.</div>
-                <div className="my-2">
-                    Your incident will be reviewed and investigated in due process.
-                </div>
-                <div className="flex justify-around w-3/4 my-2">
+                <div className="my-2 text-xl">Thank you for submitting an Incident report.</div>
+                <div className="my-2">Your incident will be reviewed and investigated in due process.</div>
+                <div className="my-2 flex w-3/4 justify-around">
                     <div>
                         <Link
                             href={route('login')}
                             as="button"
-                            className="rounded-md bg-upei-red-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-upei-red-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-upei-red-600"
+                            className="bg-upei-red-500 hover:bg-upei-red-600 focus-visible:outline-upei-red-600 rounded-md px-3 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                         >
                             Return Home
                         </Link>
@@ -37,7 +31,7 @@ export default function Created({
                                     incident: incident_id,
                                 })}
                                 as="button"
-                                className="rounded-md bg-upei-green-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-upei-green-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-upei-green-600"
+                                className="bg-upei-green-500 hover:bg-upei-green-600 focus-visible:outline-upei-green-600 rounded-md px-3 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                             >
                                 View Incident
                             </Link>

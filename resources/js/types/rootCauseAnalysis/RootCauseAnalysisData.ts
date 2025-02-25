@@ -1,5 +1,5 @@
-import { SolutionAndAction } from '@/types/rootCauseAnalysis/SolutionAndAction';
 import { IndividualInvolved } from '@/types/rootCauseAnalysis/IndividualInvolved';
+import { SolutionAndAction } from '@/types/rootCauseAnalysis/SolutionAndAction';
 
 export interface RootCauseAnalysisData {
     individuals_involved: IndividualInvolved[];

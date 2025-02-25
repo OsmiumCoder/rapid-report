@@ -1,13 +1,13 @@
+import DateInput from '@/Components/DateInput';
+import LabeledCheckbox from '@/Components/LabeledCheckbox';
+import classNames from '@/Filters/classNames';
+import dateFormat from '@/Filters/dateFormat';
+import { uppercaseWordFormat } from '@/Filters/uppercaseWordFormat';
+import { Filter, FilterValue } from '@/Pages/Incident/Index';
+import { descriptors } from '@/Pages/Incident/Stages/IncidentDropDownValues';
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
 import { FunnelIcon } from '@heroicons/react/20/solid';
-import { descriptors } from '@/Pages/Incident/Stages/IncidentDropDownValues';
-import React, { Dispatch, SetStateAction, useState } from 'react';
-import { uppercaseWordFormat } from '@/Filters/uppercaseWordFormat';
-import classNames from '@/Filters/classNames';
-import { Filter, FilterValue } from '@/Pages/Incident/Index';
-import dateFormat from '@/Filters/dateFormat';
-import LabeledCheckbox from '@/Components/LabeledCheckbox';
-import DateInput from '@/Components/DateInput';
+import { Dispatch, SetStateAction, useState } from 'react';
 
 interface IndexFilterProps {
     filters: Record<FilterValue, Filter[]>;
@@ -20,13 +20,7 @@ export default function IndexFilter({ filters, setFilters, resetFilters }: Index
 
     const numberOfFilters = () =>
         Object.values(filters).reduce((prev, current) => {
-            return (
-                prev +
-                current.reduce(
-                    (prevInner, currentInner) => prevInner + (currentInner.checked ? 1 : 0),
-                    0
-                )
-            );
+            return prev + current.reduce((prevInner, currentInner) => prevInner + (currentInner.checked ? 1 : 0), 0);
         }, 0);
 
     const commonDescriptors = descriptors
@@ -34,14 +28,9 @@ export default function IndexFilter({ filters, setFilters, resetFilters }: Index
         .reduce((common, options) => common.filter((option) => options.includes(option)));
 
     const excludeDescriptor = (descr: string) => {
-        const type = descriptors.find((descriptor) =>
-            descriptor.options.some((option) => option === descr)
-        )?.name;
+        const type = descriptors.find((descriptor) => descriptor.options.some((option) => option === descr))?.name;
 
-        return (
-            !filters.incident_type.find(({ label }) => label.toLowerCase() === type?.toLowerCase())
-                ?.checked && !commonDescriptors.includes(descr)
-        );
+        return !filters.incident_type.find(({ label }) => label.toLowerCase() === type?.toLowerCase())?.checked && !commonDescriptors.includes(descr);
     };
 
     const handleSelectFilter = (filterName: FilterValue, innerIndex: number, checked: boolean) => {
@@ -55,7 +44,7 @@ export default function IndexFilter({ filters, setFilters, resetFilters }: Index
                       }
                     : {
                           ...filter,
-                      }
+                      },
             ),
         }));
     };
@@ -68,29 +57,20 @@ export default function IndexFilter({ filters, setFilters, resetFilters }: Index
                     Filters
                 </h2>
                 <div className="relative col-start-1 row-start-1 py-4">
-                    <div className="mx-auto flex divide-x divide-gray-200 text-sm ml-2 mt-2">
+                    <div className="mx-auto mt-2 ml-2 flex divide-x divide-gray-200 text-sm">
                         <div
                             className={classNames(
                                 'pr-6 hover:text-gray-900',
-                                numberOfFilters() > 0 || isFilterShowing
-                                    ? 'text-gray-900'
-                                    : 'text-gray-500'
+                                numberOfFilters() > 0 || isFilterShowing ? 'text-gray-900' : 'text-gray-500',
                             )}
                         >
-                            <DisclosureButton
-                                className="group flex items-center font-medium"
-                                onClick={() => setIsFilterShowing((prev) => !prev)}
-                            >
+                            <DisclosureButton className="group flex items-center font-medium" onClick={() => setIsFilterShowing((prev) => !prev)}>
                                 <FunnelIcon aria-hidden="true" className="mr-2 size-5 flex-none" />
                                 <span>{numberOfFilters() + ' Filters'}</span>
                             </DisclosureButton>
                         </div>
                         <div className="pl-6">
-                            <button
-                                type="button"
-                                className="text-gray-500 hover:text-gray-900"
-                                onClick={() => resetFilters()}
-                            >
+                            <button type="button" className="text-gray-500 hover:text-gray-900" onClick={() => resetFilters()}>
                                 Clear all
                             </button>
                         </div>
@@ -101,56 +81,30 @@ export default function IndexFilter({ filters, setFilters, resetFilters }: Index
                         <div className="grid grid-cols-1 items-stretch gap-x-6 gap-y-6 md:grid-cols-4 md:gap-x-6">
                             {Object.entries(filters).map(([filterName, filter], filterIndex) => (
                                 <>
-                                    <fieldset
-                                        key={filterIndex + filterName}
-                                        className="space-y-4 max-h-64 overflow-y-scroll transparent-scrollbar"
-                                    >
-                                        <legend className="block font-medium text-lg">
-                                            {uppercaseWordFormat(filterName)}
-                                        </legend>
+                                    <fieldset key={filterIndex + filterName} className="transparent-scrollbar max-h-64 space-y-4 overflow-y-scroll">
+                                        <legend className="block text-lg font-medium">{uppercaseWordFormat(filterName)}</legend>
                                         {filterName === 'created_at' ? (
                                             <>
                                                 {filters[filterName].map((filter, i) => (
-                                                    <div
-                                                        key={i + filter.label}
-                                                        className="ml-2 grid space-y-6 sm:space-y-4"
-                                                    >
+                                                    <div key={i + filter.label} className="ml-2 grid space-y-6 sm:space-y-4">
                                                         <label>{filter.label}</label>
                                                         <DateInput
                                                             value={filter.value}
-                                                            min={
-                                                                filter.label === 'To'
-                                                                    ? dateFormat(
-                                                                          filters[filterName][0]
-                                                                              .value
-                                                                      )
-                                                                    : undefined
-                                                            }
+                                                            min={filter.label === 'To' ? dateFormat(filters[filterName][0].value) : undefined}
                                                             onChange={(e) => {
-                                                                const selectedDate = new Date(
-                                                                    e.target.value
-                                                                );
+                                                                const selectedDate = new Date(e.target.value);
                                                                 selectedDate.setHours(23, 59, 0, 0);
 
                                                                 setFilters((prev) => ({
                                                                     ...prev,
-                                                                    created_at: prev.created_at.map(
-                                                                        (dateFilter) => ({
-                                                                            ...dateFilter,
-                                                                            value:
-                                                                                dateFilter.label ===
-                                                                                filter.label
-                                                                                    ? e.target.value
-                                                                                    : dateFilter.value,
-                                                                            checked:
-                                                                                dateFilter.label ===
-                                                                                filter.label
-                                                                                    ? e.target.value
-                                                                                          .length >
-                                                                                      0
-                                                                                    : dateFilter.checked,
-                                                                        })
-                                                                    ),
+                                                                    created_at: prev.created_at.map((dateFilter) => ({
+                                                                        ...dateFilter,
+                                                                        value: dateFilter.label === filter.label ? e.target.value : dateFilter.value,
+                                                                        checked:
+                                                                            dateFilter.label === filter.label
+                                                                                ? e.target.value.length > 0
+                                                                                : dateFilter.checked,
+                                                                    })),
                                                                 }));
                                                             }}
                                                         />
@@ -159,31 +113,24 @@ export default function IndexFilter({ filters, setFilters, resetFilters }: Index
                                             </>
                                         ) : (
                                             <div className="grid space-y-6 sm:space-y-4">
-                                                {filter.map(
-                                                    ({ value, label, checked }, innerIndex) => (
-                                                        <>
-                                                            {!(
-                                                                (filterName as FilterValue) ===
-                                                                    'descriptor' &&
-                                                                excludeDescriptor(value) &&
-                                                                !commonDescriptors.includes(value)
-                                                            ) && (
-                                                                <LabeledCheckbox
-                                                                    key={innerIndex + value}
-                                                                    checked={checked}
-                                                                    label={label}
-                                                                    onChange={(e) =>
-                                                                        handleSelectFilter(
-                                                                            filterName as FilterValue,
-                                                                            innerIndex,
-                                                                            e.target.checked
-                                                                        )
-                                                                    }
-                                                                />
-                                                            )}
-                                                        </>
-                                                    )
-                                                )}
+                                                {filter.map(({ value, label, checked }, innerIndex) => (
+                                                    <>
+                                                        {!(
+                                                            (filterName as FilterValue) === 'descriptor' &&
+                                                            excludeDescriptor(value) &&
+                                                            !commonDescriptors.includes(value)
+                                                        ) && (
+                                                            <LabeledCheckbox
+                                                                key={innerIndex + value}
+                                                                checked={checked}
+                                                                label={label}
+                                                                onChange={(e) =>
+                                                                    handleSelectFilter(filterName as FilterValue, innerIndex, e.target.checked)
+                                                                }
+                                                            />
+                                                        )}
+                                                    </>
+                                                ))}
                                             </div>
                                         )}
                                     </fieldset>

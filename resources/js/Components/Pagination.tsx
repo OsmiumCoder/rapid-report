@@ -1,6 +1,6 @@
-import { Link } from '@inertiajs/react';
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid';
 import { PaginatedResponse } from '@/types/PaginatedResponse';
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid';
+import { Link } from '@inertiajs/react';
 
 interface PaginationProps {
     pagination: PaginatedResponse<any>;
@@ -30,19 +30,15 @@ export default function Pagination({ pagination }: PaginationProps) {
             <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
                 <div>
                     <p className="text-sm text-gray-700">
-                        Showing <span className="font-medium">{pagination.from}</span> to{' '}
-                        <span className="font-medium">{pagination.to}</span> of{' '}
+                        Showing <span className="font-medium">{pagination.from}</span> to <span className="font-medium">{pagination.to}</span> of{' '}
                         <span className="font-medium">{pagination.total}</span> results
                     </p>
                 </div>
                 <div>
-                    <nav
-                        aria-label="Pagination"
-                        className="isolate inline-flex -space-x-px rounded-md shadow-sm"
-                    >
+                    <nav aria-label="Pagination" className="isolate inline-flex -space-x-px rounded-md shadow-sm">
                         <Link
                             href={pagination.prev_page_url || '#'}
-                            className={`relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 ${
+                            className={`relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 ${
                                 !pagination.prev_page_url ? 'cursor-not-allowed opacity-50' : ''
                             }`}
                         >
@@ -56,18 +52,18 @@ export default function Pagination({ pagination }: PaginationProps) {
                                     href={link.url || '#'}
                                     className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold ${
                                         link.active
-                                            ? 'z-10 bg-upei-green-500 text-white focus:z-20 focus:outline-offset-0'
-                                            : 'text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0'
+                                            ? 'bg-upei-green-500 z-10 text-white focus:z-20 focus:outline-offset-0'
+                                            : 'text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:outline-offset-0'
                                     }`}
                                     preserveState={true}
                                 >
                                     {link.label}
                                 </Link>
-                            )
+                            ),
                         )}
                         <Link
                             href={pagination.next_page_url || '#'}
-                            className={`relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 ${
+                            className={`relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 ${
                                 !pagination.next_page_url ? 'cursor-not-allowed opacity-50' : ''
                             }`}
                         >

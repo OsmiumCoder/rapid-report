@@ -1,7 +1,7 @@
-import { StageProps } from '@/Pages/Incident/Stages/StageWrapper';
-import React, { useEffect } from 'react';
-import ToggleSwitch from '@/Components/ToggleSwitch';
 import TextArea from '@/Components/TextArea';
+import ToggleSwitch from '@/Components/ToggleSwitch';
+import { StageProps } from '@/Pages/Incident/Stages/StageWrapper';
+import { useEffect } from 'react';
 
 export default function VictimInformationStage({ formData, setFormData }: StageProps) {
     useEffect(() => {
@@ -14,9 +14,7 @@ export default function VictimInformationStage({ formData, setFormData }: StageP
 
     return (
         <div className="min-w-0 flex-1 text-sm/6">
-            <label className="flex justify-center font-bold text-lg text-gray-900">
-                Victim Information
-            </label>
+            <label className="flex justify-center text-lg font-bold text-gray-900">Victim Information</label>
 
             <div className="flex">
                 <div className="min-w-0 flex-1 text-sm/6">
@@ -34,9 +32,7 @@ export default function VictimInformationStage({ formData, setFormData }: StageP
             {formData.has_injury && (
                 <div className="mt-2">
                     <div>
-                        <label className="block text-sm/6 font-medium text-gray-900">
-                            Please describe the injury that occurred.
-                        </label>
+                        <label className="block text-sm/6 font-medium text-gray-900">Please describe the injury that occurred.</label>
                     </div>
                     <div className="mt-1">
                         <TextArea
@@ -49,14 +45,10 @@ export default function VictimInformationStage({ formData, setFormData }: StageP
             )}
 
             {formData.work_related && formData.has_injury && (
-                <div className="flex mt-2">
+                <div className="mt-2 flex">
                     <div className="min-w-0 flex-1 text-sm/6">
-                        <label className="font-medium text-gray-900">
-                            Workers Compensation Claim
-                        </label>
-                        <p className="text-xs text-gray-500">
-                            Has a Workers Compensation claim been submitted?
-                        </p>
+                        <label className="font-medium text-gray-900">Workers Compensation Claim</label>
+                        <p className="text-xs text-gray-500">Has a Workers Compensation claim been submitted?</p>
                     </div>
                     <ToggleSwitch
                         checked={formData.workers_comp_submitted ?? false}
@@ -67,12 +59,10 @@ export default function VictimInformationStage({ formData, setFormData }: StageP
                 </div>
             )}
 
-            <div className="flex mt-4">
+            <div className="mt-4 flex">
                 <div className="min-w-0 flex-1 text-sm/6">
                     <label className="block text-sm/6 font-medium text-gray-900">First Aid</label>
-                    <p className="text-xs text-gray-500">
-                        Did the incident result in an first aid being required?
-                    </p>
+                    <p className="text-xs text-gray-500">Did the incident result in an first aid being required?</p>
                 </div>
                 <ToggleSwitch
                     checked={formData.first_aid_applied ?? false}
@@ -84,9 +74,7 @@ export default function VictimInformationStage({ formData, setFormData }: StageP
             {formData.first_aid_applied && (
                 <div className="mt-2">
                     <div>
-                        <label className="block text-sm/6 font-medium text-gray-900">
-                            Please describe the First Aid that was required.
-                        </label>
+                        <label className="block text-sm/6 font-medium text-gray-900">Please describe the First Aid that was required.</label>
                     </div>
                     <div className="mt-1">
                         <TextArea
@@ -99,12 +87,8 @@ export default function VictimInformationStage({ formData, setFormData }: StageP
             )}
 
             <div className="mt-4">
-                <label className="block text-sm/6 font-medium text-gray-900">
-                    General Description
-                </label>
-                <p className="text-xs text-gray-500">
-                    Please offer as in-depth a description as possible.
-                </p>
+                <label className="block text-sm/6 font-medium text-gray-900">General Description</label>
+                <p className="text-xs text-gray-500">Please offer as in-depth a description as possible.</p>
                 <div className="mt-2">
                     <TextArea
                         rows={4}

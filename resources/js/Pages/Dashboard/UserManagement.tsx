@@ -1,17 +1,17 @@
-import Authenticated from '@/Layouts/AuthenticatedLayout';
-import { Head, router } from '@inertiajs/react';
-import { PaginatedResponse } from '@/types/PaginatedResponse';
-import { Role, User } from '@/types';
-import Pagination from '@/Components/Pagination';
-import DangerButton from '@/Components/DangerButton';
-import SelectInput from '@/Components/SelectInput';
-import React, { useState } from 'react';
-import { uppercaseWordFormat } from '@/Filters/uppercaseWordFormat';
-import TextInput from '@/Components/TextInput';
-import _ from 'underscore';
-import AddUserModal from '@/Pages/Dashboard/Partials/AddUserModal';
 import { useConfirmationModal } from '@/Components/ConfirmationModal/ConfirmationModalProvider';
+import DangerButton from '@/Components/DangerButton';
+import Pagination from '@/Components/Pagination';
 import PrimaryButton from '@/Components/PrimaryButton';
+import SelectInput from '@/Components/SelectInput';
+import TextInput from '@/Components/TextInput';
+import { uppercaseWordFormat } from '@/Filters/uppercaseWordFormat';
+import Authenticated from '@/Layouts/AuthenticatedLayout';
+import AddUserModal from '@/Pages/Dashboard/Partials/AddUserModal';
+import { Role, User } from '@/types';
+import { PaginatedResponse } from '@/types/PaginatedResponse';
+import { Head, router } from '@inertiajs/react';
+import { useState } from 'react';
+import _ from 'underscore';
 
 interface UserManagementProps {
     users: PaginatedResponse<User>;
@@ -37,20 +37,14 @@ export default function UserManagement({ users, roles }: UserManagementProps) {
                     <div className="sm:flex-auto">
                         <h1 className="text-base font-semibold text-gray-900">Users</h1>
                         <p className="mt-2 text-sm text-gray-700">
-                            A list of all the users in your account including their name, title,
-                            email and role.
+                            A list of all the users in your account including their name, title, email and role.
                         </p>
-                        <div className="w-1/2 mt-2 text-sm text-gray-700">
-                            <TextInput
-                                placeholder="Search"
-                                onChange={(e) => searchUsers(e.target.value)}
-                            />
+                        <div className="mt-2 w-1/2 text-sm text-gray-700">
+                            <TextInput placeholder="Search" onChange={(e) => searchUsers(e.target.value)} />
                         </div>
                     </div>
-                    <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-                        <PrimaryButton onClick={() => setIsAddUserFormOpen(true)}>
-                            Add User
-                        </PrimaryButton>
+                    <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+                        <PrimaryButton onClick={() => setIsAddUserFormOpen(true)}>Add User</PrimaryButton>
                     </div>
                 </div>
                 <div className="mt-8 flow-root">
@@ -60,28 +54,16 @@ export default function UserManagement({ users, roles }: UserManagementProps) {
                                 <table className="min-w-full divide-y divide-gray-300">
                                     <thead className="bg-gray-50">
                                         <tr>
-                                            <th
-                                                scope="col"
-                                                className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
-                                            >
+                                            <th scope="col" className="py-3.5 pr-3 pl-4 text-left text-sm font-semibold text-gray-900 sm:pl-6">
                                                 Name
                                             </th>
-                                            <th
-                                                scope="col"
-                                                className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                                            >
+                                            <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                                                 Email
                                             </th>
-                                            <th
-                                                scope="col"
-                                                className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                                            >
+                                            <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                                                 Role
                                             </th>
-                                            <th
-                                                scope="col"
-                                                className="relative py-3.5 pl-3 pr-4 sm:pr-6"
-                                            >
+                                            <th scope="col" className="relative py-3.5 pr-4 pl-3 sm:pr-6">
                                                 <span className="sr-only">Edit</span>
                                             </th>
                                         </tr>
@@ -89,13 +71,11 @@ export default function UserManagement({ users, roles }: UserManagementProps) {
                                     <tbody className="divide-y divide-gray-200 bg-white">
                                         {users.data.map((user, index) => (
                                             <tr key={index}>
-                                                <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                                                <td className="py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-6">
                                                     {user.name}
                                                 </td>
-                                                <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                                    {user.email}
-                                                </td>
-                                                <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                                <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">{user.email}</td>
+                                                <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
                                                     <SelectInput
                                                         value={user.roles[0].name}
                                                         onChange={(e) => {
@@ -103,23 +83,19 @@ export default function UserManagement({ users, roles }: UserManagementProps) {
                                                                 route('users.update-role', {
                                                                     user: user.id,
                                                                 }),
-                                                                { role: e.target.value }
+                                                                { role: e.target.value },
                                                             );
                                                         }}
                                                         className="w-full"
                                                     >
                                                         {roles.map(({ name }, index) => (
-                                                            <option
-                                                                className="hover:bg-upei-green-500"
-                                                                key={index}
-                                                                value={name}
-                                                            >
+                                                            <option className="hover:bg-upei-green-500" key={index} value={name}>
                                                                 {uppercaseWordFormat(name, '-')}
                                                             </option>
                                                         ))}
                                                     </SelectInput>
                                                 </td>
-                                                <td className="flex justify-end whitespace-nowrap py-4 pl-3 pr-4 sm:pl-6 text-sm text-gray-500">
+                                                <td className="flex justify-end py-4 pr-4 pl-3 text-sm whitespace-nowrap text-gray-500 sm:pl-6">
                                                     <DangerButton
                                                         onClick={() =>
                                                             setModalProps({
@@ -129,7 +105,7 @@ export default function UserManagement({ users, roles }: UserManagementProps) {
                                                                     router.delete(
                                                                         route('users.destroy', {
                                                                             user: user.id,
-                                                                        })
+                                                                        }),
                                                                     );
                                                                 },
                                                                 show: true,
@@ -150,11 +126,7 @@ export default function UserManagement({ users, roles }: UserManagementProps) {
                 </div>
             </div>
 
-            <AddUserModal
-                roles={roles}
-                isOpen={isAddUserFormOpen}
-                onClose={() => setIsAddUserFormOpen(false)}
-            />
+            <AddUserModal roles={roles} isOpen={isAddUserFormOpen} onClose={() => setIsAddUserFormOpen(false)} />
         </Authenticated>
     );
 }

@@ -1,8 +1,8 @@
-import { PropsWithChildren, ReactNode, useState } from 'react';
-import TopBar from '@/Layouts/Partials/TopBar';
+import DashboardNavBar, { NavigationItem } from '@/Components/DashboardNavBar';
 import DesktopSidebar from '@/Layouts/Partials/DesktopSidebar';
 import MobileSidebar from '@/Layouts/Partials/MobileSidebar';
-import DashboardNavBar, {NavigationItem} from '@/Components/DashboardNavBar';
+import TopBar from '@/Layouts/Partials/TopBar';
+import { PropsWithChildren, ReactNode, useState } from 'react';
 
 export default function Authenticated({ children }: PropsWithChildren<{ header?: ReactNode }>) {
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -35,11 +35,7 @@ export default function Authenticated({ children }: PropsWithChildren<{ header?:
     return (
         <>
             <div>
-                <MobileSidebar
-                    open={sidebarOpen}
-                    onClose={setSidebarOpen}
-                    onClick={() => setSidebarOpen(false)}
-                />
+                <MobileSidebar open={sidebarOpen} onClose={setSidebarOpen} onClick={() => setSidebarOpen(false)} />
 
                 <DesktopSidebar />
 
@@ -49,11 +45,9 @@ export default function Authenticated({ children }: PropsWithChildren<{ header?:
                     {(route().current('dashboard') || route().current('dashboard.*')) && (
                         <DashboardNavBar navigationItems={dashboardNavigationItems} />
                     )}
-                    {(route().current('report') || route().current('report.*')) && (
-                        <DashboardNavBar navigationItems={reportNav} />
-                    )}
+                    {(route().current('report') || route().current('report.*')) && <DashboardNavBar navigationItems={reportNav} />}
 
-                    <main className="py-10 bg-gray-100">
+                    <main className="bg-gray-100 py-10">
                         <div>{children}</div>
                     </main>
                 </div>

@@ -1,9 +1,9 @@
-import { InvestigationComponentProps } from '@/Pages/Investigation/Create';
-import { InformationCircleIcon } from '@heroicons/react/24/outline';
-import SelectInput from '@/Components/SelectInput';
-import RiskRankingModal from '@/Pages/Investigation/Partials/CreateComponents/RiskRankingModal';
-import React from 'react';
 import InputError from '@/Components/InputError';
+import SelectInput from '@/Components/SelectInput';
+import { InvestigationComponentProps } from '@/Pages/Investigation/Create';
+import RiskRankingModal from '@/Pages/Investigation/Partials/CreateComponents/RiskRankingModal';
+import { InformationCircleIcon } from '@heroicons/react/24/outline';
+import React from 'react';
 
 export default function RiskRating({ formData, setFormData, errors }: InvestigationComponentProps) {
     const [isModalOpen, setIsModalOpen] = React.useState(false);
@@ -13,15 +13,12 @@ export default function RiskRating({ formData, setFormData, errors }: Investigat
             <div className="mb-4">
                 <label className="flex items-center text-gray-700">
                     Risk Ranking:
-                    <InformationCircleIcon
-                        onClick={() => setIsModalOpen(true)}
-                        className="size-6 ml-2 hover:text-gray-400 hover:cursor-pointer "
-                    />
+                    <InformationCircleIcon onClick={() => setIsModalOpen(true)} className="ml-2 size-6 hover:cursor-pointer hover:text-gray-400" />
                 </label>
                 <SelectInput
                     value={formData.risk_rank}
                     onChange={(e) => setFormData('risk_rank', parseInt(e.target.value))}
-                    className="p-2 border border-gray-300 rounded-md w-full"
+                    className="w-full rounded-md border border-gray-300 p-2"
                 >
                     {Array(9)
                         .fill(0)

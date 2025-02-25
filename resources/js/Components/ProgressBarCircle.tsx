@@ -1,24 +1,21 @@
-import { CheckIcon } from '@heroicons/react/20/solid';
 import classNames from '@/Filters/classNames';
+import { CheckIcon } from '@heroicons/react/20/solid';
 
 interface ProgressBarCircleProps {
     completedSteps: number;
     remainingSteps: number;
 }
 
-export default function ProgressBarCircle({
-    completedSteps,
-    remainingSteps,
-}: ProgressBarCircleProps) {
+export default function ProgressBarCircle({ completedSteps, remainingSteps }: ProgressBarCircleProps) {
     return (
         <nav aria-label="Progress" className="p-6">
             <ol role="list" className="flex items-center">
                 {new Array(completedSteps).fill(1).map((_, index) => (
-                    <li key={index} className="pr-5 sm:pr-11 relative">
+                    <li key={index} className="relative pr-5 sm:pr-11">
                         <div aria-hidden="true" className="absolute inset-0 flex items-center">
-                            <div className="h-0.5 w-full bg-upei-green-600" />
+                            <div className="bg-upei-green-600 h-0.5 w-full" />
                         </div>
-                        <div className="relative flex size-8 items-center justify-center rounded-full bg-upei-green-600">
+                        <div className="bg-upei-green-600 relative flex size-8 items-center justify-center rounded-full">
                             <CheckIcon aria-hidden="true" className="size-5 text-white" />
                         </div>
                         <span className="sr-only">Completed Step</span>
@@ -31,24 +28,15 @@ export default function ProgressBarCircle({
                     </div>
                     <div
                         aria-current="step"
-                        className="relative flex size-8 items-center justify-center rounded-full border-2 border-upei-green-500 bg-white"
+                        className="border-upei-green-500 relative flex size-8 items-center justify-center rounded-full border-2 bg-white"
                     >
-                        <span
-                            aria-hidden="true"
-                            className="size-2.5 rounded-full bg-upei-green-500"
-                        />
+                        <span aria-hidden="true" className="bg-upei-green-500 size-2.5 rounded-full" />
                         <span className="sr-only">Current</span>
                     </div>
                 </li>
 
                 {new Array(remainingSteps).fill(1).map((_, index) => (
-                    <li
-                        key={index}
-                        className={classNames(
-                            index !== remainingSteps - 1 ? 'pr-5 sm:pr-11' : '',
-                            'relative'
-                        )}
-                    >
+                    <li key={index} className={classNames(index !== remainingSteps - 1 ? 'pr-5 sm:pr-11' : '', 'relative')}>
                         <div aria-hidden="true" className="absolute inset-0 flex items-center">
                             <div className="h-0.5 w-full bg-gray-200" />
                         </div>

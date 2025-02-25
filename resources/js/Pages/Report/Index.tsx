@@ -1,9 +1,9 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import type ReportData from '@/types/report/ReportData';
-import ReportBuilder from '@/Pages/Report/Partials/ReportBuilder';
 import dateFormat from '@/Filters/dateFormat';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import ReportBuilder from '@/Pages/Report/Partials/ReportBuilder';
+import type ReportData from '@/types/report/ReportData';
+import { Head, useForm } from '@inertiajs/react';
 import dayjs from 'dayjs';
-import {Head, useForm} from '@inertiajs/react';
 
 export default function Index() {
     const { data: formData, setData } = useForm({

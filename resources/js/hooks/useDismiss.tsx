@@ -12,10 +12,7 @@ interface UseDismissProps {
       Any refs that are in the ignoreRefs prop will be ignored if clicked
       Typical usage would be to hide a component when a click occurs outside of it.
 */
-export default function useDismiss<T extends HTMLElement>({
-    onDismiss,
-    ignoreRefs,
-}: UseDismissProps) {
+export default function useDismiss<T extends HTMLElement>({ onDismiss, ignoreRefs }: UseDismissProps) {
     const ref = useRef<T>(null);
 
     useEffect(() => {

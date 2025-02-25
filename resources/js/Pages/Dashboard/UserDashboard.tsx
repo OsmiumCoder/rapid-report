@@ -1,12 +1,12 @@
-import { Head, Link, usePage } from '@inertiajs/react';
-import { Incident } from '@/types/incident/Incident';
 import Badge from '@/Components/Badge';
+import { IncidentStatus } from '@/Enums/IncidentStatus';
+import dateFormat from '@/Filters/dateFormat';
 import { incidentBadgeColor } from '@/Filters/incidentBadgeColor';
 import { uppercaseWordFormat } from '@/Filters/uppercaseWordFormat';
-import dateFormat from '@/Filters/dateFormat';
 import Authenticated from '@/Layouts/AuthenticatedLayout';
+import { Incident } from '@/types/incident/Incident';
 import { PencilIcon } from '@heroicons/react/24/outline';
-import { IncidentStatus } from '@/Enums/IncidentStatus';
+import { Head, Link, usePage } from '@inertiajs/react';
 
 interface UserDashboardProps {
     incidents: Incident[];
@@ -14,41 +14,28 @@ interface UserDashboardProps {
     unresolvedCount: number;
 }
 
-export default function UserDashboard({
-    incidents,
-    incidentCount,
-    unresolvedCount,
-}: UserDashboardProps) {
+export default function UserDashboard({ incidents, incidentCount, unresolvedCount }: UserDashboardProps) {
     const { user } = usePage().props.auth;
     return (
         <Authenticated>
             <Head title="Dashboard" />
             <div className="px-4 sm:px-6 lg:px-8">
-                <div className="bg-white p-6 rounded-lg shadow-lg mb-8">
+                <div className="mb-8 rounded-lg bg-white p-6 shadow-lg">
                     <h2 className="text-2xl font-semibold text-gray-700">Welcome, {user.name}!</h2>
-                    <p className="mt-2 text-lg text-gray-600">
-                        Here's a quick overview of your submitted incidents and their status.
-                    </p>
+                    <p className="mt-2 text-lg text-gray-600">Here's a quick overview of your submitted incidents and their status.</p>
                 </div>
                 {/* Dashboard Summary */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                     {/* Incident Count Card */}
-                    <div className="flex justify-around bg-white p-6 rounded-lg shadow-lg">
+                    <div className="flex justify-around rounded-lg bg-white p-6 shadow-lg">
                         <div className="flex flex-col items-center justify-center text-center">
-                            <h3 className="text-lg font-semibold text-gray-700">
-                                Your Submitted Incidents
-                            </h3>
-                            <Link
-                                href={route('incidents.owned')}
-                                className="text-3xl font-bold text-upei-green-500 hover:text-upei-green-600"
-                            >
+                            <h3 className="text-lg font-semibold text-gray-700">Your Submitted Incidents</h3>
+                            <Link href={route('incidents.owned')} className="text-upei-green-500 hover:text-upei-green-600 text-3xl font-bold">
                                 {incidentCount}
                             </Link>
                         </div>
                         <div className="flex flex-col items-center justify-center text-center">
-                            <h3 className="text-lg font-semibold text-gray-700">
-                                Your Unresolved Incidents
-                            </h3>
+                            <h3 className="text-lg font-semibold text-gray-700">Your Unresolved Incidents</h3>
                             <Link
                                 href={route('incidents.owned', {
                                     filters: encodeURIComponent(
@@ -78,7 +65,7 @@ export default function UserDashboard({
                                                     },
                                                 ],
                                             },
-                                        ])
+                                        ]),
                                     ),
                                 })}
                                 className="text-3xl font-bold text-red-500 hover:text-red-600"
@@ -89,27 +76,22 @@ export default function UserDashboard({
                     </div>
 
                     {/* Report New Incident Card */}
-                    <div className="bg-white p-6 rounded-lg shadow-lg">
-                        <h3 className="text-lg font-semibold text-gray-700">
-                            Report a New Incident
-                        </h3>
-                        <p className="text-base text-gray-700">
-                            Quickly report any health, safety or environmental incidents you
-                            encounter.
-                        </p>
-                        <div className="flex justify-evenly mt-6 gap-x-4 flex-col h-24 sm:h-auto sm:flex-row">
+                    <div className="rounded-lg bg-white p-6 shadow-lg">
+                        <h3 className="text-lg font-semibold text-gray-700">Report a New Incident</h3>
+                        <p className="text-base text-gray-700">Quickly report any health, safety or environmental incidents you encounter.</p>
+                        <div className="mt-6 flex h-24 flex-col justify-evenly gap-x-4 sm:h-auto sm:flex-row">
                             <Link
                                 href={route('incidents.create')}
                                 as="button"
-                                className="flex items-center justify-center rounded-md bg-upei-green-500 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-upei-green-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-upei-green-600"
+                                className="bg-upei-green-500 hover:bg-upei-green-400 focus-visible:outline-upei-green-600 flex items-center justify-center rounded-md px-3 py-2 text-center text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                             >
-                                <PencilIcon className="h-4 w-4 mr-2" />
+                                <PencilIcon className="mr-2 h-4 w-4" />
                                 Submit Incident
                             </Link>
                             <Link
                                 href={route('incidents.owned')}
                                 as="button"
-                                className="flex items-center justify-center rounded-md bg-upei-green-500 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-upei-green-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-upei-green-600"
+                                className="bg-upei-green-500 hover:bg-upei-green-400 focus-visible:outline-upei-green-600 flex items-center justify-center rounded-md px-3 py-2 text-center text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                             >
                                 View Submitted Incidents
                             </Link>
@@ -118,10 +100,8 @@ export default function UserDashboard({
                 </div>
 
                 {/* User's Reported Incidents Table */}
-                <div className="mt-8 bg-white p-2 md:p-6 rounded-lg shadow-lg">
-                    <h3 className="text-lg font-semibold text-gray-700 text-center md:text-left mb-2 ml-2">
-                        Your Latest Incidents
-                    </h3>
+                <div className="mt-8 rounded-lg bg-white p-2 shadow-lg md:p-6">
+                    <h3 className="mb-2 ml-2 text-center text-lg font-semibold text-gray-700 md:text-left">Your Latest Incidents</h3>
                     {incidents.length === 0 ? (
                         <div className="text-center">You have no reported incidents</div>
                     ) : (
@@ -132,28 +112,16 @@ export default function UserDashboard({
                                         <table className="min-w-full divide-y divide-gray-300">
                                             <thead>
                                                 <tr>
-                                                    <th
-                                                        scope="col"
-                                                        className="px-4 py-3.5 text-left text-sm font-semibold text-gray-900 w-3/5"
-                                                    >
+                                                    <th scope="col" className="w-3/5 px-4 py-3.5 text-left text-sm font-semibold text-gray-900">
                                                         Description
                                                     </th>
-                                                    <th
-                                                        scope="col"
-                                                        className="px-4 py-3.5 text-center text-sm font-semibold text-gray-900 "
-                                                    >
+                                                    <th scope="col" className="px-4 py-3.5 text-center text-sm font-semibold text-gray-900">
                                                         Status
                                                     </th>
-                                                    <th
-                                                        scope="col"
-                                                        className="px-3 py-3.5 text-center text-sm font-semibold text-gray-900"
-                                                    >
+                                                    <th scope="col" className="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">
                                                         Reported
                                                     </th>
-                                                    <th
-                                                        scope="col"
-                                                        className="py-3.5 pl-3 pr-4 md:pr-6"
-                                                    >
+                                                    <th scope="col" className="py-3.5 pr-4 pl-3 md:pr-6">
                                                         <span className="sr-only">View</span>
                                                     </th>
                                                 </tr>
@@ -168,23 +136,16 @@ export default function UserDashboard({
                                                         })}
                                                         key={incident.id}
                                                     >
-                                                        <td className="px-3 py-4 text-sm w-[70rem] text-gray-500 ">
-                                                            <div className="line-clamp-3">
-                                                                {incident.description}
-                                                            </div>
+                                                        <td className="w-[70rem] px-3 py-4 text-sm text-gray-500">
+                                                            <div className="line-clamp-3">{incident.description}</div>
                                                         </td>
-                                                        <td className="px-3 py-4 text-sm text-center">
-                                                            <Badge
-                                                                color={incidentBadgeColor(incident)}
-                                                                text={uppercaseWordFormat(
-                                                                    incident.status
-                                                                )}
-                                                            />
+                                                        <td className="px-3 py-4 text-center text-sm">
+                                                            <Badge color={incidentBadgeColor(incident)} text={uppercaseWordFormat(incident.status)} />
                                                         </td>
-                                                        <td className="px-3 py-4 text-sm text-gray-500 text-center">
+                                                        <td className="px-3 py-4 text-center text-sm text-gray-500">
                                                             {dateFormat(incident.created_at)}
                                                         </td>
-                                                        <td className="py-4 pl-3 pr-4 text-right text-sm font-medium md:pr-6">
+                                                        <td className="py-4 pr-4 pl-3 text-right text-sm font-medium md:pr-6">
                                                             <Link
                                                                 href={route('incidents.show', {
                                                                     incident: incident.id,
@@ -192,9 +153,7 @@ export default function UserDashboard({
                                                                 className="text-upei-green-500 hover:text-upei-green-600"
                                                             >
                                                                 View
-                                                                <span className="sr-only">
-                                                                    , {incident.descriptor}
-                                                                </span>
+                                                                <span className="sr-only">, {incident.descriptor}</span>
                                                             </Link>
                                                         </td>
                                                     </Link>

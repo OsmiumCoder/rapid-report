@@ -1,8 +1,8 @@
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
-import { EllipsisVerticalIcon } from '@heroicons/react/20/solid';
-import { Incident } from '@/types/incident/Incident';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import PrimaryButton from '@/Components/PrimaryButton';
+import { Incident } from '@/types/incident/Incident';
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
+import { EllipsisVerticalIcon } from '@heroicons/react/20/solid';
 
 export default function IncidentHeader({ incident }: { incident: Incident }) {
     return (
@@ -16,22 +16,14 @@ export default function IncidentHeader({ incident }: { incident: Incident }) {
                                 <div className="text-sm/6 text-gray-500">
                                     Incident <span className="text-gray-700">{incident.id}</span>
                                 </div>
-                                <div className="mt-1 text-base font-semibold text-gray-900">
-                                    UPEI Health & Safety
-                                </div>
+                                <div className="mt-1 text-base font-semibold text-gray-900">UPEI Health & Safety</div>
                             </h1>
                         </div>
                         <div className="flex items-center gap-x-4 sm:gap-x-6">
-                            <button
-                                type="button"
-                                className="hidden text-sm/6 font-semibold text-gray-900 sm:block"
-                            >
+                            <button type="button" className="hidden text-sm/6 font-semibold text-gray-900 sm:block">
                                 Copy URL
                             </button>
-                            <a
-                                href="#"
-                                className="hidden text-sm/6 font-semibold text-gray-900 sm:block"
-                            >
+                            <a href="#" className="hidden text-sm/6 font-semibold text-gray-900 sm:block">
                                 Edit
                             </a>
                             <PrimaryButton>Send</PrimaryButton>
@@ -39,15 +31,12 @@ export default function IncidentHeader({ incident }: { incident: Incident }) {
                             <Menu as="div" className="relative sm:hidden">
                                 <MenuButton className="-m-3 block p-3">
                                     <span className="sr-only">More</span>
-                                    <EllipsisVerticalIcon
-                                        aria-hidden="true"
-                                        className="size-5 text-gray-500"
-                                    />
+                                    <EllipsisVerticalIcon aria-hidden="true" className="size-5 text-gray-500" />
                                 </MenuButton>
 
                                 <MenuItems
                                     transition
-                                    className="absolute right-0 z-10 mt-0.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
+                                    className="absolute right-0 z-10 mt-0.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[enter]:ease-out data-[leave]:duration-75 data-[leave]:ease-in"
                                 >
                                     <MenuItem>
                                         <button

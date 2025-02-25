@@ -1,6 +1,6 @@
 import classNames from '@/Filters/classNames';
-import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
 import { NavigationItemInterface } from '@/Layouts/Partials/NavigationItem';
+import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
 
 interface NavigationDropDownItemProps {
     item: NavigationItemInterface;
@@ -8,17 +8,13 @@ interface NavigationDropDownItemProps {
     onClick: () => void;
 }
 
-export default function NavigationDropDownItem({
-    item,
-    isOpen,
-    onClick,
-}: NavigationDropDownItemProps) {
+export default function NavigationDropDownItem({ item, isOpen, onClick }: NavigationDropDownItemProps) {
     return (
         <div
             className={classNames(
-                'flex flex-row group gap-x-3 text-gray-300 hover:bg-upei-red-700',
-                'hover:text-white rounded-md',
-                'p-2 text-sm/6 font-semibold hover:cursor-pointer'
+                'group hover:bg-upei-red-700 flex flex-row gap-x-3 text-gray-300',
+                'rounded-md hover:text-white',
+                'p-2 text-sm/6 font-semibold hover:cursor-pointer',
             )}
             onClick={onClick}
         >

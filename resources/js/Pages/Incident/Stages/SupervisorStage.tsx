@@ -1,14 +1,9 @@
-import { StageProps } from '@/Pages/Incident/Stages/StageWrapper';
-import React, { useEffect } from 'react';
-import { usePage } from '@inertiajs/react';
 import TextInput from '@/Components/TextInput';
+import { StageProps } from '@/Pages/Incident/Stages/StageWrapper';
+import { usePage } from '@inertiajs/react';
+import { useEffect } from 'react';
 
-export default function SupervisorStage({
-    formData,
-    setFormData,
-    setValidStep,
-    failedStep,
-}: StageProps) {
+export default function SupervisorStage({ formData, setFormData, setValidStep, failedStep }: StageProps) {
     const { auth } = usePage().props;
 
     useEffect(() => {
@@ -24,20 +19,15 @@ export default function SupervisorStage({
     };
 
     return (
-        <div className="min-w-0 flex-1 text-sm/6 space-y-4">
-            <label className="flex justify-center font-bold text-lg text-gray-900">
-                Supervisor
-            </label>
+        <div className="min-w-0 flex-1 space-y-4 text-sm/6">
+            <label className="flex justify-center text-lg font-bold text-gray-900">Supervisor</label>
 
             <div>
                 <div>
-                    <label className="block text-sm/6 font-medium text-gray-900">
-                        Supervisor Name
-                    </label>
+                    <label className="block text-sm/6 font-medium text-gray-900">Supervisor Name</label>
                     <p className="text-xs text-gray-500">
-                        A supervisor is a person who provides direction to workers on their
-                        work-related tasks and can include any worker, manager, or employer
-                        regardless of whether or not they have the title of “supervisor”.
+                        A supervisor is a person who provides direction to workers on their work-related tasks and can include any worker, manager, or
+                        employer regardless of whether or not they have the title of “supervisor”.
                     </p>
                 </div>
                 <div className="mt-2">

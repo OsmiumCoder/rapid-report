@@ -34,15 +34,7 @@ export const descriptors = [
     {
         name: 'Environmental',
         value: 3,
-        options: [
-            'Spill',
-            'Hazardous Materials',
-            'Fire',
-            'Infectious Materials',
-            'Air/Water pollution',
-            'Near Miss/Hazard',
-            'Other',
-        ],
+        options: ['Spill', 'Hazardous Materials', 'Fire', 'Infectious Materials', 'Air/Water pollution', 'Near Miss/Hazard', 'Other'],
     },
 ];
 

@@ -1,24 +1,17 @@
-import {
-    Combobox,
-    ComboboxOption,
-    ComboboxOptions,
-    Dialog,
-    DialogBackdrop,
-    DialogPanel,
-} from '@headlessui/react';
-import { ChevronDownIcon, ChevronUpIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid';
-import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
-import { Incident } from '@/types/incident/Incident';
+import Badge from '@/Components/Badge';
 import LabeledCheckbox from '@/Components/LabeledCheckbox';
-import axios from 'axios';
-import { router } from '@inertiajs/react';
-import _ from 'underscore';
 import LoadingIndicator from '@/Components/LoadingIndicator';
 import dateFormat from '@/Filters/dateFormat';
-import Badge from '@/Components/Badge';
-import { uppercaseWordFormat } from '@/Filters/uppercaseWordFormat';
 import { incidentBadgeColor } from '@/Filters/incidentBadgeColor';
 import { nameFilter } from '@/Filters/nameFilter';
+import { uppercaseWordFormat } from '@/Filters/uppercaseWordFormat';
+import { Incident } from '@/types/incident/Incident';
+import { Combobox, ComboboxOption, ComboboxOptions, Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
+import { ChevronDownIcon, ChevronUpIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid';
+import { router } from '@inertiajs/react';
+import axios from 'axios';
+import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
+import _ from 'underscore';
 
 interface CommandPaletteProps {
     isOpen: boolean;
@@ -99,9 +92,7 @@ export default function Searchbar({ isOpen, setIsOpen }: CommandPaletteProps) {
 
     useEffect(() => {
         setSearchBy(() => {
-            const filteredLabels = allLabelsChecked
-                ? labels
-                : labels.filter(({ checked }) => checked);
+            const filteredLabels = allLabelsChecked ? labels : labels.filter(({ checked }) => checked);
 
             return filteredLabels.map(({ value }) => value).join(', ');
         });
@@ -138,7 +129,7 @@ export default function Searchbar({ isOpen, setIsOpen }: CommandPaletteProps) {
                     }),
                     {
                         signal: abortController.signal,
-                    }
+                    },
                 );
                 setIncidents(response.data);
             } catch (err) {
@@ -147,7 +138,7 @@ export default function Searchbar({ isOpen, setIsOpen }: CommandPaletteProps) {
                 setIsLoading(false);
             }
         }, 250),
-        []
+        [],
     );
 
     useEffect(() => {
@@ -164,32 +155,21 @@ export default function Searchbar({ isOpen, setIsOpen }: CommandPaletteProps) {
         >
             <DialogBackdrop
                 transition
-                className="fixed inset-0 bg-gray-500/25 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in"
+                className="fixed inset-0 bg-gray-500/25 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[enter]:ease-out data-[leave]:duration-200 data-[leave]:ease-in"
             />
 
             <div className="fixed inset-0 z-[100] w-screen overflow-y-auto p-4 sm:p-6 md:p-20">
                 <DialogPanel
                     transition
-                    className="mx-auto max-w-xl transform overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black/5 transition-all data-[closed]:scale-95 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in"
+                    className="mx-auto max-w-xl transform overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black/5 transition-all data-[closed]:scale-95 data-[closed]:opacity-0 data-[enter]:duration-300 data-[enter]:ease-out data-[leave]:duration-200 data-[leave]:ease-in"
                 >
-                    <button
-                        className="flex flex-row hover:cursor-pointer ml-6 mt-4 mb-2"
-                        onClick={() => setSortByMenuOpen((prev) => !prev)}
-                    >
+                    <button className="mt-4 mb-2 ml-6 flex flex-row hover:cursor-pointer" onClick={() => setSortByMenuOpen((prev) => !prev)}>
                         <span className="mr-1">Search By</span>
-                        {sortByMenuOpen ? (
-                            <ChevronUpIcon className="size-6" />
-                        ) : (
-                            <ChevronDownIcon className="size-6" />
-                        )}
+                        {sortByMenuOpen ? <ChevronUpIcon className="size-6" /> : <ChevronDownIcon className="size-6" />}
                     </button>
                     {sortByMenuOpen && (
-                        <div className="grid grid-rows-1 md:grid-cols-2 lg:grid-cols-3 mx-6 mb-4">
-                            <LabeledCheckbox
-                                checked={allLabelsChecked}
-                                label="All"
-                                onChange={(e) => setAllLabelsChecked(e.target.checked)}
-                            />
+                        <div className="mx-6 mb-4 grid grid-rows-1 md:grid-cols-2 lg:grid-cols-3">
+                            <LabeledCheckbox checked={allLabelsChecked} label="All" onChange={(e) => setAllLabelsChecked(e.target.checked)} />
                             {labels.map((label, index) => (
                                 <LabeledCheckbox
                                     key={index + label.label}
@@ -209,7 +189,7 @@ export default function Searchbar({ isOpen, setIsOpen }: CommandPaletteProps) {
                     <Combobox>
                         <div className="grid grid-cols-1">
                             <input
-                                className="col-start-1 row-start-1 h-12 w-full pl-11 pr-4 text-base text-gray-900 border-none focus:outline-0 focus:ring-0 placeholder:text-gray-400 sm:text-sm"
+                                className="col-start-1 row-start-1 h-12 w-full border-none pr-4 pl-11 text-base text-gray-900 placeholder:text-gray-400 focus:ring-0 focus:outline-0 sm:text-sm"
                                 placeholder="Search..."
                                 onChange={(e) => setSearch(e.target.value)}
                             />
@@ -222,50 +202,34 @@ export default function Searchbar({ isOpen, setIsOpen }: CommandPaletteProps) {
                         {!isLoading && incidents.length > 0 && (
                             <ComboboxOptions
                                 static
-                                className="max-h-72 scroll-py-2 overflow-y-auto py-2 text-sm text-gray-800 divide-y divide-gray-100"
+                                className="max-h-72 scroll-py-2 divide-y divide-gray-100 overflow-y-auto py-2 text-sm text-gray-800"
                             >
                                 {incidents.map((incident) => (
                                     <ComboboxOption
                                         key={incident.id}
                                         value={incident.id}
-                                        className="select-none px-4 py-2
-                                       hover:bg-upei-green-500 hover:text-white hover:cursor-pointer
-                                       focus:outline-none focus:ring-0 focus:shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
-                                        onClick={() =>
-                                            router.get(
-                                                route('incidents.show', { incident: incident.id })
-                                            )
-                                        }
+                                        className="hover:bg-upei-green-500 px-4 py-2 select-none hover:cursor-pointer hover:text-white focus:shadow-none focus:ring-0 focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                                        onClick={() => router.get(route('incidents.show', { incident: incident.id }))}
                                     >
-                                        <div className="flex justify-between items-center mx-1">
+                                        <div className="mx-1 flex items-center justify-between">
                                             <div className="max-w-[80%]">
                                                 <span>{dateFormat(incident.created_at)}</span>
                                                 <span> | </span>
                                                 <span>
-                                                    {nameFilter(incident)[0]}{' '}
-                                                    {nameFilter(incident)[1]}
+                                                    {nameFilter(incident)[0]} {nameFilter(incident)[1]}
                                                 </span>
                                                 <span> | </span>
                                                 <span>{incident.descriptor}</span>
-                                                {incident.location && (
-                                                    <div className="truncate">
-                                                        {incident.location}
-                                                    </div>
-                                                )}
+                                                {incident.location && <div className="truncate">{incident.location}</div>}
                                             </div>
-                                            <Badge
-                                                color={incidentBadgeColor(incident)}
-                                                text={uppercaseWordFormat(incident.status)}
-                                            />
+                                            <Badge color={incidentBadgeColor(incident)} text={uppercaseWordFormat(incident.status)} />
                                         </div>
                                     </ComboboxOption>
                                 ))}
                             </ComboboxOptions>
                         )}
 
-                        {!isLoading && search !== '' && incidents.length === 0 && (
-                            <p className="p-4 text-sm text-gray-500">No incidents found.</p>
-                        )}
+                        {!isLoading && search !== '' && incidents.length === 0 && <p className="p-4 text-sm text-gray-500">No incidents found.</p>}
                         {isLoading && (
                             <div className="flex items-center justify-center py-2">
                                 <LoadingIndicator className="self-center" />

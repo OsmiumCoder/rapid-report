@@ -1,18 +1,12 @@
+import InputError from '@/Components/InputError';
+import LabeledCheckbox from '@/Components/LabeledCheckbox';
 import { InvestigationComponentProps } from '@/Pages/Investigation/Create';
 import { resultedIn } from '@/Pages/Investigation/Partials/createDropdownValues';
-import LabeledCheckbox from '@/Components/LabeledCheckbox';
-import React from 'react';
-import InputError from '@/Components/InputError';
 
-export default function ResultedIn({
-    formData,
-    setFormData,
-    errors,
-    toggleCheckbox,
-}: InvestigationComponentProps) {
+export default function ResultedIn({ formData, setFormData, errors, toggleCheckbox }: InvestigationComponentProps) {
     return (
         <fieldset className="mb-4">
-            <legend className="font-semibold text-gray-700 mb-2">Incident Resulted In:</legend>
+            <legend className="mb-2 font-semibold text-gray-700">Incident Resulted In:</legend>
             <div className="grid grid-cols-2">
                 {resultedIn.map((result) => (
                     <LabeledCheckbox
