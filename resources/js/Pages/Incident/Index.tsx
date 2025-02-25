@@ -387,9 +387,9 @@ export default function Index({ incidents, indexType, currentFilters, currentSor
                                                 as="tr"
                                                 className="cursor-pointer hover:bg-gray-50"
                                                 href={route('incidents.show', {
-                                                    incident: incident.id,
+                                                    incident: incident.slug,
                                                 })}
-                                                key={incident.id}
+                                                key={incident.slug}
                                             >
                                                 <td className="hidden px-6 py-4 text-sm text-gray-500 md:table-cell">
                                                     {new Date(incident.created_at).toLocaleDateString()}
@@ -419,7 +419,7 @@ export default function Index({ incidents, indexType, currentFilters, currentSor
                                                 <td className="py-4 pr-4 pl-3 text-right text-sm font-medium md:pr-6">
                                                     <Link
                                                         href={route('incidents.show', {
-                                                            incident: incident.id,
+                                                            incident: incident.slug,
                                                         })}
                                                         className="text-upei-green-500 hover:text-upei-green-600"
                                                     >

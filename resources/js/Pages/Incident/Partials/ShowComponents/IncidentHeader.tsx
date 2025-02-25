@@ -14,7 +14,7 @@ export default function IncidentHeader({ incident }: { incident: Incident }) {
                             <ApplicationLogo className="size-[6rem] flex-none rounded-full ring-gray-900/10" />
                             <h1>
                                 <div className="text-sm/6 text-gray-500">
-                                    Incident <span className="text-gray-700">{incident.id}</span>
+                                    Incident <span className="text-gray-700">{incident.slug}</span>
                                 </div>
                                 <div className="mt-1 text-base font-semibold text-gray-900">UPEI Health & Safety</div>
                             </h1>

@@ -45,7 +45,7 @@ export default function StatusUpdate({ incident }: { incident: Incident }) {
                                             <Link
                                                 className="cursor-pointer text-sm text-blue-500 hover:text-blue-400"
                                                 href={route('incidents.investigations.show', {
-                                                    incident: incident.id,
+                                                    incident: incident.slug,
                                                     investigation: investigation.id,
                                                 })}
                                             >
@@ -65,7 +65,7 @@ export default function StatusUpdate({ incident }: { incident: Incident }) {
                                             <Link
                                                 className="cursor-pointer text-sm text-blue-500 hover:text-blue-400"
                                                 href={route('incidents.root-cause-analyses.show', {
-                                                    incident: rca.incident_id,
+                                                    incident: incident.slug,
                                                     root_cause_analysis: rca.id,
                                                 })}
                                             >
@@ -102,9 +102,9 @@ export default function StatusUpdate({ incident }: { incident: Incident }) {
                                                 returnRCA(incident, setIsLoading, () =>
                                                     router.get(
                                                         route('incidents.show', {
-                                                            incident: incident.id,
-                                                        }),
-                                                    ),
+                                                            incident: incident.slug,
+                                                        })
+                                                    )
                                                 ),
                                             show: true,
                                         })

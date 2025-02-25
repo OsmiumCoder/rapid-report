@@ -9,6 +9,7 @@ import { RootCauseAnalysis } from '@/types/rootCauseAnalysis/RootCauseAnalysis';
 
 export interface Incident {
     id: string;
+    slug: string;
     anonymous: boolean;
     on_behalf: boolean;
     on_behalf_anonymous: boolean;

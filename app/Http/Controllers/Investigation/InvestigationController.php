@@ -48,8 +48,6 @@ class InvestigationController extends Controller
     {
         $this->authorize('view', $investigation);
 
-        $investigation->load('incident');
-
         return Inertia::render('Investigation/Show', ['investigation' => $investigation->load(['incident', 'supervisor'])]);
     }
 

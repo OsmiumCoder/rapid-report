@@ -34,9 +34,9 @@ export default function RootCauseAnalysisAdminActions({ rca }: { rca: RootCauseA
                                                         returnRCA(rca.incident, setIsLoading, () =>
                                                             router.get(
                                                                 route('incidents.show', {
-                                                                    incident: rca.incident_id,
-                                                                }),
-                                                            ),
+                                                                    incident: rca.incident.slug,
+                                                                })
+                                                            )
                                                         ),
                                                     show: true,
                                                 })
@@ -55,9 +55,9 @@ export default function RootCauseAnalysisAdminActions({ rca }: { rca: RootCauseA
                                                     closeIncident(rca.incident, setIsLoading, () =>
                                                         router.get(
                                                             route('incidents.show', {
-                                                                incident: rca.incident_id,
-                                                            }),
-                                                        ),
+                                                                incident: rca.incident.slug,
+                                                            })
+                                                        )
                                                     ),
                                                 show: true,
                                             })

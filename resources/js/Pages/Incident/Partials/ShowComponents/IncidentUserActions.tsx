@@ -16,7 +16,7 @@ export default function IncidentUserActions({ incident }: { incident: Incident }
     });
 
     const handleSubmit = () => {
-        patch(route('incidents.additional-information', { incident: incident.id }), {
+        patch(route('incidents.additional-information', { incident: incident.slug }), {
             onSuccess: () => {
                 setIsModalOpen(false);
                 setData('additional_information', '');

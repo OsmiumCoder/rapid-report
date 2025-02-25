@@ -132,9 +132,9 @@ export default function UserDashboard({ incidents, incidentCount, unresolvedCoun
                                                         as="tr"
                                                         className="cursor-pointer hover:bg-gray-50"
                                                         href={route('incidents.show', {
-                                                            incident: incident.id,
+                                                            incident: incident.slug,
                                                         })}
-                                                        key={incident.id}
+                                                        key={incident.slug}
                                                     >
                                                         <td className="w-[70rem] px-3 py-4 text-sm text-gray-500">
                                                             <div className="line-clamp-3">{incident.description}</div>
@@ -148,7 +148,7 @@ export default function UserDashboard({ incidents, incidentCount, unresolvedCoun
                                                         <td className="py-4 pr-4 pl-3 text-right text-sm font-medium md:pr-6">
                                                             <Link
                                                                 href={route('incidents.show', {
-                                                                    incident: incident.id,
+                                                                    incident: incident.slug,
                                                                 })}
                                                                 className="text-upei-green-500 hover:text-upei-green-600"
                                                             >

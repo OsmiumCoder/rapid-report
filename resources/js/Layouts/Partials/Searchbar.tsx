@@ -206,10 +206,16 @@ export default function Searchbar({ isOpen, setIsOpen }: CommandPaletteProps) {
                             >
                                 {incidents.map((incident) => (
                                     <ComboboxOption
-                                        key={incident.id}
-                                        value={incident.id}
-                                        className="hover:bg-upei-green-500 px-4 py-2 select-none hover:cursor-pointer hover:text-white focus:shadow-none focus:ring-0 focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
-                                        onClick={() => router.get(route('incidents.show', { incident: incident.id }))}
+                                        key={incident.slug}
+                                        value={incident.slug}
+                                        className="select-none px-4 py-2
+                                       hover:bg-upei-green-500 hover:text-white hover:cursor-pointer
+                                       focus:outline-none focus:ring-0 focus:shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                                        onClick={() =>
+                                            router.get(
+                                                route('incidents.show', { incident: incident.slug })
+                                            )
+                                        }
                                     >
                                         <div className="mx-1 flex items-center justify-between">
                                             <div className="max-w-[80%]">

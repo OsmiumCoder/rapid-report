@@ -6,10 +6,16 @@ export default function RootCauseAnalysisInformationPanel({ rca }: { rca: RootCa
     return (
         <div className="-mx-4 bg-white px-4 py-8 shadow-sm ring-1 ring-gray-900/5 sm:mx-0 sm:rounded-lg sm:px-8 sm:pb-14 lg:col-span-2 lg:row-span-2 lg:row-end-2 xl:px-16 xl:pt-16 xl:pb-20">
             <div className="flex items-center space-x-2">
-                <Link href={route('incidents.show', { incident: rca.incident_id })}>
+                <Link href={route('incidents.show', { incident: rca.incident.slug })}>
                     <ArrowLeftIcon className="size-6 text-gray-900 hover:text-gray-500" />
                 </Link>
-                <h2 className="text-2xl font-semibold text-gray-900">Root Cause Analysis</h2>
+                <h2 className="font-semibold text-gray-900 text-2xl">Root Cause Analysis</h2>
+            </div>
+            <div className='className="font-semibold text-gray-800 my-4'>
+                Incident: {rca.incident.slug}
+            </div>
+            <div className='className="font-semibold text-gray-800 my-4'>
+                Root Cause Analysis provided by: {rca.supervisor.name}
             </div>
             <div className='className="font-semibold my-4 text-gray-800'>Incident: {rca.incident_id}</div>
             <div className='className="font-semibold my-4 text-gray-800'>Root Cause Analysis provided by: {rca.supervisor.name}</div>

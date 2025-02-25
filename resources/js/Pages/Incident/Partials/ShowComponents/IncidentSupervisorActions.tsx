@@ -24,7 +24,7 @@ export default function IncidentSupervisorActions({ incident, canRequestReview, 
                                         <Link
                                             className="cursor-pointer text-sm text-blue-500 hover:text-blue-400"
                                             href={route('incidents.investigations.show', {
-                                                incident: incident.id,
+                                                incident: incident.slug,
                                                 investigation: investigation.id,
                                             })}
                                         >
@@ -45,7 +45,7 @@ export default function IncidentSupervisorActions({ incident, canRequestReview, 
                                         <Link
                                             className="cursor-pointer text-sm text-blue-500 hover:text-blue-400"
                                             href={route('incidents.root-cause-analyses.show', {
-                                                incident: incident.id,
+                                                incident: incident.slug,
                                                 root_cause_analysis: rca.id,
                                             })}
                                         >
@@ -63,7 +63,7 @@ export default function IncidentSupervisorActions({ incident, canRequestReview, 
                                 <>
                                     <Link
                                         href={route('incidents.investigations.create', {
-                                            incident: incident.id,
+                                            incident: incident.slug,
                                         })}
                                         as="button"
                                         className="bg-upei-green-500 hover:bg-upei-green-400 focus-visible:outline-upei-green-600 rounded-md px-3 py-2 text-center text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
@@ -72,7 +72,7 @@ export default function IncidentSupervisorActions({ incident, canRequestReview, 
                                     </Link>
                                     <Link
                                         href={route('incidents.root-cause-analyses.create', {
-                                            incident: incident.id,
+                                            incident: incident.slug,
                                         })}
                                         as="button"
                                         className="bg-upei-green-500 hover:bg-upei-green-400 focus-visible:outline-upei-green-600 rounded-md px-3 py-2 text-center text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
@@ -84,7 +84,7 @@ export default function IncidentSupervisorActions({ incident, canRequestReview, 
                             {canRequestReview && (
                                 <Link
                                     href={route('incidents.request-review', {
-                                        incident: incident.id,
+                                        incident: incident.slug,
                                     })}
                                     method="patch"
                                     as="button"

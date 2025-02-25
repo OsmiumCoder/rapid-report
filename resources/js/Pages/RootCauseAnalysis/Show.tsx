@@ -8,7 +8,7 @@ import { Head, usePage } from '@inertiajs/react';
 
 export default function Show({ rca }: { rca: RootCauseAnalysis; incident: Incident }) {
     const { user } = usePage().props.auth;
-    console.log(rca);
+
     return (
         <Authenticated>
             <Head title="Root Cause Analysis" />

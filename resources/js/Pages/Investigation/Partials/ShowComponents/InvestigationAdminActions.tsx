@@ -35,12 +35,16 @@ export default function InvestigationAdminActions({ investigation }: Investigati
                                                     text: `Are you sure you want to request ${investigation.supervisor.name} to further investigate this incident? They will be notified.`,
                                                     action: () =>
                                                         investigation.incident.supervisor_id &&
-                                                        returnInvestigation(investigation.incident, setIsLoading, () =>
-                                                            router.get(
-                                                                route('incidents.show', {
-                                                                    incident: investigation.incident_id,
-                                                                }),
-                                                            ),
+                                                        returnInvestigation(
+                                                            investigation.incident,
+                                                            setIsLoading,
+                                                            () =>
+                                                                router.get(
+                                                                    route('incidents.show', {
+                                                                        incident:
+                                                                            investigation.incident.slug,
+                                                                    })
+                                                                )
                                                         ),
                                                     show: true,
                                                 })
@@ -56,12 +60,16 @@ export default function InvestigationAdminActions({ investigation }: Investigati
                                                 title: 'Close Incident',
                                                 text: 'Are you sure you want to close the incident associated to this investigation?',
                                                 action: () =>
-                                                    closeIncident(investigation.incident, setIsLoading, () =>
-                                                        router.get(
-                                                            route('incidents.show', {
-                                                                incident: investigation.incident_id,
-                                                            }),
-                                                        ),
+                                                    closeIncident(
+                                                        investigation.incident,
+                                                        setIsLoading,
+                                                        () =>
+                                                            router.get(
+                                                                route('incidents.show', {
+                                                                    incident:
+                                                                        investigation.incident.slug,
+                                                                })
+                                                            )
                                                     ),
                                                 show: true,
                                             })

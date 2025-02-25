@@ -27,7 +27,7 @@ export default function Show({ auth, incident, supervisors, roles, canRequestRev
 
     function addComment(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        post(route('incidents.comments.store', { incident: incident.id }), {
+        post(route('incidents.comments.store', { incident: incident.slug }), {
             preserveScroll: true,
             onSuccess: () => reset(),
         });
