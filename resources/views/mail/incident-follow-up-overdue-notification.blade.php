@@ -1,12 +1,12 @@
 <x-mail::message>
-# Introduction
+# Overdue Follow Up
 
-The body of your message.
+Follow-up on the below incident is overdue.
 
-<x-mail::button :url="''">
-Button Text
+<x-mail::button :url="$url">
+View Incident
 </x-mail::button>
 
 Thanks,<br>
-{{ config('app.name') }}
+UPEI Health, Safety, and Environment
 </x-mail::message>

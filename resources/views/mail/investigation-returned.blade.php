@@ -8,5 +8,5 @@ View Investigation
 </x-mail::button>
 
 Thanks,<br>
-{{ config('app.name') }}
+UPEI Health, Safety, and Environment
 </x-mail::message>
