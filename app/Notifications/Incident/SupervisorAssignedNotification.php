@@ -21,16 +21,6 @@ class SupervisorAssignedNotification extends BaseNotification
     }
 
     /**
-     * Get the notification's delivery channels.
-     *
-     * @return array<int, string>
-     */
-    public function via(object $notifiable): array
-    {
-        return ['mail', 'database'];
-    }
-
-    /**
      * Get the mail representation of the notification.
      */
     public function toMail(object $notifiable): MailMessage

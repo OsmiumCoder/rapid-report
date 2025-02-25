@@ -13,6 +13,16 @@ abstract class BaseNotification extends Notification implements ShouldQueue
     public string $message;
     public string $url;
 
+    /**
+     * Get the notification's delivery channels.
+     *
+     * @return array<int, string>
+     */
+    public function via(object $notifiable): array
+    {
+        return ['mail', 'database'];
+    }
+
 
     /**
      * Get the array representation of the notification.
