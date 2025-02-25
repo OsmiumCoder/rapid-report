@@ -3,7 +3,6 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import DangerButton from '@/Components/DangerButton';
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
 import { ExclamationTriangleIcon } from '@heroicons/react/16/solid';
-import ReactDOM from 'react-dom';
 
 export interface ConfirmationModalProps {
     title: string;
@@ -29,7 +28,7 @@ export default function ConfirmationModal({
 
     const handleNo = () => setShow(false);
 
-    return ReactDOM.createPortal(
+    return (
         <Dialog open={show} onClose={() => {}} className="relative z-50">
             <DialogBackdrop
                 transition
@@ -70,7 +69,6 @@ export default function ConfirmationModal({
                     </DialogPanel>
                 </div>
             </div>
-        </Dialog>,
-        document.body
+        </Dialog>
     );
 }
