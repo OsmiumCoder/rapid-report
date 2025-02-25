@@ -1,31 +1,31 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import type ReportData from '@/types/report/ReportData';
-import ReportBuilder from '@/Pages/Report/Partials/ReportBuilder';
 import dateFormat from '@/Filters/dateFormat';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import ReportBuilder from '@/Pages/Report/Partials/ReportBuilder';
+import type ReportData from '@/types/report/ReportData';
+import { Head, useForm } from '@inertiajs/react';
 import dayjs from 'dayjs';
-import {Head, useForm} from '@inertiajs/react';
 
 export default function Index() {
     const { data: formData, setData } = useForm({
         start: dateFormat(dayjs(Date.now()).subtract(1).toDate()),
         end: dateFormat(Date.now()),
-        happened_at: false,
-        work_related: false,
-        personal_individual_information: false,
-        workers_comp_submitted: false,
-        location: false,
-        room_number: false,
-        incident_type: false,
-        descriptor: false,
-        description: false,
-        injury_description: false,
-        first_aid_description: false,
-        closed_at: false,
-        created_at: false,
-        updated_at: false,
+        happened_at: false as boolean,
+        work_related: false as boolean,
+        personal_individual_information: false as boolean,
+        workers_comp_submitted: false as boolean,
+        location: false as boolean,
+        room_number: false as boolean,
+        incident_type: false as boolean,
+        descriptor: false as boolean,
+        description: false as boolean,
+        injury_description: false as boolean,
+        first_aid_description: false as boolean,
+        closed_at: false as boolean,
+        created_at: false as boolean,
+        updated_at: false as boolean,
     });
 
-    const setFormData = (key: keyof ReportData, value: any) => setData(key, value);
+    const setFormData = (key: keyof ReportData, value: ReportData[keyof ReportData]) => setData(key, value);
     return (
         <AuthenticatedLayout>
             <Head title="Reports" />

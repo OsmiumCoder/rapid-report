@@ -1,19 +1,19 @@
-import GuestLayout from '@/Layouts/GuestLayout';
-import StageWrapper from '@/Pages/Incident/Stages/StageWrapper';
-import AnonymousStage from '@/Pages/Incident/Stages/AnonymousStage';
-import { PageProps } from '@/types';
-import React, { useEffect, useState } from 'react';
-import AffectedPartyStage from '@/Pages/Incident/Stages/AffectedPartyStage';
-import IncidentInformationStage from '@/Pages/Incident/Stages/IncidentInformationStage';
-import VictimInformationStage from '@/Pages/Incident/Stages/VictimInformationStage';
-import IncidentData from '@/types/incident/IncidentData';
-import { descriptors, roles } from '@/Pages/Incident/Stages/IncidentDropDownValues';
-import WitnessStage from '@/Pages/Incident/Stages/WitnessStage';
-import SupervisorStage from '@/Pages/Incident/Stages/SupervisorStage';
 import dateFormat from '@/Filters/dateFormat';
-import { Head, useForm } from '@inertiajs/react';
+import GuestLayout from '@/Layouts/GuestLayout';
+import AffectedPartyStage from '@/Pages/Incident/Stages/AffectedPartyStage';
+import AnonymousStage from '@/Pages/Incident/Stages/AnonymousStage';
+import { descriptors, roles } from '@/Pages/Incident/Stages/IncidentDropDownValues';
+import IncidentInformationStage from '@/Pages/Incident/Stages/IncidentInformationStage';
 import ReviewStage from '@/Pages/Incident/Stages/ReviewStage';
+import StageWrapper from '@/Pages/Incident/Stages/StageWrapper';
+import SupervisorStage from '@/Pages/Incident/Stages/SupervisorStage';
+import VictimInformationStage from '@/Pages/Incident/Stages/VictimInformationStage';
+import WitnessStage from '@/Pages/Incident/Stages/WitnessStage';
+import { PageProps } from '@/types';
 import { Incident } from '@/types/incident/Incident';
+import IncidentData from '@/types/incident/IncidentData';
+import { Head, useForm } from '@inertiajs/react';
+import { useCallback, useEffect, useState } from 'react';
 
 export default function Create({ form }: PageProps<{ form: IncidentData }>) {
     const { data: formData, setData, post, processing } = useForm<Partial<IncidentData>>(form);
@@ -25,7 +25,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
     const [validStep, setValidStep] = useState(true);
     const [failedStep, setFailedStep] = useState(false);
     const [showButtons, setShowButtons] = useState(true);
-    const setFormData = (key: keyof IncidentData, value: any) => setData(key, value);
+    const setFormData = useCallback((key: keyof IncidentData, value: IncidentData[keyof IncidentData]) => setData(key, value), [setData]);
     const nextStep = () => {
         if (validStep) {
             setCurrentStepNumber((prev) => prev + 1);
@@ -49,7 +49,6 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
         if (validStep) {
             post(route('incidents.store'), {
                 onError: (err) => console.error(err),
-
             });
         } else {
             setFailedStep(true);
@@ -68,7 +67,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
         setFormData('has_injury', false);
         setFormData('workers_comp_submitted', false);
         setFormData('supervisor_name', '');
-    }, []);
+    }, [setFormData]);
 
     useEffect(() => {
         if (
@@ -85,7 +84,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
             setFormData('role', roles[0].value);
             setFormData('upei_id', '');
         }
-    }, [formData.on_behalf, formData.on_behalf_anonymous]);
+    }, [formData.on_behalf, formData.on_behalf_anonymous, formData.anonymous, setFormData]);
 
     useEffect(() => {
         if (formData.anonymous && !formData.on_behalf) {
@@ -97,7 +96,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
             setFormData('role', roles[0].value);
             setFormData('upei_id', '');
         }
-    }, [formData.anonymous]);
+    }, [formData.anonymous, formData.on_behalf, setFormData]);
 
     return (
         <GuestLayout>
@@ -160,17 +159,15 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
                                 failedStep={failedStep}
                             />
                         )}
-                        {currentStepNumber === 6 && (
-                            <ReviewStage incidentData={formData as Incident} />
-                        )}
+                        {currentStepNumber === 6 && <ReviewStage incidentData={formData as Incident} />}
                     </StageWrapper>
 
-                    <div className="flex p-6 justify-around">
+                    <div className="flex justify-around p-6">
                         {completedSteps > 0 && showButtons && (
                             <button
                                 type="button"
                                 onClick={prevStep}
-                                className="bg-upei-red-400 hover:bg-upei-red-600 text-white font-bold py-2 px-4 rounded"
+                                className="bg-upei-red-400 hover:bg-upei-red-600 rounded px-4 py-2 font-bold text-white"
                             >
                                 Back
                             </button>
@@ -181,7 +178,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
                                 type="button"
                                 disabled={processing}
                                 onClick={submit}
-                                className="bg-upei-green-500 hover:bg-upei-green-700 text-white font-bold py-2 px-4 rounded"
+                                className="bg-upei-green-500 hover:bg-upei-green-700 rounded px-4 py-2 font-bold text-white"
                             >
                                 Submit
                             </button>
@@ -191,7 +188,7 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
                             <button
                                 type="button"
                                 onClick={nextStep}
-                                className="bg-upei-green-500 hover:bg-upei-green-700 text-white font-bold py-2 px-4 rounded"
+                                className="bg-upei-green-500 hover:bg-upei-green-700 rounded px-4 py-2 font-bold text-white"
                             >
                                 Next
                             </button>

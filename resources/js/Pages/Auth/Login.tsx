@@ -4,17 +4,11 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
+import { PencilIcon } from '@heroicons/react/24/outline';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
-import { PencilIcon } from '@heroicons/react/24/outline';
 
-export default function Login({
-    status,
-    canResetPassword,
-}: {
-    status?: string;
-    canResetPassword: boolean;
-}) {
+export default function Login({ status, canResetPassword }: { status?: string; canResetPassword: boolean }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
         password: '',
@@ -36,16 +30,14 @@ export default function Login({
             {status && <div className="mb-4 text-sm font-medium text-green-600">{status}</div>}
 
             <form onSubmit={submit}>
-                <div className="flex justify-center mt-2 font-semibold">
-                    Submit an Incident Without Signing In
-                </div>
-                <div className="flex justify-center mt-4">
+                <div className="mt-2 flex justify-center font-semibold">Submit an Incident Without Signing In</div>
+                <div className="mt-4 flex justify-center">
                     <Link
                         href={route('incidents.create')}
                         as="button"
-                        className="flex items-center rounded-md bg-upei-green-500 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-upei-green-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-upei-green-600"
+                        className="bg-upei-green-500 hover:bg-upei-green-600 focus-visible:outline-upei-green-600 flex items-center rounded-md px-3 py-2 text-center text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                     >
-                        <PencilIcon className="h-4 w-4 mr-2" />
+                        <PencilIcon className="mr-2 h-4 w-4" />
                         Submit Incident
                     </Link>
                 </div>
@@ -92,11 +84,7 @@ export default function Login({
 
                 <div className="mt-4 block">
                     <label className="flex items-center">
-                        <Checkbox
-                            name="remember"
-                            checked={data.remember}
-                            onChange={(e) => setData('remember', e.target.checked)}
-                        />
+                        <Checkbox name="remember" checked={data.remember} onChange={(e) => setData('remember', e.target.checked)} />
                         <span className="ms-2 text-sm text-gray-600">Remember me</span>
                     </label>
                 </div>
@@ -105,7 +93,7 @@ export default function Login({
                     {canResetPassword && (
                         <Link
                             href={route('password.request')}
-                            className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-upei-green-500 focus:ring-offset-2"
+                            className="focus:ring-upei-green-500 rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:ring-2 focus:ring-offset-2 focus:outline-none"
                         >
                             Forgot your password?
                         </Link>

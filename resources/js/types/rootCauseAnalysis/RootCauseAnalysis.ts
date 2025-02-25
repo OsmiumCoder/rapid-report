@@ -1,7 +1,7 @@
+import { User } from '@/types';
+import { Incident } from '@/types/incident/Incident';
 import { IndividualInvolved } from '@/types/rootCauseAnalysis/IndividualInvolved';
 import { SolutionAndAction } from '@/types/rootCauseAnalysis/SolutionAndAction';
-import { Incident } from '@/types/incident/Incident';
-import { User } from '@/types';
 
 export interface RootCauseAnalysis {
     id: string;

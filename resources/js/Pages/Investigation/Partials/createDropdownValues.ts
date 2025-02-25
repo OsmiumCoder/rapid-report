@@ -1,13 +1,4 @@
-export const resultedIn = [
-    'Injury',
-    'Illness',
-    'Property damage',
-    'Near miss',
-    'First aid',
-    'Medical aid',
-    'Recurrence',
-    'Other',
-];
+export const resultedIn = ['Injury', 'Illness', 'Property damage', 'Near miss', 'First aid', 'Medical aid', 'Recurrence', 'Other'];
 
 export const substandardActs = [
     'Operating equipment without authority',
@@ -49,13 +40,7 @@ export const energyTransferCauses = [
     'Repetitive action',
 ];
 
-export const personalFactors = [
-    'Inadequate capacity',
-    'Lack of knowledge/training',
-    'Lack of skill',
-    'Stress',
-    'Improper motivation',
-];
+export const personalFactors = ['Inadequate capacity', 'Lack of knowledge/training', 'Lack of skill', 'Stress', 'Improper motivation'];
 
 export const jobFactors = [
     'Inadequate leadership/supervision',

@@ -1,17 +1,17 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, useForm } from '@inertiajs/react';
-import React, { FormEvent } from 'react';
 import PrimaryButton from '@/Components/PrimaryButton';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Incident } from '@/types/incident/Incident';
+import { Head, useForm } from '@inertiajs/react';
+import { FormEvent } from 'react';
 
-import { InvestigationData } from '@/types/investigation/InvestigationData';
+import Causes from '@/Pages/Investigation/Partials/CreateComponents/Causes';
 import ResultedIn from '@/Pages/Investigation/Partials/CreateComponents/ResultedIn';
 import RiskRating from '@/Pages/Investigation/Partials/CreateComponents/RiskRating';
-import Causes from '@/Pages/Investigation/Partials/CreateComponents/Causes';
+import { InvestigationData } from '@/types/investigation/InvestigationData';
 
 export interface InvestigationComponentProps {
     formData: InvestigationData;
-    setFormData: (key: keyof InvestigationData, value: any) => void;
+    setFormData: (key: keyof InvestigationData, value: InvestigationData[keyof InvestigationData]) => void;
     errors: Partial<Record<keyof InvestigationData, string>>;
     toggleCheckbox: (category: keyof InvestigationData, value: string) => void;
 }
@@ -35,7 +35,7 @@ export default function Create({ incident }: { incident: Incident }) {
         personal_factors: [] as string[],
         job_factors: [] as string[],
     });
-    const setFormData = (key: keyof InvestigationData, value: any) => setData(key, value);
+    const setFormData = (key: keyof InvestigationData, value: InvestigationData[keyof InvestigationData]) => setData(key, value);
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -52,34 +52,16 @@ export default function Create({ incident }: { incident: Incident }) {
     return (
         <AuthenticatedLayout>
             <Head title="New Investigation" />
-            <form
-                onSubmit={handleSubmit}
-                className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-md"
-            >
-                <h2 className="text-xl font-bold mb-4">Incident Investigation Form</h2>
+            <form onSubmit={handleSubmit} className="mx-auto max-w-4xl rounded-md bg-white p-6 shadow-md">
+                <h2 className="mb-4 text-xl font-bold">Incident Investigation Form</h2>
 
-                <ResultedIn
-                    formData={formData}
-                    setFormData={setFormData}
-                    errors={errors}
-                    toggleCheckbox={toggleCheckbox}
-                />
+                <ResultedIn formData={formData} setFormData={setFormData} errors={errors} toggleCheckbox={toggleCheckbox} />
 
-                <RiskRating
-                    formData={formData}
-                    setFormData={setFormData}
-                    errors={errors}
-                    toggleCheckbox={toggleCheckbox}
-                />
+                <RiskRating formData={formData} setFormData={setFormData} errors={errors} toggleCheckbox={toggleCheckbox} />
 
-                <Causes
-                    formData={formData}
-                    setFormData={setFormData}
-                    errors={errors}
-                    toggleCheckbox={toggleCheckbox}
-                />
+                <Causes formData={formData} setFormData={setFormData} errors={errors} toggleCheckbox={toggleCheckbox} />
 
-                <div className="flex justify-end mt-4">
+                <div className="mt-4 flex justify-end">
                     <PrimaryButton type="submit" className="px-4 py-2">
                         Submit
                     </PrimaryButton>

@@ -1,10 +1,10 @@
-import { RootCauseAnalysis } from '@/types/rootCauseAnalysis/RootCauseAnalysis';
-import Authenticated from '@/Layouts/AuthenticatedLayout';
-import { Incident } from '@/types/incident/Incident';
-import { Head, usePage } from '@inertiajs/react';
 import classNames from '@/Filters/classNames';
+import Authenticated from '@/Layouts/AuthenticatedLayout';
 import RootCauseAnalysisAdminActions from '@/Pages/RootCauseAnalysis/Partials/ShowComponents/RootCauseAnalysisAdminActions';
 import RootCauseAnalysisInformationPanel from '@/Pages/RootCauseAnalysis/Partials/ShowComponents/RootCauseAnalysisInformationPanel';
+import { Incident } from '@/types/incident/Incident';
+import { RootCauseAnalysis } from '@/types/rootCauseAnalysis/RootCauseAnalysis';
+import { Head, usePage } from '@inertiajs/react';
 
 export default function Show({ rca }: { rca: RootCauseAnalysis; incident: Incident }) {
     const { user } = usePage().props.auth;
@@ -16,15 +16,11 @@ export default function Show({ rca }: { rca: RootCauseAnalysis; incident: Incide
                 <div className="mx-auto px-4 py-10 sm:px-6 lg:px-8">
                     <div
                         className={classNames(
-                            'mx-auto grid max-w-2xl grid-cols-1 grid-rows-1 items-start gap-x-8 gap-y-8 lg:mx-0 lg:max-w-none ',
-                            user.roles.some(({ name }) => name === 'supervisor')
-                                ? 'lg:grid-cols-1'
-                                : 'lg:grid-cols-3'
+                            'mx-auto grid max-w-2xl grid-cols-1 grid-rows-1 items-start gap-x-8 gap-y-8 lg:mx-0 lg:max-w-none',
+                            user.roles.some(({ name }) => name === 'supervisor') ? 'lg:grid-cols-1' : 'lg:grid-cols-3',
                         )}
                     >
-                        {user.roles.some((role) => role.name === 'admin') && (
-                            <RootCauseAnalysisAdminActions rca={rca} />
-                        )}
+                        {user.roles.some((role) => role.name === 'admin') && <RootCauseAnalysisAdminActions rca={rca} />}
                         <RootCauseAnalysisInformationPanel rca={rca} />
                     </div>
                 </div>

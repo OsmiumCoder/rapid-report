@@ -1,8 +1,8 @@
+import LoadingIndicator from '@/Components/LoadingIndicator';
 import { ChatBubbleBottomCenterTextIcon } from '@heroicons/react/16/solid';
 import { PaperClipIcon } from '@heroicons/react/20/solid';
-import { FormEvent, useEffect, useRef } from 'react';
-import LoadingIndicator from '@/Components/LoadingIndicator';
 import { PaperAirplaneIcon } from '@heroicons/react/24/solid';
+import { FormEvent } from 'react';
 
 interface AddCommentFormProps {
     submit: (e: FormEvent<HTMLFormElement>) => void;
@@ -10,7 +10,7 @@ interface AddCommentFormProps {
         ((
             data: (previousData: { content: string }) => {
                 content: string;
-            }
+            },
         ) => void) &
         (<K extends keyof { content: string }>(key: K, value: { content: string }[K]) => void);
     processing: boolean;
@@ -20,7 +20,7 @@ interface AddCommentFormProps {
 export default function AddCommentForm({ submit, setData, processing, data }: AddCommentFormProps) {
     return (
         <div className="mt-6 flex gap-x-3">
-            <ChatBubbleBottomCenterTextIcon className="text-blue-600 relative flex size-6 flex-none items-center justify-center bg-white" />
+            <ChatBubbleBottomCenterTextIcon className="relative flex size-6 flex-none items-center justify-center bg-white text-blue-600" />
 
             <form onSubmit={submit} className="relative flex-auto">
                 <div className="overflow-hidden rounded-lg pb-12 outline outline-1 -outline-offset-1 outline-gray-300 focus-within:outline focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-blue-600">
@@ -30,11 +30,11 @@ export default function AddCommentForm({ submit, setData, processing, data }: Ad
                         onChange={(e) => setData('content', e.target.value)}
                         rows={2}
                         placeholder="Add your comment..."
-                        className="block w-full resize-none bg-transparent px-3 py-1.5 text-base text-gray-900 border-none  placeholder:text-gray-400 focus:outline-0 focus:ring-0 sm:text-sm/6"
+                        className="block w-full resize-none border-none bg-transparent px-3 py-1.5 text-base text-gray-900 placeholder:text-gray-400 focus:ring-0 focus:outline-0 sm:text-sm/6"
                     />
                 </div>
 
-                <div className="absolute inset-x-0 bottom-0 flex justify-between py-2 pl-3 pr-2">
+                <div className="absolute inset-x-0 bottom-0 flex justify-between py-2 pr-2 pl-3">
                     <div className="flex items-center space-x-5">
                         <div className="flex items-center">
                             <button

@@ -1,7 +1,7 @@
+import { useConfirmationModal } from '@/Components/ConfirmationModal/ConfirmationModalProvider';
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { EllipsisVerticalIcon } from '@heroicons/react/20/solid';
 import { router } from '@inertiajs/react';
-import { useConfirmationModal } from '@/Components/ConfirmationModal/ConfirmationModalProvider';
 
 export default function NotificationActions() {
     const { setModalProps } = useConfirmationModal();
@@ -38,9 +38,9 @@ export default function NotificationActions() {
 
     return (
         <>
-            <Menu as="div" className="relative px-2 inline-block text-left z-50">
+            <Menu as="div" className="relative z-50 inline-block px-2 text-left">
                 <div>
-                    <MenuButton className="flex items-center rounded-full text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-upei-green-500 focus:ring-offset-2 focus:ring-offset-gray-100">
+                    <MenuButton className="focus:ring-upei-green-500 flex items-center rounded-full text-gray-400 hover:text-gray-600 focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:outline-none">
                         <span className="sr-only">Open options</span>
                         <EllipsisVerticalIcon aria-hidden="true" className="size-5" />
                     </MenuButton>
@@ -48,7 +48,7 @@ export default function NotificationActions() {
 
                 <MenuItems
                     transition
-                    className="absolute right-2 z-10 border border-gray-200 rounded-lg mt-2 w-32 origin-top-right bg-white shadow-lg ring-1 ring-black/5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
+                    className="absolute right-2 z-10 mt-2 w-32 origin-top-right rounded-lg border border-gray-200 bg-white shadow-lg ring-1 ring-black/5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[enter]:ease-out data-[leave]:duration-75 data-[leave]:ease-in"
                 >
                     <div className="py-1">
                         <MenuItem>

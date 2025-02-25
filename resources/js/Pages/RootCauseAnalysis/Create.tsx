@@ -1,23 +1,23 @@
-import Authenticated from '@/Layouts/AuthenticatedLayout';
-import { Head, useForm } from '@inertiajs/react';
+import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
-import TextInput from '@/Components/TextInput';
+import PrimaryButton from '@/Components/PrimaryButton';
 import TextArea from '@/Components/TextArea';
-import IndividualsInvolved from '@/Pages/RootCauseAnalysis/Partials/CreateComponents/IndividualsInvolved';
+import TextInput from '@/Components/TextInput';
+import Authenticated from '@/Layouts/AuthenticatedLayout';
 import EffectiveSolutionsAndCorrectiveActions from '@/Pages/RootCauseAnalysis/Partials/CreateComponents/EffectiveSolutionsAndCorrectiveActions';
+import ExecutionOfWork from '@/Pages/RootCauseAnalysis/Partials/CreateComponents/ExecutionOfWork';
 import IfDoneRightQuestions from '@/Pages/RootCauseAnalysis/Partials/CreateComponents/IfDoneRightQuestions';
+import IndividualsInvolved from '@/Pages/RootCauseAnalysis/Partials/CreateComponents/IndividualsInvolved';
 import PersonalProtectiveEquipment from '@/Pages/RootCauseAnalysis/Partials/CreateComponents/PersonalProtectiveEquipment';
 import RootCauses from '@/Pages/RootCauseAnalysis/Partials/CreateComponents/RootCauses';
-import InputError from '@/Components/InputError';
-import { RootCauseAnalysisData } from '@/types/rootCauseAnalysis/RootCauseAnalysisData';
-import PrimaryButton from '@/Components/PrimaryButton';
-import { FormEvent } from 'react';
-import ExecutionOfWork from '@/Pages/RootCauseAnalysis/Partials/CreateComponents/ExecutionOfWork';
 import { Incident } from '@/types/incident/Incident';
+import { RootCauseAnalysisData } from '@/types/rootCauseAnalysis/RootCauseAnalysisData';
+import { Head, useForm } from '@inertiajs/react';
+import { FormEvent } from 'react';
 
 export interface RootCauseAnalysisComponentProps {
     formData: RootCauseAnalysisData;
-    setFormData: (key: keyof RootCauseAnalysisData, value: any) => void;
+    setFormData: (key: keyof RootCauseAnalysisData, value: RootCauseAnalysisData[keyof RootCauseAnalysisData]) => void;
     errors: Partial<Record<keyof RootCauseAnalysisData, string>>;
 }
 
@@ -37,9 +37,7 @@ export default function Create({ incident }: { incident: Incident }) {
         ],
         whys: Array(5).fill(''),
         primary_effect: '',
-        solutions_and_actions: [
-            { cause: '', control: '', remedial_action: '', by_who: '', by_when: '' },
-        ],
+        solutions_and_actions: [{ cause: '', control: '', remedial_action: '', by_who: '', by_when: '' }],
         peoples_positions: [] as string[],
         attention_to_work: [] as string[],
         communication: [] as string[],
@@ -55,7 +53,7 @@ export default function Create({ incident }: { incident: Incident }) {
         root_causes: [] as string[],
     });
 
-    const setFormData = (key: keyof RootCauseAnalysisData, value: any) => setData(key, value);
+    const setFormData = (key: keyof RootCauseAnalysisData, value: RootCauseAnalysisData[keyof RootCauseAnalysisData]) => setData(key, value);
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -65,24 +63,17 @@ export default function Create({ incident }: { incident: Incident }) {
     return (
         <Authenticated>
             <Head title="New Root Cause Analysis" />
-            <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-md">
-                <h3 className="text-lg font-bold text-center">Root Cause Analysis Form</h3>
-                <form onSubmit={handleSubmit} className="flex flex-col gap-y-6 ">
-                    <IndividualsInvolved
-                        formData={formData}
-                        setFormData={setFormData}
-                        errors={errors}
-                    />
+            <div className="mx-auto max-w-4xl rounded-md bg-white p-6 shadow-md">
+                <h3 className="text-center text-lg font-bold">Root Cause Analysis Form</h3>
+                <form onSubmit={handleSubmit} className="flex flex-col gap-y-6">
+                    <IndividualsInvolved formData={formData} setFormData={setFormData} errors={errors} />
                     <div>
                         <InputLabel className="mb-1">
                             <div className="text-gray-900">Primary Effect</div>
                             <div>Define the problem (what happened)</div>
                         </InputLabel>
 
-                        <TextArea
-                            value={formData.primary_effect}
-                            onChange={(e) => setFormData('primary_effect', e.target.value)}
-                        />
+                        <TextArea value={formData.primary_effect} onChange={(e) => setFormData('primary_effect', e.target.value)} />
                         <InputError message={errors.primary_effect} />
                     </div>
                     <div>
@@ -97,36 +88,17 @@ export default function Create({ incident }: { incident: Incident }) {
                                         setFormData('whys', formData.whys);
                                     }}
                                 />
-                                <InputError
-                                    message={errors[`whys.${i}` as keyof RootCauseAnalysisData]}
-                                    className="mb-1"
-                                />
+                                <InputError message={errors[`whys.${i}` as keyof RootCauseAnalysisData]} className="mb-1" />
                             </div>
                         ))}
                     </div>
-                    <EffectiveSolutionsAndCorrectiveActions
-                        formData={formData}
-                        setFormData={setFormData}
-                        errors={errors}
-                    />
+                    <EffectiveSolutionsAndCorrectiveActions formData={formData} setFormData={setFormData} errors={errors} />
                     <InputError message={errors.solutions_and_actions} className="mt-2" />
-                    <IfDoneRightQuestions
-                        formData={formData}
-                        setFormData={setFormData}
-                        errors={errors}
-                    />
-                    <PersonalProtectiveEquipment
-                        formData={formData}
-                        setFormData={setFormData}
-                        errors={errors}
-                    />
-                    <ExecutionOfWork
-                        formData={formData}
-                        setFormData={setFormData}
-                        errors={errors}
-                    />
+                    <IfDoneRightQuestions formData={formData} setFormData={setFormData} errors={errors} />
+                    <PersonalProtectiveEquipment formData={formData} setFormData={setFormData} errors={errors} />
+                    <ExecutionOfWork formData={formData} setFormData={setFormData} errors={errors} />
                     <RootCauses formData={formData} setFormData={setFormData} errors={errors} />
-                    <PrimaryButton className="w-20 self-center mt-6">Submit</PrimaryButton>
+                    <PrimaryButton className="mt-6 w-20 self-center">Submit</PrimaryButton>
                 </form>
             </div>
         </Authenticated>

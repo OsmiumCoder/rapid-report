@@ -1,26 +1,21 @@
-import { Incident } from '@/types/incident/Incident';
-import { IncidentStatus } from '@/Enums/IncidentStatus';
+import LoadingIndicator from '@/Components/LoadingIndicator';
 import PrimaryButton from '@/Components/PrimaryButton';
+import { IncidentStatus } from '@/Enums/IncidentStatus';
+import { Incident } from '@/types/incident/Incident';
 import { Link, router } from '@inertiajs/react';
 import { useState } from 'react';
-import LoadingIndicator from '@/Components/LoadingIndicator';
 
-import DangerButton from '@/Components/DangerButton';
-import {
-    closeIncident,
-    reopenIncident,
-    returnInvestigation,
-    returnRCA,
-} from '@/Helpers/Incident/statusUpdates';
-import dateTimeFormat from '@/Filters/dateTimeFormat';
 import { useConfirmationModal } from '@/Components/ConfirmationModal/ConfirmationModalProvider';
+import DangerButton from '@/Components/DangerButton';
+import dateTimeFormat from '@/Filters/dateTimeFormat';
+import { closeIncident, reopenIncident, returnInvestigation, returnRCA } from '@/Helpers/Incident/statusUpdates';
 
 export default function StatusUpdate({ incident }: { incident: Incident }) {
     const [isLoading, setIsLoading] = useState(false);
     const { setModalProps } = useConfirmationModal();
     return (
         <>
-            <div className="flex flex-col gap-y-6 w-full mt-6 border-t border-gray-900/5 p-6">
+            <div className="mt-6 flex w-full flex-col gap-y-6 border-t border-gray-900/5 p-6">
                 {isLoading ? (
                     <LoadingIndicator />
                 ) : (
@@ -32,10 +27,7 @@ export default function StatusUpdate({ incident }: { incident: Incident }) {
                                     setModalProps({
                                         title: 'Reopen Incident',
                                         text: 'Are you sure you want to reopen this incident?',
-                                        action: () =>
-                                            reopenIncident(incident, setIsLoading, () =>
-                                                router.reload({ only: ['incident'] })
-                                            ),
+                                        action: () => reopenIncident(incident, setIsLoading, () => router.reload({ only: ['incident'] })),
                                         show: true,
                                     })
                                 }
@@ -49,16 +41,15 @@ export default function StatusUpdate({ incident }: { incident: Incident }) {
                                 <div className="font-semibold">
                                     Investigations
                                     {incident.investigations.map((investigation, index) => (
-                                        <div className="font-normal">
+                                        <div key={index} className="font-normal">
                                             <Link
-                                                className="text-sm cursor-pointer text-blue-500 hover:text-blue-400"
+                                                className="cursor-pointer text-sm text-blue-500 hover:text-blue-400"
                                                 href={route('incidents.investigations.show', {
                                                     incident: incident.slug,
                                                     investigation: investigation.id,
                                                 })}
                                             >
-                                                {investigation.supervisor.name}:{' '}
-                                                {dateTimeFormat(investigation.created_at)}
+                                                {investigation.supervisor.name}: {dateTimeFormat(investigation.created_at)}
                                             </Link>
                                         </div>
                                     ))}
@@ -70,16 +61,15 @@ export default function StatusUpdate({ incident }: { incident: Incident }) {
                                 <div className="font-semibold">
                                     Root Cause Analyses
                                     {incident.root_cause_analyses.map((rca, index) => (
-                                        <div className="font-normal">
+                                        <div key={index} className="font-normal">
                                             <Link
-                                                className="text-sm cursor-pointer text-blue-500 hover:text-blue-400"
+                                                className="cursor-pointer text-sm text-blue-500 hover:text-blue-400"
                                                 href={route('incidents.root-cause-analyses.show', {
                                                     incident: incident.slug,
                                                     root_cause_analysis: rca.id,
                                                 })}
                                             >
-                                                {rca.supervisor.name}:{' '}
-                                                {dateTimeFormat(rca.created_at)}
+                                                {rca.supervisor.name}: {dateTimeFormat(rca.created_at)}
                                             </Link>
                                         </div>
                                     ))}
@@ -95,9 +85,7 @@ export default function StatusUpdate({ incident }: { incident: Incident }) {
                                             text: `Are you sure you want to request ${incident.supervisor?.name} to further investigate this incident? They will be notified.`,
                                             action: () =>
                                                 incident.supervisor_id &&
-                                                returnInvestigation(incident, setIsLoading, () =>
-                                                    router.reload({ only: ['incident'] })
-                                                ),
+                                                returnInvestigation(incident, setIsLoading, () => router.reload({ only: ['incident'] })),
                                             show: true,
                                         })
                                     }
@@ -115,8 +103,8 @@ export default function StatusUpdate({ incident }: { incident: Incident }) {
                                                     router.get(
                                                         route('incidents.show', {
                                                             incident: incident.slug,
-                                                        })
-                                                    )
+                                                        }),
+                                                    ),
                                                 ),
                                             show: true,
                                         })
@@ -133,10 +121,7 @@ export default function StatusUpdate({ incident }: { incident: Incident }) {
                                     setModalProps({
                                         title: 'Close Incident',
                                         text: 'Are you sure you want to close this incident?',
-                                        action: () =>
-                                            closeIncident(incident, setIsLoading, () =>
-                                                router.reload({ only: ['incident'] })
-                                            ),
+                                        action: () => closeIncident(incident, setIsLoading, () => router.reload({ only: ['incident'] })),
                                         show: true,
                                     })
                                 }

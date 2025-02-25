@@ -1,14 +1,13 @@
+import DangerButton from '@/Components/DangerButton';
+import PrimaryButton from '@/Components/PrimaryButton';
+import TextInput from '@/Components/TextInput';
+import WitnessList from '@/Components/WitnessList';
+import { isValidEmail } from '@/Filters/isValidEmail';
+import validatePhoneInput from '@/Filters/validatePhoneInput';
 import { StageProps } from '@/Pages/Incident/Stages/StageWrapper';
-import React, { useState } from 'react';
 import { Witness } from '@/types/incident/Witness';
 import { PlusIcon } from '@heroicons/react/20/solid';
-import WitnessList from '@/Components/WitnessList';
-import validatePhoneInput from '@/Filters/validatePhoneInput';
-import { isValidEmail } from '@/Filters/isValidEmail';
-import PrimaryButton from '@/Components/PrimaryButton';
-import DangerButton from '@/Components/DangerButton';
-import TextInput from '@/Components/TextInput';
-import TextArea from '@/Components/TextArea';
+import { useState } from 'react';
 
 const newWitness: () => Witness = () => ({
     name: '',
@@ -33,25 +32,18 @@ export default function WitnessStage({ formData, setFormData, setShowButtons }: 
         setWitnessFormVisible((prev) => !prev);
     };
     const removePerson = (index: number) => {
-        setFormData(
-            'witnesses',
-            formData.witnesses
-                ? formData.witnesses.filter((_, personIndex) => personIndex != index)
-                : []
-        );
+        setFormData('witnesses', formData.witnesses ? formData.witnesses.filter((_, personIndex) => personIndex != index) : []);
     };
 
     return (
-        <div className="min-w-0 flex-1 text-sm/6 space-y-4">
-            <label className="flex justify-center font-bold text-lg text-gray-900">Witnesses</label>
+        <div className="min-w-0 flex-1 space-y-4 text-sm/6">
+            <label className="flex justify-center text-lg font-bold text-gray-900">Witnesses</label>
 
             {witnessFormVisible && (
                 <>
                     <div>
                         <div>
-                            <label className="block text-sm/6 font-medium text-gray-900">
-                                Witness Name
-                            </label>
+                            <label className="block text-sm/6 font-medium text-gray-900">Witness Name</label>
                             <div className="mt-2">
                                 <TextInput
                                     value={witnessInProgress.name}
@@ -62,15 +54,11 @@ export default function WitnessStage({ formData, setFormData, setShowButtons }: 
                                         }));
                                     }}
                                 />
-                                {validationError && (
-                                    <span className="text-red-600">Name is Required</span>
-                                )}
+                                {validationError && <span className="text-red-600">Name is Required</span>}
                             </div>
                         </div>
                         <div>
-                            <label className="block text-sm/6 font-medium text-gray-900">
-                                Witness Email
-                            </label>
+                            <label className="block text-sm/6 font-medium text-gray-900">Witness Email</label>
                             <div className="mt-2">
                                 <TextInput
                                     type="email"
@@ -84,19 +72,14 @@ export default function WitnessStage({ formData, setFormData, setShowButtons }: 
                                     placeholder="you@example.com"
                                 />
 
-                                {witnessInProgress.email.length > 0 &&
-                                    !isValidEmail(witnessInProgress.email) && (
-                                        <p className="mt-2 text-sm text-red-600">
-                                            Invalid Email Address
-                                        </p>
-                                    )}
+                                {witnessInProgress.email.length > 0 && !isValidEmail(witnessInProgress.email) && (
+                                    <p className="mt-2 text-sm text-red-600">Invalid Email Address</p>
+                                )}
                             </div>
                         </div>
                         <div className="mt-2">
                             <div>
-                                <label className="block text-sm/6 font-medium text-gray-900">
-                                    Phone Number
-                                </label>
+                                <label className="block text-sm/6 font-medium text-gray-900">Phone Number</label>
                             </div>
 
                             <div className="mt-1">
@@ -112,45 +95,37 @@ export default function WitnessStage({ formData, setFormData, setShowButtons }: 
                                         }))
                                     }
                                 />
-                                {witnessInProgress.phone.length > 0 &&
-                                    witnessInProgress.phone.length < 12 && (
-                                        <p className="mt-2 text-sm text-red-600">
-                                            Invalid Phone Number
-                                        </p>
-                                    )}
+                                {witnessInProgress.phone.length > 0 && witnessInProgress.phone.length < 12 && (
+                                    <p className="mt-2 text-sm text-red-600">Invalid Phone Number</p>
+                                )}
                             </div>
                         </div>
                     </div>
-                    <div className="flex justify-between mx-5">
+                    <div className="mx-5 flex justify-between">
                         <DangerButton
                             type="button"
                             onClick={() => {
                                 setWitnessFormVisible((prev) => !prev);
                                 setShowButtons?.((prev) => !prev);
                             }}
-                            className="mr-16 pr-3 items-center gap-x-2 rounded-md  px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 "
+                            className="mr-16 items-center gap-x-2 rounded-md px-3.5 py-2.5 pr-3 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                         >
                             Cancel
                         </DangerButton>
                         <PrimaryButton
                             type="button"
                             onClick={addPerson}
-                            className="items-center gap-x-2 rounded-md px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 "
+                            className="items-center gap-x-2 rounded-md px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                         >
                             Add Witness
                         </PrimaryButton>
                     </div>
-                    {validationError && (
-                        <p className="mt-2 text-sm text-red-600">*More Information Required</p>
-                    )}
+                    {validationError && <p className="mt-2 text-sm text-red-600">*More Information Required</p>}
                 </>
             )}
             {!witnessFormVisible && (
                 <>
-                    <WitnessList
-                        removeWitness={removePerson}
-                        witnesses={formData.witnesses ?? []}
-                    />
+                    <WitnessList removeWitness={removePerson} witnesses={formData.witnesses ?? []} />
                     <div className="flex justify-center">
                         <PrimaryButton
                             type="button"
@@ -158,7 +133,7 @@ export default function WitnessStage({ formData, setFormData, setShowButtons }: 
                                 setWitnessFormVisible((prev) => !prev);
                                 setShowButtons?.((prev) => !prev);
                             }}
-                            className="my-2 flex justify-center items-center gap-x-2 rounded-md px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                            className="my-2 flex items-center justify-center gap-x-2 rounded-md px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                         >
                             Add a Witness
                             <PlusIcon aria-hidden="true" className="size-3" />

@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import ReportData from '@/types/report/ReportData';
-import ReportBuildingBlock from '@/Pages/Report/Partials/ReportBuildingBlock';
-import dayjs, { Dayjs, ManipulateType } from 'dayjs';
+import DateInput from '@/Components/DateInput';
 import PrimaryButton from '@/Components/PrimaryButton';
 import SelectInput from '@/Components/SelectInput';
-import DateInput from '@/Components/DateInput';
-import axios from 'axios';
 import dateFormat from '@/Filters/dateFormat';
 import { downloadFile } from '@/Helpers/downloadFile';
+import ReportBuildingBlock from '@/Pages/Report/Partials/ReportBuildingBlock';
+import ReportData from '@/types/report/ReportData';
+import axios from 'axios';
+import dayjs, { Dayjs, ManipulateType } from 'dayjs';
+import { useEffect, useState } from 'react';
 
 export interface ReportBuilderProps {
     formData: ReportData;
-    setFormData: Function;
+    setFormData: (key: keyof ReportData, value: ReportData[keyof ReportData]) => void;
 }
 
 interface TimelineLengths {
@@ -83,7 +83,7 @@ export default function ReportBuilder({ formData, setFormData }: ReportBuilderPr
     useEffect(() => {
         setFormData('start', timeline.startDate.format('YYYY-MM-DD'));
         setFormData('end', timeline.endDate.format('YYYY-MM-DD'));
-    }, [timeline]);
+    }, [setFormData, timeline]);
 
     const downloadExcel = async () => {
         const response = await axios.post(route('report.downloadFileXLSX'), formData, {
@@ -141,42 +141,27 @@ export default function ReportBuilder({ formData, setFormData }: ReportBuilderPr
 
     const numIters = Array.from({ length: 12 }, (_, i) => i + 1);
 
-    const formItems = (Object.keys(formData) as Array<keyof ReportData>).filter(
-        (key) => key !== 'start' && key !== 'end'
-
-    );
+    const formItems = (Object.keys(formData) as Array<keyof ReportData>).filter((key) => key !== 'start' && key !== 'end');
 
     const formBlocks = formItems.map((key) => (
-
         <li key={key}>
-        <ReportBuildingBlock
-            reportDataKey={key}
-            formData={formData}
-            setFormData={setFormData}
-        />
-    </li>
-
+            <ReportBuildingBlock reportDataKey={key} formData={formData} setFormData={setFormData} />
+        </li>
     ));
 
     return (
         <>
-            <p className="ml-8 mt-8 text-pretty text-lg font-medium text-black-500 sm:text-xl/8">
-                Build your report:
-            </p>
+            <p className="text-black-500 mt-8 ml-8 text-lg font-medium text-pretty sm:text-xl/8">Build your report:</p>
 
-            <div className="rounded-xl shadow-lg bg-white mx-4 mb-4 p-2">
-                <p className="ml-3 mt-3 text-pretty text-m font-light text-black-500 ">
-                    Choose the categories you want to include in your report:
-                </p>
-                <ul className="flex flex-wrap items-center justify-center text-gray-900 dark:text-white">
-                    {formBlocks}
-                </ul>
+            <div className="mx-4 mb-4 rounded-xl bg-white p-2 shadow-lg">
+                <p className="text-m text-black-500 mt-3 ml-3 font-light text-pretty">Choose the categories you want to include in your report:</p>
+                <ul className="flex flex-wrap items-center justify-center text-gray-900 dark:text-white">{formBlocks}</ul>
             </div>
-            <div className="rounded-xl p-2 mx-4 shadow-lg bg-white">
-                <p className="ml-3 mt-3 text-pretty text-m font-light text-black-500 ">
+            <div className="mx-4 rounded-xl bg-white p-2 shadow-lg">
+                <p className="text-m text-black-500 mt-3 ml-3 font-light text-pretty">
                     Choose the timeline of incidents you want to include in your report:
                 </p>
-                <div className="flex flex-wrap justify-center items-center gap-5 my-4">
+                <div className="my-4 flex flex-wrap items-center justify-center gap-5">
                     <SelectInput
                         value={timelineLength.iter}
                         onChange={(e) => {
@@ -192,11 +177,7 @@ export default function ReportBuilder({ formData, setFormData }: ReportBuilderPr
                         ))}
                     </SelectInput>
                     <SelectInput
-                        value={
-                            timelineLength.iter > 1
-                                ? timelineLength.unit.stringifyPlural
-                                : timelineLength.unit.stringify
-                        }
+                        value={timelineLength.iter > 1 ? timelineLength.unit.stringifyPlural : timelineLength.unit.stringify}
                         onChange={(e) => {
                             setTimelineLength((prev) => ({
                                 ...prev,
@@ -212,31 +193,29 @@ export default function ReportBuilder({ formData, setFormData }: ReportBuilderPr
                                     e.target.value.slice(-1) == 's'
                                         ? e.target.value.toLowerCase().slice(0, -1)
                                         : e.target.value.toLowerCase().replace(/\s/g, '')
-                                ].unit
+                                ].unit,
                             );
                         }}
                         className="flex rounded-md bg-white py-1.5 pl-3 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                     >
                         {lengthItems.map((index, value) =>
                             timelineLength.iter > 1 ? (
-                                <option key={value}>
-                                    {timelineLengths[index].stringifyPlural}
-                                </option>
+                                <option key={value}>{timelineLengths[index].stringifyPlural}</option>
                             ) : (
                                 <option key={value}>{timelineLengths[index].stringify}</option>
-                            )
+                            ),
                         )}
                     </SelectInput>
                 </div>
                 <div className="relative">
                     <div aria-hidden="true" className="absolute inset-0 flex items-center">
-                        <div className="w-full mx-5 border-t border-black-300" />
+                        <div className="border-black-300 mx-5 w-full border-t" />
                     </div>
                     <div className="relative flex justify-center">
-                        <span className="bg-white  px-2 text-sm text-black-500">OR</span>
+                        <span className="text-black-500 bg-white px-2 text-sm">OR</span>
                     </div>
                 </div>
-                <div className="flex flex-wrap justify-center items-center gap-5 mt-4 mb-7">
+                <div className="mt-4 mb-7 flex flex-wrap items-center justify-center gap-5">
                     <div className="">
                         <DateInput
                             value={timeline.startDate.format('YYYY-MM-DD')}
@@ -255,7 +234,7 @@ export default function ReportBuilder({ formData, setFormData }: ReportBuilderPr
                     </div>
                 </div>
             </div>
-            <div className="flex justify-end gap-5 my-3 mx-5">
+            <div className="mx-5 my-3 flex justify-end gap-5">
                 <PrimaryButton type={'button'} onClick={downloadCSV}>
                     Export as CSV
                 </PrimaryButton>

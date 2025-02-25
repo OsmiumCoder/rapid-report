@@ -1,17 +1,16 @@
-import Modal from '@/Components/Modal';
-import InputLabel from '@/Components/InputLabel';
-import TextInput from '@/Components/TextInput';
-import InputError from '@/Components/InputError';
-import SecondaryButton from '@/Components/SecondaryButton';
-import React, { Dispatch, FormEventHandler, SetStateAction, useRef, useState } from 'react';
-import { router, useForm } from '@inertiajs/react';
-import PrimaryButton from '@/Components/PrimaryButton';
 import DangerButton from '@/Components/DangerButton';
-import { Role } from '@/types';
-import { uppercaseWordFormat } from '@/Filters/uppercaseWordFormat';
-import SelectInput from '@/Components/SelectInput';
-import validatePhoneInput from '@/Filters/validatePhoneInput';
+import InputError from '@/Components/InputError';
+import InputLabel from '@/Components/InputLabel';
 import LoadingIndicator from '@/Components/LoadingIndicator';
+import Modal from '@/Components/Modal';
+import PrimaryButton from '@/Components/PrimaryButton';
+import SelectInput from '@/Components/SelectInput';
+import TextInput from '@/Components/TextInput';
+import { uppercaseWordFormat } from '@/Filters/uppercaseWordFormat';
+import validatePhoneInput from '@/Filters/validatePhoneInput';
+import { Role } from '@/types';
+import { useForm } from '@inertiajs/react';
+import { FormEventHandler } from 'react';
 
 interface AddUserFormProps {
     roles: Role[];
@@ -20,12 +19,7 @@ interface AddUserFormProps {
     assignToIncidentId?: string;
 }
 
-export default function AddUserModal({
-    roles,
-    isOpen,
-    onClose,
-    assignToIncidentId,
-}: AddUserFormProps) {
+export default function AddUserModal({ roles, isOpen, onClose, assignToIncidentId }: AddUserFormProps) {
     const { data, setData, post, processing, errors, clearErrors, reset, cancel } = useForm({
         name: '',
         email: '',
@@ -61,9 +55,7 @@ export default function AddUserModal({
     return (
         <Modal show={isOpen} onClose={closeModal}>
             <form onSubmit={createUser} className="p-6">
-                <h2 className="text-lg font-medium text-gray-900">
-                    Enter the information of the user you wish to create.
-                </h2>
+                <h2 className="text-lg font-medium text-gray-900">Enter the information of the user you wish to create.</h2>
 
                 <div className="mt-4">
                     <InputLabel htmlFor="name" value="Name" />
@@ -167,11 +159,7 @@ export default function AddUserModal({
                 <div className="mt-4">
                     <InputLabel htmlFor="role" value="Role" />
 
-                    <SelectInput
-                        value={data.role}
-                        onChange={(e) => setData('role', e.target.value)}
-                        className="w-full"
-                    >
+                    <SelectInput value={data.role} onChange={(e) => setData('role', e.target.value)} className="w-full">
                         {roles.map(({ name }, index) => (
                             <option className="hover:bg-upei-green-500" key={index} value={name}>
                                 {uppercaseWordFormat(name, '-')}

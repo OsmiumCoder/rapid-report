@@ -1,24 +1,18 @@
-import ReportData from '@/types/report/ReportData';
-import { uppercaseWordFormat } from '@/Filters/uppercaseWordFormat';
 import Checkbox from '@/Components/Checkbox';
+import { uppercaseWordFormat } from '@/Filters/uppercaseWordFormat';
+import ReportData from '@/types/report/ReportData';
 
 interface ReportBuildingBlockProps {
     reportDataKey: keyof ReportData;
     formData: ReportData;
-    setFormData: Function;
+    setFormData: (key: keyof ReportData, value: ReportData[keyof ReportData]) => void;
 }
 
-export default function ReportBuildingBlock({
-    reportDataKey,
-    formData,
-    setFormData,
-}: ReportBuildingBlockProps) {
+export default function ReportBuildingBlock({ reportDataKey, formData, setFormData }: ReportBuildingBlockProps) {
     return (
         <>
-            <div className="flex grid-cols-2 rounded-xl bg-white border-gray-300  border m-3 p-2">
-                <div className="mr-3 text-pretty font-medium text-gray-800">
-                    {uppercaseWordFormat(reportDataKey)}
-                </div>
+            <div className="m-3 flex grid-cols-2 rounded-xl border border-gray-300 bg-white p-2">
+                <div className="mr-3 font-medium text-pretty text-gray-800">{uppercaseWordFormat(reportDataKey)}</div>
                 <div className="flex h-6 shrink-0 items-center">
                     <div className="group grid size-4 grid-cols-1">
                         <Checkbox
