@@ -7,8 +7,7 @@ An incident reporting platform for health and safety departments.
 ### Prerequsites
 - [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) (For Windoze users)
 - [Docker](https://docs.docker.com/get-started/get-docker/)
-- PHP & Extensions: `sudo /bin/bash -c "$(curl -fsSL https://php.new/install/linux/8.4)"`
-- [PHP Composer](https://getcomposer.org/)
+- PHP, PHP Extensions, and Composer: `sudo /bin/bash -c "$(curl -fsSL https://php.new/install/linux/8.4)"`
 - [Node.js](https://nodejs.org/en)
 
 ### Installation
