@@ -1,6 +1,6 @@
 <?php
 
-namespace Report;
+namespace Tests\Feature\Report;
 
 use App\Models\Incident;
 use App\Models\User;
