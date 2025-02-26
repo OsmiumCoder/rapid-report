@@ -40,7 +40,7 @@ export default function NotificationActions() {
         <>
             <Menu as="div" className="relative z-50 inline-block px-2 text-left">
                 <div>
-                    <MenuButton className="flex items-center rounded-full bg-gray-100 text-gray-400 hover:text-gray-600 focus:outline-hidden focus:ring-2 focus:ring-upei-green-500 focus:ring-offset-2 focus:ring-offset-gray-100">
+                    <MenuButton className="cursor-pointer flex items-center rounded-full text-gray-400 hover:text-gray-600 focus:outline-hidden focus:ring-2 focus:ring-upei-green-500 focus:ring-offset-2 focus:ring-offset-gray-100">
                         <span className="sr-only">Open options</span>
                         <EllipsisVerticalIcon aria-hidden="true" className="size-5" />
                     </MenuButton>
@@ -54,7 +54,7 @@ export default function NotificationActions() {
                         <MenuItem>
                             <button
                                 onClick={markAllNotificationsAsRead}
-                                className="block w-full px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900 data-[focus]:outline-hidden"
+                                className="cursor-pointer block w-full px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900 data-[focus]:outline-hidden"
                             >
                                 Mark All Read
                             </button>
@@ -69,7 +69,7 @@ export default function NotificationActions() {
                                         show: true,
                                     })
                                 }
-                                className="block w-full px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900 data-[focus]:outline-hidden"
+                                className="cursor-pointer block w-full px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900 data-[focus]:outline-hidden"
                             >
                                 Clear All
                             </button>

@@ -12,7 +12,7 @@ export default function PrimaryButtonDivider({ children, className = '', ...prop
                     type="button"
                     {...props}
                     className={classNames(
-                        'inline-flex items-center gap-x-1.5 rounded-full bg-upei-green-500 px-3 py-1.5 text-sm font-semibold text-white shadow-xs ring-1 ring-inset ring-upei-green-500 hover:bg-upei-green-600',
+                        'cursor-pointer inline-flex items-center gap-x-1.5 rounded-full bg-upei-green-500 px-3 py-1.5 text-sm font-semibold text-white shadow-xs ring-1 ring-inset ring-upei-green-500 hover:bg-upei-green-600',
                         className
                     )}
                 >

@@ -1,8 +1,5 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
-import PrimaryButton from '@/Components/PrimaryButton';
 import { Incident } from '@/types/incident/Incident';
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
-import { EllipsisVerticalIcon } from '@heroicons/react/20/solid';
 
 export default function IncidentHeader({ incident }: { incident: Incident }) {
     return (

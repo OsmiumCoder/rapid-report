@@ -4,6 +4,7 @@ import ReportBuilder from '@/Pages/Report/Partials/ReportBuilder';
 import type ReportData from '@/types/report/ReportData';
 import { Head, useForm } from '@inertiajs/react';
 import dayjs from 'dayjs';
+import {useCallback} from "react";
 
 export default function Index() {
     const { data: formData, setData } = useForm({
@@ -25,7 +26,8 @@ export default function Index() {
         updated_at: false as boolean,
     });
 
-    const setFormData = (key: keyof ReportData, value: ReportData[keyof ReportData]) => setData(key, value);
+    const setFormData = useCallback((key: keyof ReportData, value: ReportData[keyof ReportData]) => setData(key, value), [setData]);
+
     return (
         <AuthenticatedLayout>
             <Head title="Reports" />

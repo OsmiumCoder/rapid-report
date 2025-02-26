@@ -64,13 +64,13 @@ export default function IndexFilter({ filters, setFilters, resetFilters }: Index
                                 numberOfFilters() > 0 || isFilterShowing ? 'text-gray-900' : 'text-gray-500',
                             )}
                         >
-                            <DisclosureButton className="group flex items-center font-medium" onClick={() => setIsFilterShowing((prev) => !prev)}>
+                            <DisclosureButton className="cursor-pointer group flex items-center font-medium" onClick={() => setIsFilterShowing((prev) => !prev)}>
                                 <FunnelIcon aria-hidden="true" className="mr-2 size-5 flex-none" />
                                 <span>{numberOfFilters() + ' Filters'}</span>
                             </DisclosureButton>
                         </div>
                         <div className="pl-6">
-                            <button type="button" className="text-gray-500 hover:text-gray-900" onClick={() => resetFilters()}>
+                            <button type="button" className="cursor-pointer text-gray-500 hover:text-gray-900" onClick={() => resetFilters()}>
                                 Clear all
                             </button>
                         </div>
