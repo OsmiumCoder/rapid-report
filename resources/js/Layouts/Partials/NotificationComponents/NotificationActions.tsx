@@ -40,7 +40,7 @@ export default function NotificationActions() {
         <>
             <Menu as="div" className="relative z-50 inline-block px-2 text-left">
                 <div>
-                    <MenuButton className="focus:ring-upei-green-500 flex items-center rounded-full text-gray-400 hover:text-gray-600 focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:outline-hidden">
+                    <MenuButton className="flex items-center rounded-full bg-gray-100 text-gray-400 hover:text-gray-600 focus:outline-hidden focus:ring-2 focus:ring-upei-green-500 focus:ring-offset-2 focus:ring-offset-gray-100">
                         <span className="sr-only">Open options</span>
                         <EllipsisVerticalIcon aria-hidden="true" className="size-5" />
                     </MenuButton>

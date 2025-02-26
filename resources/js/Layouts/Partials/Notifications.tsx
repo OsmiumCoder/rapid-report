@@ -35,7 +35,7 @@ export default function Notifications() {
                         {notifications_paginator && notifications_paginator.current_page < notifications_paginator.last_page && (
                             <WhenVisible
                                 always
-                                fallback={<LoadingIndicator className="my-2 w-full text-center" />}
+                                fallback={<LoadingIndicator />}
                                 params={{
                                     data: {
                                         notifications: notifications_paginator.current_page + 1,

@@ -68,7 +68,7 @@ export default function UserDashboard({ incidents, incidentCount, unresolvedCoun
                                         ]),
                                     ),
                                 })}
-                                className="text-3xl font-bold text-red-500 hover:text-red-600"
+                                className="text-3xl font-bold text-upei-red-500 hover:text-upei-red-600"
                             >
                                 {unresolvedCount}
                             </Link>

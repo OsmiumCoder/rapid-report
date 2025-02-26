@@ -24,7 +24,7 @@ export default function WitnessList({ witnesses, removeWitness }: WitnessListPro
                                     onClick={() => {
                                         removeWitness(index);
                                     }}
-                                    className="rounded-full bg-red-600 p-2 text-white shadow-xs hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+                                    className="rounded-full bg-upei-red-600 p-2 text-white shadow-xs hover:bg-upei-red-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-upei-red-600"
                                 >
                                     <XMarkIcon aria-hidden="true" className="size-5" />
                                 </button>

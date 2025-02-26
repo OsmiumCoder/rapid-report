@@ -67,7 +67,7 @@ export default function IncidentUserActions({ incident }: { incident: Incident }
                             Submit
                         </PrimaryButton>
                     </div>
-                    {processing && <LoadingIndicator className="w-full text-center" />}
+                    {processing && <LoadingIndicator />}
                 </div>
             </Modal>
         </>

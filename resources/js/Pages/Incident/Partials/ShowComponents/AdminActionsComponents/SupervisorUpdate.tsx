@@ -64,7 +64,7 @@ export default function SupervisorUpdate({ incident, supervisors, roles }: Super
                 >
                     <div className="relative">
                         <ComboboxInput
-                            className="focus:border-upei-green-600 focus:ring-upei-green-600 block w-full rounded-md bg-white py-1.5 pr-12 pl-3 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:shadow-none focus:ring-0 focus:outline-hidden focus-visible:ring-0 focus-visible:ring-offset-0 sm:text-sm/6"
+                            className="block w-full rounded-md bg-white py-1.5 pl-3 pr-12 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-upei-green-600 sm:text-sm/6"
                             onChange={(event) => setQuery(event.target.value)}
                             onClick={() => setDefaultText('')}
                             onBlur={() => {
@@ -83,7 +83,7 @@ export default function SupervisorUpdate({ incident, supervisors, roles }: Super
                                     <ComboboxOption
                                         key={supervisor.id}
                                         value={supervisor.id}
-                                        className="group data-[focus]:bg-upei-green-500 relative cursor-default py-2 pr-9 pl-3 text-gray-900 select-none data-[focus]:text-white data-[focus]:outline-hidden"
+                                        className="group relative cursor-default select-none py-2 pl-3 pr-9 text-gray-900 data-[focus]:bg-upei-green-600 data-[focus]:text-white data-[focus]:outline-hidden"
                                     >
                                         <div>
                                             <div className="group-data-[selected]:font-semibold">{supervisor.name}</div>
@@ -91,7 +91,7 @@ export default function SupervisorUpdate({ incident, supervisors, roles }: Super
                                         </div>
 
                                         {supervisor.id === incident.supervisor_id && (
-                                            <span className="text-upei-green-500 absolute inset-y-0 right-0 flex items-center pr-4 group-data-[focus]:text-white">
+                                            <span className="absolute inset-y-0 right-0 flex items-center pr-4 text-upei-green-600 group-data-[focus]:text-white">
                                                 <CheckIcon className="size-5" aria-hidden="true" />
                                             </span>
                                         )}
@@ -114,7 +114,7 @@ export default function SupervisorUpdate({ incident, supervisors, roles }: Super
                     </div>
                 </Combobox>
                 {isLoading ? (
-                    <LoadingIndicator className="h-6 w-6 text-gray-500" />
+                    <LoadingIndicator />
                 ) : incident.supervisor ? (
                     <SecondaryButton
                         onClick={() =>

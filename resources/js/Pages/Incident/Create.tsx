@@ -14,6 +14,8 @@ import { Incident } from '@/types/incident/Incident';
 import IncidentData from '@/types/incident/IncidentData';
 import { Head, useForm } from '@inertiajs/react';
 import { useCallback, useEffect, useState } from 'react';
+import DangerButton from "@/Components/DangerButton";
+import PrimaryButton from "@/Components/PrimaryButton";
 
 export default function Create({ form }: PageProps<{ form: IncidentData }>) {
     const { data: formData, setData, post, processing } = useForm<Partial<IncidentData>>(form);
@@ -164,34 +166,15 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
 
                     <div className="flex justify-around p-6">
                         {completedSteps > 0 && showButtons && (
-                            <button
-                                type="button"
-                                onClick={prevStep}
-                                className="bg-upei-red-400 hover:bg-upei-red-600 rounded-sm px-4 py-2 font-bold text-white"
-                            >
-                                Back
-                            </button>
+                            <DangerButton type="button" onClick={prevStep}>Back</DangerButton>
                         )}
 
                         {completedSteps === numberOfSteps - 1 && showButtons && (
-                            <button
-                                type="button"
-                                disabled={processing}
-                                onClick={submit}
-                                className="bg-upei-green-500 hover:bg-upei-green-700 rounded-sm px-4 py-2 font-bold text-white"
-                            >
-                                Submit
-                            </button>
+                            <PrimaryButton type="button" onClick={submit} disabled={processing}>Submit</PrimaryButton>
                         )}
 
                         {remainingSteps > 0 && remainingSteps < numberOfSteps && showButtons && (
-                            <button
-                                type="button"
-                                onClick={nextStep}
-                                className="bg-upei-green-500 hover:bg-upei-green-700 rounded-sm px-4 py-2 font-bold text-white"
-                            >
-                                Next
-                            </button>
+                            <PrimaryButton type="button" onClick={nextStep}>Next</PrimaryButton>
                         )}
                     </div>
                 </>

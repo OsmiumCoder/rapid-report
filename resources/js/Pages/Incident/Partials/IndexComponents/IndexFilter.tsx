@@ -81,7 +81,7 @@ export default function IndexFilter({ filters, setFilters, resetFilters }: Index
                         <div className="grid grid-cols-1 items-stretch gap-x-6 gap-y-6 md:grid-cols-4 md:gap-x-6">
                             {Object.entries(filters).map(([filterName, filter], filterIndex) => (
                                 <>
-                                    <fieldset key={filterIndex + filterName} className="transparent-scrollbar max-h-64 space-y-4 overflow-y-scroll">
+                                    <fieldset key={filterIndex + filterName} className="max-h-64 space-y-4 overflow-y-scroll">
                                         <legend className="block text-lg font-medium">{uppercaseWordFormat(filterName)}</legend>
                                         {filterName === 'created_at' ? (
                                             <>
