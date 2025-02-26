@@ -35,7 +35,7 @@ export default function Login({ status, canResetPassword }: { status?: string; c
                     <Link
                         href={route('incidents.create')}
                         as="button"
-                        className="cursor-pointer bg-upei-green-500 hover:bg-upei-green-600 focus-visible:outline-upei-green-600 flex items-center rounded-md px-3 py-2 text-center text-sm font-semibold text-white shadow-xs focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                        className="bg-upei-green-500 hover:bg-upei-green-600 focus-visible:outline-upei-green-600 flex cursor-pointer items-center rounded-md px-3 py-2 text-center text-sm font-semibold text-white shadow-xs focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                     >
                         <PencilIcon className="mr-2 h-4 w-4" />
                         Submit Incident
@@ -93,7 +93,7 @@ export default function Login({ status, canResetPassword }: { status?: string; c
                     {canResetPassword && (
                         <Link
                             href={route('password.request')}
-                            className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-hidden focus:ring-2 focus:ring-upei-green-500 focus:ring-offset-2"
+                            className="focus:ring-upei-green-500 rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:ring-2 focus:ring-offset-2 focus:outline-hidden"
                         >
                             Forgot your password?
                         </Link>

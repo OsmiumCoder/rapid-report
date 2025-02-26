@@ -1,3 +1,5 @@
+import DangerButton from '@/Components/DangerButton';
+import PrimaryButton from '@/Components/PrimaryButton';
 import dateFormat from '@/Filters/dateFormat';
 import GuestLayout from '@/Layouts/GuestLayout';
 import AffectedPartyStage from '@/Pages/Incident/Stages/AffectedPartyStage';
@@ -14,8 +16,6 @@ import { Incident } from '@/types/incident/Incident';
 import IncidentData from '@/types/incident/IncidentData';
 import { Head, useForm } from '@inertiajs/react';
 import { useCallback, useEffect, useState } from 'react';
-import DangerButton from "@/Components/DangerButton";
-import PrimaryButton from "@/Components/PrimaryButton";
 
 export default function Create({ form }: PageProps<{ form: IncidentData }>) {
     const { data: formData, setData, post, processing } = useForm<Partial<IncidentData>>(form);
@@ -166,15 +166,21 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
 
                     <div className="flex justify-around p-6">
                         {completedSteps > 0 && showButtons && (
-                            <DangerButton type="button" onClick={prevStep}>Back</DangerButton>
+                            <DangerButton type="button" onClick={prevStep}>
+                                Back
+                            </DangerButton>
                         )}
 
                         {completedSteps === numberOfSteps - 1 && showButtons && (
-                            <PrimaryButton type="button" onClick={submit} disabled={processing}>Submit</PrimaryButton>
+                            <PrimaryButton type="button" onClick={submit} disabled={processing}>
+                                Submit
+                            </PrimaryButton>
                         )}
 
                         {remainingSteps > 0 && remainingSteps < numberOfSteps && showButtons && (
-                            <PrimaryButton type="button" onClick={nextStep}>Next</PrimaryButton>
+                            <PrimaryButton type="button" onClick={nextStep}>
+                                Next
+                            </PrimaryButton>
                         )}
                     </div>
                 </>

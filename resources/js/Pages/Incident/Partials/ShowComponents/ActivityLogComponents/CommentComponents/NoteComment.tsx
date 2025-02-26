@@ -5,7 +5,7 @@ import { ChatBubbleBottomCenterTextIcon } from '@heroicons/react/20/solid';
 export default function NoteComment({ comment }: { comment: Comment }) {
     return (
         <>
-            <ChatBubbleBottomCenterTextIcon className="relative flex size-6 flex-none items-center justify-center bg-white text-upei-green-600" />
+            <ChatBubbleBottomCenterTextIcon className="text-upei-green-600 relative flex size-6 flex-none items-center justify-center bg-white" />
 
             <div className="flex-auto rounded-md p-3 ring-1 ring-gray-200 ring-inset">
                 <div className="flex justify-between gap-x-4">

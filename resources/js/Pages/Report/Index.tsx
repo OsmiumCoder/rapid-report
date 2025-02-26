@@ -4,7 +4,7 @@ import ReportBuilder from '@/Pages/Report/Partials/ReportBuilder';
 import type ReportData from '@/types/report/ReportData';
 import { Head, useForm } from '@inertiajs/react';
 import dayjs from 'dayjs';
-import {useCallback} from "react";
+import { useCallback } from 'react';
 
 export default function Index() {
     const { data: formData, setData } = useForm({

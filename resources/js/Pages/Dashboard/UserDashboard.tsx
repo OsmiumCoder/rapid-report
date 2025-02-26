@@ -68,7 +68,7 @@ export default function UserDashboard({ incidents, incidentCount, unresolvedCoun
                                         ]),
                                     ),
                                 })}
-                                className="text-3xl font-bold text-upei-red-500 hover:text-upei-red-600"
+                                className="text-upei-red-500 hover:text-upei-red-600 text-3xl font-bold"
                             >
                                 {unresolvedCount}
                             </Link>
@@ -83,7 +83,7 @@ export default function UserDashboard({ incidents, incidentCount, unresolvedCoun
                             <Link
                                 href={route('incidents.create')}
                                 as="button"
-                                className="cursor-pointer bg-upei-green-500 hover:bg-upei-green-400 focus-visible:outline-upei-green-600 flex items-center justify-center rounded-md px-3 py-2 text-center text-sm font-semibold text-white shadow-xs focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                                className="bg-upei-green-500 hover:bg-upei-green-400 focus-visible:outline-upei-green-600 flex cursor-pointer items-center justify-center rounded-md px-3 py-2 text-center text-sm font-semibold text-white shadow-xs focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                             >
                                 <PencilIcon className="mr-2 h-4 w-4" />
                                 Submit Incident
@@ -91,7 +91,7 @@ export default function UserDashboard({ incidents, incidentCount, unresolvedCoun
                             <Link
                                 href={route('incidents.owned')}
                                 as="button"
-                                className="cursor-pointer bg-upei-green-500 hover:bg-upei-green-400 focus-visible:outline-upei-green-600 flex items-center justify-center rounded-md px-3 py-2 text-center text-sm font-semibold text-white shadow-xs focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                                className="bg-upei-green-500 hover:bg-upei-green-400 focus-visible:outline-upei-green-600 flex cursor-pointer items-center justify-center rounded-md px-3 py-2 text-center text-sm font-semibold text-white shadow-xs focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                             >
                                 View Submitted Incidents
                             </Link>

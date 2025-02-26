@@ -7,7 +7,7 @@ export default function SecondaryButton({ type = 'button', className = '', child
             {...props}
             type={type}
             className={classNames(
-                'cursor-pointer rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs ring-1 ring-inset ring-gray-300 hover:bg-gray-50',
+                'cursor-pointer rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs ring-1 ring-gray-300 ring-inset hover:bg-gray-50',
                 className,
             )}
         >

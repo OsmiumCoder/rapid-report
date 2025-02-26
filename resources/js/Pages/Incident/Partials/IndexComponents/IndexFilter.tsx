@@ -64,7 +64,10 @@ export default function IndexFilter({ filters, setFilters, resetFilters }: Index
                                 numberOfFilters() > 0 || isFilterShowing ? 'text-gray-900' : 'text-gray-500',
                             )}
                         >
-                            <DisclosureButton className="cursor-pointer group flex items-center font-medium" onClick={() => setIsFilterShowing((prev) => !prev)}>
+                            <DisclosureButton
+                                className="group flex cursor-pointer items-center font-medium"
+                                onClick={() => setIsFilterShowing((prev) => !prev)}
+                            >
                                 <FunnelIcon aria-hidden="true" className="mr-2 size-5 flex-none" />
                                 <span>{numberOfFilters() + ' Filters'}</span>
                             </DisclosureButton>

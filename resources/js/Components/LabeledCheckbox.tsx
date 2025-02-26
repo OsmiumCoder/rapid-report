@@ -13,7 +13,7 @@ export default function LabeledCheckbox({ label, ...props }: LabeledCheckBoxProp
                     <input
                         {...props}
                         type="checkbox"
-                        className="cursor-pointer col-start-1 row-start-1 appearance-none rounded-sm border border-gray-300 bg-white checked:border-upei-green-600 checked:bg-upei-green-600 indeterminate:border-upei-green-600 indeterminate:bg-upei-green-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-upei-green-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto"
+                        className="checked:border-upei-green-600 checked:bg-upei-green-600 indeterminate:border-upei-green-600 indeterminate:bg-upei-green-600 focus-visible:outline-upei-green-600 col-start-1 row-start-1 cursor-pointer appearance-none rounded-sm border border-gray-300 bg-white focus-visible:outline-2 focus-visible:outline-offset-2 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto"
                     />
 
                     <svg

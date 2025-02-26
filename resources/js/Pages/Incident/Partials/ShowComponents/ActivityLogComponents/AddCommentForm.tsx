@@ -20,10 +20,10 @@ interface AddCommentFormProps {
 export default function AddCommentForm({ submit, setData, processing, data }: AddCommentFormProps) {
     return (
         <div className="mt-6 flex gap-x-3">
-            <ChatBubbleBottomCenterTextIcon className="relative flex size-6 flex-none items-center justify-center bg-white text-upei-green-600" />
+            <ChatBubbleBottomCenterTextIcon className="text-upei-green-600 relative flex size-6 flex-none items-center justify-center bg-white" />
 
             <form onSubmit={submit} className="relative flex-auto">
-                <div className="overflow-hidden rounded-lg pb-12 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-upei-green-600">
+                <div className="focus-within:outline-upei-green-600 overflow-hidden rounded-lg pb-12 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2">
                     <label className="sr-only">Add your comment</label>
                     <textarea
                         value={data.content}
@@ -49,7 +49,7 @@ export default function AddCommentForm({ submit, setData, processing, data }: Ad
                     {!processing ? (
                         <button
                             type="submit"
-                            className="-m-2.5 cursor-pointer flex size-10 items-center justify-center rounded-full text-upei-green-600 hover:text-upei-green-500"
+                            className="text-upei-green-600 hover:text-upei-green-500 -m-2.5 flex size-10 cursor-pointer items-center justify-center rounded-full"
                         >
                             <PaperAirplaneIcon className="mr-2 size-7" />
                         </button>
