@@ -7,7 +7,7 @@ import { Menu, MenuButton, MenuItem, MenuItems, Transition } from '@headlessui/r
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 import { Bars3Icon, BellIcon, UserCircleIcon } from '@heroicons/react/24/outline';
 import { Link, usePage } from '@inertiajs/react';
-import { useRef, useState } from 'react';
+import { RefObject, useRef, useState } from 'react';
 
 const userNavigation: { name: string; href: string; method?: Method }[] = [
     { name: 'Your profile', href: route('profile.edit') },
@@ -22,7 +22,7 @@ export default function TopBar({ onClick }: { onClick: () => void }) {
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [isNotificationOpen, setIsNotificationOpen] = useState(false);
 
-    const notificationButtonRef = useRef<HTMLButtonElement>(null);
+    const notificationButtonRef = useRef<HTMLButtonElement>(null) as RefObject<HTMLButtonElement>;
 
     const notificationRef = useDismiss<HTMLDivElement>({
         onDismiss: () => setIsNotificationOpen(false),
@@ -35,7 +35,7 @@ export default function TopBar({ onClick }: { onClick: () => void }) {
             <Searchbar isOpen={isSearchOpen} setIsOpen={setIsSearchOpen} />
 
             <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-xs sm:gap-x-6 sm:px-6 lg:px-8">
-                <button type="button" onClick={onClick} className="-m-2.5 p-2.5 cursor-pointer text-gray-700 lg:hidden">
+                <button type="button" onClick={onClick} className="-m-2.5 cursor-pointer p-2.5 text-gray-700 lg:hidden">
                     <span className="sr-only">Open sidebar</span>
                     <Bars3Icon aria-hidden="true" className="size-6" />
                 </button>
@@ -102,7 +102,7 @@ export default function TopBar({ onClick }: { onClick: () => void }) {
                                         <Link
                                             href={item.href}
                                             method={item.method}
-                                            className="cursor-pointer block w-full px-3 py-1 text-left text-sm/6 text-gray-900 data-[focus]:bg-gray-50 data-[focus]:outline-hidden"
+                                            className="block w-full cursor-pointer px-3 py-1 text-left text-sm/6 text-gray-900 data-[focus]:bg-gray-50 data-[focus]:outline-hidden"
                                         >
                                             {item.name}
                                         </Link>
