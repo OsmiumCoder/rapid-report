@@ -98,33 +98,34 @@ export default function Searchbar({ isOpen, setIsOpen }: CommandPaletteProps) {
         });
     }, [labels, allLabelsChecked]);
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const fetchIncidents = useCallback(
         _.debounce(async () => {
-                if (abortControllerRef.current) {
-                    abortControllerRef.current.abort();
-                }
+            if (abortControllerRef.current) {
+                abortControllerRef.current.abort();
+            }
 
-                const abortController = new AbortController();
-                abortControllerRef.current = abortController;
+            const abortController = new AbortController();
+            abortControllerRef.current = abortController;
 
-                setIsLoading(true);
-                try {
-                    const response = await axios.get<Incident[]>(
-                        route('incidents.search', {
-                            search: searchRef.current,
-                            search_by: searchByRef.current,
-                        }),
-                        {
-                            signal: abortController.signal,
-                        },
-                    );
-                    setIncidents(response.data);
-                } catch (err) {
-                    console.error(err);
-                } finally {
-                    setIsLoading(false);
-                }
-            }, 250),
+            setIsLoading(true);
+            try {
+                const response = await axios.get<Incident[]>(
+                    route('incidents.search', {
+                        search: searchRef.current,
+                        search_by: searchByRef.current,
+                    }),
+                    {
+                        signal: abortController.signal,
+                    },
+                );
+                setIncidents(response.data);
+            } catch (err) {
+                console.error(err);
+            } finally {
+                setIsLoading(false);
+            }
+        }, 250),
         [],
     );
 
