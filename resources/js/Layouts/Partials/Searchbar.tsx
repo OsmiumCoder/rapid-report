@@ -85,9 +85,6 @@ export default function Searchbar({ isOpen, setIsOpen }: CommandPaletteProps) {
     const [searchBy, setSearchBy] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
-    const searchRef = useRef<string>(search);
-    const searchByRef = useRef<string>(searchBy);
-
     const abortControllerRef = useRef<AbortController | null>(null);
 
     useEffect(() => {
@@ -99,8 +96,7 @@ export default function Searchbar({ isOpen, setIsOpen }: CommandPaletteProps) {
     }, [labels, allLabelsChecked]);
 
     const fetchIncidents = useCallback(
-        () =>
-            _.debounce(async () => {
+        _.debounce(async () => {
                 if (abortControllerRef.current) {
                     abortControllerRef.current.abort();
                 }
@@ -112,8 +108,8 @@ export default function Searchbar({ isOpen, setIsOpen }: CommandPaletteProps) {
                 try {
                     const response = await axios.get<Incident[]>(
                         route('incidents.search', {
-                            search: searchRef.current,
-                            search_by: searchByRef.current,
+                            search: search,
+                            search_by: searchBy,
                         }),
                         {
                             signal: abortController.signal,
@@ -126,12 +122,10 @@ export default function Searchbar({ isOpen, setIsOpen }: CommandPaletteProps) {
                     setIsLoading(false);
                 }
             }, 250),
-        [],
+        [search, searchBy],
     );
 
     useEffect(() => {
-        searchRef.current = search;
-        searchByRef.current = searchBy;
 
         if (search.length === 0) {
             setIncidents([]);
