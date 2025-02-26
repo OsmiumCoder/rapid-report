@@ -1,10 +1,13 @@
 import DateInput from '@/Components/DateInput';
+import LabeledCheckbox from '@/Components/LabeledCheckbox';
 import PrimaryButton from '@/Components/PrimaryButton';
 import SelectInput from '@/Components/SelectInput';
+import classNames from '@/Filters/classNames';
 import dateFormat from '@/Filters/dateFormat';
+import { uppercaseWordFormat } from '@/Filters/uppercaseWordFormat';
 import { downloadFile } from '@/Helpers/downloadFile';
-import ReportBuildingBlock from '@/Pages/Report/Partials/ReportBuildingBlock';
 import ReportData from '@/types/report/ReportData';
+import { Field, Label, Switch } from '@headlessui/react';
 import axios from 'axios';
 import dayjs, { Dayjs, ManipulateType } from 'dayjs';
 import { useEffect, useState } from 'react';
@@ -19,14 +22,17 @@ interface TimelineLengths {
     stringifyPlural: string;
     unit: ManipulateType;
 }
+
 interface Timeline {
     startDate: Dayjs;
     endDate: Dayjs;
 }
+
 interface Relative {
     unit: TimelineLengths;
     iter: number;
 }
+
 type TimeLengthsCollection = {
     [key: string]: TimelineLengths;
 };
@@ -143,98 +149,120 @@ export default function ReportBuilder({ formData, setFormData }: ReportBuilderPr
 
     const formItems = (Object.keys(formData) as Array<keyof ReportData>).filter((key) => key !== 'start' && key !== 'end');
 
-    const formBlocks = formItems.map((key) => (
-        <li key={key}>
-            <ReportBuildingBlock reportDataKey={key} formData={formData} setFormData={setFormData} />
-        </li>
-    ));
+    const [relativeTimeFrameSelected, setRelativeTimeFrameSelected] = useState(false);
 
     return (
-        <>
-            <p className="text-black-500 mt-8 ml-8 text-lg font-medium text-pretty sm:text-xl/8">Build your report:</p>
+        <div className="mx-4 space-y-6 rounded-xl bg-white p-4 shadow-lg">
+            <div className="text-black-500 text-lg font-semibold sm:text-xl/8">Build your report:</div>
+            <div>
+                <p className="text-m text-black-500">Select Categories for Export:</p>
+                <ul className="mt-2 grid grid-rows-1 md:grid-cols-2 lg:grid-cols-3">
+                    {formItems.map((key) => (
+                        <li key={key}>
+                            <LabeledCheckbox
+                                checked={formData[key] as boolean}
+                                onChange={(e) => setFormData(key, e.target.checked)}
+                                label={uppercaseWordFormat(key)}
+                            />
+                        </li>
+                    ))}
+                </ul>
+            </div>
 
-            <div className="mx-4 mb-4 rounded-xl bg-white p-2 shadow-lg">
-                <p className="text-m text-black-500 mt-3 ml-3 font-light text-pretty">Choose the categories you want to include in your report:</p>
-                <ul className="flex flex-wrap items-center justify-center text-gray-900 dark:text-white">{formBlocks}</ul>
-            </div>
-            <div className="mx-4 rounded-xl bg-white p-2 shadow-lg">
-                <p className="text-m text-black-500 mt-3 ml-3 font-light text-pretty">
-                    Choose the timeline of incidents you want to include in your report:
-                </p>
-                <div className="my-4 flex flex-wrap items-center justify-center gap-5">
-                    <SelectInput
-                        value={timelineLength.iter}
-                        onChange={(e) => {
-                            setTimelineLength((prev) => ({
-                                ...prev,
-                                iter: +e.target.value,
-                            }));
-                            setRelativeTimeline(+e.target.value, timelineLength.unit.unit);
-                        }}
-                    >
-                        {numIters.map((i) => (
-                            <option key={i}>{i}</option>
-                        ))}
-                    </SelectInput>
-                    <SelectInput
-                        value={timelineLength.iter > 1 ? timelineLength.unit.stringifyPlural : timelineLength.unit.stringify}
-                        onChange={(e) => {
-                            setTimelineLength((prev) => ({
-                                ...prev,
-                                unit: timelineLengths[
-                                    e.target.value.slice(-1) == 's'
-                                        ? e.target.value.toLowerCase().slice(0, -1)
-                                        : e.target.value.toLowerCase().replace(/\s/g, '')
-                                ],
-                            }));
-                            setRelativeTimeline(
-                                timelineLength.iter,
-                                timelineLengths[
-                                    e.target.value.slice(-1) == 's'
-                                        ? e.target.value.toLowerCase().slice(0, -1)
-                                        : e.target.value.toLowerCase().replace(/\s/g, '')
-                                ].unit,
-                            );
-                        }}
-                        className="flex rounded-md bg-white py-1.5 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                    >
-                        {lengthItems.map((index, value) =>
-                            timelineLength.iter > 1 ? (
-                                <option key={value}>{timelineLengths[index].stringifyPlural}</option>
-                            ) : (
-                                <option key={value}>{timelineLengths[index].stringify}</option>
-                            ),
-                        )}
-                    </SelectInput>
-                </div>
-                <div className="relative">
-                    <div aria-hidden="true" className="absolute inset-0 flex items-center">
-                        <div className="border-black-300 mx-5 w-full border-t" />
-                    </div>
-                    <div className="relative flex justify-center">
-                        <span className="text-black-500 bg-white px-2 text-sm">OR</span>
-                    </div>
-                </div>
-                <div className="mt-4 mb-7 flex flex-wrap items-center justify-center gap-5">
-                    <div className="">
-                        <DateInput
-                            value={timeline.startDate.format('YYYY-MM-DD')}
-                            onChange={(e) => {
-                                setConTimeline(dayjs(e.target.value), true);
-                            }}
-                        />
-                    </div>
+            <div>
+                <p className="text-m text-black-500">Time Period:</p>
+                <div className="mt-2">
                     <div>
-                        <DateInput
-                            value={timeline.endDate.format('YYYY-MM-DD')}
-                            onChange={(e) => {
-                                setConTimeline(dayjs(e.target.value), false);
-                            }}
-                        />
+                        <Field className="flex items-center">
+                            <Label as="span" className="mr-3 text-sm">
+                                <span className={classNames(relativeTimeFrameSelected ? 'text-gray-400' : 'text-gray-900', 'font-medium')}>
+                                    Static Time Frame
+                                </span>
+                            </Label>
+                            <Switch
+                                checked={relativeTimeFrameSelected}
+                                onChange={setRelativeTimeFrameSelected}
+                                className="group bg-upei-green-600 focus:ring-upei-green-600 relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:ring-2 focus:ring-offset-2 focus:outline-hidden"
+                            >
+                                <span
+                                    aria-hidden="true"
+                                    className="pointer-events-none inline-block size-5 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out group-data-checked:translate-x-5"
+                                />
+                            </Switch>
+                            <Label as="span" className="ml-3 text-sm">
+                                <span className={classNames(relativeTimeFrameSelected ? 'text-gray-900' : 'text-gray-400', 'font-medium')}>
+                                    Relative Time Frame
+                                </span>
+                            </Label>
+                        </Field>
                     </div>
+
+                    {relativeTimeFrameSelected ? (
+                        <div className="mt-2 flex gap-5">
+                            <SelectInput
+                                value={timelineLength.iter}
+                                onChange={(e) => {
+                                    setTimelineLength((prev) => ({
+                                        ...prev,
+                                        iter: +e.target.value,
+                                    }));
+                                    setRelativeTimeline(+e.target.value, timelineLength.unit.unit);
+                                }}
+                            >
+                                {numIters.map((i) => (
+                                    <option key={i}>{i}</option>
+                                ))}
+                            </SelectInput>
+                            <SelectInput
+                                value={timelineLength.iter > 1 ? timelineLength.unit.stringifyPlural : timelineLength.unit.stringify}
+                                onChange={(e) => {
+                                    setTimelineLength((prev) => ({
+                                        ...prev,
+                                        unit: timelineLengths[
+                                            e.target.value.slice(-1) == 's'
+                                                ? e.target.value.toLowerCase().slice(0, -1)
+                                                : e.target.value.toLowerCase().replace(/\s/g, '')
+                                        ],
+                                    }));
+                                    setRelativeTimeline(
+                                        timelineLength.iter,
+                                        timelineLengths[
+                                            e.target.value.slice(-1) == 's'
+                                                ? e.target.value.toLowerCase().slice(0, -1)
+                                                : e.target.value.toLowerCase().replace(/\s/g, '')
+                                        ].unit,
+                                    );
+                                }}
+                            >
+                                {lengthItems.map((index, value) =>
+                                    timelineLength.iter > 1 ? (
+                                        <option key={value}>{timelineLengths[index].stringifyPlural}</option>
+                                    ) : (
+                                        <option key={value}>{timelineLengths[index].stringify}</option>
+                                    ),
+                                )}
+                            </SelectInput>
+                        </div>
+                    ) : (
+                        <div className="mt-4 flex w-1/2 gap-5">
+                            <DateInput
+                                value={timeline.startDate.format('YYYY-MM-DD')}
+                                onChange={(e) => {
+                                    setConTimeline(dayjs(e.target.value), true);
+                                }}
+                            />
+                            <DateInput
+                                value={timeline.endDate.format('YYYY-MM-DD')}
+                                onChange={(e) => {
+                                    setConTimeline(dayjs(e.target.value), false);
+                                }}
+                            />
+                        </div>
+                    )}
                 </div>
             </div>
-            <div className="mx-5 my-3 flex justify-end gap-5">
+
+            <div className="flex w-full justify-center space-x-2">
                 <PrimaryButton type={'button'} onClick={downloadCSV}>
                     Export as CSV
                 </PrimaryButton>
@@ -242,6 +270,6 @@ export default function ReportBuilder({ formData, setFormData }: ReportBuilderPr
                     Export as Excel
                 </PrimaryButton>
             </div>
-        </>
+        </div>
     );
 }
