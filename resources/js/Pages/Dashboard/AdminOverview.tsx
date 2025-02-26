@@ -61,7 +61,7 @@ export default function AdminOverview({ incidents, incidentCount, closedCount, u
                                     ]),
                                 ),
                             })}
-                            className="text-3xl font-bold text-red-500 hover:text-red-600"
+                            className="text-upei-red-500 hover:text-upei-red-600 text-3xl font-bold"
                         >
                             {unresolvedCount}
                         </Link>
@@ -86,7 +86,7 @@ export default function AdminOverview({ incidents, incidentCount, closedCount, u
                                     ]),
                                 ),
                             })}
-                            className="text-3xl font-bold text-green-500 hover:text-green-600"
+                            className="text-upei-green-500 hover:text-upei-green-600 text-3xl font-bold"
                         >
                             {closedCount}
                         </Link>

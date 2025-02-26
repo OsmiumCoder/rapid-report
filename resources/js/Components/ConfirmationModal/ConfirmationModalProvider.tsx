@@ -15,7 +15,8 @@ export const useConfirmationModal = () => {
 };
 
 export default function ConfirmationModalProvider({ children }: PropsWithChildren) {
-    const modalRef = useRef<HTMLDivElement>(null);
+    const modalRef = useRef<HTMLDivElement>(null) as RefObject<HTMLDivElement>;
+
     const [modalProps, setProps] = useState<ConfirmationModalProps>({
         title: '',
         text: '',

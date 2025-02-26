@@ -20,10 +20,10 @@ interface AddCommentFormProps {
 export default function AddCommentForm({ submit, setData, processing, data }: AddCommentFormProps) {
     return (
         <div className="mt-6 flex gap-x-3">
-            <ChatBubbleBottomCenterTextIcon className="relative flex size-6 flex-none items-center justify-center bg-white text-blue-600" />
+            <ChatBubbleBottomCenterTextIcon className="text-upei-green-600 relative flex size-6 flex-none items-center justify-center bg-white" />
 
             <form onSubmit={submit} className="relative flex-auto">
-                <div className="overflow-hidden rounded-lg pb-12 outline outline-1 -outline-offset-1 outline-gray-300 focus-within:outline focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-blue-600">
+                <div className="focus-within:outline-upei-green-600 overflow-hidden rounded-lg pb-12 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2">
                     <label className="sr-only">Add your comment</label>
                     <textarea
                         value={data.content}
@@ -39,7 +39,7 @@ export default function AddCommentForm({ submit, setData, processing, data }: Ad
                         <div className="flex items-center">
                             <button
                                 type="button"
-                                className="-m-2.5 flex size-10 items-center justify-center rounded-full text-gray-400 hover:text-gray-500"
+                                className="-m-2.5 flex size-10 cursor-pointer items-center justify-center rounded-full text-gray-400 hover:text-gray-500"
                             >
                                 <PaperClipIcon aria-hidden="true" className="size-5" />
                                 <span className="sr-only">Attach a file</span>
@@ -49,7 +49,7 @@ export default function AddCommentForm({ submit, setData, processing, data }: Ad
                     {!processing ? (
                         <button
                             type="submit"
-                            className="-m-2.5 flex size-10 items-center justify-center rounded-full text-blue-600 hover:text-blue-500"
+                            className="text-upei-green-600 hover:text-upei-green-500 -m-2.5 flex size-10 cursor-pointer items-center justify-center rounded-full"
                         >
                             <PaperAirplaneIcon className="mr-2 size-7" />
                         </button>

@@ -43,7 +43,7 @@ export default function IncidentUserActions({ incident }: { incident: Incident }
     return (
         <>
             <div className="rounded-lg bg-white lg:col-start-3 lg:row-end-1">
-                <div className="rounded-lg shadow-sm ring-1 ring-gray-900/5">
+                <div className="rounded-lg shadow-xs ring-1 ring-gray-900/5">
                     <div className="flex flex-col flex-wrap items-center justify-between">
                         <div className="mt-1 pt-6 text-base font-semibold text-gray-900">User Actions</div>
                         <div className="mt-6 flex w-full flex-col gap-y-6 border-t border-gray-900/5 p-6">
@@ -67,7 +67,7 @@ export default function IncidentUserActions({ incident }: { incident: Incident }
                             Submit
                         </PrimaryButton>
                     </div>
-                    {processing && <LoadingIndicator className="w-full text-center" />}
+                    {processing && <LoadingIndicator />}
                 </div>
             </Modal>
         </>

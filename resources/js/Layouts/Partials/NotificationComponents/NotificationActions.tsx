@@ -40,7 +40,7 @@ export default function NotificationActions() {
         <>
             <Menu as="div" className="relative z-50 inline-block px-2 text-left">
                 <div>
-                    <MenuButton className="focus:ring-upei-green-500 flex items-center rounded-full text-gray-400 hover:text-gray-600 focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:outline-none">
+                    <MenuButton className="focus:ring-upei-green-500 flex cursor-pointer items-center rounded-full text-gray-400 hover:text-gray-600 focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:outline-hidden">
                         <span className="sr-only">Open options</span>
                         <EllipsisVerticalIcon aria-hidden="true" className="size-5" />
                     </MenuButton>
@@ -48,13 +48,13 @@ export default function NotificationActions() {
 
                 <MenuItems
                     transition
-                    className="absolute right-2 z-10 mt-2 w-32 origin-top-right rounded-lg border border-gray-200 bg-white shadow-lg ring-1 ring-black/5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[enter]:ease-out data-[leave]:duration-75 data-[leave]:ease-in"
+                    className="absolute right-2 z-10 mt-2 w-32 origin-top-right rounded-lg border border-gray-200 bg-white shadow-lg ring-1 ring-black/5 transition focus:outline-hidden data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[enter]:ease-out data-[leave]:duration-75 data-[leave]:ease-in"
                 >
                     <div className="py-1">
                         <MenuItem>
                             <button
                                 onClick={markAllNotificationsAsRead}
-                                className="block w-full px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900 data-[focus]:outline-none"
+                                className="block w-full cursor-pointer px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900 data-[focus]:outline-hidden"
                             >
                                 Mark All Read
                             </button>
@@ -69,7 +69,7 @@ export default function NotificationActions() {
                                         show: true,
                                     })
                                 }
-                                className="block w-full px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900 data-[focus]:outline-none"
+                                className="block w-full cursor-pointer px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900 data-[focus]:outline-hidden"
                             >
                                 Clear All
                             </button>

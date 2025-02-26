@@ -64,13 +64,16 @@ export default function IndexFilter({ filters, setFilters, resetFilters }: Index
                                 numberOfFilters() > 0 || isFilterShowing ? 'text-gray-900' : 'text-gray-500',
                             )}
                         >
-                            <DisclosureButton className="group flex items-center font-medium" onClick={() => setIsFilterShowing((prev) => !prev)}>
+                            <DisclosureButton
+                                className="group flex cursor-pointer items-center font-medium"
+                                onClick={() => setIsFilterShowing((prev) => !prev)}
+                            >
                                 <FunnelIcon aria-hidden="true" className="mr-2 size-5 flex-none" />
                                 <span>{numberOfFilters() + ' Filters'}</span>
                             </DisclosureButton>
                         </div>
                         <div className="pl-6">
-                            <button type="button" className="text-gray-500 hover:text-gray-900" onClick={() => resetFilters()}>
+                            <button type="button" className="cursor-pointer text-gray-500 hover:text-gray-900" onClick={() => resetFilters()}>
                                 Clear all
                             </button>
                         </div>
@@ -81,7 +84,7 @@ export default function IndexFilter({ filters, setFilters, resetFilters }: Index
                         <div className="grid grid-cols-1 items-stretch gap-x-6 gap-y-6 md:grid-cols-4 md:gap-x-6">
                             {Object.entries(filters).map(([filterName, filter], filterIndex) => (
                                 <>
-                                    <fieldset key={filterIndex + filterName} className="transparent-scrollbar max-h-64 space-y-4 overflow-y-scroll">
+                                    <fieldset key={filterIndex + filterName} className="max-h-64 space-y-4 overflow-y-scroll">
                                         <legend className="block text-lg font-medium">{uppercaseWordFormat(filterName)}</legend>
                                         {filterName === 'created_at' ? (
                                             <>

@@ -108,14 +108,14 @@ export default function WitnessStage({ formData, setFormData, setShowButtons }: 
                                 setWitnessFormVisible((prev) => !prev);
                                 setShowButtons?.((prev) => !prev);
                             }}
-                            className="mr-16 items-center gap-x-2 rounded-md px-3.5 py-2.5 pr-3 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                            className="mr-16 items-center gap-x-2 rounded-md px-3.5 py-2.5 pr-3 text-sm font-semibold text-white shadow-xs focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                         >
                             Cancel
                         </DangerButton>
                         <PrimaryButton
                             type="button"
                             onClick={addPerson}
-                            className="items-center gap-x-2 rounded-md px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                            className="items-center gap-x-2 rounded-md px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                         >
                             Add Witness
                         </PrimaryButton>
@@ -133,7 +133,7 @@ export default function WitnessStage({ formData, setFormData, setShowButtons }: 
                                 setWitnessFormVisible((prev) => !prev);
                                 setShowButtons?.((prev) => !prev);
                             }}
-                            className="my-2 flex items-center justify-center gap-x-2 rounded-md px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                            className="my-2 flex items-center justify-center gap-x-2 rounded-md px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                         >
                             Add a Witness
                             <PlusIcon aria-hidden="true" className="size-3" />

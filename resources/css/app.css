@@ -37,20 +37,25 @@
 }
 
 @layer base {
-    .transparent-scrollbar {
-        /* This will apply the transparent background to the scrollbar */
-        &::-webkit-scrollbar {
-            width: 3px;
-        }
-        &::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        &::-webkit-scrollbar-thumb {
-            background: #888;
-            border-radius: 10px;
-        }
-        &::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
+    /* Scroll bar stylings */
+    ::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 5px;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555;
     }
 }

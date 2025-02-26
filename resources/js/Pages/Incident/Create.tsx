@@ -1,3 +1,5 @@
+import DangerButton from '@/Components/DangerButton';
+import PrimaryButton from '@/Components/PrimaryButton';
 import dateFormat from '@/Filters/dateFormat';
 import GuestLayout from '@/Layouts/GuestLayout';
 import AffectedPartyStage from '@/Pages/Incident/Stages/AffectedPartyStage';
@@ -164,34 +166,21 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
 
                     <div className="flex justify-around p-6">
                         {completedSteps > 0 && showButtons && (
-                            <button
-                                type="button"
-                                onClick={prevStep}
-                                className="bg-upei-red-400 hover:bg-upei-red-600 rounded px-4 py-2 font-bold text-white"
-                            >
+                            <DangerButton type="button" onClick={prevStep}>
                                 Back
-                            </button>
+                            </DangerButton>
                         )}
 
                         {completedSteps === numberOfSteps - 1 && showButtons && (
-                            <button
-                                type="button"
-                                disabled={processing}
-                                onClick={submit}
-                                className="bg-upei-green-500 hover:bg-upei-green-700 rounded px-4 py-2 font-bold text-white"
-                            >
+                            <PrimaryButton type="button" onClick={submit} disabled={processing}>
                                 Submit
-                            </button>
+                            </PrimaryButton>
                         )}
 
                         {remainingSteps > 0 && remainingSteps < numberOfSteps && showButtons && (
-                            <button
-                                type="button"
-                                onClick={nextStep}
-                                className="bg-upei-green-500 hover:bg-upei-green-700 rounded px-4 py-2 font-bold text-white"
-                            >
+                            <PrimaryButton type="button" onClick={nextStep}>
                                 Next
-                            </button>
+                            </PrimaryButton>
                         )}
                     </div>
                 </>

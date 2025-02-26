@@ -47,7 +47,7 @@ export default function NotificationList({ notifications, title }: NotificationL
                                     e.stopPropagation();
                                     deleteNotification(notification.id);
                                 }}
-                                className="p-2"
+                                className="cursor-pointer p-2"
                             >
                                 <TrashIcon className="text-upei-red-500 hover:text-upei-red-700 size-6" />
                             </button>

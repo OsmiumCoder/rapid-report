@@ -29,13 +29,14 @@ export default function Notifications() {
 
                 {notifications && notifications?.length > 0 ? (
                     <>
-                        {unreadNotifications.length > 0 && <NotificationList notifications={unreadNotifications} title="New" />}
+                        {unreadNotifications.length > 0 && <NotificationList notifications={unreadNotifications} title="Unread" />}
 
-                        {readNotifications.length > 0 && <NotificationList notifications={readNotifications} title="Seen" />}
+                        {readNotifications.length > 0 && <NotificationList notifications={readNotifications} title="Read" />}
+
                         {notifications_paginator && notifications_paginator.current_page < notifications_paginator.last_page && (
                             <WhenVisible
                                 always
-                                fallback={<LoadingIndicator className="my-2 w-full text-center" />}
+                                fallback={<LoadingIndicator />}
                                 params={{
                                     data: {
                                         notifications: notifications_paginator.current_page + 1,

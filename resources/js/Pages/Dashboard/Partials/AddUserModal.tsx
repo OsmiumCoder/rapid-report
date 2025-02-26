@@ -173,11 +173,8 @@ export default function AddUserModal({ roles, isOpen, onClose, assignToIncidentI
                 <div className="mt-6 flex justify-between">
                     <DangerButton onClick={() => closeModal(false)}>Cancel</DangerButton>
 
-                    <PrimaryButton className="ms-3" disabled={processing}>
-                        Add User
-                    </PrimaryButton>
+                    {processing ? <LoadingIndicator /> : <PrimaryButton className="ms-3">Add User</PrimaryButton>}
                 </div>
-                {processing && <LoadingIndicator className="w-full text-center" />}
             </form>
         </Modal>
     );
