@@ -59,17 +59,4 @@ class IncidentSubmittedNotification extends BaseNotification
             ->subject('Incident Submitted')
             ->markdown('mail.incident-submitted', ['url' => $this->url]);
     }
-
-    /**
-     * Get the array representation of the notification.
-     *
-     * @return array<string, mixed>
-     */
-    public function toArray(object $notifiable): array
-    {
-        return [
-            'url' => $this->url,
-            'message' => $this->message,
-        ];
-    }
 }

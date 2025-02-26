@@ -1,7 +1,7 @@
 <x-mail::message>
-# Incident Submitted
+# Overdue Follow Up
 
-A new incident has been submitted.
+Follow-up on the below incident is overdue.
 
 <x-mail::button :url="$url">
 View Incident

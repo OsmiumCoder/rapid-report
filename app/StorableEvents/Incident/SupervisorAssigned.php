@@ -6,6 +6,7 @@ use App\Enum\CommentType;
 use App\Models\Comment;
 use App\Models\Incident;
 use App\Models\User;
+use App\Notifications\Incident\IncidentFollowUpOverdueNotification;
 use App\Notifications\Incident\SupervisorAssignedNotification;
 use App\States\IncidentStatus\Assigned;
 use App\StorableEvents\StoredEvent;
@@ -13,6 +14,8 @@ use Illuminate\Support\Facades\Notification;
 
 class SupervisorAssigned extends StoredEvent
 {
+    private $supervisor;
+
     public function __construct(
         public int $supervisor_id,
     ) {
@@ -20,7 +23,11 @@ class SupervisorAssigned extends StoredEvent
 
     public function supervisor()
     {
-        return User::find($this->supervisor_id);
+        if (!$this->supervisor) {
+            $this->supervisor = User::find($this->supervisor_id);
+        }
+
+        return $this->supervisor;
     }
 
     public function handle()
@@ -48,5 +55,7 @@ class SupervisorAssigned extends StoredEvent
         $admin = User::find($this->metaData['user_id']);
 
         Notification::send($this->supervisor(), new SupervisorAssignedNotification($this->aggregateRootUuid(), $this->supervisor(), $admin));
+
+        Notification::send($this->supervisor(), new IncidentFollowUpOverdueNotification($this->aggregateRootUuid(), $this->supervisor()));
     }
 }

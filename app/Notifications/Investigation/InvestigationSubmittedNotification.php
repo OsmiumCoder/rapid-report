@@ -24,16 +24,6 @@ class InvestigationSubmittedNotification extends BaseNotification
     }
 
     /**
-     * Get the notification's delivery channels.
-     *
-     * @return array<int, string>
-     */
-    public function via(object $notifiable): array
-    {
-        return ['mail', 'database'];
-    }
-
-    /**
      * Get the mail representation of the notification.
      */
     public function toMail(object $notifiable): MailMessage
@@ -41,19 +31,5 @@ class InvestigationSubmittedNotification extends BaseNotification
         return (new MailMessage)
             ->subject('Investigation Submitted')
             ->markdown('mail.investigation-submitted', ['url' => $this->url]);
-    }
-
-    /**
-     * Get the array representation of the notification.
-     *
-     * @return array<string, mixed>
-     */
-    public function toArray(object $notifiable): array
-    {
-        return [
-            'url' => $this->url,
-            'message' => $this->message,
-            'supervisor_name' => $this->supervisor->name,
-        ];
     }
 }
