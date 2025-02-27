@@ -119,7 +119,7 @@ export default function AffectedPartyStage({ formData, setFormData, failedStep, 
 
                         <div className="mt-1">
                             <TextInput
-                                disabled={!formData.on_behalf && auth.user !== undefined}
+                                disabled={!formData.on_behalf && auth.user !== null}
                                 value={!formData.on_behalf && auth.user ? getNames()[0] : formData.first_name}
                                 onChange={(e) => {
                                     setFormData('first_name', e.target.value);
@@ -141,7 +141,7 @@ export default function AffectedPartyStage({ formData, setFormData, failedStep, 
 
                         <div className="mt-1">
                             <TextInput
-                                disabled={!formData.on_behalf && auth.user !== undefined}
+                                disabled={!formData.on_behalf && auth.user !== null}
                                 value={!formData.on_behalf && auth.user ? getNames()[1] : formData.last_name}
                                 onChange={(e) => {
                                     setFormData('last_name', e.target.value);
@@ -174,7 +174,7 @@ export default function AffectedPartyStage({ formData, setFormData, failedStep, 
                             />
                         </div>
                     </div>
-                    {(!auth.user || formData.on_behalf) && (
+                    {formData.on_behalf && (
                         <div className="mt-2">
                             <div>
                                 <label className="block text-sm/6 font-medium text-gray-900">Email</label>
@@ -208,7 +208,13 @@ export default function AffectedPartyStage({ formData, setFormData, failedStep, 
                         <div className="mt-1 grid grid-cols-1">
                             <SelectInput
                                 value={roles.find(({ value }) => value === formData?.role)?.name ?? roles[0].name}
-                                onChange={(e) => setFormData('role', roles.find(({ name }) => name === e.target.value)?.value)}
+                                onChange={(e) => {
+                                    const role = roles.find(({ name }) => name === e.target.value);
+                                    setFormData('role', role?.value);
+                                    if (role?.name === 'Contractor' || role?.name === 'Visitor') {
+                                        setFormData('upei_id', '');
+                                    }
+                                }}
                                 className="w-full"
                             >
                                 {roles.map(({ name }, index) => (
