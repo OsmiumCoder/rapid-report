@@ -15,33 +15,28 @@ export default function AffectedPartyStage({ formData, setFormData, failedStep, 
     });
 
     const getNames = useCallback(() => {
-        const names = auth.user.name.split(' ');
+        const names = auth.user?.name.split(' ');
+
+        if (!names) {
+            return [formData.first_name, formData.last_name];
+        }
+
         const firstName = names.length > 1 ? names[0] : auth.user.name;
         const lastName = names.length > 1 ? names[names.length - 1] : '.';
         return [firstName, lastName];
-    }, [auth.user.name]);
+    }, [auth.user?.name, formData.first_name, formData.last_name]);
 
     useEffect(() => {
+        const [firstName, lastName] = getNames();
         if (auth.user && !formData.on_behalf) {
-            setFormData('email', auth.user.email);
-        }
-
-        if (!formData.anonymous && !formData.on_behalf && auth.user) {
-            const [firstName, lastName] = getNames();
-
             setFormData('first_name', firstName);
             setFormData('last_name', lastName);
-            setFormData('phone', auth.user.phone ?? '');
-            setFormData('email', auth.user.email ?? '');
+            setFormData('phone', auth.user.phone);
+            setFormData('email', auth.user.email);
             setFormData('upei_id', auth.user.upei_id);
-        } else {
-            setFormData('first_name', '');
-            setFormData('last_name', '');
-            setFormData('email', '');
-            setFormData('phone', '');
-            setFormData('upei_id', '');
         }
-    }, [formData.on_behalf, auth.user, formData.anonymous, setFormData, getNames]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [formData.on_behalf]);
 
     const handleValidStep = () => {
         if (!formData.anonymous && !formData.on_behalf) {
@@ -51,6 +46,14 @@ export default function AffectedPartyStage({ formData, setFormData, failedStep, 
         } else {
             setValidStep(true);
         }
+    };
+
+    const resetAffectedPartyInformation = () => {
+        setFormData('first_name', '');
+        setFormData('last_name', '');
+        setFormData('phone', '');
+        setFormData('email', '');
+        setFormData('upei_id', '');
     };
 
     function checkForm() {
@@ -69,9 +72,12 @@ export default function AffectedPartyStage({ formData, setFormData, failedStep, 
                         onChange={(e) => {
                             setFormData('on_behalf', e.valueOf());
 
-                            if (!e.valueOf()) {
+                            if (e.valueOf()) {
+                                resetAffectedPartyInformation();
+                            } else {
                                 setFormData('email', formData.reporters_email);
                             }
+
                             handleValidStep();
                         }}
                     />
@@ -90,10 +96,8 @@ export default function AffectedPartyStage({ formData, setFormData, failedStep, 
                             <ToggleSwitch
                                 checked={formData.on_behalf_anonymous}
                                 onChange={(e) => {
-                                    if (!e.valueOf) {
-                                        setFormData('email', '');
-                                    }
                                     setFormData('on_behalf_anonymous', e.valueOf());
+                                    resetAffectedPartyInformation();
                                     handleValidStep();
                                 }}
                             />
