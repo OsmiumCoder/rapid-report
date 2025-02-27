@@ -15,33 +15,30 @@ export default function AffectedPartyStage({ formData, setFormData, failedStep, 
     });
 
     const getNames = useCallback(() => {
-        const names = auth.user.name.split(' ');
+        const names = auth.user?.name.split(' ');
+
+        if (!names) {
+            return [formData.first_name, formData.last_name];
+        }
+
         const firstName = names.length > 1 ? names[0] : auth.user.name;
         const lastName = names.length > 1 ? names[names.length - 1] : '.';
         return [firstName, lastName];
-    }, [auth.user.name]);
+    }, [auth.user?.name, formData.first_name, formData.last_name]);
 
     useEffect(() => {
         if (auth.user && !formData.on_behalf) {
             setFormData('email', auth.user.email);
         }
 
-        if (!formData.anonymous && !formData.on_behalf && auth.user) {
-            const [firstName, lastName] = getNames();
+        const [firstName, lastName] = getNames();
 
-            setFormData('first_name', firstName);
-            setFormData('last_name', lastName);
-            setFormData('phone', auth.user.phone ?? '');
-            setFormData('email', auth.user.email ?? '');
-            setFormData('upei_id', auth.user.upei_id);
-        } else {
-            setFormData('first_name', '');
-            setFormData('last_name', '');
-            setFormData('email', '');
-            setFormData('phone', '');
-            setFormData('upei_id', '');
-        }
-    }, [formData.on_behalf, auth.user, formData.anonymous, setFormData, getNames]);
+        setFormData('first_name', firstName);
+        setFormData('last_name', lastName);
+        setFormData('phone', auth.user?.phone ?? formData.phone);
+        setFormData('email', auth.user?.email ?? formData.email);
+        setFormData('upei_id', auth.user?.upei_id ?? formData.upei_id);
+    }, [formData.on_behalf, auth.user, formData.anonymous, setFormData, getNames, formData.phone, formData.email, formData.upei_id]);
 
     const handleValidStep = () => {
         if (!formData.anonymous && !formData.on_behalf) {
