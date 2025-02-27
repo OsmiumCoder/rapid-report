@@ -27,18 +27,16 @@ export default function AffectedPartyStage({ formData, setFormData, failedStep, 
     }, [auth.user?.name, formData.first_name, formData.last_name]);
 
     useEffect(() => {
-        if (auth.user && !formData.on_behalf) {
-            setFormData('email', auth.user.email);
-        }
-
         const [firstName, lastName] = getNames();
-
-        setFormData('first_name', firstName);
-        setFormData('last_name', lastName);
-        setFormData('phone', auth.user?.phone ?? formData.phone);
-        setFormData('email', auth.user?.email ?? formData.email);
-        setFormData('upei_id', auth.user?.upei_id ?? formData.upei_id);
-    }, [formData.on_behalf, auth.user, formData.anonymous, setFormData, getNames, formData.phone, formData.email, formData.upei_id]);
+        if (auth.user && !formData.on_behalf) {
+            setFormData('first_name', firstName);
+            setFormData('last_name', lastName);
+            setFormData('phone', auth.user.phone);
+            setFormData('email', auth.user.email);
+            setFormData('upei_id', auth.user.upei_id);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [formData.on_behalf]);
 
     const handleValidStep = () => {
         if (!formData.anonymous && !formData.on_behalf) {
@@ -48,6 +46,14 @@ export default function AffectedPartyStage({ formData, setFormData, failedStep, 
         } else {
             setValidStep(true);
         }
+    };
+
+    const resetAffectedPartyInformation = () => {
+        setFormData('first_name', '');
+        setFormData('last_name', '');
+        setFormData('phone', '');
+        setFormData('email', '');
+        setFormData('upei_id', '');
     };
 
     function checkForm() {
@@ -66,9 +72,12 @@ export default function AffectedPartyStage({ formData, setFormData, failedStep, 
                         onChange={(e) => {
                             setFormData('on_behalf', e.valueOf());
 
-                            if (!e.valueOf()) {
+                            if (e.valueOf()) {
+                                resetAffectedPartyInformation();
+                            } else {
                                 setFormData('email', formData.reporters_email);
                             }
+
                             handleValidStep();
                         }}
                     />
@@ -87,10 +96,8 @@ export default function AffectedPartyStage({ formData, setFormData, failedStep, 
                             <ToggleSwitch
                                 checked={formData.on_behalf_anonymous}
                                 onChange={(e) => {
-                                    if (!e.valueOf) {
-                                        setFormData('email', '');
-                                    }
                                     setFormData('on_behalf_anonymous', e.valueOf());
+                                    resetAffectedPartyInformation();
                                     handleValidStep();
                                 }}
                             />
