@@ -27,16 +27,33 @@ export default function TopBar({ onClick }: { onClick: () => void }) {
 
     const notificationButtonRef = useRef<HTMLButtonElement>(null) as RefObject<HTMLButtonElement>;
 
+    const handleDismissNotificationMenu = () => {
+        start();
+        setIsNotificationOpen(false);
+    };
+
     const notificationRef = useDismiss<HTMLDivElement>({
-        onDismiss: () => setIsNotificationOpen(false),
+        onDismiss: handleDismissNotificationMenu,
         ignoreRefs: [notificationButtonRef, modalRef],
     });
 
-    usePoll(1000, { only: ['notifications', 'notifications_paginator'], reset: ['notifications', 'notifications_paginator'] });
+    const { start, stop } = usePoll(1000, {
+        only: ['notifications', 'notifications_paginator'],
+        reset: ['notifications', 'notifications_paginator'],
+    });
 
     useEffect(() => {
         setHasUnreadNotifications(notifications?.some(({ read_at }) => read_at === null) ?? false);
     }, [notifications]);
+
+    const handleOpenNotifications = () => {
+        if (isNotificationOpen) {
+            start();
+        } else {
+            stop();
+        }
+        setIsNotificationOpen((prev) => !prev);
+    };
 
     return (
         <>
@@ -63,7 +80,7 @@ export default function TopBar({ onClick }: { onClick: () => void }) {
                                 ref={notificationButtonRef}
                                 type="button"
                                 className="cursor-pointer text-gray-400 hover:text-gray-500"
-                                onClick={() => setIsNotificationOpen((prev) => !prev)}
+                                onClick={handleOpenNotifications}
                             >
                                 <span className="sr-only">View notifications</span>
                                 <BellIcon aria-hidden="true" className="size-6" />
