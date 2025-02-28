@@ -5,6 +5,7 @@ import RootCauseAnalysisInformationPanel from '@/Pages/RootCauseAnalysis/Partial
 import { Incident } from '@/types/incident/Incident';
 import { RootCauseAnalysis } from '@/types/rootCauseAnalysis/RootCauseAnalysis';
 import { Head, usePage } from '@inertiajs/react';
+import ActivityLog from "@/Pages/Incident/Partials/ShowComponents/ActivityLog";
 
 export default function Show({ rca }: { rca: RootCauseAnalysis; incident: Incident }) {
     const { user } = usePage().props.auth;
@@ -22,6 +23,11 @@ export default function Show({ rca }: { rca: RootCauseAnalysis; incident: Incide
                     >
                         {user.roles.some((role) => role.name === 'admin') && <RootCauseAnalysisAdminActions rca={rca} />}
                         <RootCauseAnalysisInformationPanel rca={rca} />
+                        {user.roles.some((role) => role.name === 'admin' || role.name === 'supervisor') && (
+                            <ActivityLog
+                                incident={rca.incident}
+                            />
+                        )}
                     </div>
                 </div>
             </main>

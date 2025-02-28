@@ -5,6 +5,7 @@ import InvestigationInformationPanel from '@/Pages/Investigation/Partials/ShowCo
 import { PageProps } from '@/types';
 import { Investigation } from '@/types/investigation/Investigation';
 import { Head, usePage } from '@inertiajs/react';
+import ActivityLog from "@/Pages/Incident/Partials/ShowComponents/ActivityLog";
 
 interface ShowProps extends PageProps {
     investigation: Investigation;
@@ -27,6 +28,11 @@ export default function Show({ investigation }: PageProps<ShowProps>) {
                             {user.roles.some((role) => role.name === 'admin') && <InvestigationAdminActions investigation={investigation} />}
 
                             <InvestigationInformationPanel investigation={investigation} />
+                            {user.roles.some((role) => role.name === 'admin' || role.name === 'supervisor') && (
+                                <ActivityLog
+                                    incident={investigation.incident}
+                                />
+                            )}
                         </div>
                     </div>
                 </main>

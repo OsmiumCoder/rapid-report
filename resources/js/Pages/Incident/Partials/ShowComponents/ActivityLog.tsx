@@ -5,40 +5,44 @@ import ActionComment from '@/Pages/Incident/Partials/ShowComponents/ActivityLogC
 import NoteComment from '@/Pages/Incident/Partials/ShowComponents/ActivityLogComponents/CommentComponents/NoteComment';
 import { Comment } from '@/types/Comment';
 import { FormEvent, useEffect, useRef } from 'react';
+import {useForm} from "@inertiajs/react";
+import {Incident} from "@/types/incident/Incident";
 
 interface ActivityLogProps {
-    comments: Comment[];
-    addComment: (e: FormEvent<HTMLFormElement>) => void;
-    setData: ((data: { content: string }) => void) &
-        ((
-            data: (previousData: { content: string }) => {
-                content: string;
-            },
-        ) => void) &
-        (<K extends keyof { content: string }>(key: K, value: { content: string }[K]) => void);
-    processing: boolean;
-    data: { content: string };
+  incident: Incident
 }
 
-export default function ActivityLog({ comments, addComment, setData, processing, data }: ActivityLogProps) {
+export default function ActivityLog({ incident}: ActivityLogProps) {
+    const { data, setData, post, processing, reset } = useForm({
+        content: '',
+    });
+
+    function addComment(e: FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+        post(route('incidents.comments.store', { incident: incident.slug }), {
+            preserveScroll: true,
+            onSuccess: () => reset(),
+        });
+    }
+
     const commentFormRef = useRef<HTMLUListElement>(null);
 
     useEffect(() => {
         if (commentFormRef.current) {
             commentFormRef.current.scrollTop = commentFormRef.current.scrollHeight;
         }
-    }, [comments]);
+    }, [incident.comments]);
 
     return (
         <>
             <div className="rounded-lg bg-white p-5 shadow-xs ring-1 ring-gray-900/5 lg:col-start-3">
                 <h2 className="text-sm/6 font-semibold text-gray-900">Activity</h2>
                 <ul ref={commentFormRef} role="list" className="mt-6 max-h-[55rem] space-y-6 overflow-y-scroll">
-                    {comments.map((comment, index) => (
+                    {incident.comments.map((comment, index) => (
                         <li key={index} className="relative flex gap-x-4">
                             <div
                                 className={classNames(
-                                    index === comments.length - 1 ? 'h-6' : '-bottom-6',
+                                    index === incident.comments.length - 1 ? 'h-6' : '-bottom-6',
                                     'absolute top-0 left-0 flex w-6 justify-center',
                                 )}
                             >

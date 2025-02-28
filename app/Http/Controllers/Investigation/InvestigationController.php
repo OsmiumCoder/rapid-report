@@ -48,7 +48,7 @@ class InvestigationController extends Controller
     {
         $this->authorize('view', $investigation);
 
-        return Inertia::render('Investigation/Show', ['investigation' => $investigation->load(['incident', 'supervisor'])]);
+        return Inertia::render('Investigation/Show', ['investigation' => $investigation->load(['incident.comments.user', 'supervisor'])]);
     }
 
     /**

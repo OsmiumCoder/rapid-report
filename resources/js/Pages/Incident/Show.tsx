@@ -21,17 +21,7 @@ interface ShowProps extends PageProps {
 export default function Show({ auth, incident, supervisors, roles, canRequestReview, canProvideFollowup }: PageProps<ShowProps>) {
     const user = auth.user;
 
-    const { data, setData, post, processing, reset } = useForm({
-        content: '',
-    });
 
-    function addComment(e: FormEvent<HTMLFormElement>) {
-        e.preventDefault();
-        post(route('incidents.comments.store', { incident: incident.slug }), {
-            preserveScroll: true,
-            onSuccess: () => reset(),
-        });
-    }
 
     useEffect(() => {
         // Refresh incidents prop (if exists) when browser back navigation occurs.
@@ -69,11 +59,7 @@ export default function Show({ auth, incident, supervisors, roles, canRequestRev
 
                             {user.roles.some((role) => role.name === 'admin' || role.name === 'supervisor') && (
                                 <ActivityLog
-                                    data={data}
-                                    setData={setData}
-                                    processing={processing}
-                                    comments={incident.comments}
-                                    addComment={addComment}
+                                   incident={incident}
                                 />
                             )}
                         </div>
