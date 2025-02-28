@@ -1,10 +1,10 @@
 import Badge from '@/Components/Badge';
 import Pagination from '@/Components/Pagination';
 import { IncidentStatus } from '@/Enums/IncidentStatus';
-import classNames from '@/Filters/classNames';
-import { incidentBadgeColor } from '@/Filters/incidentBadgeColor';
-import { nameFilter } from '@/Filters/nameFilter';
-import { uppercaseWordFormat } from '@/Filters/uppercaseWordFormat';
+import classNames from '@/Formatters/classNames';
+import { incidentBadgeColor } from '@/Formatters/incidentBadgeColor';
+import { nameFormat } from '@/Formatters/nameFormat';
+import { uppercaseWordFormat } from '@/Formatters/uppercaseWordFormat';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import IndexFilter from '@/Pages/Incident/Partials/IndexComponents/IndexFilter';
 import { descriptors } from '@/Pages/Incident/Stages/IncidentDropDownValues';
@@ -395,7 +395,7 @@ export default function Index({ incidents, indexType, currentFilters, currentSor
                                                     {new Date(incident.created_at).toLocaleDateString()}
                                                 </td>
                                                 <td className="w-full max-w-0 py-4 pr-3 pl-4 text-sm font-medium text-gray-900 md:w-auto md:max-w-none md:pl-6">
-                                                    {`${nameFilter(incident)[0]} ${nameFilter(incident)[1]}`}
+                                                    {`${nameFormat(incident)[0]} ${nameFormat(incident)[1]}`}
                                                     <dl className="font-normal md:hidden">
                                                         <dt className="sr-only">Descriptor</dt>
                                                         <dd className="mt-1 truncate text-gray-700 sm:hidden">{incident.descriptor}</dd>

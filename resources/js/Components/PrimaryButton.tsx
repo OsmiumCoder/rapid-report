@@ -1,4 +1,4 @@
-import classNames from '@/Filters/classNames';
+import classNames from '@/Formatters/classNames';
 import { ButtonHTMLAttributes } from 'react';
 
 export default function PrimaryButton({ className = '', children, ...props }: ButtonHTMLAttributes<HTMLButtonElement>) {
@@ -6,7 +6,7 @@ export default function PrimaryButton({ className = '', children, ...props }: Bu
         <button
             {...props}
             className={classNames(
-                'bg-upei-green-600 hover:bg-upei-green-500 focus-visible:outline-upei-green-600 cursor-pointer rounded-md px-3 py-2 text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2',
+                'bg-upei-green-500 hover:bg-upei-green-400 focus-visible:outline-upei-green-600 cursor-pointer rounded-md px-3 py-2 text-center text-sm font-semibold text-white shadow-xs focus-visible:outline focus-visible:outline-offset-2',
                 className,
             )}
         >

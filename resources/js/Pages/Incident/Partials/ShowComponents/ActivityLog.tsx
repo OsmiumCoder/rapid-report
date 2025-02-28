@@ -1,5 +1,5 @@
 import { CommentType } from '@/Enums/CommentType';
-import classNames from '@/Filters/classNames';
+import classNames from '@/Formatters/classNames';
 import AddCommentForm from '@/Pages/Incident/Partials/ShowComponents/ActivityLogComponents/AddCommentForm';
 import ActionComment from '@/Pages/Incident/Partials/ShowComponents/ActivityLogComponents/CommentComponents/ActionComment';
 import NoteComment from '@/Pages/Incident/Partials/ShowComponents/ActivityLogComponents/CommentComponents/NoteComment';

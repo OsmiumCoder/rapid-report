@@ -1,4 +1,4 @@
-import classNames from '@/Filters/classNames';
+import classNames from '@/Formatters/classNames';
 import NavigationDropDownItem from '@/Layouts/Partials/NavigationDropDownItem';
 import NavigationItem, { NavigationItemInterface } from '@/Layouts/Partials/NavigationItem';
 import { Role } from '@/types';

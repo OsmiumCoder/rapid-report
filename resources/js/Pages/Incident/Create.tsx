@@ -1,6 +1,6 @@
 import DangerButton from '@/Components/DangerButton';
 import PrimaryButton from '@/Components/PrimaryButton';
-import dateFormat from '@/Filters/dateFormat';
+import dateFormat from '@/Formatters/dateFormat';
 import GuestLayout from '@/Layouts/GuestLayout';
 import AffectedPartyStage from '@/Pages/Incident/Stages/AffectedPartyStage';
 import AnonymousStage from '@/Pages/Incident/Stages/AnonymousStage';

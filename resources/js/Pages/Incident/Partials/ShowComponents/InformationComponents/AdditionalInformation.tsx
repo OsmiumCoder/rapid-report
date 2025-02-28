@@ -1,5 +1,5 @@
-import timeSince from '@/Filters/timeSince';
-import { uppercaseWordFormat } from '@/Filters/uppercaseWordFormat';
+import timeSince from '@/Formatters/timeSince';
+import { uppercaseWordFormat } from '@/Formatters/uppercaseWordFormat';
 import { Incident } from '@/types/incident/Incident';
 
 export default function AdditionalInformation({ incident }: { incident: Incident }) {

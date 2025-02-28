@@ -1,4 +1,4 @@
-export default function validatePhoneInput(value: string) {
+export default function phoneNumberFormat(value: string) {
     value = value.replace(/[^0-9-]/g, '');
 
     if (value.length > 3 && value[3] !== '-') {

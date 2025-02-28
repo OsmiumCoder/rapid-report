@@ -1,4 +1,4 @@
-import classNames from '@/Filters/classNames';
+import classNames from '@/Formatters/classNames';
 import { RoleName } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 

@@ -1,8 +1,8 @@
 import DateInput from '@/Components/DateInput';
 import LabeledCheckbox from '@/Components/LabeledCheckbox';
-import classNames from '@/Filters/classNames';
-import dateFormat from '@/Filters/dateFormat';
-import { uppercaseWordFormat } from '@/Filters/uppercaseWordFormat';
+import classNames from '@/Formatters/classNames';
+import dateFormat from '@/Formatters/dateFormat';
+import { uppercaseWordFormat } from '@/Formatters/uppercaseWordFormat';
 import { Filter, FilterValue } from '@/Pages/Incident/Index';
 import { descriptors } from '@/Pages/Incident/Stages/IncidentDropDownValues';
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';

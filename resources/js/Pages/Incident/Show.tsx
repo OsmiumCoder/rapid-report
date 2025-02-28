@@ -7,7 +7,7 @@ import IncidentSupervisorActions from '@/Pages/Incident/Partials/ShowComponents/
 import IncidentUserActions from '@/Pages/Incident/Partials/ShowComponents/IncidentUserActions';
 import { PageProps, Role, User } from '@/types';
 import { Incident } from '@/types/incident/Incident';
-import { Head, router, useForm } from '@inertiajs/react';
+import { Head, router, useForm, usePoll } from '@inertiajs/react';
 import { FormEvent, useEffect } from 'react';
 
 interface ShowProps extends PageProps {
@@ -43,6 +43,9 @@ export default function Show({ auth, incident, supervisors, roles, canRequestRev
             window.removeEventListener('popstate', reloadIncidents);
         };
     }, []);
+
+    // Refresh file URLs every minute
+    usePoll(1000 * 60, { only: ['files'] });
 
     return (
         <AuthenticatedLayout>

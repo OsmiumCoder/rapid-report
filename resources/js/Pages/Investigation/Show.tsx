@@ -1,4 +1,4 @@
-import classNames from '@/Filters/classNames';
+import classNames from '@/Formatters/classNames';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import InvestigationAdminActions from '@/Pages/Investigation/Partials/ShowComponents/InvestigationAdminActions';
 import InvestigationInformationPanel from '@/Pages/Investigation/Partials/ShowComponents/InvestigationInformationPanel';

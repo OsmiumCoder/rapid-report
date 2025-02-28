@@ -1,4 +1,4 @@
-import dateTimeFormat from '@/Filters/dateTimeFormat';
+import dateTimeFormat from '@/Formatters/dateTimeFormat';
 import { Comment } from '@/types/Comment';
 import { InformationCircleIcon } from '@heroicons/react/20/solid';
 

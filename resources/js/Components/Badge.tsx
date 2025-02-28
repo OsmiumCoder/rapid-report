@@ -1,4 +1,4 @@
-import classNames from '@/Filters/classNames';
+import classNames from '@/Formatters/classNames';
 
 export type BadgeColor = 'gray' | 'red' | 'green' | 'blue' | 'yellow' | 'indigo' | 'purple' | 'pink';
 

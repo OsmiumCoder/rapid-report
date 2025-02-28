@@ -4,7 +4,7 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButtonDivider from '@/Components/PrimaryButtonDivider';
 import TextInput from '@/Components/TextInput';
-import classNames from '@/Filters/classNames';
+import classNames from '@/Formatters/classNames';
 import { RootCauseAnalysisComponentProps } from '@/Pages/RootCauseAnalysis/Create';
 import { RootCauseAnalysisData } from '@/types/rootCauseAnalysis/RootCauseAnalysisData';
 import { PlusIcon } from '@heroicons/react/20/solid';

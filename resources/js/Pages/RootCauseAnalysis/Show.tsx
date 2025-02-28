@@ -1,4 +1,4 @@
-import classNames from '@/Filters/classNames';
+import classNames from '@/Formatters/classNames';
 import Authenticated from '@/Layouts/AuthenticatedLayout';
 import RootCauseAnalysisAdminActions from '@/Pages/RootCauseAnalysis/Partials/ShowComponents/RootCauseAnalysisAdminActions';
 import RootCauseAnalysisInformationPanel from '@/Pages/RootCauseAnalysis/Partials/ShowComponents/RootCauseAnalysisInformationPanel';

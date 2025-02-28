@@ -6,8 +6,8 @@ import { Method } from '@/types/Method';
 import { Menu, MenuButton, MenuItem, MenuItems, Transition } from '@headlessui/react';
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 import { Bars3Icon, BellIcon, UserCircleIcon } from '@heroicons/react/24/outline';
-import { Link, usePage } from '@inertiajs/react';
-import { RefObject, useRef, useState } from 'react';
+import { Link, usePage, usePoll } from '@inertiajs/react';
+import { RefObject, useEffect, useRef, useState } from 'react';
 
 const userNavigation: { name: string; href: string; method?: Method }[] = [
     { name: 'Your profile', href: route('profile.edit') },
@@ -16,11 +16,14 @@ const userNavigation: { name: string; href: string; method?: Method }[] = [
 
 export default function TopBar({ onClick }: { onClick: () => void }) {
     const user = usePage().props.auth.user;
+    const { notifications } = usePage().props;
 
     const { modalRef } = useConfirmationModal();
 
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+
+    const [hasUnreadNotifications, setHasUnreadNotifications] = useState(notifications?.some(({ read_at }) => read_at === null) ?? false);
 
     const notificationButtonRef = useRef<HTMLButtonElement>(null) as RefObject<HTMLButtonElement>;
 
@@ -29,7 +32,12 @@ export default function TopBar({ onClick }: { onClick: () => void }) {
         ignoreRefs: [notificationButtonRef, modalRef],
     });
 
-    const hasUnreadNotifications = usePage().props.notifications?.some(({ read_at }) => read_at === null) ?? false;
+    usePoll(1000, { only: ['notifications', 'notifications_paginator'], reset: ['notifications', 'notifications_paginator'] });
+
+    useEffect(() => {
+        setHasUnreadNotifications(notifications?.some(({ read_at }) => read_at === null) ?? false);
+    }, [notifications]);
+
     return (
         <>
             <Searchbar isOpen={isSearchOpen} setIsOpen={setIsSearchOpen} />

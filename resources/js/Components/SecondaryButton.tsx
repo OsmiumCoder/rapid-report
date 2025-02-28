@@ -1,4 +1,4 @@
-import classNames from '@/Filters/classNames';
+import classNames from '@/Formatters/classNames';
 import { ButtonHTMLAttributes } from 'react';
 
 export default function SecondaryButton({ type = 'button', className = '', children, ...props }: ButtonHTMLAttributes<HTMLButtonElement>) {

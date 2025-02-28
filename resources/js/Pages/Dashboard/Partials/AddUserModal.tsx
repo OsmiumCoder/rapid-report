@@ -6,8 +6,8 @@ import Modal from '@/Components/Modal';
 import PrimaryButton from '@/Components/PrimaryButton';
 import SelectInput from '@/Components/SelectInput';
 import TextInput from '@/Components/TextInput';
-import { uppercaseWordFormat } from '@/Filters/uppercaseWordFormat';
-import validatePhoneInput from '@/Filters/validatePhoneInput';
+import phoneNumberFormat from '@/Formatters/phoneNumberFormat';
+import { uppercaseWordFormat } from '@/Formatters/uppercaseWordFormat';
 import { Role } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
@@ -150,7 +150,7 @@ export default function AddUserModal({ roles, isOpen, onClose, assignToIncidentI
                         value={data.phone}
                         className="mt-1 block w-full"
                         autoComplete="phone"
-                        onChange={(e) => setData('phone', validatePhoneInput(e.target.value))}
+                        onChange={(e) => setData('phone', phoneNumberFormat(e.target.value))}
                     />
 
                     <InputError message={errors.phone} className="mt-2" />

@@ -7,7 +7,7 @@ import { useState } from 'react';
 
 import { useConfirmationModal } from '@/Components/ConfirmationModal/ConfirmationModalProvider';
 import DangerButton from '@/Components/DangerButton';
-import dateTimeFormat from '@/Filters/dateTimeFormat';
+import dateTimeFormat from '@/Formatters/dateTimeFormat';
 import { closeIncident, reopenIncident, returnInvestigation, returnRCA } from '@/Helpers/Incident/statusUpdates';
 
 export default function StatusUpdate({ incident }: { incident: Incident }) {
