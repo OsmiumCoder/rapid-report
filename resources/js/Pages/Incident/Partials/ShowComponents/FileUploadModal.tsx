@@ -50,7 +50,7 @@ export default function FileUploadModal({ isOpen, onClose }: FileUploadModalProp
                 </PrimaryButton>
                 <InputError message={errors.files} />
                 {data.files.length > 0 && (
-                    <div className="mt-4 w-full space-y-4">
+                    <div className="mt-4 max-h-64 w-full space-y-4 overflow-y-scroll px-3">
                         {data.files.map((file, i) => (
                             <div key={i} className="flex items-center justify-between border-b border-gray-200 py-2">
                                 <div className="flex-1 text-sm text-gray-700">{file.name}</div>

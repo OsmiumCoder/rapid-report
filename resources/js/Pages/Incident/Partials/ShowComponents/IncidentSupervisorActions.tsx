@@ -21,13 +21,13 @@ export default function IncidentSupervisorActions({ incident, canRequestReview, 
     // TODO Remove once backend implemented
     incident.files = [
         {
-            name: 'report',
+            original_name: 'report',
             url: 'http://localhost:8080/test.doc',
             created_at: dayjs().toString(),
             extension: 'pdf',
         },
         {
-            name: 'report2',
+            original_name: 'report2',
             url: 'http://localhost:8080',
             created_at: dayjs().toString(),
             extension: 'doc',
@@ -91,7 +91,7 @@ export default function IncidentSupervisorActions({ incident, canRequestReview, 
                                             <a href={file.url} target="_blank" className="cursor-pointer text-sm text-blue-500 hover:text-blue-400">
                                                 <div className="mt-3 flex items-center">
                                                     <FileIcon extension={file.extension} className="mr-6 size-6" />
-                                                    {dateFormat(file.created_at)} - {file.name}
+                                                    {dateFormat(file.created_at)} - {file.original_name}
                                                 </div>
                                             </a>
                                         </div>
