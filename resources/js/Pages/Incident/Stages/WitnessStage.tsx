@@ -2,8 +2,8 @@ import DangerButton from '@/Components/DangerButton';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import WitnessList from '@/Components/WitnessList';
-import { isValidEmail } from '@/Filters/isValidEmail';
-import validatePhoneInput from '@/Filters/validatePhoneInput';
+import { isValidEmail } from '@/Formatters/isValidEmail';
+import phoneNumberFormat from '@/Formatters/phoneNumberFormat';
 import { StageProps } from '@/Pages/Incident/Stages/StageWrapper';
 import { Witness } from '@/types/incident/Witness';
 import { PlusIcon } from '@heroicons/react/20/solid';
@@ -91,7 +91,7 @@ export default function WitnessStage({ formData, setFormData, setShowButtons }: 
                                     onChange={(e) =>
                                         setWitnessInProgress((prev) => ({
                                             ...prev,
-                                            phone: validatePhoneInput(e.target.value),
+                                            phone: phoneNumberFormat(e.target.value),
                                         }))
                                     }
                                 />

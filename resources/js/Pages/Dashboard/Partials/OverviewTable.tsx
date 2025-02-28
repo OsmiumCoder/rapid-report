@@ -1,8 +1,8 @@
 import Badge from '@/Components/Badge';
-import dateFormat from '@/Filters/dateFormat';
-import { incidentBadgeColor } from '@/Filters/incidentBadgeColor';
-import { nameFilter } from '@/Filters/nameFilter';
-import { uppercaseWordFormat } from '@/Filters/uppercaseWordFormat';
+import dateFormat from '@/Formatters/dateFormat';
+import { incidentBadgeColor } from '@/Formatters/incidentBadgeColor';
+import { nameFormat } from '@/Formatters/nameFormat';
+import { uppercaseWordFormat } from '@/Formatters/uppercaseWordFormat';
 import { Incident } from '@/types/incident/Incident';
 import { Link } from '@inertiajs/react';
 
@@ -43,7 +43,7 @@ export default function OverviewTable({ incidents }: { incidents: Incident[] }) 
                                         key={incident.slug}
                                     >
                                         <td className="px-3 py-4 text-sm text-gray-500">
-                                            {nameFilter(incident)[0]} {nameFilter(incident)[1]}
+                                            {nameFormat(incident)[0]} {nameFormat(incident)[1]}
                                         </td>
 
                                         <td className="w-[65rem] px-3 py-4 text-sm text-gray-500">

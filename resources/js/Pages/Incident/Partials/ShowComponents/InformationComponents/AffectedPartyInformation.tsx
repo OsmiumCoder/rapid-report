@@ -1,8 +1,8 @@
-import { nameFilter } from '@/Filters/nameFilter';
+import { nameFormat } from '@/Formatters/nameFormat';
 import { Incident } from '@/types/incident/Incident';
 
 export default function AffectedPartyInformation({ incident }: { incident: Incident }) {
-    const [firstName, lastName] = nameFilter(incident);
+    const [firstName, lastName] = nameFormat(incident);
 
     return (
         <dl className="mt-6 border-t border-gray-900/5 pt-6 sm:pr-4">

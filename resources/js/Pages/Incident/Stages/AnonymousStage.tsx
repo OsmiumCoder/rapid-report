@@ -1,6 +1,6 @@
 import TextInput from '@/Components/TextInput';
 import ToggleSwitch from '@/Components/ToggleSwitch';
-import { isValidEmail } from '@/Filters/isValidEmail';
+import { isValidEmail } from '@/Formatters/isValidEmail';
 import { StageProps } from '@/Pages/Incident/Stages/StageWrapper';
 import { usePage } from '@inertiajs/react';
 

@@ -1,5 +1,5 @@
 import { IncidentType } from '@/Enums/IncidentType';
-import dateTimeFormat from '@/Filters/dateTimeFormat';
+import dateTimeFormat from '@/Formatters/dateTimeFormat';
 import { Incident } from '@/types/incident/Incident';
 
 export default function GeneralDescription({ incident }: { incident: Incident }) {
