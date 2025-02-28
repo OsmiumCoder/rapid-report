@@ -45,7 +45,7 @@ export default function Show({ auth, incident, supervisors, roles, canRequestRev
     }, []);
 
     // Refresh file URLs every minute
-    usePoll(1000, { only: ['files'] });
+    usePoll(1000 * 60, { only: ['files'] });
 
     return (
         <AuthenticatedLayout>
