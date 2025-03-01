@@ -25,21 +25,126 @@ use App\States\IncidentStatus\Opened;
 use App\States\IncidentStatus\Reopened;
 use App\States\IncidentStatus\Returned;
 use App\StorableEvents\Comment\CommentCreated;
+use App\StorableEvents\Incident\AdditionalInformationAdded;
+use App\StorableEvents\Incident\FileCreated;
+use App\StorableEvents\Incident\FilesUploaded;
 use App\StorableEvents\Incident\IncidentClosed;
 use App\StorableEvents\Incident\IncidentCreated;
 use App\StorableEvents\Incident\IncidentReopened;
+use App\StorableEvents\Incident\IncidentReviewRequested;
 use App\StorableEvents\Investigation\InvestigationReturned;
 use App\StorableEvents\Incident\SupervisorAssigned;
 use App\StorableEvents\Incident\SupervisorUnassigned;
+use App\StorableEvents\RootCauseAnalysis\RootCauseAnalysisReturned;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Spatie\EventSourcing\StoredEvents\ShouldBeStored;
 use Spatie\ModelStates\Exceptions\TransitionNotFound;
 use Tests\TestCase;
 
 class IncidentAggregateRootTest extends TestCase
 {
+    public function test_uploaded_files_are_stored()
+    {
+        Storage::fake('public');
+
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+        $this->actingAs($supervisor);
+
+        $incident = Incident::factory()->create();
+
+        IncidentAggregateRoot::retrieve($incident->id)
+            ->uploadFiles([
+                UploadedFile::fake()->image('file.jpg')->size(100),
+                UploadedFile::fake()->create('file.pdf')->size(100)
+            ])
+            ->persist();
+
+        Storage::assertCount('/'.$incident->id, 2);
+    }
+
+    public function test_upload_files_fires_file_upload_events()
+    {
+        Storage::fake('public');
+
+        $incident = Incident::factory()->create();
+
+        IncidentAggregateRoot::fake($incident->id)
+            ->when(function (IncidentAggregateRoot $incidentAggregateRoot) use ($incident): void {
+                $incidentAggregateRoot->uploadFiles([
+                    UploadedFile::fake()->create('file.pdf')->size(100)
+                ]);
+            })
+            ->assertRecorded(function (ShouldBeStored $event) use ($incident) {
+                if ($event instanceof FileCreated) {
+                    $this->assertEquals('file.pdf', $event->original_name);
+                    $this->assertEquals($incident->id, $event->path);
+                    $this->assertEquals('102400', $event->size);
+                    $this->assertEquals('application/pdf', $event->mime_type);
+                    $this->assertEquals('pdf', $event->extension);
+                    $this->assertEquals($incident->id, $event->fileable_id);
+                    $this->assertEquals(Incident::class, $event->fileable_type);
+                    return true;
+                } elseif ($event instanceof FilesUploaded) {
+                    $this->assertInstanceOf(FilesUploaded::class, $event);
+                    return true;
+                }
+
+                return false;
+            });
+    }
+
+    public function test_add_additional_information_fires_add_additional_information_event()
+    {
+        $incident = Incident::factory()->create([
+            'status' => InReview::class,
+        ]);
+
+        IncidentAggregateRoot::fake($incident->id)
+            ->when(function (IncidentAggregateRoot $incidentAggregateRoot): void {
+                $incidentAggregateRoot->addAdditionalInformation('info');
+            })
+            ->assertRecorded([
+                new AdditionalInformationAdded(
+                    additionalInformation: 'info'
+                ),
+            ]);
+    }
+
+    public function test_request_review_fires_incident_review_requested_event()
+    {
+        $incident = Incident::factory()->create([
+            'status' => InReview::class,
+        ]);
+
+        IncidentAggregateRoot::fake($incident->id)
+            ->when(function (IncidentAggregateRoot $incidentAggregateRoot): void {
+                $incidentAggregateRoot->requestReview();
+            })
+            ->assertRecorded([
+                new IncidentReviewRequested,
+            ]);
+    }
+
+    public function test_return_rca_fires_rca_returned_event()
+    {
+        $incident = Incident::factory()->create([
+            'status' => InReview::class,
+        ]);
+
+        IncidentAggregateRoot::fake($incident->id)
+            ->when(function (IncidentAggregateRoot $incidentAggregateRoot): void {
+                $incidentAggregateRoot->returnRCA();
+            })
+            ->assertRecorded([
+                new RootCauseAnalysisReturned,
+            ]);
+    }
+
     public function test_first_additional_information_on_incident_creates_new_array()
     {
         $user = User::factory()->create([

@@ -4,6 +4,7 @@ namespace Tests\Unit\Models;
 
 use App\Models\Incident;
 use App\Models\Investigation;
+use App\Models\RootCauseAnalysis;
 use App\Models\User;
 use App\States\IncidentStatus\Assigned;
 use App\States\IncidentStatus\Closed;
@@ -16,6 +17,19 @@ use Tests\TestCase;
 
 class IncidentTest extends TestCase
 {
+    public function test_incident_has_many_files_relation()
+    {
+        $incident = Incident::factory()->hasFiles(5)->create();
+
+        $this->assertCount(5, $incident->files);
+    }
+
+    public function test_incident_has_many_comments_relation()
+    {
+        $incident = Incident::factory()->hasComments(5)->create();
+
+        $this->assertCount(5, $incident->comments);
+    }
     public function test_slug_count_resets_on_year_change()
     {
         $incident = Incident::factory()->create();
@@ -55,6 +69,16 @@ class IncidentTest extends TestCase
         $sortedIncidentsStatus = $sortedIncidents->pluck('status')->toArray();
 
         $this->assertEquals(['reopened', 'returned', 'opened', 'assigned', 'in review','closed'], $sortedIncidentsStatus);
+    }
+
+    public function test_incident_has_many_rca_relation()
+    {
+        $incident = Incident::factory()->create();
+        $rca = RootCauseAnalysis::factory()->create(['incident_id' => $incident->id]);
+
+        $this->assertCount(1, $incident->rootCauseAnalyses);
+
+        $this->assertEquals($rca->id, $incident->rootCauseAnalyses->first()->id);
     }
 
     public function test_incident_has_one_supervisor_relation()

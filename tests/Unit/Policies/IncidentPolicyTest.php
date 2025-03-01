@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Policies;
 
+use App\Models\File;
 use App\Models\Incident;
 use App\Models\Investigation;
 use App\Models\RootCauseAnalysis;
@@ -17,6 +18,54 @@ use Tests\TestCase;
 
 class IncidentPolicyTest extends TestCase
 {
+    public function test_user_cant_download_files()
+    {
+        $user = User::factory()->create()->syncRoles('user');
+
+        $file = File::factory()
+            ->for(Incident::factory(), 'fileable')
+            ->for(User::factory(), 'user')
+            ->create();
+
+        $result = $this->getPolicy()->downloadFiles($user, $file);
+        $this->assertFalse($result);
+    }
+    public function test_supervisor_cant_download_not_owned_file()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
+        $file = File::factory()
+            ->for(Incident::factory(), 'fileable')
+            ->for(User::factory(), 'user')
+            ->create();
+
+        $result = $this->getPolicy()->downloadFiles($supervisor, $file);
+        $this->assertFalse($result);
+    }
+    public function test_supervisor_can_download_owned_file()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
+        $file = File::factory()
+            ->for(Incident::factory(), 'fileable')
+            ->for($supervisor, 'user')
+            ->create();
+
+        $result = $this->getPolicy()->downloadFiles($supervisor, $file);
+        $this->assertTrue($result);
+    }
+    public function test_admin_can_download_any_files()
+    {
+        $admin = User::factory()->create()->syncRoles('admin');
+
+        $file = File::factory()
+            ->for(Incident::factory(), 'fileable')
+            ->for(User::factory(), 'user')
+            ->create();
+
+        $result = $this->getPolicy()->downloadFiles($admin, $file);
+        $this->assertTrue($result);
+    }
     public function test_incident_reporter_can_add_additional_information()
     {
         $user = User::factory()->create([

@@ -4,6 +4,7 @@ use App\Http\Controllers\Incident\AssignedIncidentsController;
 use App\Http\Controllers\Incident\IncidentAdditionalInformationController;
 use App\Http\Controllers\Incident\IncidentCommentController;
 use App\Http\Controllers\Incident\IncidentController;
+use App\Http\Controllers\Incident\IncidentFileController;
 use App\Http\Controllers\Incident\IncidentStatusController;
 use App\Http\Controllers\Incident\OwnedIncidentsController;
 use App\Http\Controllers\Incident\SearchIncidentsController;
@@ -20,17 +21,36 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/incidents/owned', OwnedIncidentsController::class)->name('incidents.owned');
     Route::get('/incidents/assigned', AssignedIncidentsController::class)->name('incidents.assigned');
 
-    Route::patch('/incidents/{incident}/assign', [IncidentStatusController::class, 'assignSupervisor'])->name('incidents.assign-supervisor');
-    Route::patch('/incidents/{incident}/unassign', [IncidentStatusController::class, 'unassignSupervisor'])->name('incidents.unassign-supervisor');
-    Route::patch('/incidents/{incident}/return-investigation', [IncidentStatusController::class, 'returnInvestigation'])->name('incidents.return-investigation');
-    Route::patch('/incidents/{incident}/return-rca', [IncidentStatusController::class, 'returnRCA'])->name('incidents.return-rca');
-    Route::patch('/incidents/{incident}/close', [IncidentStatusController::class, 'closeIncident'])->name('incidents.close');
-    Route::patch('/incidents/{incident}/reopen', [IncidentStatusController::class, 'reopenIncident'])->name('incidents.reopen');
-    Route::patch('/incidents/{incident}/request-review', [IncidentStatusController::class, 'requestReview'])->name('incidents.request-review');
-    Route::patch('/incidents/{incident}/additional-information', IncidentAdditionalInformationController::class)->name('incidents.additional-information');
-    Route::resource('incidents', IncidentController::class)->except([
-        'create',
-        'store'
+    // Supervisor Assign & Unassign
+    Route::patch('/incidents/{incident}/assign', [IncidentStatusController::class, 'assignSupervisor'])
+        ->name('incidents.assign-supervisor');
+    Route::patch('/incidents/{incident}/unassign', [IncidentStatusController::class, 'unassignSupervisor'])
+        ->name('incidents.unassign-supervisor');
+
+    // Incident Status Changes
+    Route::patch('/incidents/{incident}/return-investigation', [IncidentStatusController::class, 'returnInvestigation'])
+        ->name('incidents.return-investigation');
+    Route::patch('/incidents/{incident}/return-rca', [IncidentStatusController::class, 'returnRCA'])
+        ->name('incidents.return-rca');
+    Route::patch('/incidents/{incident}/close', [IncidentStatusController::class, 'closeIncident'])
+        ->name('incidents.close');
+    Route::patch('/incidents/{incident}/reopen', [IncidentStatusController::class, 'reopenIncident'])
+        ->name('incidents.reopen');
+    Route::patch('/incidents/{incident}/request-review', [IncidentStatusController::class, 'requestReview'])
+        ->name('incidents.request-review');
+
+    // Additional Items on an Incident
+    Route::patch('/incidents/{incident}/additional-information', IncidentAdditionalInformationController::class)
+        ->name('incidents.additional-information');
+    Route::post('/incidents/{incident}/upload-files', [IncidentFileController::class, 'upload'])
+        ->name('incidents.upload-files');
+    Route::get('/incidents/{incident}/download-file/{file}', [IncidentFileController::class, 'download'])
+        ->name('incidents.download-files');
+
+
+    Route::resource('incidents', IncidentController::class)->only([
+        'index',
+        'show'
     ]);
 
     Route::post('/incidents/{incident}/comments', IncidentCommentController::class)->name('incidents.comments.store');

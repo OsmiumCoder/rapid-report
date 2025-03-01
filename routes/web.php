@@ -12,7 +12,7 @@ Route::get('/notification', function () {
     $investigation = \App\Models\Investigation::factory()->create();
     $rca = \App\Models\RootCauseAnalysis::factory()->create();
 
-    $incidentReceived = new \App\Mail\IncidentReceived;
+    $incidentReceived = new \App\Mail\IncidentReceived($incident->id);
     $userAdded = new \App\Mail\UserAdded;
 
     $incidentSubmitted = new \App\Notifications\Incident\IncidentSubmittedNotification(
@@ -47,14 +47,17 @@ Route::get('/notification', function () {
 
     $additionalInfo = new \App\Notifications\Incident\AdditionalInformationNotification($incident->id, 'Some additional information');
 
+    $filesUploaded = new \App\Notifications\Incident\FilesUploadedNotification($incident->id, $supervisor);
+
     // return $incidentReceived->render();
     // return $userAdded->render();
     // return $incidentSubmitted->toMail($supervisor);
     // return $investigationSubmitted->toMail($supervisor);
-    // return $investigationReturned->toMail();
-    // return $incidentAssigned->toMail();
+    // return $investigationReturned->toMail($supervisor);
+    // return $incidentAssigned->toMail($supervisor);
     // return $rcaSubmitted->toMail($supervisor);
-    return $additionalInfo->toMail();
+    // return $additionalInfo->toMail($supervisor);
+    return $filesUploaded->toMail($supervisor);
 
 });
 

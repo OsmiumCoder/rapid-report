@@ -8,7 +8,7 @@ use App\Notifications\Incident\AdditionalInformationNotification;
 use App\StorableEvents\StoredEvent;
 use Illuminate\Support\Facades\Notification;
 
-class AdditionalInformation extends StoredEvent
+class AdditionalInformationAdded extends StoredEvent
 {
     public function __construct(public string $additionalInformation)
     {

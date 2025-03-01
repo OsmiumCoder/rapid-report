@@ -3,11 +3,11 @@
 namespace Tests\Unit\StoreableEvents\Incident;
 
 use App\Models\Incident;
-use App\StorableEvents\Incident\AdditionalInformation;
+use App\StorableEvents\Incident\AdditionalInformationAdded;
 use Illuminate\Support\Carbon;
 use Tests\TestCase;
 
-class AdditionalInformationTest extends TestCase
+class AdditionalInformationAddedTest extends TestCase
 {
     public function test_first_additional_creates_new_array()
     {
@@ -15,7 +15,7 @@ class AdditionalInformationTest extends TestCase
 
         $this->assertNull($incident->additional_information);
 
-        $event = new AdditionalInformation("information");
+        $event = new AdditionalInformationAdded("information");
         $event->setAggregateRootUuid($incident->id);
 
         $event->handle();
@@ -40,7 +40,7 @@ class AdditionalInformationTest extends TestCase
 
         $this->assertCount(1, $incident->additional_information);
 
-        $event = new AdditionalInformation("information 2");
+        $event = new AdditionalInformationAdded("information 2");
         $event->setAggregateRootUuid($incident->id);
 
         $event->handle();

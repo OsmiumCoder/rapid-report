@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\File;
 use App\Models\Incident;
 use App\Models\User;
 use App\States\IncidentStatus\Assigned;
@@ -102,35 +103,9 @@ class IncidentPolicy
         return true;
     }
 
-    /**
-     * Determine whether the user can update the incident.
-     */
-    public function update(User $user, Incident $incident): bool
+    public function downloadFiles(User $user, File $file): bool
     {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can delete the incident.
-     */
-    public function delete(User $user, Incident $incident): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can restore the incident.
-     */
-    public function restore(User $user, Incident $incident): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can permanently delete the incident.
-     */
-    public function forceDelete(User $user, Incident $incident): bool
-    {
-        return false;
+        return $user->can('download any files') ||
+            ($user->can('download files') && $user->id == $file->user_id);
     }
 }
