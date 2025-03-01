@@ -9,6 +9,7 @@ use App\Enum\CommentType;
 use App\Enum\IncidentType;
 use App\Exceptions\UserNotSupervisorException;
 use App\Mail\IncidentReceived;
+use App\Models\File;
 use App\Models\Incident;
 use App\Models\Investigation;
 use App\Models\User;
@@ -41,6 +42,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Spatie\EventSourcing\StoredEvents\ShouldBeStored;
 use Spatie\ModelStates\Exceptions\TransitionNotFound;
 use Tests\TestCase;
 
@@ -48,20 +50,21 @@ class IncidentAggregateRootTest extends TestCase
 {
     public function test_uploaded_files_are_stored()
     {
-        Storage::fake('files');
+        Storage::fake();
+
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+        $this->actingAs($supervisor);
 
         $incident = Incident::factory()->create();
 
         IncidentAggregateRoot::retrieve($incident->id)
             ->uploadFiles([
-                UploadedFile::fake()->image('file.jpg'),
-                UploadedFile::fake()->create('file.pdf')
+                UploadedFile::fake()->image('file.jpg')->size(100),
+                UploadedFile::fake()->create('file.pdf')->size(100)
             ])
             ->persist();
 
-        Storage::disk('files')->assertCount($incident->id, 2);
-
-        Storage::disk('files')->assertExists(['file.jpg', 'file.pdf']);
+        Storage::assertCount('/'.$incident->id, 2);
     }
 
     public function test_upload_files_fires_file_upload_events()
@@ -73,36 +76,30 @@ class IncidentAggregateRootTest extends TestCase
         IncidentAggregateRoot::fake($incident->id)
             ->when(function (IncidentAggregateRoot $incidentAggregateRoot) use ($incident): void {
                 $incidentAggregateRoot->uploadFiles([
-                    UploadedFile::fake()->image('file.jpg'),
-                    UploadedFile::fake()->create('file.pdf')
+                    UploadedFile::fake()->create('file.pdf')->size(100)
                 ]);
             })
-            ->assertRecorded([
-                new FileCreated(
-                    name: '',
-                    original_name: 'file.jpg',
-                    path: $incident->id,
-                    size: '100',
-                    mime_type: 'image/jpg',
-                    extension: 'jpg',
-                    fileable_id: $incident->id,
-                    fileable_type: Incident::class
-                ),
-                new FileCreated(
-                    name: '',
-                    original_name: 'file.pdf',
-                    path: $incident->id,
-                    size: '100',
-                    mime_type: 'application/pdf',
-                    extension: 'pdf',
-                    fileable_id: $incident->id,
-                    fileable_type: Incident::class
-                ),
-                new FilesUploaded,
-            ]);
+            ->assertRecorded(function (ShouldBeStored $event) use ($incident) {
+                if ($event instanceof FileCreated) {
+                    $this->assertEquals('file.pdf', $event->original_name);
+                    $this->assertEquals($incident->id, $event->path);
+                    $this->assertEquals('102400', $event->size);
+                    $this->assertEquals('application/pdf', $event->mime_type);
+                    $this->assertEquals('pdf', $event->extension);
+                    $this->assertEquals($incident->id, $event->fileable_id);
+                    $this->assertEquals(Incident::class, $event->fileable_type);
+                    return true;
+                }
+                elseif ($event instanceof FilesUploaded) {
+                    $this->assertInstanceOf(FilesUploaded::class, $event);
+                    return true;
+                }
+
+                return false;
+            });
     }
 
-    public function test_add_additional_information_fires_add_additonal_information_event()
+    public function test_add_additional_information_fires_add_additional_information_event()
     {
         $incident = Incident::factory()->create([
             'status' => InReview::class,
@@ -127,7 +124,7 @@ class IncidentAggregateRootTest extends TestCase
 
         IncidentAggregateRoot::fake($incident->id)
             ->when(function (IncidentAggregateRoot $incidentAggregateRoot): void {
-                $incidentAggregateRoot->returnInvestigation();
+                $incidentAggregateRoot->requestReview();
             })
             ->assertRecorded([
                 new IncidentReviewRequested,

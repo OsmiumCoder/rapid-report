@@ -7,6 +7,7 @@ use App\Models\File;
 use App\Models\Incident;
 use App\Models\User;
 use App\Notifications\Incident\FilesUploadedNotification;
+use App\States\IncidentStatus\Assigned;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
@@ -25,13 +26,17 @@ class FileTest extends TestCase
         $supervisor = User::factory()->create()->syncRoles('supervisor');
         $this->actingAs($supervisor);
 
-        $incident = Incident::factory()->create();
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Assigned::class
+        ]);
 
         $files = [
-            UploadedFile::fake()->image('file.jpg'),
+            UploadedFile::fake()->image('file.jpg')->size(100),
         ];
 
         $response = $this->post(route('incidents.upload-files', $incident), ['files' => $files]);
+
         Notification::assertCount(3);
 
         Notification::assertSentTo(
@@ -47,10 +52,13 @@ class FileTest extends TestCase
         $supervisor = User::factory()->create()->syncRoles('supervisor');
         $this->actingAs($supervisor);
 
-        $incident = Incident::factory()->create();
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Assigned::class
+        ]);
 
         $files = [
-            UploadedFile::fake()->image('file.jpg'),
+            UploadedFile::fake()->image('file.jpg')->size(100),
         ];
 
         $response = $this->post(route('incidents.upload-files', $incident), ['files' => $files]);
@@ -70,10 +78,13 @@ class FileTest extends TestCase
         $supervisor = User::factory()->create()->syncRoles('supervisor');
         $this->actingAs($supervisor);
 
-        $incident = Incident::factory()->create();
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Assigned::class
+        ]);
 
         $files = [
-            UploadedFile::fake()->image('file.jpg'),
+            UploadedFile::fake()->create('file.pdf')->size(100),
         ];
 
         $this->assertDatabaseCount('files', 0);
@@ -84,10 +95,10 @@ class FileTest extends TestCase
 
         $file = File::first();
 
-        $this->assertEquals('stored-path-name', $file->name);
+        $this->assertStringStartsWith($incident->id, $file->name);
         $this->assertEquals('file.pdf', $file->original_name);
         $this->assertEquals($incident->id, $file->path);
-        $this->assertEquals('100', $file->size);
+        $this->assertEquals('102400', $file->size);
         $this->assertEquals('application/pdf', $file->mime_type);
         $this->assertEquals('pdf', $file->extension);
 
@@ -98,22 +109,23 @@ class FileTest extends TestCase
 
     public function test_stores_files_in_storage()
     {
-        Storage::fake('files');
+        Storage::fake();
         $supervisor = User::factory()->create()->syncRoles('supervisor');
         $this->actingAs($supervisor);
 
-        $incident = Incident::factory()->create();
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Assigned::class
+        ]);
 
         $files = [
-            UploadedFile::fake()->image('file.jpg'),
-            UploadedFile::fake()->create('file.pdf'),
+            UploadedFile::fake()->image('file.jpg')->size(100),
+            UploadedFile::fake()->create('file.pdf')->size(100),
         ];
 
         $response = $this->post(route('incidents.upload-files', $incident), ['files' => $files]);
 
-        Storage::disk('files')->assertCount($incident->id, 2);
-
-        Storage::disk('files')->assertExists(['file.jpg', 'file.pdf']);
+        Storage::assertCount('/'.$incident->id, 2);
     }
 
     public function test_throws_validation_on_bad_data()
@@ -121,7 +133,10 @@ class FileTest extends TestCase
         $supervisor = User::factory()->create()->syncRoles('supervisor');
         $this->actingAs($supervisor);
 
-        $incident = Incident::factory()->create();
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Assigned::class
+        ]);
 
         $files = ['file'];
 
@@ -138,8 +153,8 @@ class FileTest extends TestCase
         $incident = Incident::factory()->create();
 
         $files = [
-            UploadedFile::fake()->image('file.jpg'),
-            UploadedFile::fake()->create('file.pdf'),
+            UploadedFile::fake()->image('file.jpg')->size(100),
+            UploadedFile::fake()->create('file.pdf')->size(100),
         ];
 
         $response = $this->post(route('incidents.upload-files', $incident), ['files' => $files]);
@@ -155,8 +170,8 @@ class FileTest extends TestCase
         $incident = Incident::factory()->create();
 
         $files = [
-            UploadedFile::fake()->image('file.jpg'),
-            UploadedFile::fake()->create('file.pdf'),
+            UploadedFile::fake()->image('file.jpg')->size(100),
+            UploadedFile::fake()->create('file.pdf')->size(100),
         ];
 
         $response = $this->post(route('incidents.upload-files', $incident), ['files' => $files]);

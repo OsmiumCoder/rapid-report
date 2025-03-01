@@ -15,15 +15,6 @@ class File extends Model
     use HasUuids;
     use SoftDeletes;
 
-    protected $appends = ['url'];
-
-    protected function url(): Attribute
-    {
-        return new Attribute(
-            get: fn () => Storage::temporaryUrl('', now()->addMinute()),
-        );
-    }
-
     public function fileable()
     {
         return $this->morphTo();
