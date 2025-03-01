@@ -7,6 +7,6 @@ The following incident has been closed.
     View Incident
 </x-mail::button>
 
-Best regards,
+Best regards,<br>
 UPEI Health, Safety, and Environment
 </x-mail::message>
