@@ -35,6 +35,7 @@ class EmailVerificationTest extends TestCase
         );
 
         $response = $this->actingAs($user)->get($verificationUrl);
+        dd($response);
 
         Event::assertDispatched(Verified::class);
         $this->assertTrue($user->fresh()->hasVerifiedEmail());
