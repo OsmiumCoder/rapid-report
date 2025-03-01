@@ -164,7 +164,10 @@ export default function Searchbar({ isOpen, setIsOpen }: CommandPaletteProps) {
                     transition
                     className="mx-auto max-w-xl transform overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black/5 transition-all data-[closed]:scale-95 data-[closed]:opacity-0 data-[enter]:duration-300 data-[enter]:ease-out data-[leave]:duration-200 data-[leave]:ease-in"
                 >
-                    <button className="mt-4 mb-2 ml-6 flex flex-row hover:cursor-pointer" onClick={() => setSortByMenuOpen((prev) => !prev)}>
+                    <button
+                        className="mt-4 mb-2 ml-6 flex flex-row hover:cursor-pointer hover:text-gray-700"
+                        onClick={() => setSortByMenuOpen((prev) => !prev)}
+                    >
                         <span className="mr-1">Search By</span>
                         {sortByMenuOpen ? <ChevronUpIcon className="size-6" /> : <ChevronDownIcon className="size-6" />}
                     </button>
