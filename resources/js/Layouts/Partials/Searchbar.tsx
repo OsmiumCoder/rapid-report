@@ -230,7 +230,9 @@ export default function Searchbar({ isOpen, setIsOpen }: CommandPaletteProps) {
                             </ComboboxOptions>
                         )}
 
-                        {!isLoading && search !== '' && incidents.length === 0 && <p className="p-4 text-sm text-gray-500">No incidents found.</p>}
+                        {!isLoading && search !== '' && incidents.length === 0 && (
+                            <p className="p-4 text-center text-sm text-gray-500">No incidents found.</p>
+                        )}
                         {isLoading && (
                             <div className="flex items-center justify-center py-2">
                                 <LoadingIndicator />
