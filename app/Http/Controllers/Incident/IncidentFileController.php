@@ -11,7 +11,7 @@ use Illuminate\Validation\Rules\File as FileRules;
 
 class IncidentFileController extends Controller
 {
-    public function upload(Request $request, Incident $incident)
+    public function __invoke(Request $request, Incident $incident)
     {
         $this->authorize('provideFollowUp', $incident);
 
@@ -31,10 +31,5 @@ class IncidentFileController extends Controller
             ->persist();
 
         return back();
-    }
-
-    public function download(Incident $incident, File $file)
-    {
-
     }
 }

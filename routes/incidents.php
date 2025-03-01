@@ -42,10 +42,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Additional Items on an Incident
     Route::patch('/incidents/{incident}/additional-information', IncidentAdditionalInformationController::class)
         ->name('incidents.additional-information');
-    Route::post('/incidents/{incident}/upload-files', [IncidentFileController::class, 'upload'])
+    Route::post('/incidents/{incident}/upload-files', IncidentFileController::class)
         ->name('incidents.upload-files');
-    Route::get('/incidents/{incident}/download-file/{file}', [IncidentFileController::class, 'download'])
-        ->name('incidents.download-files');
 
 
     Route::resource('incidents', IncidentController::class)->only([
