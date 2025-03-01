@@ -50,7 +50,7 @@ class IncidentAggregateRootTest extends TestCase
 {
     public function test_uploaded_files_are_stored()
     {
-        Storage::fake();
+        Storage::fake('public');
 
         $supervisor = User::factory()->create()->syncRoles('supervisor');
         $this->actingAs($supervisor);
@@ -69,7 +69,7 @@ class IncidentAggregateRootTest extends TestCase
 
     public function test_upload_files_fires_file_upload_events()
     {
-        Storage::fake();
+        Storage::fake('public');
 
         $incident = Incident::factory()->create();
 

@@ -12,7 +12,7 @@ class DownloadCSVTest extends TestCase
 {
     public function test_successful_download_csv()
     {
-        Storage::fake();
+        Storage::fake('public');
         $admin = User::factory()->create()->syncRoles('admin');
         $exportData = ReportExportData::validateAndCreate([
             'start' => now()->toString(),
