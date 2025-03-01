@@ -1,12 +1,13 @@
 import DangerButton from '@/Components/DangerButton';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
+import LoadingIndicator from '@/Components/LoadingIndicator';
 import Modal from '@/Components/Modal';
 import PrimaryButton from '@/Components/PrimaryButton';
 import fileSizeFormat from '@/Formatters/fileSizeFormat';
 import { Incident } from '@/types/incident/Incident';
 import { useForm } from '@inertiajs/react';
-import { useRef } from 'react';
+import { ChangeEvent, useRef } from 'react';
 
 interface FileUploadModalProps {
     incident: Incident;
@@ -15,7 +16,7 @@ interface FileUploadModalProps {
 }
 
 export default function FileUploadModal({ incident, isOpen, onClose }: FileUploadModalProps) {
-    const { data, setData, post, errors, processing, cancel, reset } = useForm({
+    const { data, setData, post, errors, processing, cancel, reset, clearErrors } = useForm({
         files: [] as File[],
     });
 
@@ -39,10 +40,20 @@ export default function FileUploadModal({ incident, isOpen, onClose }: FileUploa
         onClose();
     };
 
+    const handleAddFile = (e: ChangeEvent<HTMLInputElement>) => {
+        setData('files', e.target.files ? Array.from(e.target.files) : []);
+        clearErrors();
+    };
+
+    const handleDeleteFile = (index: number) => {
+        setData('files', [...data.files.slice(0, index), ...data.files.slice(index + 1)]);
+        clearErrors();
+    };
+
     return (
         <Modal show={isOpen} onClose={onClose}>
             <input
-                onChange={(e) => setData('files', e.target.files ? Array.from(e.target.files) : [])}
+                onChange={handleAddFile}
                 ref={fileInputRef}
                 className="absolute z-[-1] h-[0.1px] w-[0.1px] overflow-hidden opacity-0"
                 type="file"
@@ -61,13 +72,14 @@ export default function FileUploadModal({ incident, isOpen, onClose }: FileUploa
                     <div className="mt-4 max-h-64 w-full space-y-4 overflow-y-scroll px-3">
                         {data.files.map((file, i) => (
                             <div key={i} className="flex items-center justify-between border-b border-gray-200 py-2">
-                                <div className="flex-1 text-sm text-gray-700">{file.name}</div>
+                                <div>
+                                    <div className="flex-1 text-sm text-gray-700">{file.name}</div>
+                                    <InputError message={errors[`files.${i}` as keyof typeof data]} className="mb-1" />
+                                </div>
 
                                 <div className="flex items-center space-x-4">
                                     <div className="text-sm text-gray-500">{fileSizeFormat(file.size)}</div>
-                                    <DangerButton onClick={() => setData('files', [...data.files.slice(0, i), ...data.files.slice(i + 1)])}>
-                                        Delete
-                                    </DangerButton>
+                                    <DangerButton onClick={() => handleDeleteFile(i)}>Delete</DangerButton>
                                 </div>
                             </div>
                         ))}
@@ -82,6 +94,7 @@ export default function FileUploadModal({ incident, isOpen, onClose }: FileUploa
                         Submit
                     </PrimaryButton>
                 </div>
+                {processing && <LoadingIndicator />}
             </div>
         </Modal>
     );
