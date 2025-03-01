@@ -21,8 +21,13 @@ class IncidentFileController extends Controller
             'files.*' => [
                 'required',
                 FileRules::types(['pdf', 'doc', 'docx', 'txt', 'rtf', 'jpeg', 'jpg', 'png'])
-                    ->max('100mb')
+                    ->max('50mb')
             ],
+        ], [
+            'files.required' => 'You must upload at least one file.',
+            'files.*.required' => 'Each file is required.',
+            'files.*.max' => 'File must not exceed 50 MB.',
+            'files.*' => 'Only pdf, doc, docx, txt, rtf, jpeg, jpg, and png files are allowed.',
         ]);
 
         $files = $request->file('files');
