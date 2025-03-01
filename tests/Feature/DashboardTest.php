@@ -6,6 +6,7 @@ use App\Models\Incident;
 use App\Models\User;
 use App\States\IncidentStatus\Assigned;
 use App\States\IncidentStatus\Closed;
+use App\States\IncidentStatus\Returned;
 use Inertia\Testing\AssertableInertia;
 use Tests\TestCase;
 
@@ -244,7 +245,8 @@ class DashboardTest extends TestCase
         $supervisor = User::factory()->create()->syncRoles('supervisor');
         $this->actingAs($supervisor);
 
-        Incident::factory(10)->create(['supervisor_id' => $supervisor->id]);
+        Incident::factory(10)->create(['supervisor_id' => $supervisor->id, 'status' => Assigned::class]);
+        Incident::factory(10)->create(['supervisor_id' => $supervisor->id, 'status' => Returned::class]);
         Incident::factory(10)->create(['supervisor_id' => $supervisor->id, 'status' => Closed::class]);
         Incident::factory(10)->create();
 
@@ -255,8 +257,8 @@ class DashboardTest extends TestCase
 
         $response->assertInertia(function (AssertableInertia $page) {
             $page->component('Dashboard/SupervisorOverview')
-                ->has('closedCount')
-                ->where('closedCount', 10);
+                ->has('unresolvedCount')
+                ->where('unresolvedCount', 20);
         });
     }
 

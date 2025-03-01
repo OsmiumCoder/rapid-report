@@ -7,8 +7,8 @@ import IncidentSupervisorActions from '@/Pages/Incident/Partials/ShowComponents/
 import IncidentUserActions from '@/Pages/Incident/Partials/ShowComponents/IncidentUserActions';
 import { PageProps, Role, User } from '@/types';
 import { Incident } from '@/types/incident/Incident';
-import { Head, router, useForm, usePoll } from '@inertiajs/react';
-import { FormEvent, useEffect } from 'react';
+import { Head, router } from '@inertiajs/react';
+import { useEffect } from 'react';
 
 interface ShowProps extends PageProps {
     incident: Incident;
@@ -21,18 +21,6 @@ interface ShowProps extends PageProps {
 export default function Show({ auth, incident, supervisors, roles, canRequestReview, canProvideFollowup }: PageProps<ShowProps>) {
     const user = auth.user;
 
-    const { data, setData, post, processing, reset } = useForm({
-        content: '',
-    });
-
-    function addComment(e: FormEvent<HTMLFormElement>) {
-        e.preventDefault();
-        post(route('incidents.comments.store', { incident: incident.slug }), {
-            preserveScroll: true,
-            onSuccess: () => reset(),
-        });
-    }
-
     useEffect(() => {
         // Refresh incidents prop (if exists) when browser back navigation occurs.
         const reloadIncidents = () => router.reload({ only: ['incidents'] });
@@ -43,9 +31,6 @@ export default function Show({ auth, incident, supervisors, roles, canRequestRev
             window.removeEventListener('popstate', reloadIncidents);
         };
     }, []);
-
-    // Refresh file URLs every minute
-    usePoll(1000 * 60, { only: ['files'] });
 
     return (
         <AuthenticatedLayout>
@@ -59,7 +44,7 @@ export default function Show({ auth, incident, supervisors, roles, canRequestRev
                             {user.roles.some((role) => role.name === 'admin') && (
                                 <IncidentAdminActions incident={incident} supervisors={supervisors} roles={roles}></IncidentAdminActions>
                             )}
-                            {user.roles.some((role) => role.name === 'supervisor') && (
+                            {user.roles.some((role) => role.name === 'supervisor') && user.email !== incident.reporters_email && (
                                 <IncidentSupervisorActions
                                     incident={incident}
                                     canRequestReview={canRequestReview}
@@ -70,15 +55,7 @@ export default function Show({ auth, incident, supervisors, roles, canRequestRev
 
                             <IncidentInformationPanel incident={incident} />
 
-                            {user.roles.some((role) => role.name === 'admin' || role.name === 'supervisor') && (
-                                <ActivityLog
-                                    data={data}
-                                    setData={setData}
-                                    processing={processing}
-                                    comments={incident.comments}
-                                    addComment={addComment}
-                                />
-                            )}
+                            {user.roles.some((role) => role.name === 'admin' || role.name === 'supervisor') && <ActivityLog incident={incident} />}
                         </div>
                     </div>
                 </main>

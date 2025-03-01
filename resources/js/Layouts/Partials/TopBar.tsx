@@ -27,16 +27,33 @@ export default function TopBar({ onClick }: { onClick: () => void }) {
 
     const notificationButtonRef = useRef<HTMLButtonElement>(null) as RefObject<HTMLButtonElement>;
 
+    const handleDismissNotificationMenu = () => {
+        start();
+        setIsNotificationOpen(false);
+    };
+
     const notificationRef = useDismiss<HTMLDivElement>({
-        onDismiss: () => setIsNotificationOpen(false),
+        onDismiss: handleDismissNotificationMenu,
         ignoreRefs: [notificationButtonRef, modalRef],
     });
 
-    usePoll(1000, { only: ['notifications', 'notifications_paginator'], reset: ['notifications', 'notifications_paginator'] });
+    const { start, stop } = usePoll(1000 * 60, {
+        only: ['notifications', 'notifications_paginator'],
+        reset: ['notifications', 'notifications_paginator'],
+    });
 
     useEffect(() => {
         setHasUnreadNotifications(notifications?.some(({ read_at }) => read_at === null) ?? false);
     }, [notifications]);
+
+    const handleOpenNotifications = () => {
+        if (isNotificationOpen) {
+            start();
+        } else {
+            stop();
+        }
+        setIsNotificationOpen((prev) => !prev);
+    };
 
     return (
         <>
@@ -51,7 +68,7 @@ export default function TopBar({ onClick }: { onClick: () => void }) {
                 {/* Separator */}
                 <div aria-hidden="true" className="h-6 w-px bg-gray-900/10 lg:hidden" />
 
-                <div className="flex flex-1 items-center justify-end self-stretch lg:gap-x-6">
+                <div className="flex flex-1 items-center justify-end gap-x-4 self-stretch lg:gap-x-6">
                     {user.roles.some((role) => role.name === 'admin') && (
                         <button type="button" className="cursor-pointer text-gray-400 hover:text-gray-500" onClick={() => setIsSearchOpen(true)}>
                             <MagnifyingGlassIcon aria-hidden="true" className="pointer-events-none col-start-1 row-start-1 size-5 self-center" />
@@ -63,7 +80,7 @@ export default function TopBar({ onClick }: { onClick: () => void }) {
                                 ref={notificationButtonRef}
                                 type="button"
                                 className="cursor-pointer text-gray-400 hover:text-gray-500"
-                                onClick={() => setIsNotificationOpen((prev) => !prev)}
+                                onClick={handleOpenNotifications}
                             >
                                 <span className="sr-only">View notifications</span>
                                 <BellIcon aria-hidden="true" className="size-6" />

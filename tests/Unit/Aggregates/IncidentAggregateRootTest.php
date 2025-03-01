@@ -15,6 +15,7 @@ use App\Models\Investigation;
 use App\Models\User;
 use App\Notifications\Comment\CommentAdded;
 use App\Notifications\Incident\AdditionalInformationNotification;
+use App\Notifications\Incident\IncidentClosedNotification;
 use App\Notifications\Incident\IncidentReviewRequestNotification;
 use App\Notifications\Incident\IncidentSubmittedNotification;
 use App\Notifications\Investigation\InvestigationReturnedNotification;
@@ -1250,5 +1251,66 @@ class IncidentAggregateRootTest extends TestCase
 
         Notification::assertSentTo($supervisor, CommentAdded::class);
         Notification::assertSentTo($admins, CommentAdded::class);
+    }
+
+    public function test_close_incident_notifies_supervisor_when_set()
+    {
+        Notification::fake();
+
+        $admins = User::factory(3)->create()->each(function (User $user) {
+            $user->syncRoles('admin');
+        });
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => InReview::class,
+        ]);
+
+        IncidentAggregateRoot::retrieve($incident->id)
+            ->closeIncident()
+            ->persist();
+
+        Notification::assertSentTo($supervisor, IncidentClosedNotification::class);
+        Notification::assertSentTo($admins, IncidentClosedNotification::class);
+    }
+
+    public function test_close_incident_does_not_notify_supervisor_when_not_set()
+    {
+        Notification::fake();
+
+        $admins = User::factory(3)->create()->each(function (User $user) {
+            $user->syncRoles('admin');
+        });
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => null,
+            'status' => InReview::class,
+        ]);
+
+        IncidentAggregateRoot::retrieve($incident->id)
+            ->closeIncident()
+            ->persist();
+
+        Notification::assertNotSentTo($supervisor, IncidentClosedNotification::class);
+        Notification::assertSentTo($admins, IncidentClosedNotification::class);
+    }
+
+    public function test_close_incident_notifies_admin_team()
+    {
+        Notification::fake();
+
+        $admins = User::factory(3)->create()->each(function (User $user) {
+            $user->syncRoles('admin');
+        });
+
+        $incident = Incident::factory()->create(['status' => InReview::class,]);
+
+        IncidentAggregateRoot::retrieve($incident->id)
+            ->closeIncident()
+            ->persist();
+
+        Notification::assertSentTo($admins, IncidentClosedNotification::class);
     }
 }
