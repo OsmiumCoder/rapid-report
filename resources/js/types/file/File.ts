@@ -7,4 +7,5 @@ export interface File {
     size: number;
     mime_type: string;
     extension: FileExtension;
+    created_at: string;
 }
