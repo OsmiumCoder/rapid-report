@@ -10,6 +10,29 @@ use Tests\TestCase;
 
 class ShowTest extends TestCase
 {
+    public function test_investigation_has_comments_loaded(): void
+    {
+        $user = User::factory()->create([
+            'name' => 'Admin',
+            'email' => 'admin@b.com',
+        ])->syncRoles('admin');
+
+        $this->actingAs($user);
+
+        $incident = Incident::factory()->create();
+        $investigation = Investigation::factory()->create(['incident_id' => $incident->id]);
+
+        $response = $this->get(route('incidents.investigations.show', ['incident' => $incident, 'investigation' => $investigation]));
+
+        $response->assertOk();
+
+        $response->assertInertia(function (AssertableInertia $page) use ($investigation) {
+            return $page->component('Investigation/Show')
+                ->has('investigation')
+                ->where('investigation.id', $investigation->id)
+                ->has('investigation.incident.comments');
+        });
+    }
     public function test_admin_can_view_investigation_show_page()
     {
         $admin = User::factory()->create()->syncRoles('admin');
