@@ -199,7 +199,7 @@ class FileTest extends TestCase
 
     public function test_stores_files_in_storage()
     {
-        Storage::fake();
+        Storage::fake('public');
         $supervisor = User::factory()->create()->syncRoles('supervisor');
         $this->actingAs($supervisor);
 
