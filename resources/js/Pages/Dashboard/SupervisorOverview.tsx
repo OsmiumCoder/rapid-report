@@ -35,7 +35,10 @@ export default function SupervisorOverview({ unresolvedIncidents, incidentCount,
                                     JSON.stringify([
                                         {
                                             column: 'status',
-                                            values: [{ value: IncidentStatus.ASSIGNED, comparator: '=' }],
+                                            values: [
+                                                { value: IncidentStatus.ASSIGNED, comparator: '=' },
+                                                { value: IncidentStatus.RETURNED, comparator: '=' },
+                                            ],
                                         },
                                     ]),
                                 ),
