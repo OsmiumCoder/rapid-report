@@ -28,7 +28,7 @@ class FileCreatedTest extends TestCase
 
         $event->handle();
 
-        $this->assertDatabaseCount('files', 0);
+        $this->assertDatabaseCount('files', 1);
 
         $file = File::first();
 
@@ -53,7 +53,7 @@ class FileCreatedTest extends TestCase
 
         $event->handle();
 
-        $this->assertDatabaseCount('files', 0);
+        $this->assertDatabaseCount('files', 1);
 
         $file = File::first();
 
