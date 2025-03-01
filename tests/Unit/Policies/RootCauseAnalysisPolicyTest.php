@@ -8,10 +8,22 @@ use App\Models\Incident;
 use App\Policies\RootCauseAnalysisPolicy;
 use App\States\IncidentStatus\Assigned;
 use App\States\IncidentStatus\InReview;
+use App\States\IncidentStatus\Returned;
 use Tests\TestCase;
 
 class RootCauseAnalysisPolicyTest extends TestCase
 {
+    public function test_superisor_can_create_rca_when_in_returned_state()
+    {
+        $supervisor = User::factory()->create()->assignRole('supervisor');
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Returned::class
+        ]);
+
+        $this->assertTrue($this->getPolicy()->create($supervisor, $incident));
+    }
+
     public function test_admin_can_view_any_rca()
     {
         $admin = User::factory()->create()->syncRoles('admin');
