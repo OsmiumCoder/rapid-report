@@ -23,6 +23,8 @@ class FileCreated extends StoredEvent
     {
         $file = new File;
 
+        $file->user_id = $this->metaData['user_id'];
+
         $file->name = $this->name;
         $file->original_name = $this->original_name;
         $file->path = $this->path;

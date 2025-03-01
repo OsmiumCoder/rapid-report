@@ -16,6 +16,96 @@ use Tests\TestCase;
 
 class FileTest extends TestCase
 {
+    public function test_forbidden_supervisor_cant_download_not_owned_file()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+        $this->actingAs($supervisor);
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Assigned::class
+        ]);
+
+        $files = [
+            UploadedFile::fake()->create('file.pdf')->size(100),
+        ];
+
+        $response = $this->post(route('incidents.upload-files', $incident), ['files' => $files]);
+
+        $file = File::first();
+
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+        $this->actingAs($supervisor);
+
+        $response = $this->get(route('incidents.download-files', ['incident' => $incident->id, 'file' => $file->id]));
+
+        $response->assertForbidden();
+    }
+
+    public function test_supervisor_can_download_own_file()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+        $this->actingAs($supervisor);
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Assigned::class
+        ]);
+
+        $files = [
+            UploadedFile::fake()->create('file.pdf')->size(100),
+        ];
+
+        $response = $this->post(route('incidents.upload-files', $incident), ['files' => $files]);
+
+        $file = File::first();
+
+        $response = $this->get(route('incidents.download-files', ['incident' => $incident->id, 'file' => $file->id]));
+
+        $response->assertDownload($file->original_name);
+    }
+
+    public function test_user_forbidden_to_download_file()
+    {
+        $incident = Incident::factory()->create();
+        $file = File::factory()
+            ->for($incident, 'fileable')
+            ->for(User::factory(), 'user')
+            ->create();
+
+        $user = User::factory()->create()->syncRoles('user');
+        $this->actingAs($user);
+
+        $response = $this->get(route('incidents.download-files', ['incident' => $incident->id, 'file' => $file->id]));
+
+        $response->assertForbidden();
+    }
+
+    public function test_download_file_downloads_file()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+        $this->actingAs($supervisor);
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Assigned::class
+        ]);
+
+        $files = [
+            UploadedFile::fake()->create('file.pdf')->size(100),
+        ];
+
+        $response = $this->post(route('incidents.upload-files', $incident), ['files' => $files]);
+
+        $file = File::first();
+        $admin = User::factory()->create()->syncRoles('admin');
+        $this->actingAs($admin);
+
+        $response = $this->get(route('incidents.download-files', ['incident' => $incident->id, 'file' => $file->id]));
+
+        $response->assertDownload($file->original_name);
+    }
+
     public function test_admin_notified_files_uploaded()
     {
         Notification::fake();

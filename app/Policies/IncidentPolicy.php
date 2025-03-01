@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\File;
 use App\Models\Incident;
 use App\Models\User;
 use App\States\IncidentStatus\Assigned;
@@ -100,5 +101,11 @@ class IncidentPolicy
     public function create(User $user): bool
     {
         return true;
+    }
+
+    public function downloadFiles(User $user, File $file): bool
+    {
+        return $user->can('download any files') ||
+            ($user->can('download files') && $user->id == $file->user_id);
     }
 }

@@ -18,24 +18,9 @@ interface SupervisorActionsProps {
 export default function IncidentSupervisorActions({ incident, canRequestReview, canProvideFollowup }: SupervisorActionsProps) {
     const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
 
-    // TODO Remove once backend implemented
-    incident.files = [
-        {
-            original_name: 'report',
-            url: 'http://localhost:8080/test.doc',
-            created_at: dayjs().toString(),
-            extension: 'pdf',
-        },
-        {
-            original_name: 'report2',
-            url: 'http://localhost:8080',
-            created_at: dayjs().toString(),
-            extension: 'doc',
-        },
-    ];
     return (
         <>
-            <FileUploadModal isOpen={isUploadModalOpen} onClose={() => setIsUploadModalOpen(false)} />
+            <FileUploadModal isOpen={isUploadModalOpen} onClose={() => setIsUploadModalOpen(false)} incident={incident} />
             <div className="rounded-lg bg-white lg:col-start-3 lg:row-end-1">
                 <div className="rounded-lg shadow-xs ring-1 ring-gray-900/5">
                     <div className="flex flex-col flex-wrap items-center justify-between">
@@ -88,7 +73,11 @@ export default function IncidentSupervisorActions({ incident, canRequestReview, 
                                     Files
                                     {incident.files.map((file) => (
                                         <div key={file.url} className="font-normal">
-                                            <a href={file.url} target="_blank" className="cursor-pointer text-sm text-blue-500 hover:text-blue-400">
+                                            <a
+                                                href={route('incidents.download-files', { incident: incident.id, file: file.id })}
+                                                target="_blank"
+                                                className="cursor-pointer text-sm text-blue-500 hover:text-blue-400"
+                                            >
                                                 <div className="mt-3 flex items-center">
                                                     <FileIcon extension={file.extension} className="mr-6 size-6" />
                                                     {dateFormat(file.created_at)} - {file.original_name}

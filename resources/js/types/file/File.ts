@@ -1,5 +1,6 @@
 import { FileExtension } from '@/types/file/FileExtension';
 export interface File {
+    id: string;
     name: string;
     original_name: string;
     url: string;

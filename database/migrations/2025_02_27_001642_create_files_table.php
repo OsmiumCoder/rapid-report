@@ -13,6 +13,8 @@ return new class () extends Migration {
         Schema::create('files', function (Blueprint $table) {
             $table->uuid('id')->primary();
 
+            $table->foreignId('user_id')->constrained('users');
+
             $table->string('name');
             $table->string('original_name');
             $table->string('path');

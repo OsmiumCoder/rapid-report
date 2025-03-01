@@ -6,14 +6,16 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import fileSizeFormat from '@/Formatters/fileSizeFormat';
 import { useForm } from '@inertiajs/react';
 import { useRef } from 'react';
+import {Incident} from "@/types/incident/Incident";
 
 interface FileUploadModalProps {
+    incident: Incident;
     isOpen: boolean;
     onClose: () => void;
 }
 
-export default function FileUploadModal({ isOpen, onClose }: FileUploadModalProps) {
-    const { data, setData, errors, processing, cancel } = useForm({
+export default function FileUploadModal({ incident, isOpen, onClose }: FileUploadModalProps) {
+    const { data, setData, post, errors, processing, cancel, reset } = useForm({
         files: [] as File[],
     });
 
@@ -21,6 +23,9 @@ export default function FileUploadModal({ isOpen, onClose }: FileUploadModalProp
 
     const handleSubmit = () => {
         onClose();
+
+        post(route('incidents.upload-files', {incident: incident.id}))
+        reset()
     };
 
     const handleClose = () => {
@@ -54,10 +59,13 @@ export default function FileUploadModal({ isOpen, onClose }: FileUploadModalProp
                         {data.files.map((file, i) => (
                             <div key={i} className="flex items-center justify-between border-b border-gray-200 py-2">
                                 <div className="flex-1 text-sm text-gray-700">{file.name}</div>
-                                <div className="flex-2 text-sm text-gray-500">{fileSizeFormat(file.size)}</div>
-                                <DangerButton onClick={() => setData('files', [...data.files.slice(0, i), ...data.files.slice(i + 1)])}>
-                                    Delete
-                                </DangerButton>
+
+                                <div className='flex items-center space-x-4'>
+                                    <div className="text-sm text-gray-500">{fileSizeFormat(file.size)}</div>
+                                    <DangerButton onClick={() => setData('files', [...data.files.slice(0, i), ...data.files.slice(i + 1)])}>
+                                        Delete
+                                    </DangerButton>
+                                </div>
                             </div>
                         ))}
                     </div>

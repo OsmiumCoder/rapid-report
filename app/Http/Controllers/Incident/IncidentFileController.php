@@ -7,11 +7,12 @@ use App\Http\Controllers\Controller;
 use App\Models\File;
 use App\Models\Incident;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\File as FileRules;
 
 class IncidentFileController extends Controller
 {
-    public function __invoke(Request $request, Incident $incident)
+    public function upload(Request $request, Incident $incident)
     {
         $this->authorize('provideFollowUp', $incident);
 
@@ -31,5 +32,12 @@ class IncidentFileController extends Controller
             ->persist();
 
         return back();
+    }
+
+    public function download(Incident $incident, File $file)
+    {
+        $this->authorize('downloadFiles', [Incident::class, $file]);
+
+        return Storage::download($file->name, $file->original_name);
     }
 }
