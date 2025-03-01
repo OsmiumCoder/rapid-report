@@ -25,6 +25,8 @@ use App\States\IncidentStatus\Reopened;
 use App\States\IncidentStatus\Returned;
 use App\StorableEvents\Comment\CommentCreated;
 use App\StorableEvents\Incident\AdditionalInformationAdded;
+use App\StorableEvents\Incident\FileCreated;
+use App\StorableEvents\Incident\FilesUploaded;
 use App\StorableEvents\Incident\IncidentClosed;
 use App\StorableEvents\Incident\IncidentCreated;
 use App\StorableEvents\Incident\IncidentReopened;
@@ -33,15 +35,73 @@ use App\StorableEvents\Investigation\InvestigationReturned;
 use App\StorableEvents\Incident\SupervisorAssigned;
 use App\StorableEvents\Incident\SupervisorUnassigned;
 use App\StorableEvents\RootCauseAnalysis\RootCauseAnalysisReturned;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Spatie\ModelStates\Exceptions\TransitionNotFound;
 use Tests\TestCase;
 
 class IncidentAggregateRootTest extends TestCase
 {
+    public function test_uploaded_files_are_stored()
+    {
+        Storage::fake('files');
+
+        $incident = Incident::factory()->create();
+
+        IncidentAggregateRoot::retrieve($incident->id)
+            ->uploadFiles([
+                UploadedFile::fake()->image('file.jpg'),
+                UploadedFile::fake()->create('file.pdf')
+            ])
+            ->persist();
+
+        Storage::disk('files')->assertCount($incident->id, 2);
+
+        Storage::disk('files')->assertExists(['file.jpg', 'file.pdf']);
+    }
+
+    public function test_upload_files_fires_file_upload_events()
+    {
+        Storage::fake();
+
+        $incident = Incident::factory()->create();
+
+        IncidentAggregateRoot::fake($incident->id)
+            ->when(function (IncidentAggregateRoot $incidentAggregateRoot) use ($incident): void {
+                $incidentAggregateRoot->uploadFiles([
+                    UploadedFile::fake()->image('file.jpg'),
+                    UploadedFile::fake()->create('file.pdf')
+                ]);
+            })
+            ->assertRecorded([
+                new FileCreated(
+                    name: '',
+                    original_name: 'file.jpg',
+                    path: $incident->id,
+                    size: '100',
+                    mime_type: 'image/jpg',
+                    extension: 'jpg',
+                    fileable_id: $incident->id,
+                    fileable_type: Incident::class
+                ),
+                new FileCreated(
+                    name: '',
+                    original_name: 'file.pdf',
+                    path: $incident->id,
+                    size: '100',
+                    mime_type: 'application/pdf',
+                    extension: 'pdf',
+                    fileable_id: $incident->id,
+                    fileable_type: Incident::class
+                ),
+                new FilesUploaded,
+            ]);
+    }
+
     public function test_add_additional_information_fires_add_additonal_information_event()
     {
         $incident = Incident::factory()->create([
