@@ -9,7 +9,6 @@ use App\Enum\CommentType;
 use App\Enum\IncidentType;
 use App\Exceptions\UserNotSupervisorException;
 use App\Mail\IncidentReceived;
-use App\Models\File;
 use App\Models\Incident;
 use App\Models\Investigation;
 use App\Models\User;
@@ -90,8 +89,7 @@ class IncidentAggregateRootTest extends TestCase
                     $this->assertEquals($incident->id, $event->fileable_id);
                     $this->assertEquals(Incident::class, $event->fileable_type);
                     return true;
-                }
-                elseif ($event instanceof FilesUploaded) {
+                } elseif ($event instanceof FilesUploaded) {
                     $this->assertInstanceOf(FilesUploaded::class, $event);
                     return true;
                 }
