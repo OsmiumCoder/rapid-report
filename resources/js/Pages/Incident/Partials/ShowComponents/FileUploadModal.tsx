@@ -4,9 +4,9 @@ import InputLabel from '@/Components/InputLabel';
 import Modal from '@/Components/Modal';
 import PrimaryButton from '@/Components/PrimaryButton';
 import fileSizeFormat from '@/Formatters/fileSizeFormat';
+import { Incident } from '@/types/incident/Incident';
 import { useForm } from '@inertiajs/react';
 import { useRef } from 'react';
-import {Incident} from "@/types/incident/Incident";
 
 interface FileUploadModalProps {
     incident: Incident;
@@ -22,10 +22,13 @@ export default function FileUploadModal({ incident, isOpen, onClose }: FileUploa
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const handleSubmit = () => {
-        onClose();
-
-        post(route('incidents.upload-files', {incident: incident.id}))
-        reset()
+        post(route('incidents.upload-files', { incident: incident.id }), {
+            onSuccess: () => {
+                onClose();
+                reset();
+            },
+            onError: (err) => console.error(err),
+        });
     };
 
     const handleClose = () => {
@@ -60,7 +63,7 @@ export default function FileUploadModal({ incident, isOpen, onClose }: FileUploa
                             <div key={i} className="flex items-center justify-between border-b border-gray-200 py-2">
                                 <div className="flex-1 text-sm text-gray-700">{file.name}</div>
 
-                                <div className='flex items-center space-x-4'>
+                                <div className="flex items-center space-x-4">
                                     <div className="text-sm text-gray-500">{fileSizeFormat(file.size)}</div>
                                     <DangerButton onClick={() => setData('files', [...data.files.slice(0, i), ...data.files.slice(i + 1)])}>
                                         Delete
