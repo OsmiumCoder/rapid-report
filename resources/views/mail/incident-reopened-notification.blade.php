@@ -7,6 +7,6 @@ The following incident has been reopened.
 View Incident
 </x-mail::button>
 
-Thanks,<br>
+Best regards,<br>
 UPEI Health, Safety, and Environment
 </x-mail::message>
