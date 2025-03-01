@@ -15,6 +15,7 @@ use App\Models\User;
 use App\Notifications\Comment\CommentAdded;
 use App\Notifications\Incident\AdditionalInformationNotification;
 use App\Notifications\Incident\IncidentClosedNotification;
+use App\Notifications\Incident\IncidentReopenedNotification;
 use App\Notifications\Incident\IncidentReviewRequestNotification;
 use App\Notifications\Incident\IncidentSubmittedNotification;
 use App\Notifications\Investigation\InvestigationReturnedNotification;
@@ -1205,5 +1206,30 @@ class IncidentAggregateRootTest extends TestCase
             ->persist();
 
         Notification::assertSentTo($admins, IncidentClosedNotification::class);
+    }
+
+    public function test_reopened_incident_notifies_admins()
+    {
+        Notification::fake();
+
+        $admins = User::factory(3)->create()->each(function (User $user) {
+            $user->syncRoles('admin');
+        });
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+        $user = User::factory()->create()->syncRoles('user');
+
+        $incident = Incident::factory()->create([
+            'status' => Closed::class,
+            'supervisor_id' => $supervisor->id,
+            ]);
+
+        IncidentAggregateRoot::retrieve($incident->id)
+            ->reopenIncident()
+            ->persist();
+
+        Notification::assertCount(3);
+        Notification::assertSentTo($admins, IncidentReopenedNotification::class);
+        Notification::assertNotSentTo($supervisor, IncidentReopenedNotification::class);
+        Notification::assertNotSentTo($user, IncidentReopenedNotification::class);
     }
 }

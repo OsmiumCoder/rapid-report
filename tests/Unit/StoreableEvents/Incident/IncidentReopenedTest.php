@@ -5,10 +5,12 @@ namespace Tests\Unit\StoreableEvents\Incident;
 use App\Enum\CommentType;
 use App\Models\Incident;
 use App\Models\User;
+use App\Notifications\Incident\IncidentReopenedNotification;
 use App\States\IncidentStatus\Closed;
 use App\States\IncidentStatus\Opened;
 use App\States\IncidentStatus\Reopened;
 use App\StorableEvents\Incident\IncidentReopened;
+use Illuminate\Support\Facades\Notification;
 use Spatie\ModelStates\Exceptions\TransitionNotFound;
 use Tests\TestCase;
 
@@ -73,5 +75,33 @@ class IncidentReopenedTest extends TestCase
         $incident->refresh();
         $this->assertNull($incident->supervisor_id);
         $this->assertEquals(Reopened::class, $incident->status::class);
+    }
+
+    public function test_reopen_incident_notifies_admin_team()
+    {
+        Notification::fake();
+
+        $admins = User::factory(3)->create()->each(function (User $user) {
+            $user->syncRoles('admin');
+        });
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+        $user = User::factory()->create()->syncRoles('user');
+
+        $incident = Incident::factory()->create([
+            'status' => Closed::class,
+            'supervisor_id' => $supervisor->id,
+            ]);
+
+        $event = new IncidentReopened;
+        $event->setAggregateRootUuid($incident->id);
+
+        Notification::assertNothingSent();
+
+        $event->react();
+
+        Notification::assertCount(3);
+        Notification::assertSentTo($admins, IncidentReopenedNotification::class);
+        Notification::assertNotSentTo($supervisor, IncidentReopenedNotification::class);
+        Notification::assertNotSentTo($user, IncidentReopenedNotification::class);
     }
 }
