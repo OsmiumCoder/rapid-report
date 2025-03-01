@@ -37,7 +37,7 @@ export default function TopBar({ onClick }: { onClick: () => void }) {
         ignoreRefs: [notificationButtonRef, modalRef],
     });
 
-    const { start, stop } = usePoll(1000, {
+    const { start, stop } = usePoll(1000 * 60, {
         only: ['notifications', 'notifications_paginator'],
         reset: ['notifications', 'notifications_paginator'],
     });
