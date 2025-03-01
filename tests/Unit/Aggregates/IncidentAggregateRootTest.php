@@ -24,12 +24,15 @@ use App\States\IncidentStatus\Opened;
 use App\States\IncidentStatus\Reopened;
 use App\States\IncidentStatus\Returned;
 use App\StorableEvents\Comment\CommentCreated;
+use App\StorableEvents\Incident\AdditionalInformationAdded;
 use App\StorableEvents\Incident\IncidentClosed;
 use App\StorableEvents\Incident\IncidentCreated;
 use App\StorableEvents\Incident\IncidentReopened;
+use App\StorableEvents\Incident\IncidentReviewRequested;
 use App\StorableEvents\Investigation\InvestigationReturned;
 use App\StorableEvents\Incident\SupervisorAssigned;
 use App\StorableEvents\Incident\SupervisorUnassigned;
+use App\StorableEvents\RootCauseAnalysis\RootCauseAnalysisReturned;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
@@ -39,6 +42,53 @@ use Tests\TestCase;
 
 class IncidentAggregateRootTest extends TestCase
 {
+    public function test_add_additional_information_fires_add_additonal_information_event()
+    {
+        $incident = Incident::factory()->create([
+            'status' => InReview::class,
+        ]);
+
+        IncidentAggregateRoot::fake($incident->id)
+            ->when(function (IncidentAggregateRoot $incidentAggregateRoot): void {
+                $incidentAggregateRoot->addAdditionalInformation('info');
+            })
+            ->assertRecorded([
+                new AdditionalInformationAdded(
+                    additionalInformation: 'info'
+                ),
+            ]);
+    }
+
+    public function test_request_review_fires_incident_review_requested_event()
+    {
+        $incident = Incident::factory()->create([
+            'status' => InReview::class,
+        ]);
+
+        IncidentAggregateRoot::fake($incident->id)
+            ->when(function (IncidentAggregateRoot $incidentAggregateRoot): void {
+                $incidentAggregateRoot->returnInvestigation();
+            })
+            ->assertRecorded([
+                new IncidentReviewRequested,
+            ]);
+    }
+
+    public function test_return_rca_fires_rca_returned_event()
+    {
+        $incident = Incident::factory()->create([
+            'status' => InReview::class,
+        ]);
+
+        IncidentAggregateRoot::fake($incident->id)
+            ->when(function (IncidentAggregateRoot $incidentAggregateRoot): void {
+                $incidentAggregateRoot->returnRCA();
+            })
+            ->assertRecorded([
+                new RootCauseAnalysisReturned,
+            ]);
+    }
+
     public function test_first_additional_information_on_incident_creates_new_array()
     {
         $user = User::factory()->create([
