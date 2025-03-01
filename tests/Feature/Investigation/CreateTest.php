@@ -5,12 +5,32 @@ namespace Tests\Feature\Investigation;
 use App\Models\Incident;
 use App\States\IncidentStatus\Assigned;
 use App\States\IncidentStatus\InReview;
+use App\States\IncidentStatus\Returned;
 use Inertia\Testing\AssertableInertia;
 use Tests\TestCase;
 use App\Models\User;
 
 class CreateTest extends TestCase
 {
+    public function test_supervisor_can_view_investigation_create_form_when_in_returned_state()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Returned::class
+        ]);
+
+        $response = $this->actingAs($supervisor)->get(route('incidents.investigations.create', ['incident' => $incident->id]));
+
+        $response->assertStatus(200);
+
+        $response->assertInertia(function (AssertableInertia $page) use ($incident) {
+            return $page->component('Investigation/Create')
+                ->where('incident.id', $incident->id);
+        });
+    }
+
     public function test_forbidden_if_not_assigned_state(): void
     {
         $supervisor = User::factory()->create()->syncRoles('supervisor');

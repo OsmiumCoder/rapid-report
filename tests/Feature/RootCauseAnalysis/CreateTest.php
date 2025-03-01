@@ -5,11 +5,29 @@ namespace Tests\Feature\RootCauseAnalysis;
 use App\Models\Incident;
 use App\Models\User;
 use App\States\IncidentStatus\Assigned;
+use App\States\IncidentStatus\Returned;
 use Inertia\Testing\AssertableInertia;
 use Tests\TestCase;
 
 class CreateTest extends TestCase
 {
+    public function test_supervisor_can_view_rca_create_in_returned_state()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+        $this->actingAs($supervisor);
+
+        $incident = Incident::factory()->create(['supervisor_id' => $supervisor->id, 'status' => Returned::class]);
+
+        $response = $this->get(route('incidents.root-cause-analyses.create', ['incident' => $incident->id]));
+
+        $response->assertOk();
+
+        $response->assertInertia(fn (AssertableInertia $page) =>
+        $page->component('RootCauseAnalysis/Create')
+            ->has('incident')
+            ->where('incident.id', $incident->id));
+    }
+
     public function test_assigned_supervisor_can_view_rca_create_form()
     {
         $supervisor = User::factory()->create()->syncRoles('supervisor');

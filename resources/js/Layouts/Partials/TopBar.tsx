@@ -68,7 +68,7 @@ export default function TopBar({ onClick }: { onClick: () => void }) {
                 {/* Separator */}
                 <div aria-hidden="true" className="h-6 w-px bg-gray-900/10 lg:hidden" />
 
-                <div className="flex flex-1 items-center justify-end self-stretch lg:gap-x-6">
+                <div className="flex flex-1 items-center justify-end gap-x-4 self-stretch lg:gap-x-6">
                     {user.roles.some((role) => role.name === 'admin') && (
                         <button type="button" className="cursor-pointer text-gray-400 hover:text-gray-500" onClick={() => setIsSearchOpen(true)}>
                             <MagnifyingGlassIcon aria-hidden="true" className="pointer-events-none col-start-1 row-start-1 size-5 self-center" />
