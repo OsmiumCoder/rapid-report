@@ -22,9 +22,7 @@ export default function Show({ investigation }: PageProps<ShowProps>) {
                             {user.roles.some((role) => role.name === 'admin') && <InvestigationAdminActions investigation={investigation} />}
 
                             <InvestigationInformationPanel investigation={investigation} />
-                            {user.roles.some((role) => role.name === 'admin' || role.name === 'supervisor') && (
-                                <ActivityLog incident={investigation.incident} />
-                            )}
+                            <ActivityLog incident={investigation.incident} />
                         </div>
                     </div>
                 </main>

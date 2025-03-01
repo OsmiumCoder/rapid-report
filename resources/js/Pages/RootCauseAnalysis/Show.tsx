@@ -17,7 +17,7 @@ export default function Show({ rca }: { rca: RootCauseAnalysis; incident: Incide
                     <div className="mx-auto grid max-w-2xl grid-cols-1 grid-rows-1 items-start gap-x-8 gap-y-8 lg:mx-0 lg:max-w-none lg:grid-cols-3">
                         {user.roles.some((role) => role.name === 'admin') && <RootCauseAnalysisAdminActions rca={rca} />}
                         <RootCauseAnalysisInformationPanel rca={rca} />
-                        {user.roles.some((role) => role.name === 'admin' || role.name === 'supervisor') && <ActivityLog incident={rca.incident} />}
+                        <ActivityLog incident={rca.incident} />
                     </div>
                 </div>
             </main>
