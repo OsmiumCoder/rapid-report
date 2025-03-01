@@ -105,28 +105,4 @@ class IncidentController extends Controller
             'canProvideFollowup' => $user->can('provideFollowup', $incident),
         ]);
     }
-
-    /**
-     * Show the form for editing the specified Incident.
-     */
-    public function edit(Incident $incident)
-    {
-        //
-    }
-
-    /**
-     * Update the specified Incident in storage.
-     */
-    public function update(Request $request, Incident $incident)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified Incident from storage.
-     */
-    public function destroy(Incident $incident)
-    {
-        //
-    }
 }

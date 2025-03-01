@@ -101,36 +101,4 @@ class IncidentPolicy
     {
         return true;
     }
-
-    /**
-     * Determine whether the user can update the incident.
-     */
-    public function update(User $user, Incident $incident): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can delete the incident.
-     */
-    public function delete(User $user, Incident $incident): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can restore the incident.
-     */
-    public function restore(User $user, Incident $incident): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can permanently delete the incident.
-     */
-    public function forceDelete(User $user, Incident $incident): bool
-    {
-        return false;
-    }
 }
