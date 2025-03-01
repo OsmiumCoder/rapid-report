@@ -4,7 +4,7 @@
 The following incident has been closed.
 
 <x-mail::button :url="$url">
-    View Incident
+View Incident
 </x-mail::button>
 
 Best regards,<br>
