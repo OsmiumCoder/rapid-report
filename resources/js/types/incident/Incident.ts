@@ -2,6 +2,7 @@ import { IncidentStatus } from '@/Enums/IncidentStatus';
 import { IncidentType } from '@/Enums/IncidentType';
 import { User } from '@/types';
 import { Comment } from '@/types/Comment';
+import { File } from '@/types/file/File';
 import { AdditionalInformation } from '@/types/incident/AdditionalInformation';
 import { Witness } from '@/types/incident/Witness';
 import { Investigation } from '@/types/investigation/Investigation';
@@ -40,6 +41,7 @@ export interface Incident {
     investigations: Investigation[];
     root_cause_analyses: RootCauseAnalysis[];
     additional_information?: AdditionalInformation[];
+    files: File[];
     closed_at?: string;
     created_at: string;
     updated_at: string;

@@ -1,4 +1,4 @@
-import dateFormat from '@/Filters/dateFormat';
+import dateFormat from '@/Formatters/dateFormat';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import ReportBuilder from '@/Pages/Report/Partials/ReportBuilder';
 import type ReportData from '@/types/report/ReportData';

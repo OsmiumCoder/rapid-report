@@ -2,7 +2,7 @@ import DateInput from '@/Components/DateInput';
 import SelectInput from '@/Components/SelectInput';
 import TextInput from '@/Components/TextInput';
 import ToggleSwitch from '@/Components/ToggleSwitch';
-import dateFormat from '@/Filters/dateFormat';
+import dateFormat from '@/Formatters/dateFormat';
 import { descriptors } from '@/Pages/Incident/Stages/IncidentDropDownValues';
 import { StageProps } from '@/Pages/Incident/Stages/StageWrapper';
 

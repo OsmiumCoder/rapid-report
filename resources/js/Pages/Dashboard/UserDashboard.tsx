@@ -1,8 +1,8 @@
 import Badge from '@/Components/Badge';
 import { IncidentStatus } from '@/Enums/IncidentStatus';
-import dateFormat from '@/Filters/dateFormat';
-import { incidentBadgeColor } from '@/Filters/incidentBadgeColor';
-import { uppercaseWordFormat } from '@/Filters/uppercaseWordFormat';
+import dateFormat from '@/Formatters/dateFormat';
+import { incidentBadgeColor } from '@/Formatters/incidentBadgeColor';
+import { uppercaseWordFormat } from '@/Formatters/uppercaseWordFormat';
 import Authenticated from '@/Layouts/AuthenticatedLayout';
 import { Incident } from '@/types/incident/Incident';
 import { PencilIcon } from '@heroicons/react/24/outline';

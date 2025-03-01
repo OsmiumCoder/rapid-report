@@ -1,4 +1,4 @@
-import classNames from '@/Filters/classNames';
+import classNames from '@/Formatters/classNames';
 import { CheckIcon } from '@heroicons/react/20/solid';
 
 interface ProgressBarCircleProps {

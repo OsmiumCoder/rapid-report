@@ -4,7 +4,7 @@ import Pagination from '@/Components/Pagination';
 import PrimaryButton from '@/Components/PrimaryButton';
 import SelectInput from '@/Components/SelectInput';
 import TextInput from '@/Components/TextInput';
-import { uppercaseWordFormat } from '@/Filters/uppercaseWordFormat';
+import { uppercaseWordFormat } from '@/Formatters/uppercaseWordFormat';
 import Authenticated from '@/Layouts/AuthenticatedLayout';
 import AddUserModal from '@/Pages/Dashboard/Partials/AddUserModal';
 import { Role, User } from '@/types';

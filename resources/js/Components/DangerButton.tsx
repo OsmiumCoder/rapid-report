@@ -1,4 +1,4 @@
-import classNames from '@/Filters/classNames';
+import classNames from '@/Formatters/classNames';
 import { ButtonHTMLAttributes } from 'react';
 
 export default function DangerButton({ className = '', children, ...props }: ButtonHTMLAttributes<HTMLButtonElement>) {

@@ -1,4 +1,4 @@
-import classNames from '@/Filters/classNames';
+import classNames from '@/Formatters/classNames';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { DetailedHTMLProps, PropsWithChildren, SelectHTMLAttributes } from 'react';
 

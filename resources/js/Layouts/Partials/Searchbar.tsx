@@ -1,10 +1,10 @@
 import Badge from '@/Components/Badge';
 import LabeledCheckbox from '@/Components/LabeledCheckbox';
 import LoadingIndicator from '@/Components/LoadingIndicator';
-import dateFormat from '@/Filters/dateFormat';
-import { incidentBadgeColor } from '@/Filters/incidentBadgeColor';
-import { nameFilter } from '@/Filters/nameFilter';
-import { uppercaseWordFormat } from '@/Filters/uppercaseWordFormat';
+import dateFormat from '@/Formatters/dateFormat';
+import { incidentBadgeColor } from '@/Formatters/incidentBadgeColor';
+import { nameFormat } from '@/Formatters/nameFormat';
+import { uppercaseWordFormat } from '@/Formatters/uppercaseWordFormat';
 import { Incident } from '@/types/incident/Incident';
 import { Combobox, ComboboxOption, ComboboxOptions, Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
 import { ChevronDownIcon, ChevronUpIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid';
@@ -220,7 +220,7 @@ export default function Searchbar({ isOpen, setIsOpen }: CommandPaletteProps) {
                                                 <span>{dateFormat(incident.created_at)}</span>
                                                 <span> | </span>
                                                 <span>
-                                                    {nameFilter(incident)[0]} {nameFilter(incident)[1]}
+                                                    {nameFormat(incident)[0]} {nameFormat(incident)[1]}
                                                 </span>
                                                 <span> | </span>
                                                 <span>{incident.descriptor}</span>

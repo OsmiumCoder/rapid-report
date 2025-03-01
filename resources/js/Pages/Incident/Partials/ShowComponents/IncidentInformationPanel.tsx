@@ -1,6 +1,6 @@
 import Badge from '@/Components/Badge';
-import { incidentBadgeColor } from '@/Filters/incidentBadgeColor';
-import { uppercaseWordFormat } from '@/Filters/uppercaseWordFormat';
+import { incidentBadgeColor } from '@/Formatters/incidentBadgeColor';
+import { uppercaseWordFormat } from '@/Formatters/uppercaseWordFormat';
 import AdditionalInformation from '@/Pages/Incident/Partials/ShowComponents/InformationComponents/AdditionalInformation';
 import AffectedPartyInformation from '@/Pages/Incident/Partials/ShowComponents/InformationComponents/AffectedPartyInformation';
 import GeneralDescription from '@/Pages/Incident/Partials/ShowComponents/InformationComponents/GeneralDescription';
