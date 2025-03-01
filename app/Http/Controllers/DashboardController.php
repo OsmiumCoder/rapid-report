@@ -6,6 +6,7 @@ use App\Models\Incident;
 use App\Models\User;
 use App\States\IncidentStatus\Assigned;
 use App\States\IncidentStatus\Closed;
+use App\States\IncidentStatus\Returned;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Spatie\Permission\Models\Role;
@@ -63,7 +64,9 @@ class DashboardController extends Controller
             ->where('supervisor_id', $user->id)
             ->count();
 
-        $unresolvedCount = $incidentCount - $closedCount;
+        $unresolvedCount = Incident::whereState('status', [Assigned::class, Returned::class])
+            ->where('supervisor_id', $user->id)
+            ->count();
 
         return inertia('Dashboard/SupervisorOverview', [
             'unresolvedIncidents' => $unresolvedIncidents,
