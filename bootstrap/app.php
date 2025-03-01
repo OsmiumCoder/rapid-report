@@ -17,8 +17,9 @@ return Application::configure(basePath: dirname(__DIR__))
             \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
         ]);
 
-        $middleware->throttleWithRedis();
-        //
+        if (env('CACHE_STORE') == 'redis') {
+            $middleware->throttleWithRedis();
+        }
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
