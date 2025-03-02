@@ -5,8 +5,11 @@ namespace App\StorableEvents\Incident;
 use App\Enum\CommentType;
 use App\Models\Comment;
 use App\Models\Incident;
+use App\Models\User;
+use App\Notifications\Incident\IncidentReopenedNotification;
 use App\States\IncidentStatus\Reopened;
 use App\StorableEvents\StoredEvent;
+use Illuminate\Support\Facades\Notification;
 
 class IncidentReopened extends StoredEvent
 {
@@ -26,5 +29,12 @@ class IncidentReopened extends StoredEvent
         $comment->commentable()->associate($incident);
 
         $comment->save();
+    }
+
+    public function react()
+    {
+        $incident = Incident::find($this->aggregateRootUuid());
+        $admins = User::role('admin')->get();
+        Notification::send($admins, new IncidentReopenedNotification($incident->slug));
     }
 }
