@@ -45,6 +45,9 @@ class IncidentReopenedNotification extends BaseNotification
         return (new MailMessage)
             ->subject('Incident Reopened')
             ->line($this->message)
-            ->markdown('mail.incident-reopened-notification', ['url' => $this->url]);
+            ->markdown('mail.incident-reopened-notification', [
+                'url' => $this->url,
+                'message' => $this->message,
+                ]);
     }
 }

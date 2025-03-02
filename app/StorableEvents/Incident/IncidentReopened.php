@@ -35,6 +35,6 @@ class IncidentReopened extends StoredEvent
     {
         $incident = Incident::find($this->aggregateRootUuid());
         $admins = User::role('admin')->get();
-        Notification::send($admins, new IncidentReopenedNotification($incident->id));
+        Notification::send($admins, new IncidentReopenedNotification($incident->slug));
     }
 }

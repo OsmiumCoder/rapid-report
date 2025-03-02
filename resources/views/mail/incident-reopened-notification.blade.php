@@ -1,7 +1,7 @@
 <x-mail::message>
 # Incident Reopened
 
-The following incident has been reopened.
+{{$message}}
 
 <x-mail::button :url="$url">
 View Incident
