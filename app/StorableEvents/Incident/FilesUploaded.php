@@ -34,9 +34,10 @@ class FilesUploaded extends StoredEvent
     public function react()
     {
         $admins = User::role('admin')->get();
-
         $supervisor = User::find($this->metaData['user_id']);
 
-        Notification::send($admins, new FilesUploadedNotification($this->aggregateRootUuid(), $supervisor));
+        $incident = Incident::find($this->aggregateRootUuid());
+
+        Notification::send($admins, new FilesUploadedNotification($incident->slug, $supervisor));
     }
 }

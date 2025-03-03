@@ -105,7 +105,7 @@ class StatusTest extends TestCase
         Notification::assertSentTo(
             $supervisor,
             function (InvestigationReturnedNotification $notification, array $channels) use ($incident, $admin) {
-                return $notification->incidentId === $incident->id && $notification->admin->id === $admin->id;
+                return $notification->incidentSlug === $incident->id && $notification->admin->id === $admin->id;
             }
         );
     }
@@ -433,7 +433,7 @@ class StatusTest extends TestCase
         Notification::assertSentTo(
             $admins,
             function (IncidentReviewRequestNotification $notification, array $channels) use ($incident, $supervisor) {
-                return $notification->incidentId === $incident->id && $notification->supervisor->id === $supervisor->id;
+                return $notification->incidentSlug === $incident->id && $notification->supervisor->id === $supervisor->id;
             }
         );
     }

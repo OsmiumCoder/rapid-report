@@ -1,7 +1,7 @@
 <x-mail::message>
 # Incident Additional Information Added
 
-## The following incident has had the following information added:
+## Incident #{{$incidentSlug}} has had the following information added:
 
 {{$additionalInformation}}
 

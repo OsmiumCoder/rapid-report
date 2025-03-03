@@ -12,14 +12,14 @@ class InvestigationReturnedNotification extends BaseNotification
      * Create a new notification instance.
      */
     public function __construct(
-        public string $incidentId,
+        public string $incidentSlug,
         public string $investigationId,
-        public User $admin
+        public User   $admin
     ) {
-        $this->message = "$admin->name has returned your investigation for further review";
+        $this->message = "$admin->name has returned your investigation on incident #$incidentSlug for further review";
         $this->url = route('incidents.investigations.show', [
-            'incident' => $this->incidentId,
-            'investigation' => $this->investigationId
+            'incident' => $incidentSlug,
+            'investigation' => $investigationId
         ]);
     }
 

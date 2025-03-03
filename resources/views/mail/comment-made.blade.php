@@ -1,8 +1,14 @@
 <x-mail::message>
-    # Comment Created
+# Comment Created
 
-    {{ $commenter }} commented: {{ $content }}
+## {{ $commenter }} has commented the following on incident #{{$incidentSlug}}:
 
-    Best regards,
-    UPEI Health, Safety, and Environment
+{{ $content }}
+
+<x-mail::button :url="$url">
+View Incident
+</x-mail::button>
+
+Best regards,
+UPEI Health, Safety, and Environment
 </x-mail::message>

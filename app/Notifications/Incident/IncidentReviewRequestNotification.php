@@ -12,11 +12,11 @@ class IncidentReviewRequestNotification extends BaseNotification
      * Create a new notification instance.
      */
     public function __construct(
-        public string $incidentId,
-        public User $supervisor,
+        public string $incidentSlug,
+        public User   $supervisor,
     ) {
-        $this->message = "{$this->supervisor->name} has requested an incident follow up review.";
-        $this->url = route('incidents.show', ['incident' => $this->incidentId]);
+        $this->message = "{$this->supervisor->name} has requested follow-up review on incident #$incidentSlug.";
+        $this->url = route('incidents.show', ['incident' => $incidentSlug]);
     }
 
     /**
@@ -26,6 +26,6 @@ class IncidentReviewRequestNotification extends BaseNotification
     {
         return (new MailMessage)
             ->subject('Incident Follow Up Review Request')
-            ->markdown('mail.incident-review-request', ['url' => $this->url]);
+            ->markdown('mail.incident-review-request', ['url' => $this->url, 'message' => $this->message]);
     }
 }

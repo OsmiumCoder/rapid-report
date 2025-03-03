@@ -39,9 +39,10 @@ class IncidentReviewRequested extends StoredEvent
     public function react()
     {
         $admins = User::role('admin')->get();
-
         $supervisor = User::find($this->metaData['user_id']);
 
-        Notification::send($admins, new IncidentReviewRequestNotification($this->aggregateRootUuid(), $supervisor));
+        $incident = Incident::find($this->aggregateRootUuid());
+
+        Notification::send($admins, new IncidentReviewRequestNotification($incident->slug, $supervisor));
     }
 }

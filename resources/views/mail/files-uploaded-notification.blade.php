@@ -1,7 +1,7 @@
 <x-mail::message>
 # Files Uploaded to Incident
 
-Files have been uploaded to the below incident.
+{{$message}}
 
 <x-mail::button :url="$url">
 View Incident

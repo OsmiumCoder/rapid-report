@@ -53,9 +53,10 @@ class SupervisorAssigned extends StoredEvent
     public function react()
     {
         $admin = User::find($this->metaData['user_id']);
+        $incident = Incident::find($this->aggregateRootUuid());
 
-        Notification::send($this->supervisor(), new SupervisorAssignedNotification($this->aggregateRootUuid(), $this->supervisor(), $admin));
+        Notification::send($this->supervisor(), new SupervisorAssignedNotification($incident->slug, $this->supervisor(), $admin));
 
-        Notification::send($this->supervisor(), new IncidentFollowUpOverdueNotification($this->aggregateRootUuid(), $this->supervisor()));
+        Notification::send($this->supervisor(), new IncidentFollowUpOverdueNotification($incident->slug, $this->supervisor()));
     }
 }

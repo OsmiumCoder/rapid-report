@@ -12,22 +12,22 @@ class IncidentSubmittedNotification extends BaseNotification
      * Create a new notification instance.
      */
     public function __construct(
-        public string $incidentId,
+        public string  $incidentSlug,
         public ?string $firstName,
         public ?string $lastName,
     ) {
-        if ($this->firstName == null && $this->lastName == null) {
+        if ($firstName == null && $lastName == null) {
             $name = 'an Anonymous User';
-        } elseif ($this->firstName == null) {
-            $name = $this->lastName;
-        } elseif ($this->lastName == null) {
-            $name = $this->firstName;
+        } elseif ($firstName == null) {
+            $name = $lastName;
+        } elseif ($lastName == null) {
+            $name = $firstName;
         } else {
-            $name = $this->firstName.' '.$this->lastName;
+            $name = $firstName . ' ' . $lastName;
         }
-        $this->message = "An incident was submitted by $name";
+        $this->message = "Incident #$incidentSlug was submitted by $name";
         $this->url = route('incidents.show', [
-            'incident' => $this->incidentId,
+            'incident' => $incidentSlug,
         ]);
     }
 
@@ -57,6 +57,6 @@ class IncidentSubmittedNotification extends BaseNotification
     {
         return (new MailMessage)
             ->subject('Incident Submitted')
-            ->markdown('mail.incident-submitted', ['url' => $this->url]);
+            ->markdown('mail.incident-submitted', ['url' => $this->url, 'message' => $this->message]);
     }
 }

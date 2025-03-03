@@ -12,14 +12,14 @@ class RootCauseAnalysisSubmittedNotification extends BaseNotification
      * Create a new notification instance.
      */
     public function __construct(
-        public string $incidentId,
+        public string $incidentSlug,
         public string $rootCauseAnalysisId,
-        public User $supervisor,
+        public User   $supervisor,
     ) {
-        $this->message = "A new root cause analysis was submitted by {$this->supervisor->name}";
+        $this->message = "A new root cause analysis for incident #$incidentSlug was submitted by $supervisor->name";
         $this->url = route('incidents.root-cause-analyses.show', [
-            'incident' => $this->incidentId,
-            'root_cause_analysis' => $this->rootCauseAnalysisId
+            'incident' => $incidentSlug,
+            'root_cause_analysis' => $rootCauseAnalysisId
         ]);
 
     }
@@ -31,6 +31,6 @@ class RootCauseAnalysisSubmittedNotification extends BaseNotification
     {
         return (new MailMessage)
             ->subject('Root Cause Analysis Submitted')
-            ->markdown('mail.root-cause-analysis-submitted', ['url' => $this->url]);
+            ->markdown('mail.root-cause-analysis-submitted', ['url' => $this->url, 'message' => $this->message]);
     }
 }

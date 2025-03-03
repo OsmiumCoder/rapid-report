@@ -12,11 +12,11 @@ class FilesUploadedNotification extends BaseNotification
      * Create a new notification instance.
      */
     public function __construct(
-        public string $incidentId,
+        public string $incidentSlug,
         public User   $user
     ) {
-        $this->message = "{$this->user->name} has uploaded files to the following incident.";
-        $this->url = route('incidents.show', ['incident' => $this->incidentId]);
+        $this->message = "{$this->user->name} has uploaded files to incident #$incidentSlug.";
+        $this->url = route('incidents.show', ['incident' => $incidentSlug]);
     }
 
     /**
@@ -35,7 +35,7 @@ class FilesUploadedNotification extends BaseNotification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Files Have Been Added to Incident')
-            ->markdown('mail.files-uploaded-notification', ['url' => $this->url]);
+            ->subject("Files Have Been Uploaded to Incident #$this->incidentSlug")
+            ->markdown('mail.files-uploaded-notification', ['url' => $this->url, 'message' => $this->message]);
     }
 }

@@ -19,11 +19,11 @@ class IncidentFollowUpOverdueNotification extends BaseNotification
      * Create a new notification instance.
      */
     public function __construct(
-        public string $incidentId,
-        public User $supervisor,
+        public string $incidentSlug,
+        public User   $supervisor,
     ) {
-        $this->message = "Your required follow up is overdue.";
-        $this->url = route('incidents.show', ['incident' => $this->incidentId]);
+        $this->message = "Your required follow-up on incident #$incidentSlug is overdue.";
+        $this->url = route('incidents.show', ['incident' => $incidentSlug]);
     }
 
     /**
@@ -44,7 +44,7 @@ class IncidentFollowUpOverdueNotification extends BaseNotification
      */
     public function shouldSend(object $notifiable, string $channel): bool
     {
-        $incident = Incident::find($this->incidentId);
+        $incident = Incident::find($this->incidentSlug);
 
         return ($incident->status::class == Assigned::class || $incident->status::class == Returned::class)
             && $incident->supervisor_id == $this->supervisor->id;
@@ -57,6 +57,6 @@ class IncidentFollowUpOverdueNotification extends BaseNotification
     {
         return (new MailMessage)
             ->subject('Follow Up Overdue')
-            ->markdown('mail.incident-follow-up-overdue-notification', ['url' => $this->url]);
+            ->markdown('mail.incident-follow-up-overdue-notification', ['url' => $this->url, 'message' => $this->message]);
     }
 }

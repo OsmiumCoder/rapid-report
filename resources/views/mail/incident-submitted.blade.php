@@ -1,7 +1,7 @@
 <x-mail::message>
 # Incident Submitted
 
-A new incident has been submitted.
+{{$message}}
 
 <x-mail::button :url="$url">
 View Incident

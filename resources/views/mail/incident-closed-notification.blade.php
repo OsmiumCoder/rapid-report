@@ -1,7 +1,7 @@
 <x-mail::message>
 # Incident Closed
 
-The following incident has been closed.
+{{$message}}
 
 <x-mail::button :url="$url">
 View Incident

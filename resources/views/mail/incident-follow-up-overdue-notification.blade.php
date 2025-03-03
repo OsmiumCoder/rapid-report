@@ -1,7 +1,7 @@
 <x-mail::message>
-# Overdue Follow Up
+# Overdue Follow-Up
 
-Follow-up on the below incident is overdue.
+{{$message}}
 
 <x-mail::button :url="$url">
 View Incident
