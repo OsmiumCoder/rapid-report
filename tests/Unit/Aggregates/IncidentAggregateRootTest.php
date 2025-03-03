@@ -250,7 +250,7 @@ class IncidentAggregateRootTest extends TestCase
             function (AdditionalInformationNotification $notification, array $channels) use ($incident, $admins) {
                 $databaseStore = $notification->toArray($admins->first());
 
-                $this->assertEquals(route('incidents.show', $incident->id), $databaseStore['url']);
+                $this->assertEquals(route('incidents.show', $incident->slug), $databaseStore['url']);
 
                 return array_key_exists('message', $databaseStore);
             }
@@ -312,7 +312,7 @@ class IncidentAggregateRootTest extends TestCase
             function (IncidentReviewRequestNotification $notification, array $channels) use ($incident, $admins, $supervisor) {
                 $databaseStore = $notification->toArray($admins->first());
 
-                $this->assertEquals(route('incidents.show', $incident->id), $databaseStore['url']);
+                $this->assertEquals(route('incidents.show', $incident->slug), $databaseStore['url']);
 
                 return array_key_exists('message', $databaseStore);
             }
@@ -347,7 +347,7 @@ class IncidentAggregateRootTest extends TestCase
         Notification::assertSentTo(
             $admins,
             function (IncidentReviewRequestNotification $notification, array $channels) use ($incident, $supervisor) {
-                return $notification->incidentId === $incident->id && $notification->supervisor->id === $supervisor->id;
+                return $notification->incidentSlug === $incident->slug && $notification->supervisor->id === $supervisor->id;
             }
         );
     }

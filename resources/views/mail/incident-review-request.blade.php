@@ -1,7 +1,7 @@
 <x-mail::message>
 # Incident Follow Up Review Request
 
-Your review has been requested on the below incident and its follow up.
+{{$message}}
 
 <x-mail::button :url="$url">
 View Incident

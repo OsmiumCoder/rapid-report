@@ -12,10 +12,10 @@ class IncidentReopenedNotification extends BaseNotification
      * Create a new notification instance.
      */
     public function __construct(
-        public string $incidentId,
+        public string $incidentSlug,
     ) {
-        $this->message = "The incident {$incidentId} has been reopened.";
-        $this->url = route('incidents.show', ['incident' => $this->incidentId]);
+        $this->message = "Incident #{$incidentSlug} has been reopened.";
+        $this->url = route('incidents.show', ['incident' => $incidentSlug]);
     }
 
     /**
@@ -43,7 +43,7 @@ class IncidentReopenedNotification extends BaseNotification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Incident Reopened')
+            ->subject("Incident $this->incidentSlug Reopened")
             ->line($this->message)
             ->markdown('mail.incident-reopened-notification', [
                 'url' => $this->url,

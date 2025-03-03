@@ -39,6 +39,6 @@ class IncidentClosed extends StoredEvent
         }
 
         $admins = User::role('admin')->get();
-        Notification::send($admins, new IncidentClosedNotification($incident->id));
+        Notification::send($admins, new IncidentClosedNotification($incident->slug));
     }
 }

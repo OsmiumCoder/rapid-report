@@ -2,6 +2,8 @@
 
 namespace App\StorableEvents\Incident;
 
+use App\Enum\CommentType;
+use App\Models\Comment;
 use App\Models\Incident;
 use App\Models\User;
 use App\Notifications\Incident\AdditionalInformationNotification;
@@ -32,11 +34,23 @@ class AdditionalInformationAdded extends StoredEvent
 
         $incident->additional_information = $additionalInfo;
         $incident->save();
+
+        $comment = new Comment;
+
+        $comment->user_id = $this->metaData['user_id'];
+        $comment->type = CommentType::ACTION;
+        $comment->content = 'Additional information added.';
+
+        $comment->commentable()->associate($incident);
+
+        $comment->save();
     }
 
     public function react()
     {
         $admins = User::role('admin')->get();
-        Notification::send($admins, new AdditionalInformationNotification($this->aggregateRootUuid(), $this->additionalInformation));
+        $incident = Incident::find($this->aggregateRootUuid());
+
+        Notification::send($admins, new AdditionalInformationNotification($incident->slug, $this->additionalInformation));
     }
 }
