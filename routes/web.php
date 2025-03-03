@@ -28,7 +28,7 @@ Route::get('/notification', function () {
     $userAdded = new \App\Mail\UserAdded;
 
     $incidentSubmitted = new \App\Notifications\Incident\IncidentSubmittedNotification(
-        incidentSlug: $incident->slug,
+        incidentId: $incident->slug,
         firstName: null,
         lastName: null,
     );

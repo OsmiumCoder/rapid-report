@@ -11,6 +11,30 @@ use Tests\TestCase;
 
 class AdditionalInformationTest extends TestCase
 {
+    public function test_additional_information_adds_comment()
+    {
+
+        $user = User::factory()->create([
+            'email' => 'user@b.com'
+        ]);
+        $this->actingAs($user);
+
+        $incident = Incident::factory()->create([
+            'reporters_email' => $user->email,
+        ]);
+
+        $this->assertNull($incident->additional_information);
+        $this->assertDatabaseCount('comments', 0);
+
+        $response = $this->patch(route('incidents.additional-information', $incident), [
+            'additional_information' => 'information'
+        ]);
+
+        $response->assertRedirect();
+
+        $this->assertDatabaseCount('comments', 1);
+    }
+
     public function test_first_additional_information_on_incident_creates_new_array()
     {
         $user = User::factory()->create([

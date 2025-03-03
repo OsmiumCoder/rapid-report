@@ -132,7 +132,7 @@ class FileTest extends TestCase
         Notification::assertSentTo(
             $admins,
             function (FilesUploadedNotification $notification, array $channels) use ($incident, $supervisor) {
-                return $notification->incidentSlug === $incident->id && $notification->user->id === $supervisor->id;
+                return $notification->incidentSlug === $incident->slug && $notification->user->id === $supervisor->id;
             }
         );
     }

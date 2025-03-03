@@ -44,8 +44,7 @@ class IncidentFollowUpOverdueNotification extends BaseNotification
      */
     public function shouldSend(object $notifiable, string $channel): bool
     {
-        $incident = Incident::find($this->incidentSlug);
-
+        $incident = Incident::where('slug', $this->incidentSlug)->first();
         return ($incident->status::class == Assigned::class || $incident->status::class == Returned::class)
             && $incident->supervisor_id == $this->supervisor->id;
     }

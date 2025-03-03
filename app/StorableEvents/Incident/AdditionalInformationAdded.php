@@ -3,6 +3,7 @@
 namespace App\StorableEvents\Incident;
 
 use App\Enum\CommentType;
+use App\Models\Comment;
 use App\Models\Incident;
 use App\Models\User;
 use App\Notifications\Incident\AdditionalInformationNotification;

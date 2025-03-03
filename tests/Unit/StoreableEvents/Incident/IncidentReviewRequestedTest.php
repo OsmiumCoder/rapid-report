@@ -45,7 +45,7 @@ class IncidentReviewRequestedTest extends TestCase
             function (IncidentReviewRequestNotification $notification, array $channels) use ($incident, $admins, $supervisor) {
                 $databaseStore = $notification->toArray($admins->first());
 
-                $this->assertEquals(route('incidents.show', $incident->id), $databaseStore['url']);
+                $this->assertEquals(route('incidents.show', $incident->slug), $databaseStore['url']);
 
                 return array_key_exists('message', $databaseStore);
             }
@@ -79,7 +79,7 @@ class IncidentReviewRequestedTest extends TestCase
         Notification::assertSentTo(
             $admins,
             function (IncidentReviewRequestNotification $notification, array $channels) use ($incident, $supervisor) {
-                return $notification->incidentSlug === $incident->id && $notification->supervisor->id === $supervisor->id;
+                return $notification->incidentSlug === $incident->slug && $notification->supervisor->id === $supervisor->id;
             }
         );
     }

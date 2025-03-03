@@ -388,7 +388,7 @@ class StatusTest extends TestCase
             function (IncidentReviewRequestNotification $notification, array $channels) use ($incident, $admins, $supervisor) {
                 $databaseStore = $notification->toArray($admins->first());
 
-                $this->assertEquals(route('incidents.show', $incident->id), $databaseStore['url']);
+                $this->assertEquals(route('incidents.show', $incident->slug), $databaseStore['url']);
 
                 return array_key_exists('message', $databaseStore);
             }
@@ -412,12 +412,12 @@ class StatusTest extends TestCase
             'status' => Assigned::class
         ]);
 
-        $investigation = Investigation::factory()->create([
+        Investigation::factory()->create([
             'incident_id' => $incident->id,
             'supervisor_id' => $supervisor->id,
         ]);
 
-        $rca = RootCauseAnalysis::factory()->create([
+        RootCauseAnalysis::factory()->create([
             'incident_id' => $incident->id,
             'supervisor_id' => $supervisor->id,
         ]);
@@ -433,7 +433,7 @@ class StatusTest extends TestCase
         Notification::assertSentTo(
             $admins,
             function (IncidentReviewRequestNotification $notification, array $channels) use ($incident, $supervisor) {
-                return $notification->incidentSlug === $incident->id && $notification->supervisor->id === $supervisor->id;
+                return $notification->incidentSlug === $incident->slug && $notification->supervisor->id === $supervisor->id;
             }
         );
     }

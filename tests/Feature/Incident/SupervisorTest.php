@@ -44,7 +44,7 @@ class SupervisorTest extends TestCase
                 $databaseStore = $notification->toArray($supervisor);
 
                 $this->assertEquals(
-                    route('incidents.show', ['incident' => $incident->id]),
+                    route('incidents.show', ['incident' => $incident->slug]),
                     $databaseStore['url']
                 );
 
@@ -81,7 +81,7 @@ class SupervisorTest extends TestCase
             $supervisor,
             function (SupervisorAssignedNotification $notification, array $channels) use ($incident, $supervisor, $admin) {
                 return (
-                    $notification->incidentSlug === $incident->id &&
+                    $notification->incidentSlug === $incident->slug &&
                     $notification->admin->id === $admin->id &&
                     $notification->supervisor->id == $supervisor->id
                 );
