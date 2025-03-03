@@ -60,19 +60,19 @@ Route::get('/notification', function () {
     $additionalInfo = new \App\Notifications\Incident\AdditionalInformationNotification($incident->slug, 'Some additional information');
     $filesUploaded = new \App\Notifications\Incident\FilesUploadedNotification($incident->slug, $supervisor);
 
-//    return $filesUploaded->toMail($supervisor);
-//    return $commentMade->toMail($supervisor);
-//    return $incidentClosed->toMail($supervisor);
-//    return $followupOverdue->toMail($supervisor);
-//    return $incidentReopened->toMail($supervisor);
-//    return $incidentFollowupReview->toMail($supervisor);
-//    return $incidentReceived->render();
-//    return $userAdded->render();
-//    return $incidentSubmitted->toMail($supervisor);
-//    return $investigationSubmitted->toMail($supervisor);
-//    return $investigationReturned->toMail($supervisor);
-//    return $incidentAssigned->toMail($supervisor);
-//    return $rcaSubmitted->toMail($supervisor);
+    //    return $filesUploaded->toMail($supervisor);
+    //    return $commentMade->toMail($supervisor);
+    //    return $incidentClosed->toMail($supervisor);
+    //    return $followupOverdue->toMail($supervisor);
+    //    return $incidentReopened->toMail($supervisor);
+    //    return $incidentFollowupReview->toMail($supervisor);
+    //    return $incidentReceived->render();
+    //    return $userAdded->render();
+    //    return $incidentSubmitted->toMail($supervisor);
+    //    return $investigationSubmitted->toMail($supervisor);
+    //    return $investigationReturned->toMail($supervisor);
+    //    return $incidentAssigned->toMail($supervisor);
+    //    return $rcaSubmitted->toMail($supervisor);
     return $additionalInfo->toMail($supervisor);
 
 });
