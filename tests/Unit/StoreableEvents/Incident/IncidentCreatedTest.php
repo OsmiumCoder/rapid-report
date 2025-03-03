@@ -17,6 +17,40 @@ use Tests\TestCase;
 
 class IncidentCreatedTest extends TestCase
 {
+    public function test_happened_at_date_only()
+    {
+        $event = new IncidentCreated(
+            anonymous: false,
+            on_behalf: false,
+            on_behalf_anonymous: false,
+            role: '0',
+            last_name: 'last',
+            first_name: 'first',
+            upei_id: '322',
+            email: 'john@doe.com',
+            phone: '(902) 333-4444',
+            work_related: true,
+            workers_comp_submitted: true,
+            happened_at: now(),
+            location: 'Building A',
+            room_number: '123A',
+            witnesses: [],
+            incident_type: IncidentType::SAFETY,
+            descriptor: 'Burn',
+            description: 'A fire broke out in the room.',
+            injury_description: 'Minor burn',
+            first_aid_description: 'Minor burn treated',
+            reporters_email: 'jane@doe.com',
+            supervisor_name: 'John Doe',
+        );
+
+        $event->handle();
+
+        $incident = Incident::first();
+
+        $this->assertEquals(now()->toDateString(), $incident->happened_at);
+    }
+
     public function test_adds_created_comment()
     {
         $event = new IncidentCreated(
@@ -107,7 +141,7 @@ class IncidentCreatedTest extends TestCase
         $this->assertEquals($event->phone, $incident->phone);
         $this->assertTrue($event->work_related, $incident->work_related);
         $this->assertTrue($event->workers_comp_submitted, $incident->workers_comp_submitted);
-        $this->assertEquals($event->happened_at, $incident->happened_at);
+        $this->assertEquals($event->happened_at->toDateString(), $incident->happened_at);
         $this->assertEquals($event->location, $incident->location);
         $this->assertEquals($event->room_number, $incident->room_number);
         $this->assertEquals($event->witnesses, $incident->witnesses);
@@ -168,7 +202,7 @@ class IncidentCreatedTest extends TestCase
         $this->assertNull($incident->phone);
         $this->assertEquals($event->work_related, $incident->work_related);
         $this->assertTrue($event->workers_comp_submitted, $incident->workers_comp_submitted);
-        $this->assertEquals($event->happened_at, $incident->happened_at);
+        $this->assertEquals($event->happened_at->toDateString(), $incident->happened_at);
         $this->assertEquals($event->location, $incident->location);
         $this->assertNull($incident->room_number);
         $this->assertNull($incident->witnesses);

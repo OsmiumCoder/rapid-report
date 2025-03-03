@@ -34,7 +34,7 @@ return new class () extends Migration {
             $table->boolean('work_related');
             $table->boolean('workers_comp_submitted');
 
-            $table->datetime('happened_at')->nullable();
+            $table->date('happened_at')->nullable();
 
             $table->string('location')->nullable();
             $table->index('location');
