@@ -108,7 +108,7 @@ export default function TopBar({ onClick }: { onClick: () => void }) {
 
                         {/* Profile dropdown */}
                         <Menu as="div" className="relative">
-                            <MenuButton className="-m-1.5 flex items-center p-1.5">
+                            <MenuButton className="-m-1.5 flex cursor-pointer items-center p-1.5">
                                 <span className="sr-only">Open user menu</span>
                                 <UserCircleIcon className="size-8 rounded-full bg-gray-50" />
                                 <span className="hidden lg:flex lg:items-center">
