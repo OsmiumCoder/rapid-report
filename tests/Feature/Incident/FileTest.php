@@ -1,6 +1,6 @@
 <?php
 
-namespace Incident;
+namespace Tests\Feature\Incident;
 
 use App\Enum\CommentType;
 use App\Models\File;
