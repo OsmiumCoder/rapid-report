@@ -1,5 +1,5 @@
+import dateFormat from '@/Formatters/dateFormat';
 import { Incident } from '@/types/incident/Incident';
-import dateFormat from "@/Formatters/dateFormat";
 
 export default function IncidentInformation({ incident }: { incident: Incident }) {
     return (

@@ -7,10 +7,10 @@ import { useState } from 'react';
 
 import { useConfirmationModal } from '@/Components/ConfirmationModal/ConfirmationModalProvider';
 import DangerButton from '@/Components/DangerButton';
+import FileIcon from '@/Components/FileIcon';
+import dateFormat from '@/Formatters/dateFormat';
 import dateTimeFormat from '@/Formatters/dateTimeFormat';
 import { closeIncident, reopenIncident, returnInvestigation, returnRCA } from '@/Helpers/Incident/statusUpdates';
-import FileIcon from "@/Components/FileIcon";
-import dateFormat from "@/Formatters/dateFormat";
 
 export default function StatusUpdate({ incident }: { incident: Incident }) {
     const [isLoading, setIsLoading] = useState(false);
