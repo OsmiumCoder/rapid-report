@@ -30,7 +30,7 @@ class RootCauseAnalysisSubmittedNotification extends BaseNotification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Root Cause Analysis Submitted')
+            ->subject("Root Cause Analysis Submitted For Incident #$this->incidentSlug")
             ->markdown('mail.root-cause-analysis-submitted', ['url' => $this->url, 'message' => $this->message]);
     }
 }

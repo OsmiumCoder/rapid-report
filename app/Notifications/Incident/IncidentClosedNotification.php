@@ -33,7 +33,7 @@ class IncidentClosedNotification extends BaseNotification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Incident Closed')
+            ->subject("Incident #$this->incidentSlug Closed")
             ->markdown('mail.incident-closed-notification', ['url' => $this->url, 'message' => $this->message]);
     }
 }

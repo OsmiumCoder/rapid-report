@@ -26,7 +26,7 @@ class SupervisorAssignedNotification extends BaseNotification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Incident Assigned')
+            ->subject("Incident #$this->incidentSlug Assigned")
             ->markdown('mail.incident-assigned', [
                 'url' => $this->url,
                 'supervisorName' => $this->supervisor->name,

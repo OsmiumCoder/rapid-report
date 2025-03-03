@@ -43,7 +43,7 @@ class IncidentReopenedNotification extends BaseNotification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Incident Reopened')
+            ->subject("Incident $this->incidentSlug Reopened")
             ->line($this->message)
             ->markdown('mail.incident-reopened-notification', [
                 'url' => $this->url,

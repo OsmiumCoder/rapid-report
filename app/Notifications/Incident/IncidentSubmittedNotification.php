@@ -56,7 +56,7 @@ class IncidentSubmittedNotification extends BaseNotification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Incident Submitted')
+            ->subject("Incident #$this->incidentSlug Submitted")
             ->markdown('mail.incident-submitted', ['url' => $this->url, 'message' => $this->message]);
     }
 }
