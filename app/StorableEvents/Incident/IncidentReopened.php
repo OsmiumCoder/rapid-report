@@ -18,6 +18,7 @@ class IncidentReopened extends StoredEvent
         $incident = Incident::find($this->aggregateRootUuid());
         $incident->status->transitionTo(Reopened::class);
         $incident->supervisor_id = null;
+        $incident->closed_at = null;
         $incident->save();
 
         $comment = new Comment;
