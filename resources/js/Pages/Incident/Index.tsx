@@ -254,7 +254,7 @@ export default function Index({ incidents, indexType, currentFilters, currentSor
                                                 >
                                                     <div>
                                                         <span className="sm:block md:hidden">Incident</span>
-                                                        <span className="hidden md:inline-block">Reporter</span>
+                                                        <span className="hidden md:inline-block">Name</span>
                                                     </div>
                                                     <div className="ml-2 rounded-sm text-gray-400 group-hover:visible group-focus:visible">
                                                         <ChevronUpIcon

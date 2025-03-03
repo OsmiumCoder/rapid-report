@@ -5,6 +5,7 @@ import AdditionalInformation from '@/Pages/Incident/Partials/ShowComponents/Info
 import AffectedPartyInformation from '@/Pages/Incident/Partials/ShowComponents/InformationComponents/AffectedPartyInformation';
 import GeneralDescription from '@/Pages/Incident/Partials/ShowComponents/InformationComponents/GeneralDescription';
 import IncidentInformation from '@/Pages/Incident/Partials/ShowComponents/InformationComponents/IncidentInformation';
+import ReportingInformation from '@/Pages/Incident/Partials/ShowComponents/InformationComponents/ReportingInformation';
 import SupervisorInformation from '@/Pages/Incident/Partials/ShowComponents/InformationComponents/SupervisorInformation';
 import VictimInformation from '@/Pages/Incident/Partials/ShowComponents/InformationComponents/VictimInformation';
 import WitnessInformation from '@/Pages/Incident/Partials/ShowComponents/InformationComponents/WitnessInformation';
@@ -18,7 +19,7 @@ export default function IncidentInformationPanel({ incident }: { incident: Incid
                 <Badge color={incidentBadgeColor(incident)} text={uppercaseWordFormat(incident.status)} />
             </div>
             <br />
-
+            <ReportingInformation incident={incident} />
             <AffectedPartyInformation incident={incident} />
             <GeneralDescription incident={incident} />
             <IncidentInformation incident={incident} />
