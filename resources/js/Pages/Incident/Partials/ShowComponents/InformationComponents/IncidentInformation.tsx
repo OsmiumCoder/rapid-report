@@ -1,5 +1,5 @@
-import dateTimeFormat from '@/Formatters/dateTimeFormat';
 import { Incident } from '@/types/incident/Incident';
+import dateFormat from "@/Formatters/dateFormat";
 
 export default function IncidentInformation({ incident }: { incident: Incident }) {
     return (
@@ -12,7 +12,7 @@ export default function IncidentInformation({ incident }: { incident: Incident }
                 </div>
                 <div>
                     <span className="font-semibold">Happened At: </span>
-                    {dateTimeFormat(incident.happened_at)}
+                    {dateFormat(incident.happened_at)}
                 </div>
                 <div>
                     <span className="font-semibold">Location: </span>
