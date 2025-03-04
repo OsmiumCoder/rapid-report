@@ -5,8 +5,11 @@ namespace App\StorableEvents\RootCauseAnalysis;
 use App\Enum\CommentType;
 use App\Models\Comment;
 use App\Models\Incident;
+use App\Models\User;
+use App\Notifications\RootCauseAnalysis\RootCauseAnalysisReturnedNotification;
 use App\States\IncidentStatus\Returned;
 use App\StorableEvents\StoredEvent;
+use Illuminate\Support\Facades\Notification;
 
 class RootCauseAnalysisReturned extends StoredEvent
 {
@@ -27,5 +30,18 @@ class RootCauseAnalysisReturned extends StoredEvent
         $comment->commentable()->associate($incident);
 
         $comment->save();
+    }
+
+    public function react()
+    {
+        $incident = Incident::find($this->aggregateRootUuid());
+        $supervisor = $incident->supervisor;
+
+        if ($supervisor) {
+            Notification::send($supervisor, new RootCauseAnalysisReturnedNotification($incident->slug, $this->aggregateRootUuid()));
+        }
+
+        $admins = User::role('admin')->get();
+        Notification::send($admins, new RootCauseAnalysisReturnedNotification($incident->slug, $this->aggregateRootUuid()));
     }
 }
