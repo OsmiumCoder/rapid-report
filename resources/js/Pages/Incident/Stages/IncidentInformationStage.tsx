@@ -17,7 +17,7 @@ export default function IncidentInformationStage({ formData, setFormData }: Stag
                     <DateInput
                         value={formData.happened_at ?? dateFormat(new Date())}
                         onChange={(e) => {
-                            setFormData('happened_at', e.target.value);
+                            setFormData('happened_at', dateFormat(e.target.value));
                         }}
                     />
                 </div>

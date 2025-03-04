@@ -17,6 +17,7 @@ class IncidentClosed extends StoredEvent
     {
         $incident = Incident::find($this->aggregateRootUuid());
         $incident->status->transitionTo(Closed::class);
+        $incident->closed_at = now();
         $incident->save();
 
         $comment = new Comment;

@@ -16,6 +16,24 @@ use Tests\TestCase;
 
 class IncidentReopenedTest extends TestCase
 {
+    public function test_reopen_incident_resets_closed_at()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Closed::class,
+        ]);
+
+        $event = new IncidentReopened;
+        $event->setMetaData(['user_id' => $supervisor->id]);
+        $event->setAggregateRootUuid($incident->id);
+        $event->handle();
+
+        $incident->refresh();
+        $this->assertNull($incident->closed_at);
+    }
+
     public function test_throws_if_not_closed()
     {
         $this->expectException(TransitionNotFound::class);
