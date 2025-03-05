@@ -12,10 +12,10 @@ export default function GeneralDescription({ incident }: { incident: Incident })
                     {incident.incident_type === IncidentType.ENVIRONMENTAL
                         ? 'Environmental'
                         : incident.incident_type === IncidentType.SAFETY
-                            ? 'Safety'
-                            : incident.incident_type === IncidentType.SECURITY
-                                ? 'Security'
-                                : 'Unknown'}
+                          ? 'Safety'
+                          : incident.incident_type === IncidentType.SECURITY
+                            ? 'Security'
+                            : 'Unknown'}
                 </div>
                 <div>
                     <span className="font-semibold">Descriptor: </span>
