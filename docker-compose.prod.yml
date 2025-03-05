@@ -1,0 +1,112 @@
+services:
+  app:
+    build:
+      dockerfile: Dockerfile
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    ports:
+      - "80:80"
+    networks:
+      - prod
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+        restart: true
+      redis:
+        condition: service_healthy
+        restart: true
+      typesense:
+        condition: service_started
+        restart: true
+      minio:
+        condition: service_started
+        restart: true
+  mysql:
+    image: 'mysql/mysql-server:8.0'
+    ports:
+      - '3306:3306'
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_DATABASE: '${DB_DATABASE}'
+      MYSQL_USER: '${DB_USERNAME}'
+      MYSQL_PASSWORD: '${DB_PASSWORD}'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+    volumes:
+      - 'prod-mysql:/var/lib/mysql'
+    networks:
+      - prod
+    healthcheck:
+      test: ['CMD', 'mysqladmin', 'ping', '-p${DB_PASSWORD}']
+      retries: 3
+      timeout: 5s
+
+  typesense:
+    image: 'typesense/typesense:27.1'
+    ports:
+      - '8108:8108'
+    restart: unless-stopped
+    environment:
+      TYPESENSE_DATA_DIR: '/typesense-data'
+      TYPESENSE_API_KEY: '${TYPESENSE_API_KEY}'
+      TYPESENSE_ENABLE_CORS: 'true'
+    volumes:
+      - 'prod-typesense:/typesense-data'
+    networks:
+      - prod
+    healthcheck:
+      test: ['CMD', 'curl', 'http://localhost:8108/health']
+      retries: 5
+      timeout: 7s
+  redis:
+    image: 'redis:alpine'
+    ports:
+      - '6379:6379'
+    volumes:
+      - 'prod-redis:/data'
+    networks:
+      - prod
+    restart: unless-stopped
+    healthcheck:
+      test:
+        - CMD
+        - redis-cli
+        - ping
+      retries: 3
+      timeout: 5s
+  minio:
+    image: 'minio/minio:latest'
+    ports:
+      - '9000:9000'
+      - '8900:8900'
+    environment:
+      MINIO_ROOT_USER: ${AWS_ACCESS_KEY_ID}
+      MINIO_ROOT_PASSWORD: ${AWS_SECRET_ACCESS_KEY}
+    volumes:
+      - 'prod-minio:/data'
+    networks:
+      - prod
+    command: 'minio server /data --console-address ":8900"'
+    restart: unless-stopped
+    healthcheck:
+      test:
+        - CMD
+        - mc
+        - ready
+        - local
+      retries: 3
+      timeout: 5s
+networks:
+  prod:
+    driver: bridge
+volumes:
+  prod-mysql:
+    driver: local
+  prod-typesense:
+    driver: local
+  prod-redis:
+    driver: local
+  prod-minio:
+    driver: local

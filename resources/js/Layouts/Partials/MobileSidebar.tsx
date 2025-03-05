@@ -3,6 +3,7 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import NavigationItems from '@/Layouts/Partials/NavigationItems';
+import { Link } from '@inertiajs/react';
 
 export default function MobileSidebar(props: {
     open: boolean;
@@ -32,9 +33,10 @@ export default function MobileSidebar(props: {
                     {/* Sidebar component, swap this element with another sidebar if you like */}
                     <div className="bg-upei-red-500 flex grow flex-col gap-y-5 overflow-y-auto px-6 pb-4 ring-1 ring-white/10">
                         <div className="flex items-center justify-center">
-                            <ApplicationLogo className="w-[40%]" />
+                            <Link className="w-[40%]" href={route('dashboard')}>
+                                <ApplicationLogo />
+                            </Link>
                         </div>
-
                         <NavigationItems />
                     </div>
                 </DialogPanel>

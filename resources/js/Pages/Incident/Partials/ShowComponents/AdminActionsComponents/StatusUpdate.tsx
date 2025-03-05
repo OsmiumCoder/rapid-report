@@ -91,7 +91,7 @@ export default function StatusUpdate({ incident }: { incident: Incident }) {
                                             >
                                                 <div className="mt-3 flex items-center">
                                                     <FileIcon extension={file.extension} className="mr-6 size-6" />
-                                                    {dateFormat(file.created_at)} - {file.original_name}
+                                                    {file.user.name} - {dateFormat(file.created_at)} - {file.original_name}
                                                 </div>
                                             </a>
                                         </div>

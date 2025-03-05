@@ -7,7 +7,6 @@ import GeneralDescription from '@/Pages/Incident/Partials/ShowComponents/Informa
 import IncidentInformation from '@/Pages/Incident/Partials/ShowComponents/InformationComponents/IncidentInformation';
 import ReportingInformation from '@/Pages/Incident/Partials/ShowComponents/InformationComponents/ReportingInformation';
 import SupervisorInformation from '@/Pages/Incident/Partials/ShowComponents/InformationComponents/SupervisorInformation';
-import VictimInformation from '@/Pages/Incident/Partials/ShowComponents/InformationComponents/VictimInformation';
 import WitnessInformation from '@/Pages/Incident/Partials/ShowComponents/InformationComponents/WitnessInformation';
 import { Incident } from '@/types/incident/Incident';
 
@@ -23,7 +22,6 @@ export default function IncidentInformationPanel({ incident }: { incident: Incid
             <AffectedPartyInformation incident={incident} />
             <GeneralDescription incident={incident} />
             <IncidentInformation incident={incident} />
-            <VictimInformation incident={incident} />
             <SupervisorInformation incident={incident} />
             <WitnessInformation incident={incident} />
             <AdditionalInformation incident={incident} />

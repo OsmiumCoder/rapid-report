@@ -12,7 +12,7 @@ export default function VictimInformationStage({ formData, setFormData }: StageP
 
     return (
         <div className="min-w-0 flex-1 text-sm/6">
-            <label className="flex justify-center text-lg font-bold text-gray-900">Incident Information</label>
+            <label className="flex justify-center text-lg font-bold text-gray-900">Incident Information Continued</label>
 
             <div className="flex">
                 <div className="min-w-0 flex-1 text-sm/6">
