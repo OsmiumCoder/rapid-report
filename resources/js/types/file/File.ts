@@ -1,4 +1,5 @@
 import { FileExtension } from '@/types/file/FileExtension';
+import {User} from "@/types";
 export interface File {
     id: string;
     name: string;
@@ -9,4 +10,6 @@ export interface File {
     mime_type: string;
     extension: FileExtension;
     created_at: string;
+    user_id: string;
+    user: User;
 }

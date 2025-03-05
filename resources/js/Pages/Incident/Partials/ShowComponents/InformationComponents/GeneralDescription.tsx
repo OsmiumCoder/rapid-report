@@ -12,10 +12,10 @@ export default function GeneralDescription({ incident }: { incident: Incident })
                     {incident.incident_type === IncidentType.ENVIRONMENTAL
                         ? 'Environmental'
                         : incident.incident_type === IncidentType.SAFETY
-                          ? 'Safety'
-                          : incident.incident_type === IncidentType.SECURITY
-                            ? 'Security'
-                            : 'Unknown'}
+                            ? 'Safety'
+                            : incident.incident_type === IncidentType.SECURITY
+                                ? 'Security'
+                                : 'Unknown'}
                 </div>
                 <div>
                     <span className="font-semibold">Descriptor: </span>
@@ -28,6 +28,14 @@ export default function GeneralDescription({ incident }: { incident: Incident })
                 <div>
                     <span className="font-semibold">Submitted at: </span>
                     {dateTimeFormat(incident.created_at)}
+                </div>
+                <div>
+                    <span className="font-semibold">Injury Description: </span>
+                    {incident.injury_description || 'No injuries were sustained'}
+                </div>
+                <div>
+                    <span className="font-semibold">First-Aid: </span>
+                    {incident.first_aid_description || 'No first-aid was administered'}
                 </div>
             </dd>
         </dl>
