@@ -1,10 +1,15 @@
 import { Incident } from '@/types/incident/Incident';
+import dateTimeFormat from "@/Formatters/dateTimeFormat";
 
 export default function ReportingInformation({ incident }: { incident: Incident }) {
     return (
         <dl className="mt-6 border-t border-gray-900/5 pt-6 text-gray-900 sm:pr-4">
             <dt className="text-xl font-semibold">Reporting Information</dt>
             <dl className="mt-2 ml-6">
+                <div>
+                    <span className="font-semibold">Submitted at: </span>
+                    {dateTimeFormat(incident.created_at)}
+                </div>
                 <div>
                     <span className="font-semibold">Anonymous: </span>
                     {incident.anonymous ? 'Yes' : 'No'}

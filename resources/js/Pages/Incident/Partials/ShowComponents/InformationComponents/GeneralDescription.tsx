@@ -26,10 +26,6 @@ export default function GeneralDescription({ incident }: { incident: Incident })
                     {incident.description ?? 'None Provided'}
                 </div>
                 <div>
-                    <span className="font-semibold">Submitted at: </span>
-                    {dateTimeFormat(incident.created_at)}
-                </div>
-                <div>
                     <span className="font-semibold">Injury Description: </span>
                     {incident.injury_description || 'No injuries were sustained'}
                 </div>
