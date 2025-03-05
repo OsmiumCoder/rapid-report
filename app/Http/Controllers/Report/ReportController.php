@@ -10,6 +10,7 @@ use App\Models\Incident;
 use DateTime;
 use DateTimeImmutable;
 use Exception;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use PhpOffice\PhpSpreadsheet\Cell\AdvancedValueBinder;
@@ -35,21 +36,18 @@ class ReportController extends Controller
         ]);
     }
 
-    /**
-     * @throws Exception
-     */
     public function downloadFileXLSX(ReportExportData $exportData)
     {
-
-
         Gate::authorize('view-report-page');
-        $headers = [
+
+        $responseHeaders = [
             'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             'Content-Disposition' => "attachment",
             'Pragma' => 'no-cache',
             'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
             'Expires' => '0',
         ];
+
         return response()->stream(function () use ($exportData) {
             $spreadsheet = new Spreadsheet;
             $spreadsheet->setValueBinder(new AdvancedValueBinder);
@@ -139,74 +137,56 @@ class ReportController extends Controller
 
             $writer = IOFactory::createWriter($spreadsheet, "Xlsx");
             $writer->save("php://output");
-        }, 200, $headers);
+        }, 200, $responseHeaders);
     }
+
     public function downloadFileCSV(ReportExportData $exportData)
     {
         Gate::authorize('view-report-page');
 
-        $headers = [
+        $responseHeaders = [
             'Content-Type' => 'text/csv',
             'Content-Disposition' => "attachment",
             'Pragma' => 'no-cache',
             'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
             'Expires' => '0',
         ];
+
         return response()->stream(function () use ($exportData) {
+            $output = fopen('php://output', 'w');
 
-            $handle = fopen('php://output', 'w');
-            $headers = [];
-            $person_headers = ['anonymous','on_behalf','on_behalf_anonymous','role','last_name','first_name','upei_id','email','phone'];
-
-            $arrayData = $exportData -> toArray();
-            if ($arrayData['personal_individual_information']) {
-                $headers = array_merge($headers, $person_headers);
-            }
-
-            $timeline_start = DateTimeImmutable::createFromFormat("Y-m-d", $exportData -> start);
-            $timeline_end = DateTimeImmutable::createFromFormat("Y-m-d", $exportData -> end);
-            unset($arrayData['timeline_start'], $arrayData['timeline_end'],$arrayData['personal_individual_information']);
-
-            foreach ($arrayData as $key => $value) {
-                if ($value) {
-                    $headers[] = $key;
-                }
-            }
-            // Add CSV headers
+            // CSV Header
             fputcsv(
-                $handle,
-                $headers,
+                $output,
+                $exportData->fields,
             );
 
-            // Fetch and process data in chunks
-            Incident::where('created_at', '>', $timeline_start)
-                ->where('created_at', '<', $timeline_end)
-                ->chunk(25, function ($incidents) use ($exportData, $handle, $headers, $timeline_start, $timeline_end) {
+            Incident::whereBetween('created_at', [$exportData->start, $exportData->end])
+                ->chunk(100, function (Collection $incidents) use ($exportData, $output) {
+                    /* @var Incident $incident */
                     foreach ($incidents as $incident) {
-                        $time = DateTime::createFromFormat('Y-m-d H:i:s', $incident->{'created_at'});
-                        $data = [];
-                        foreach ($headers as $key) {
-                            if ($key == "incident_type") {
-                                $data[] = IncidentType::toString($incident->$key);
-                            } elseif ($key == "role") {
-                                $data[] = isset($incident->$key) ? RoleType::toString($incident->$key) : 'N/A';
+                        $row = [];
+
+                        foreach ($exportData->fields as $field) {
+                            if ($field == "incident_type") {
+                                $row[] = IncidentType::toString($incident->incident_type);
+                            } elseif ($field == "role") {
+                                $row[] = $incident->role ? RoleType::toString($incident->role) : 'Anonymous';
+                            } elseif ($field == "happened_at") {
+                                $row[] = $incident->happened_at->format("Y-m-d");
+                            } elseif (str_ends_with($field, "_at")) {
+                                $row[] = $incident->$field->format("Y-m-d h:i A");
                             } else {
-                                if (gettype($incident->$key) == "boolean") {
-                                    if ($incident->$key) {
-                                        $data[] = "True";
-                                    } else {
-                                        $data[] = "False";
-                                    }
-                                } else {
-                                    $data[] = $incident->$key ?? 'N/A';
-                                }
+                                $row[] = $incident->$field;
                             }
                         }
-                        fputcsv($handle, $data);
+
+                        fputcsv($output, $row);
                     }
                 });
-            fclose($handle);
-        }, 200, $headers);
+
+            fclose($output);
+        }, 200, $responseHeaders);
     }
 
 }
