@@ -90,6 +90,16 @@ export default function Searchbar({ isOpen, setIsOpen }: CommandPaletteProps) {
 
     const abortControllerRef = useRef<AbortController | null>(null);
 
+    const searchInputRef = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+        if (isOpen) {
+            setTimeout(() => {
+                searchInputRef.current?.focus();
+            }, 100);
+        }
+    }, [isOpen]);
+
     useEffect(() => {
         setSearchBy(() => {
             const filteredLabels = allLabelsChecked ? labels : labels.filter(({ checked }) => checked);
@@ -193,6 +203,7 @@ export default function Searchbar({ isOpen, setIsOpen }: CommandPaletteProps) {
                     <Combobox>
                         <div className="grid grid-cols-1">
                             <input
+                                ref={searchInputRef}
                                 className="col-start-1 row-start-1 h-12 w-full border-none pr-4 pl-11 text-base text-gray-900 placeholder:text-gray-400 focus:ring-0 focus:outline-0 sm:text-sm"
                                 placeholder="Search..."
                                 onChange={(e) => setSearch(e.target.value)}

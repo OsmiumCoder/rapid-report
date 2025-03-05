@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Incident;
 
+use App\Models\File;
 use App\Models\Incident;
 use App\Models\Investigation;
 use App\Models\User;
@@ -17,6 +18,57 @@ use Tests\TestCase;
 
 class ShowTest extends TestCase
 {
+    public function test_show_page_loads_user_on_files()
+    {
+        $admin = User::factory()->create()->syncRoles('admin');
+        $this->actingAs($admin);
+
+        $incident = Incident::factory()->create();
+        $file = File::factory()
+            ->for($incident, 'fileable')
+            ->create([
+                'user_id' => $admin->id,
+            ]);
+
+
+        $response = $this->get(route('incidents.show', ['incident' => $incident->id]));
+
+        $response->assertStatus(200);
+
+        $response->assertInertia(function ($page) use ($file, $admin) {
+            $page->component('Incident/Show')
+                ->has('incident.files')
+                ->count('incident.files', 1)
+                ->where('incident.files.0.id', $file->id)
+                ->where('incident.files.0.user_id', $admin->id)
+            ;
+        });
+    }
+
+    public function test_show_page_loads_incident_files()
+    {
+        $admin = User::factory()->create()->syncRoles('admin');
+        $this->actingAs($admin);
+
+        $incident = Incident::factory()->create();
+        $file = File::factory()
+            ->for($incident, 'fileable')
+            ->create();
+
+
+        $response = $this->get(route('incidents.show', ['incident' => $incident->id]));
+
+        $response->assertStatus(200);
+
+        $response->assertInertia(function ($page) use ($file) {
+            $page->component('Incident/Show')
+                ->has('incident.files')
+                ->count('incident.files', 1)
+                ->where('incident.files.0.id', $file->id)
+            ;
+        });
+    }
+
     public function test_admin_gets_roles_prop()
     {
         $admin = User::factory()->create()->syncRoles('admin');

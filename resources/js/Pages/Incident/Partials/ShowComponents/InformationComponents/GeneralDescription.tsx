@@ -1,5 +1,4 @@
 import { IncidentType } from '@/Enums/IncidentType';
-import dateTimeFormat from '@/Formatters/dateTimeFormat';
 import { Incident } from '@/types/incident/Incident';
 
 export default function GeneralDescription({ incident }: { incident: Incident }) {
@@ -26,8 +25,12 @@ export default function GeneralDescription({ incident }: { incident: Incident })
                     {incident.description ?? 'None Provided'}
                 </div>
                 <div>
-                    <span className="font-semibold">Submitted at: </span>
-                    {dateTimeFormat(incident.created_at)}
+                    <span className="font-semibold">Injury Description: </span>
+                    {incident.injury_description || 'No injuries were sustained'}
+                </div>
+                <div>
+                    <span className="font-semibold">First-Aid: </span>
+                    {incident.first_aid_description || 'No first-aid was administered'}
                 </div>
             </dd>
         </dl>
