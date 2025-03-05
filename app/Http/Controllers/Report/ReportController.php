@@ -29,9 +29,28 @@ class ReportController extends Controller
     public function stats()
     {
         Gate::authorize('view-report-page');
+        $witnesses = Incident::selectRaw('witnesses')
+            ->pluck('witnesses')
+            ->toArray();
+        $witness_count = [];
+        foreach ($witnesses as $witness) {
+            $witness_count[] = count($witness);
 
+        }
         return Inertia::render('Report/Stats', [
-            'incidents' => Incident::all(),
+            'type_dist' => Incident::selectRaw('incident_type, count(incident_type) as total')
+                ->groupBy('incident_type')
+                ->pluck('total', 'incident_type'),
+            'witnesses_dist' => array_count_values($witness_count),
+            'role_dist' => Incident::selectRaw('role, count(role) as total')
+                ->groupBy('role')
+                ->pluck('total', 'role'),
+            'status_dist' => Incident::selectRaw('status, count(status) as total')
+                ->groupBy('status')
+                ->pluck('total', 'status'),
+            'anon_dist' => Incident::selectRaw('anonymous, count(anonymous) as total')
+                ->groupBy('anonymous')
+                ->pluck('total', 'anonymous'),
         ]);
     }
 

@@ -21,7 +21,7 @@ class IncidentFactory extends Factory
             'anonymous' => false,
             'on_behalf' => false,
             'on_behalf_anonymous' => false,
-            'role' => fake()->numberBetween(0, 5),
+            'role' => fake()->numberBetween(1, 4),
             'last_name' => fake()->lastName(),
             'first_name' => fake()->firstName(),
             'upei_id' => fake()->numberBetween(99999, 9999999),
@@ -32,7 +32,7 @@ class IncidentFactory extends Factory
             'happened_at' => fake()->date(),
             'location' => fake()->address(),
             'room_number' => fake()->buildingNumber(),
-            'witnesses' => [
+            'witnesses' => fake()-> randomElements([
                 0 => [
                     'name' => fake()->name(),
                     'email' => '',
@@ -43,9 +43,14 @@ class IncidentFactory extends Factory
                     'email' => fake()->email(),
                     'phone' => '',
                 ],
-            ],
-            'incident_type' => IncidentType::SAFETY,
-            'descriptor' => 'Burn',
+                3 => [
+                    'name' => fake()->name(),
+                    'email' => '',
+                    'phone' => fake()->phoneNumber(),
+                ]
+            ],fake()->numberBetween(0,3)),
+            'incident_type' => fake()->randomElement(IncidentType::cases()),
+            'descriptor' => fake()->randomElement(['Burn','Slip','Stab','Murder']),
             'description' => fake()->text(),
             'injury_description' => fake()->text(),
             'first_aid_description' => fake()->text(),

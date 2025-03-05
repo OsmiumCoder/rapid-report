@@ -1,120 +1,136 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import {Incident} from "@/types/incident/Incident";
-import PieGraphDisplay from "@/Pages/Report/Partials/PieGraphDisplay";
-import {useEffect} from "react";
+import PieGraphDisplay from '@/Pages/Report/Partials/PieGraphDisplay';
+import { JSX, useEffect, useState } from 'react';
 
-interface data_frame{
-    closed_at : string[], //Times
-    created_at: string[], //Times
-    descriptor: string[], //String
-    happened_at: string[], //Time
-    incident_type: number[], //Number
-    location: string[], //String
-    on_behalf: boolean[], //boolean
-    on_behalf_anonymous: boolean[], //boolean
-    role: number[], //number
-    room_number: string[], //string(in combination with location)
-    status: string[], //string
-    supervisor_involved: boolean[], //boolean
-    updated_at: string[], //date
-    workers_comp_submitted: boolean[], //boolean
-    witnesses: number[], //number
+
+
+interface dataEntry{
+    labels: string[],
+    entries: number[],
+    entries_number: number,
+    title: string,
+    description: string,
 }
-export default function Stats(incidents: { incidents: Incident[] }) {
-    const all_incidents: Incident[] = incidents.incidents;
-    console.log(all_incidents);
-    const incidents_dataframe :data_frame = {
-        closed_at : [], //Times
-        created_at: [], //Times
-        descriptor: [], //String
-        happened_at: [], //Time
-        incident_type: [], //Number
-        location: [], //String
-        on_behalf: [], //boolean
-        on_behalf_anonymous: [], //boolean
-        role: [], //number
-        room_number: [], //string(in combination with location)
-        status: [], //string
-        supervisor_involved: [], //boolean
-        updated_at: [], //date
-        workers_comp_submitted: [], //boolean
-        witnesses: [], //number
-    };
+export default function Stats({type_dist, witnesses_dist, role_dist,status_dist,anon_dist}:
+{   type_dist:number[],
+    witnesses_dist:number[],
+    role_dist:number[],
+    status_dist:number[],
+    anon_dist:number[],
+} ) {
 
-    useEffect(() => {
-        for(const incident of all_incidents){
-            incidents_dataframe.closed_at.push(incident.closed_at ? incident.closed_at: 'null');
-            incidents_dataframe.created_at.push(incident.created_at ? incident.created_at: 'null');
-            incidents_dataframe.descriptor.push(incident.descriptor ? incident.descriptor: 'null');
-            incidents_dataframe.happened_at.push(incident.happened_at ? incident.happened_at: 'null');
-            incidents_dataframe.incident_type.push(incident.incident_type ? incident.incident_type: -1);
-            incidents_dataframe.location.push(incident.location ? incident.location: 'null');
-            incidents_dataframe.on_behalf.push(incident.on_behalf ? incident.on_behalf: false);
-            incidents_dataframe.on_behalf_anonymous.push(incident.on_behalf_anonymous ? incident.on_behalf_anonymous: false);
-            incidents_dataframe.role.push(incident.role ? incident.role: -1);
-            incidents_dataframe.room_number.push(incident.room_number ? incident.room_number: 'null');
-            incidents_dataframe.status.push(incident.status ? incident.status: 'null');
-            incidents_dataframe.supervisor_involved.push(!!incident.supervisor);
-            incidents_dataframe.updated_at.push(incident.updated_at ? incident.updated_at: 'null');
-            incidents_dataframe.workers_comp_submitted.push(incident.workers_comp_submitted ? incident.workers_comp_submitted: false);
-            incidents_dataframe.witnesses.push(incident.witnesses ? incident.witnesses.length: 0);
+    const type_label_key = {
+        1:'Safety',
+        2: 'Environmental',
+        3: 'Security',
+    }
+    const role_label_key = {
+        1: 'Employee',
+        2: 'Student',
+        3: 'Visitor',
+        4: 'Contractor'
+    }
+    console.log(status_dist)
+
+    const data:dataEntry[] = [
+        {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-expect-error
+            labels: Object.keys(type_dist).map((x)=> type_label_key[+x]),
+            entries: Object.values(type_dist),
+            entries_number: type_dist.length,
+            title: 'Incident Type',
+            description: 'Type of Incident Distribution',
+        },
+        {
+            labels:Object.keys(witnesses_dist),
+            entries:Object.values(witnesses_dist),
+            entries_number:Object.keys(witnesses_dist).length,
+            title:'Witness Counts',
+            description:'Most Common Witnesses'
+        },
+        {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-expect-error
+            labels:Object.keys(role_dist).map((x)=> role_label_key[+x]),
+            entries:Object.values(role_dist),
+            entries_number:Object.keys(role_dist).length,
+            title:'Roles',
+            description:'Distribution of Roles'
+        },
+        {
+
+            labels:Object.keys(status_dist).map((x)=> x.charAt(0).toUpperCase()+x.substring(1)),
+            entries:Object.values(status_dist),
+            entries_number:Object.keys(status_dist).length,
+            title:'Status',
+            description:'Distribution of Status'
+        },
+        {
+            labels:['Not Anonymous','Anonymous'],
+            entries:[anon_dist[0],anon_dist[1]],
+            entries_number:2,
+            title:'Anonymous',
+            description:'Distribution of Anonymous'
         }
 
-        check();
-        })
+    ]
 
-    const check = () => {
-        console.log(incidents_dataframe);}
+    const data_key = ['Type', 'Witnesses', 'Roles', 'Status', "Anonymous"]
+    const [selected_statistics, setSelectedStatistics] = useState<number[]>([1,1,2,3,4])
+    const [display_graphs, setDisplayGraphs] = useState<JSX.Element[]>([])
+
+
+
+    const setGraphs = () => {
+       console.log(selected_statistics)
+        const temp_graphs =selected_statistics.map((x,i)=> {
+                return (
+                    <PieGraphDisplay
+                        labels={data[x].labels}
+                        entries={data[x].entries}
+                        entries_number={data[x].entries_number}
+                        title={data[x].title}
+                        description={data[x].description}
+                        graph_key={i}
+                        other_Items={data_key}
+                        setnewItem={function (key:number, index:number) {
+                            setSelectedStatistics((prev) => prev.map((x,i)=>i==key?index:x))
+                            setGraphs()
+                        }}
+                    />
+                );
+
+            }
+        )
+        console.log(temp_graphs)
+        setDisplayGraphs(temp_graphs)
+    }
+    useEffect(() => {
+        setGraphs()
+    });
+    useEffect(() => {
+        console.log(display_graphs);
+    }, [display_graphs]);
     return (
         <AuthenticatedLayout>
             {
                 <div className="m-10 grid grid-cols-1 gap-5 sm:mt-10 lg:grid-cols-6 lg:grid-rows-2">
                     <div className="relative p-px lg:col-span-2">
-                        <PieGraphDisplay
-                            labels={['Pig', 'Cow', 'Dog']}
-                            entries={[50, 100, 150]}
-                            entries_number={3}
-                            title={'Animals'}
-                            description={'How many animals'}
-
-                        />
+                        {display_graphs[0]}
                     </div>
                     <div className="relative p-px lg:col-span-2">
-                        <PieGraphDisplay
-                            labels={['Pig', 'Cow', 'Dog']}
-                            entries={[50, 100, 150]}
-                            entries_number={3}
-                            title={'Animals'}
-                            description={'How many animals'}
-                        />
+                        {display_graphs[1]}
                     </div>
                     <div className="relative p-px lg:col-span-2">
-                        <PieGraphDisplay
-                            labels={['Pig', 'Cow', 'Dog']}
-                            entries={[50, 100, 150]}
-                            entries_number={3}
-                            title={'Animals'}
-                            description={'How many animals'}
-                        />
+                        {display_graphs[2]}
                     </div>
 
                     <div className="relative p-px lg:col-span-3">
-                        <PieGraphDisplay
-                            labels={['Pig', 'Cow', 'Dog']}
-                            entries={[50, 100, 150]}
-                            entries_number={3}
-                            title={'Animals'}
-                            description={'How many animals'}
-                        />
+                        {display_graphs[3]}
                     </div>
                     <div className="relative p-px lg:col-span-3">
-                        <PieGraphDisplay
-                            labels={['Pig', 'Cow', 'Dog']}
-                            entries={[50, 100, 150]}
-                            entries_number={3}
-                            title={'Animals'}
-                            description={'How many animals'}
-                        />
+                        {display_graphs[4]}
                     </div>
                 </div>
             }
