@@ -1,5 +1,5 @@
+import dateTimeFormat from '@/Formatters/dateTimeFormat';
 import { Incident } from '@/types/incident/Incident';
-import dateTimeFormat from "@/Formatters/dateTimeFormat";
 
 export default function ReportingInformation({ incident }: { incident: Incident }) {
     return (
