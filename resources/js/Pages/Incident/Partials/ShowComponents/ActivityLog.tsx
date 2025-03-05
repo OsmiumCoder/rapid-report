@@ -3,16 +3,15 @@ import classNames from '@/Formatters/classNames';
 import AddCommentForm from '@/Pages/Incident/Partials/ShowComponents/ActivityLogComponents/AddCommentForm';
 import ActionComment from '@/Pages/Incident/Partials/ShowComponents/ActivityLogComponents/CommentComponents/ActionComment';
 import NoteComment from '@/Pages/Incident/Partials/ShowComponents/ActivityLogComponents/CommentComponents/NoteComment';
-import { Comment } from '@/types/Comment';
+import { Incident } from '@/types/incident/Incident';
+import { useForm } from '@inertiajs/react';
 import { FormEvent, useEffect, useRef } from 'react';
-import {useForm} from "@inertiajs/react";
-import {Incident} from "@/types/incident/Incident";
 
 interface ActivityLogProps {
-  incident: Incident
+    incident: Incident;
 }
 
-export default function ActivityLog({ incident}: ActivityLogProps) {
+export default function ActivityLog({ incident }: ActivityLogProps) {
     const { data, setData, post, processing, reset } = useForm({
         content: '',
     });

@@ -6,7 +6,6 @@ import dateFormat from '@/Formatters/dateFormat';
 import dateTimeFormat from '@/Formatters/dateTimeFormat';
 import FileUploadModal from '@/Pages/Incident/Partials/ShowComponents/FileUploadModal';
 import { Link } from '@inertiajs/react';
-import dayjs from 'dayjs';
 import { useState } from 'react';
 
 interface SupervisorActionsProps {

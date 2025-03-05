@@ -60,7 +60,7 @@ class IncidentCreated extends StoredEvent
         $incident->phone = $this->phone;
         $incident->work_related = $this->work_related;
         $incident->workers_comp_submitted = $this->workers_comp_submitted;
-        $incident->happened_at = $this->happened_at;
+        $incident->happened_at = $this->happened_at->toDateString();
         $incident->location = $this->location;
         $incident->room_number = $this->room_number;
         $incident->witnesses = $this->witnesses;

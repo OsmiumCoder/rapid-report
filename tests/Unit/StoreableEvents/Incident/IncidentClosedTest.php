@@ -14,6 +14,31 @@ use Tests\TestCase;
 
 class IncidentClosedTest extends TestCase
 {
+    public function test_sets_closed_at_timestamp()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => InReview::class,
+        ]);
+
+
+        $event = new IncidentClosed;
+        $event->setMetaData(['user_id' => $supervisor->id]);
+        $event->setAggregateRootUuid($incident->id);
+
+
+        $this->assertNull($incident->closed_at);
+
+        $event->handle();
+
+        $incident->refresh();
+
+        $this->assertNotNull($incident->closed_at);
+        $this->assertEquals(now(), $incident->closed_at);
+    }
+
     public function test_adds_closed_comment()
     {
         $supervisor = User::factory()->create()->syncRoles('supervisor');
