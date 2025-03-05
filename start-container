@@ -1,6 +1,15 @@
+#!/bin/bash
+
 cd /app
+
+composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+
+npm install --production
+npm run build:ssr
 
 php artisan migrate --force
 php artisan db:seed --class=RolesAndPermissionsSeeder --force
+
+php artisan optimize
 
 /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf

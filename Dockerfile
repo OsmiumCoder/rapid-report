@@ -27,15 +27,12 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
 
 RUN mkdir -p /var/log/supervisor
 
-RUN composer update
-RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
-
-RUN npm install --production
-
-RUN npm run build:ssr
-
 RUN ln -s /usr/bin/php /usr/bin/php8.4
 
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+
+RUN chmod +x ./start-container
+
+ENTRYPOINT ["./start-container"]
