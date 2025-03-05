@@ -1,5 +1,5 @@
+import { User } from '@/types';
 import { FileExtension } from '@/types/file/FileExtension';
-import {User} from "@/types";
 export interface File {
     id: string;
     name: string;
