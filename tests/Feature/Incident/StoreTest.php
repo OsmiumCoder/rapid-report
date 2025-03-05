@@ -204,7 +204,6 @@ class StoreTest extends TestCase
         $this->assertInstanceOf(ValidationException::class, $response->exception);
 
         $response->assertInvalid([
-            'role',
             'incident_type',
             'descriptor',
         ]);
@@ -217,7 +216,7 @@ class StoreTest extends TestCase
             'anonymous' => true,
             'on_behalf' => false,
             'on_behalf_anonymous' => false,
-            'role' => 0,
+            'role' => null,
             'last_name' => null,
             'first_name' => null,
             'upei_id' => null,
@@ -250,7 +249,7 @@ class StoreTest extends TestCase
         $this->assertFalse($incident->on_behalf);
         $this->assertFalse($incident->on_behalf_anonymous);
 
-        $this->assertEquals($incidentData->role, $incident->role);
+        $this->assertNull($incident->role);
         $this->assertNull($incident->last_name);
         $this->assertNull($incident->first_name);
         $this->assertNull($incident->upei_id);
