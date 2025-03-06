@@ -40,8 +40,9 @@ class InvestigationReturned extends StoredEvent
     public function react()
     {
         $admin = User::find($this->metaData['user_id']);
+        $incident = Incident::find($this->aggregateRootUuid());
         $investigation = Investigation::where('incident_id', $this->aggregateRootUuid())->first();
-        $supervisor = $investigation->supervisor;
-        Notification::send($supervisor, new InvestigationReturnedNotification($this->aggregateRootUuid(), $investigation->id, $admin));
+
+        Notification::send($investigation->supervisor, new InvestigationReturnedNotification($incident->slug, $investigation->id, $admin));
     }
 }
