@@ -1,7 +1,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import PieGraphDisplay from '@/Pages/Report/Partials/PieGraphDisplay';
 import {useState } from 'react';
-import classNames from '@/Filters/classNames';
+import classNames from '@/Formatters/classNames';
 
 
 
@@ -82,10 +82,9 @@ export default function Stats({type_dist, witnesses_dist, role_dist,status_dist,
 
     return (
         <AuthenticatedLayout>
-                <div className=" mx-10 items-center bg-red-600 grid grid-cols-1 gap-5  lg:grid-cols-6 lg:grid-rows-2">
+                <div className="mx-8 grid grid-cols-1 gap-5 lg:grid-cols-6">
                     {selected_statistics.map((indexValue,i)=>
-                                <div key={i} className={classNames("relative",
-                                    i<3 ? 'lg:col-span-2' : 'lg:col-span-3')}>
+                                <div key={i} className={classNames("relative", i<3 ? 'lg:col-span-2' : 'lg:col-span-3')}>
                                 <PieGraphDisplay
                                     labels={data[indexValue].labels}
                                     entries={data[indexValue].entries}

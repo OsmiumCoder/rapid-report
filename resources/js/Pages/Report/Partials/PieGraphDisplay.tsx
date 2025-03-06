@@ -33,7 +33,7 @@ export default function PieGraphDisplay({labels,entries,entries_number, title, d
     };
 
     return (
-        <div className="overflow-hidden rounded-lg bg-gray-700 ring-1 ring-white/15 max-lg:rounded lg:rounded">
+        <div className="overflow-hidden rounded-lg bg-white ring-1 ring-white/15 max-lg:rounded lg:rounded">
             <div className="absolute top-0 right-0 mt-2 mr-2">
                 <Menu>
                     <MenuButton
@@ -69,7 +69,7 @@ export default function PieGraphDisplay({labels,entries,entries_number, title, d
                     plugins: {
                         legend: {
                             labels: {
-                                color: 'white',
+                                color: 'gray-900',
                                 font: {
                                     size: 16,
                                 },
@@ -83,7 +83,7 @@ export default function PieGraphDisplay({labels,entries,entries_number, title, d
                         title: {
                             display: true,
                             text: data.datasets[0].label,
-                            color: 'white',
+                            color: 'gray-900',
                             font: {
                                 size: 20,
                             },
@@ -91,8 +91,8 @@ export default function PieGraphDisplay({labels,entries,entries_number, title, d
                     },
                 }}
             />
-            <div className="flex p-5 justify-center">
-                <h3 className="text-sm/4 font-semibold text-white">{description}</h3>
+            <div className="flex p-5 justify-center text-gray-900">
+                <h3 className="text-sm/4 font-semibold">{description}</h3>
 
 
             </div>
