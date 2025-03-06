@@ -28,24 +28,24 @@ class ReportController extends Controller
         ]);
     }
 
-    public function downloadFileXLSX(ReportExportData $exportData)
+    public function exportXLSX(ReportExportData $exportData)
     {
         Gate::authorize('view-report-page');
 
         return Excel::download(
             new IncidentsExport($exportData),
-            "{$exportData->start}-{$exportData->end}.xlsx",
+            "{$exportData->start->toDateString()}-to-{$exportData->end->toDateString()}.xlsx",
             \Maatwebsite\Excel\Excel::XLSX
         );
     }
 
-    public function downloadFileCSV(ReportExportData $exportData)
+    public function exportCSV(ReportExportData $exportData)
     {
         Gate::authorize('view-report-page');
 
         return Excel::download(
             new IncidentsExport($exportData),
-            "{$exportData->start}-{$exportData->end}.csv",
+            "{$exportData->start->toDateString()}-to-{$exportData->end->toDateString()}.csv",
             \Maatwebsite\Excel\Excel::CSV,
             ['Content-Type' => 'text/csv']
         );

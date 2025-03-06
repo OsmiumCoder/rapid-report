@@ -6,6 +6,7 @@ use App\Data\ReportExportData;
 use App\Enum\IncidentType;
 use App\Enum\RoleType;
 use App\Models\Incident;
+use DateTime;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -36,8 +37,12 @@ class IncidentsExport implements FromQuery, ShouldAutoSize, WithHeadings, WithMa
             } elseif ($field == "role") {
                 $rowItems[] = $row->role ? RoleType::toString($row->role) : 'Anonymous';
             } elseif ($field == "happened_at") {
-                $rowItems[] = $row->happened_at->format("Y-m-d");
+                $rowItems[] = $row->happened_at->toDateString();
             } elseif (str_ends_with($field, "_at")) {
+                if (!$row->$field) {
+                    $rowItems[] = $row->$field;
+                    continue;
+                }
                 $rowItems[] = $row->$field->format("Y-m-d h:i A");
             } else {
                 $rowItems[] = $row->$field;
@@ -50,6 +55,9 @@ class IncidentsExport implements FromQuery, ShouldAutoSize, WithHeadings, WithMa
     public function query()
     {
         return Incident::query()
-            ->whereBetween('created_at', [$this->exportData->start, $this->exportData->end]);
+            ->whereBetween('created_at', [
+                $this->exportData->start->startOfDay(),
+                $this->exportData->end->endOfDay()
+            ]);
     }
 }
