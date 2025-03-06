@@ -1,6 +1,6 @@
 import classNames from '@/Formatters/classNames';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import PieGraphDisplay from '@/Pages/Report/Partials/PieGraphDisplay';
+import Graph from '@/Pages/Report/Partials/Graph';
 import { useState } from 'react';
 
 interface dataEntry {
@@ -50,25 +50,21 @@ export default function Stats({
 
     const data: dataEntry[] = [
         {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-expect-error
-            labels: Object.keys(type_dist).map((x) => type_label_key[+x]),
+            labels: Object.keys(type_dist).map((x) => type_label_key[parseInt(x) as keyof typeof type_label_key]),
             entries: Object.values(type_dist),
             entries_number: type_dist.length,
             title: 'Incident Type',
-            description: "Distribution of Incident Type's",
+            description: 'Distribution of Incident Type',
         },
         {
             labels: Object.keys(witnesses_dist),
             entries: Object.values(witnesses_dist),
             entries_number: Object.keys(witnesses_dist).length,
             title: 'Witness Counts',
-            description: 'Distribution of Amount of Witnesses per Incident',
+            description: 'Distribution of Witnesses per Incident',
         },
         {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-expect-error
-            labels: Object.keys(role_dist).map((x) => role_label_key[+x]),
+            labels: Object.keys(role_dist).map((x) => role_label_key[parseInt(x) as keyof typeof type_label_key]),
             entries: Object.values(role_dist),
             entries_number: Object.keys(role_dist).length,
             title: 'Roles',
@@ -142,7 +138,7 @@ export default function Stats({
             <div className="mx-8 grid grid-cols-1 gap-5 lg:grid-cols-6">
                 {selected_statistics.map((indexValue, i) => (
                     <div key={i} className={classNames('relative', i < 3 ? 'lg:col-span-2' : 'lg:col-span-3')}>
-                        <PieGraphDisplay
+                        <Graph
                             labels={data[indexValue].labels}
                             entries={data[indexValue].entries}
                             entriesNumber={data[indexValue].entries_number}

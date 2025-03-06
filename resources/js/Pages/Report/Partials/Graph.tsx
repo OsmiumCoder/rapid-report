@@ -18,7 +18,7 @@ export interface PieGraphDataProps {
     canEdit: boolean;
     isBarInit: boolean;
 }
-export default function PieGraphDisplay({
+export default function Graph({
     labels,
     entries,
     entriesNumber,
@@ -30,8 +30,7 @@ export default function PieGraphDisplay({
     canEdit,
     isBarInit,
 }: PieGraphDataProps) {
-    //useEffect(() => {console.log(graph_key)})
-    const color = ['#7c2d1c', '#7fa33f', '#fcd177', '#4e0f10', '#5c8727', '#fbb040', '#1a0604', '#1f3912', '#a76119'];
+    const colors = ['#7c2d1c', '#7fa33f', '#fcd177', '#4e0f10', '#5c8727', '#fbb040', '#1a0604', '#1f3912', '#a76119'];
     const [isBar, setIsBar] = useState(isBarInit);
     const data = {
         labels: labels,
@@ -39,7 +38,7 @@ export default function PieGraphDisplay({
             {
                 label: title,
                 data: entries,
-                backgroundColor: color.slice(0, entriesNumber),
+                backgroundColor: colors.slice(0, entriesNumber),
                 hoverOffset: 10,
             },
         ],
@@ -49,20 +48,18 @@ export default function PieGraphDisplay({
         let sum = 0;
         for (let item = 0; item < ctx[0].dataset.data.length; item = item + 1) {
             if (ctx[0].dataset.data[item] != null) {
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-expect-error
-                sum += +ctx[0].dataset.data[item];
+                sum += +(ctx[0].dataset.data[item] ?? 0);
             }
         }
         const percent = Math.round(sum == 0 ? 100 : (+ctx[0].formattedValue / sum) * 10000) / 100;
-        return '' + percent + '%';
+        return percent + '%';
     };
     return (
         <div className="overflow-hidden rounded-lg bg-white ring-1 ring-white/15 max-lg:rounded lg:rounded">
             <div className="absolute top-0 left-0 mt-2 ml-2 flex">
                 <button
                     className={
-                        'rounded-full p-1 hover:bg-gray-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+                        'focus-visible:outline-upei-green-600 rounded-full p-1 hover:bg-gray-200 focus-visible:outline-2 focus-visible:outline-offset-2'
                     }
                     onClick={() => setIsBar((prev) => !prev)}
                 >
@@ -75,7 +72,7 @@ export default function PieGraphDisplay({
                         <Menu>
                             <MenuButton
                                 type="button"
-                                className="mt-3 ml-5 rounded-full bg-white p-1 text-white shadow-xs hover:bg-gray-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                className="focus-visible:outline-upei-green-600 mt-3 ml-5 rounded-full bg-white p-1 text-white shadow-xs hover:bg-gray-200 focus-visible:outline-2 focus-visible:outline-offset-2"
                             >
                                 <EditIcon aria-hidden="true" className="size-5" stroke={'#000000'} />
                             </MenuButton>
