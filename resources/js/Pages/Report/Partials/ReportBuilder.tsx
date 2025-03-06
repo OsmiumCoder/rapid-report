@@ -51,9 +51,13 @@ export default function ReportBuilder() {
     const [relativeTimeFrameSelected, setRelativeTimeFrameSelected] = useState(false);
 
     const setTimePeriod = (start: string, end: string) => {
-        if (dayjs(start).isAfter(dayjs(end))) {
+        if (data.start != start && dayjs(start).isAfter(dayjs(end))) {
             end = dateFormat(dayjs(start).add(1, 'day').toDate());
         }
+        else if (data.end != end && dayjs(end).isBefore(dayjs(start))) {
+            start = dateFormat(dayjs(end).subtract(1, 'day').toDate());
+        }
+
         setData('start', start);
         setData('end', end);
     };
@@ -89,23 +93,23 @@ export default function ReportBuilder() {
     const [selectedRelativeTimeUnit, setSelectedRelativeTimeUnit] = useState<ManipulateType>("day");
 
     const downloadExcel = async () => {
-        const response = await axios.post(route('report.downloadFileXLSX'), data, {
-            responseType: 'arraybuffer',
+        const response = await axios.post(route('report.export-xlsx'), data, {
+            responseType: 'blob',
         });
 
-        const blob = new Blob([response.data], {
-            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        });
+        const fileName = response.headers["content-disposition"].split('filename=')[1]
 
-        downloadFile(blob, `${dateFormat(Date.now())} - report.xlsx`);
+        downloadFile(response.data, fileName);
     };
 
     const downloadCSV = async () => {
-        const response = await axios.post(route('report.downloadFileCSV', data));
+        const response = await axios.post(route('report.export-csv'), data, {
+            responseType: 'blob',
+        });
 
-        const blob = new Blob([response.data], { type: 'text/csv' });
+        const fileName = response.headers["content-disposition"].split('filename=')[1]
 
-        downloadFile(blob, `${dateFormat(Date.now())} - report.csv`);
+        downloadFile(response.data, fileName);
     };
 
     return (
