@@ -533,11 +533,18 @@ class StatusTest extends TestCase
     public function test_returning_incident_rca_adds_returned_comment()
     {
         $admin = User::factory()->create()->syncRoles('admin');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $this->actingAs($admin);
 
         $incident = Incident::factory()->create([
             'status' => InReview::class,
+            'supervisor_id' => $supervisor->id,
+        ]);
+
+        $rca = RootCauseAnalysis::factory()->create([
+            'incident_id' => $incident->id,
+            'supervisor_id' => $supervisor->id,
         ]);
 
         $response = $this->patch(route('incidents.return-rca', ['incident' => $incident]));
@@ -559,11 +566,18 @@ class StatusTest extends TestCase
     public function test_admin_can_return_incident_rca()
     {
         $admin = User::factory()->create()->syncRoles('admin');
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
 
         $this->actingAs($admin);
 
         $incident = Incident::factory()->create([
             'status' => InReview::class,
+            'supervisor_id' => $supervisor->id,
+        ]);
+
+        $rca = RootCauseAnalysis::factory()->create([
+            'incident_id' => $incident->id,
+            'supervisor_id' => $supervisor->id,
         ]);
 
         $response = $this->patch(route('incidents.return-rca', ['incident' => $incident]));

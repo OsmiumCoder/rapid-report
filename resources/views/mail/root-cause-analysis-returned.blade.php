@@ -1,8 +1,7 @@
 <x-mail::message>
 # Root Cause Analysis Returned
 
-A root cause analysis was returned.
-Click below to view the root cause analysis that was returned.
+{!! $message !!}
 
 <x-mail::button :url="$url">
 View Root Cause Analysis

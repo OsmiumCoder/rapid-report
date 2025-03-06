@@ -5,6 +5,7 @@ namespace App\StorableEvents\RootCauseAnalysis;
 use App\Enum\CommentType;
 use App\Models\Comment;
 use App\Models\Incident;
+use App\Models\RootCauseAnalysis;
 use App\Models\User;
 use App\Notifications\RootCauseAnalysis\RootCauseAnalysisReturnedNotification;
 use App\States\IncidentStatus\Returned;
@@ -34,14 +35,10 @@ class RootCauseAnalysisReturned extends StoredEvent
 
     public function react()
     {
+        $admin = User::find($this->metaData['user_id']);
         $incident = Incident::find($this->aggregateRootUuid());
-        $supervisor = $incident->supervisor;
-
-        if ($supervisor) {
-            Notification::send($supervisor, new RootCauseAnalysisReturnedNotification($incident->slug, $this->aggregateRootUuid()));
-        }
-
-        $admins = User::role('admin')->get();
-        Notification::send($admins, new RootCauseAnalysisReturnedNotification($incident->slug, $this->aggregateRootUuid()));
+        $rca = RootCauseAnalysis::where('incident_id', $this->aggregateRootUuid())->first();
+        $supervisor = $rca->supervisor;
+        Notification::send($supervisor, new RootCauseAnalysisReturnedNotification($incident->slug, $rca->id, $admin));
     }
 }
