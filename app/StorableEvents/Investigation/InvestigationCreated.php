@@ -10,7 +10,6 @@ use App\Models\User;
 use App\Notifications\Investigation\InvestigationSubmittedNotification;
 use App\StorableEvents\StoredEvent;
 use Illuminate\Support\Facades\Notification;
-use Illuminate\Validation\Rules\In;
 
 class InvestigationCreated extends StoredEvent
 {
