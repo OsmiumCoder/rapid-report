@@ -12,14 +12,14 @@ class InvestigationReturnedNotification extends BaseNotification
      * Create a new notification instance.
      */
     public function __construct(
-        public string $incidentId,
+        public string $incidentSlug,
         public string $investigationId,
-        public User $admin
+        public User   $admin
     ) {
-        $this->message = "$admin->name has returned your investigation for further review";
+        $this->message = "$admin->name has returned your investigation on incident #$incidentSlug for further review";
         $this->url = route('incidents.investigations.show', [
-            'incident' => $this->incidentId,
-            'investigation' => $this->investigationId
+            'incident' => $incidentSlug,
+            'investigation' => $investigationId
         ]);
     }
 
@@ -29,7 +29,7 @@ class InvestigationReturnedNotification extends BaseNotification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Investigation Returned')
+            ->subject("Investigation For Incident #$this->incidentSlug Returned")
             ->markdown('mail.investigation-returned', ['url' => $this->url, 'message' => $this->message]);
     }
 }

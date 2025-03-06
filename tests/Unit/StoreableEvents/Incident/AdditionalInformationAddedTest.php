@@ -3,19 +3,27 @@
 namespace Tests\Unit\StoreableEvents\Incident;
 
 use App\Models\Incident;
-use App\StorableEvents\Incident\AdditionalInformation;
+use App\Models\User;
+use App\StorableEvents\Incident\AdditionalInformationAdded;
 use Illuminate\Support\Carbon;
 use Tests\TestCase;
 
-class AdditionalInformationTest extends TestCase
+class AdditionalInformationAddedTest extends TestCase
 {
     public function test_first_additional_creates_new_array()
     {
-        $incident = Incident::factory()->create();
+        $user = User::factory()->create([
+            'email' => 'user@b.com'
+        ]);
+        $incident = Incident::factory()->create(
+            ['reporters_email' => $user->email]
+        );
 
         $this->assertNull($incident->additional_information);
 
-        $event = new AdditionalInformation("information");
+        $event = new AdditionalInformationAdded("information");
+
+        $event->setMetaData(['user_id' => $user->id]);
         $event->setAggregateRootUuid($incident->id);
 
         $event->handle();
@@ -32,7 +40,12 @@ class AdditionalInformationTest extends TestCase
 
     public function test_additional_appends_to_current_additional_information()
     {
+        $user = User::factory()->create([
+            'email' => 'user@b.com'
+        ]);
+
         $incident = Incident::factory()->create([
+            'reporters_email' => $user->email,
             'additional_information' => [
                 ['information' => 'information 1', 'created_at' => now()->timestamp],
             ]
@@ -40,7 +53,9 @@ class AdditionalInformationTest extends TestCase
 
         $this->assertCount(1, $incident->additional_information);
 
-        $event = new AdditionalInformation("information 2");
+        $event = new AdditionalInformationAdded("information 2");
+
+        $event->setMetaData(['user_id' => $user->id]);
         $event->setAggregateRootUuid($incident->id);
 
         $event->handle();

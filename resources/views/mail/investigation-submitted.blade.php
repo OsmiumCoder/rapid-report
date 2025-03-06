@@ -1,7 +1,7 @@
 <x-mail::message>
 # Investigation Submitted
 
-An investigation was submitted. Click below to view the investigation that was submitted.
+{{$message}}
 
 <x-mail::button :url="$url">
 View Investigation

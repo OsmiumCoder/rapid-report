@@ -1,7 +1,7 @@
 import SelectInput from '@/Components/SelectInput';
 import TextInput from '@/Components/TextInput';
 import ToggleSwitch from '@/Components/ToggleSwitch';
-import validatePhoneInput from '@/Filters/validatePhoneInput';
+import phoneNumberFormat from '@/Formatters/phoneNumberFormat';
 import { roles } from '@/Pages/Incident/Stages/IncidentDropDownValues';
 import { StageProps } from '@/Pages/Incident/Stages/StageWrapper';
 import { usePage } from '@inertiajs/react';
@@ -168,7 +168,7 @@ export default function AffectedPartyStage({ formData, setFormData, failedStep, 
                                 placeholder="123-456-7890"
                                 value={(!formData.on_behalf && auth.user ? auth.user.phone : formData.phone) ?? ''}
                                 onChange={(e) => {
-                                    setFormData('phone', validatePhoneInput(e.target.value));
+                                    setFormData('phone', phoneNumberFormat(e.target.value));
                                     handleValidStep();
                                 }}
                             />

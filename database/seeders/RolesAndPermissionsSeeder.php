@@ -23,6 +23,8 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'view any incident follow-up']);
         Permission::firstOrCreate(['name' => 'manage users']);
         Permission::firstOrCreate(['name' => 'add comments']);
+        Permission::firstOrCreate(['name' => 'download any files']);
+        Permission::firstOrCreate(['name' => 'download files']);
 
 
         // create roles and assign created permissions
@@ -35,6 +37,7 @@ class RolesAndPermissionsSeeder extends Seeder
                 'view any incident follow-up',
                 'manage users',
                 'add comments',
+                'download any files',
             ]);
 
         Role::firstOrCreate(['name' => 'supervisor'])
@@ -43,6 +46,7 @@ class RolesAndPermissionsSeeder extends Seeder
                 'view own incidents',
                 'provide incident follow-up',
                 'add comments',
+                'download files',
             ]);
 
         Role::firstOrCreate(['name' => 'user'])

@@ -1,10 +1,10 @@
 import Badge from '@/Components/Badge';
 import LabeledCheckbox from '@/Components/LabeledCheckbox';
 import LoadingIndicator from '@/Components/LoadingIndicator';
-import dateFormat from '@/Filters/dateFormat';
-import { incidentBadgeColor } from '@/Filters/incidentBadgeColor';
-import { nameFilter } from '@/Filters/nameFilter';
-import { uppercaseWordFormat } from '@/Filters/uppercaseWordFormat';
+import dateFormat from '@/Formatters/dateFormat';
+import { incidentBadgeColor } from '@/Formatters/incidentBadgeColor';
+import { nameFormat } from '@/Formatters/nameFormat';
+import { uppercaseWordFormat } from '@/Formatters/uppercaseWordFormat';
 import { Incident } from '@/types/incident/Incident';
 import { Combobox, ComboboxOption, ComboboxOptions, Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
 import { ChevronDownIcon, ChevronUpIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid';
@@ -90,6 +90,16 @@ export default function Searchbar({ isOpen, setIsOpen }: CommandPaletteProps) {
 
     const abortControllerRef = useRef<AbortController | null>(null);
 
+    const searchInputRef = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+        if (isOpen) {
+            setTimeout(() => {
+                searchInputRef.current?.focus();
+            }, 100);
+        }
+    }, [isOpen]);
+
     useEffect(() => {
         setSearchBy(() => {
             const filteredLabels = allLabelsChecked ? labels : labels.filter(({ checked }) => checked);
@@ -164,7 +174,10 @@ export default function Searchbar({ isOpen, setIsOpen }: CommandPaletteProps) {
                     transition
                     className="mx-auto max-w-xl transform overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black/5 transition-all data-[closed]:scale-95 data-[closed]:opacity-0 data-[enter]:duration-300 data-[enter]:ease-out data-[leave]:duration-200 data-[leave]:ease-in"
                 >
-                    <button className="mt-4 mb-2 ml-6 flex flex-row hover:cursor-pointer" onClick={() => setSortByMenuOpen((prev) => !prev)}>
+                    <button
+                        className="mt-4 mb-2 ml-6 flex flex-row hover:cursor-pointer hover:text-gray-700"
+                        onClick={() => setSortByMenuOpen((prev) => !prev)}
+                    >
                         <span className="mr-1">Search By</span>
                         {sortByMenuOpen ? <ChevronUpIcon className="size-6" /> : <ChevronDownIcon className="size-6" />}
                     </button>
@@ -190,6 +203,7 @@ export default function Searchbar({ isOpen, setIsOpen }: CommandPaletteProps) {
                     <Combobox>
                         <div className="grid grid-cols-1">
                             <input
+                                ref={searchInputRef}
                                 className="col-start-1 row-start-1 h-12 w-full border-none pr-4 pl-11 text-base text-gray-900 placeholder:text-gray-400 focus:ring-0 focus:outline-0 sm:text-sm"
                                 placeholder="Search..."
                                 onChange={(e) => setSearch(e.target.value)}
@@ -217,7 +231,7 @@ export default function Searchbar({ isOpen, setIsOpen }: CommandPaletteProps) {
                                                 <span>{dateFormat(incident.created_at)}</span>
                                                 <span> | </span>
                                                 <span>
-                                                    {nameFilter(incident)[0]} {nameFilter(incident)[1]}
+                                                    {nameFormat(incident)[0]} {nameFormat(incident)[1]}
                                                 </span>
                                                 <span> | </span>
                                                 <span>{incident.descriptor}</span>
@@ -230,7 +244,9 @@ export default function Searchbar({ isOpen, setIsOpen }: CommandPaletteProps) {
                             </ComboboxOptions>
                         )}
 
-                        {!isLoading && search !== '' && incidents.length === 0 && <p className="p-4 text-sm text-gray-500">No incidents found.</p>}
+                        {!isLoading && search !== '' && incidents.length === 0 && (
+                            <p className="p-4 text-center text-sm text-gray-500">No incidents found.</p>
+                        )}
                         {isLoading && (
                             <div className="flex items-center justify-center py-2">
                                 <LoadingIndicator />

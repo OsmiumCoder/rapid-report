@@ -12,12 +12,12 @@ class SupervisorAssignedNotification extends BaseNotification
      * Create a new notification instance.
      */
     public function __construct(
-        public string $incidentId,
-        public User $supervisor,
-        public User $admin,
+        public string $incidentSlug,
+        public User   $supervisor,
+        public User   $admin,
     ) {
-        $this->url = route('incidents.show', ['incident' => $this->incidentId]);
-        $this->message = "$admin->name has assigned you to a new Incident";
+        $this->url = route('incidents.show', ['incident' => $incidentSlug]);
+        $this->message = "$admin->name has assigned you to incident #$incidentSlug.";
     }
 
     /**
@@ -26,11 +26,12 @@ class SupervisorAssignedNotification extends BaseNotification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Incident Assigned')
+            ->subject("Incident #$this->incidentSlug Assigned")
             ->markdown('mail.incident-assigned', [
                 'url' => $this->url,
                 'supervisorName' => $this->supervisor->name,
-                'adminName' => $this->admin->name
+                'adminName' => $this->admin->name,
+                'incidentSlug' => $this->incidentSlug,
             ]);
     }
 }

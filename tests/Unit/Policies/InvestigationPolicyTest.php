@@ -8,10 +8,22 @@ use App\Models\User;
 use App\Policies\InvestigationPolicy;
 use App\States\IncidentStatus\Assigned;
 use App\States\IncidentStatus\InReview;
+use App\States\IncidentStatus\Returned;
 use Tests\TestCase;
 
 class InvestigationPolicyTest extends TestCase
 {
+    public function test_supervisor_can_create_investigation_in_returned_state()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Returned::class
+        ]);
+
+        $this->assertTrue($this->getPolicy()->create($supervisor, $incident));
+    }
+
     public function test_supervisor_can_not_create_investigation_if_assigned_to_someone_else()
     {
         $supervisor = User::factory()->create()->syncRoles('supervisor');

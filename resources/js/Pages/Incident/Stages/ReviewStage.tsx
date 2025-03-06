@@ -2,7 +2,6 @@ import AffectedPartyInformation from '@/Pages/Incident/Partials/ShowComponents/I
 import GeneralDescription from '@/Pages/Incident/Partials/ShowComponents/InformationComponents/GeneralDescription';
 import IncidentInformation from '@/Pages/Incident/Partials/ShowComponents/InformationComponents/IncidentInformation';
 import SupervisorInformation from '@/Pages/Incident/Partials/ShowComponents/InformationComponents/SupervisorInformation';
-import VictimInformation from '@/Pages/Incident/Partials/ShowComponents/InformationComponents/VictimInformation';
 import WitnessInformation from '@/Pages/Incident/Partials/ShowComponents/InformationComponents/WitnessInformation';
 import { Incident } from '@/types/incident/Incident';
 
@@ -16,7 +15,6 @@ export default function ReviewStage({ incidentData }: { incidentData: Incident }
             <AffectedPartyInformation incident={incidentData} />
             <GeneralDescription incident={incidentData} />
             <IncidentInformation incident={incidentData} />
-            <VictimInformation incident={incidentData} />
             <SupervisorInformation incident={incidentData} />
             <WitnessInformation incident={incidentData} />
         </div>

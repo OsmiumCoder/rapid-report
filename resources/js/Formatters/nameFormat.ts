@@ -1,6 +1,6 @@
 import { Incident } from '@/types/incident/Incident';
 
-export const nameFilter = (incident: Incident) => {
+export const nameFormat = (incident: Incident) => {
     const firstName = incident.first_name ?? '';
     const lastName = incident.last_name ?? '';
 

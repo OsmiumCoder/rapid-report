@@ -10,6 +10,29 @@ use Tests\TestCase;
 
 class ShowTest extends TestCase
 {
+    public function test_rca_has_comments_loaded(): void
+    {
+        $user = User::factory()->create([
+            'name' => 'Admin',
+            'email' => 'admin@b.com',
+        ])->syncRoles('admin');
+
+        $this->actingAs($user);
+
+        $incident = Incident::factory()->create();
+        $rca = RootCauseAnalysis::factory()->create(['incident_id' => $incident->id]);
+
+        $response = $this->get(route('incidents.root-cause-analyses.show', ['incident' => $incident, 'root_cause_analysis' => $rca]));
+
+        $response->assertOk();
+
+        $response->assertInertia(function (AssertableInertia $page) use ($rca) {
+            return $page->component('RootCauseAnalysis/Show')
+                ->has('rca')
+                ->where('rca.id', $rca->id)
+                ->has('rca.incident.comments');
+        });
+    }
     public function test_admin_can_view_rca_show_page()
     {
         $admin = User::factory()->create()->syncRoles('admin');

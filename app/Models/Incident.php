@@ -87,6 +87,11 @@ class Incident extends Model
         return $this->morphMany(Comment::class, 'commentable');
     }
 
+    public function files()
+    {
+        return $this->morphMany(File::class, 'fileable');
+    }
+
     public function investigations()
     {
         return $this->hasMany(Investigation::class);

@@ -1,4 +1,4 @@
-import classNames from '@/Filters/classNames';
+import classNames from '@/Formatters/classNames';
 import { NavigationItemInterface } from '@/Layouts/Partials/NavigationItem';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
 

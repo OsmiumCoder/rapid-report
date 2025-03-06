@@ -1,4 +1,4 @@
-import timeSince from '@/Filters/timeSince';
+import timeSince from '@/Formatters/timeSince';
 import { Comment } from '@/types/Comment';
 import { ChatBubbleBottomCenterTextIcon } from '@heroicons/react/20/solid';
 

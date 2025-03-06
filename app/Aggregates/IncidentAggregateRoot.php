@@ -9,7 +9,9 @@ use App\Exceptions\UserNotSupervisorException;
 use App\Models\Incident;
 use App\Models\User;
 use App\StorableEvents\Comment\CommentCreated;
-use App\StorableEvents\Incident\AdditionalInformation;
+use App\StorableEvents\Incident\AdditionalInformationAdded;
+use App\StorableEvents\Incident\FileCreated;
+use App\StorableEvents\Incident\FilesUploaded;
 use App\StorableEvents\Incident\IncidentClosed;
 use App\StorableEvents\Incident\IncidentCreated;
 use App\StorableEvents\Incident\IncidentReopened;
@@ -18,6 +20,8 @@ use App\StorableEvents\Incident\SupervisorAssigned;
 use App\StorableEvents\Incident\SupervisorUnassigned;
 use App\StorableEvents\Investigation\InvestigationReturned;
 use App\StorableEvents\RootCauseAnalysis\RootCauseAnalysisReturned;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Spatie\EventSourcing\AggregateRoots\AggregateRoot;
 
 class IncidentAggregateRoot extends AggregateRoot
@@ -124,7 +128,30 @@ class IncidentAggregateRoot extends AggregateRoot
 
     public function addAdditionalInformation(string $additionalInformation)
     {
-        $this->recordThat(new AdditionalInformation($additionalInformation));
+        $this->recordThat(new AdditionalInformationAdded($additionalInformation));
+
+        return $this;
+    }
+
+    public function uploadFiles(array $files)
+    {
+        /* @var UploadedFile $file */
+        foreach ($files as $file) {
+            $storedFile = Storage::putFile($this->uuid(), $file);
+
+            $this->recordThat(new FileCreated(
+                name: $storedFile,
+                original_name: $file->getClientOriginalName(),
+                path: $this->uuid(),
+                size: $file->getSize(),
+                mime_type: $file->getMimeType(),
+                extension: $file->extension(),
+                fileable_id: $this->uuid(),
+                fileable_type: Incident::class
+            ));
+        }
+
+        $this->recordThat(new FilesUploaded);
 
         return $this;
     }

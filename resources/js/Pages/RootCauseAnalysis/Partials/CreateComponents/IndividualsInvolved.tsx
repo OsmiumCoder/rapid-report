@@ -3,8 +3,8 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButtonDivider from '@/Components/PrimaryButtonDivider';
 import TextInput from '@/Components/TextInput';
-import classNames from '@/Filters/classNames';
-import validatePhoneInput from '@/Filters/validatePhoneInput';
+import classNames from '@/Formatters/classNames';
+import phoneNumberFormat from '@/Formatters/phoneNumberFormat';
 import { RootCauseAnalysisComponentProps } from '@/Pages/RootCauseAnalysis/Create';
 import { RootCauseAnalysisData } from '@/types/rootCauseAnalysis/RootCauseAnalysisData';
 import { PlusIcon } from '@heroicons/react/20/solid';
@@ -56,7 +56,7 @@ export default function IndividualsInvolved({ formData, setFormData, errors }: R
                         <InputLabel>Phone</InputLabel>
                         <TextInput
                             onChange={(e) => {
-                                formData.individuals_involved[i].phone = validatePhoneInput(e.target.value);
+                                formData.individuals_involved[i].phone = phoneNumberFormat(e.target.value);
                                 setFormData('individuals_involved', formData.individuals_involved);
                             }}
                             value={phone}

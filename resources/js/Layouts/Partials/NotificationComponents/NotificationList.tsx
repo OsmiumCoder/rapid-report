@@ -1,4 +1,4 @@
-import timeSince from '@/Filters/timeSince';
+import timeSince from '@/Formatters/timeSince';
 import { Notification } from '@/types/notification/Notification';
 import { TrashIcon } from '@heroicons/react/24/outline';
 import { Link, router } from '@inertiajs/react';

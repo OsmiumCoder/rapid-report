@@ -1,4 +1,4 @@
-import classNames from '@/Filters/classNames';
+import classNames from '@/Formatters/classNames';
 import { DetailedHTMLProps, TextareaHTMLAttributes } from 'react';
 
 export default function TextArea({ className = '', ...props }: DetailedHTMLProps<TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>) {

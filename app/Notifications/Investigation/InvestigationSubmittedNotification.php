@@ -12,14 +12,14 @@ class InvestigationSubmittedNotification extends BaseNotification
      * Create a new notification instance.
      */
     public function __construct(
-        public string $incidentId,
+        public string $incidentSlug,
         public string $investigationId,
-        public User $supervisor,
+        public User   $supervisor,
     ) {
-        $this->message = "A new investigation was submitted by {$this->supervisor->name}";
+        $this->message = "A new investigation for incident #$incidentSlug was submitted by $supervisor->name";
         $this->url = route('incidents.investigations.show', [
-            'incident' => $this->incidentId,
-            'investigation' => $this->investigationId
+            'incident' => $incidentSlug,
+            'investigation' => $investigationId
         ]);
     }
 
@@ -29,7 +29,7 @@ class InvestigationSubmittedNotification extends BaseNotification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Investigation Submitted')
-            ->markdown('mail.investigation-submitted', ['url' => $this->url]);
+            ->subject("Investigation Submitted For Incident #$this->incidentSlug")
+            ->markdown('mail.investigation-submitted', ['url' => $this->url, 'message' => $this->message]);
     }
 }

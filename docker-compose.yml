@@ -1,11 +1,11 @@
 services:
     app:
         build:
-            context: './vendor/laravel/sail/runtimes/8.4'
+            context: ./vendor/laravel/sail/runtimes/8.4
             dockerfile: Dockerfile
             args:
                 WWWGROUP: '${WWWGROUP}'
-        image: 'sail-8.4/app'
+        image: sail-8.4/app
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         ports:
@@ -22,6 +22,7 @@ services:
         networks:
             - sail
         depends_on:
+            - minio
             - mysql
             - redis
             - typesense
@@ -85,6 +86,27 @@ services:
                 - ping
             retries: 3
             timeout: 5s
+    minio:
+        image: 'minio/minio:latest'
+        ports:
+            - '${FORWARD_MINIO_PORT:-9000}:9000'
+            - '${FORWARD_MINIO_CONSOLE_PORT:-8900}:8900'
+        environment:
+            MINIO_ROOT_USER: ${AWS_ACCESS_KEY_ID}
+            MINIO_ROOT_PASSWORD: ${AWS_SECRET_ACCESS_KEY}
+        volumes:
+            - 'sail-minio:/data'
+        networks:
+            - sail
+        command: 'minio server /data --console-address ":8900"'
+        healthcheck:
+            test:
+                - CMD
+                - mc
+                - ready
+                - local
+            retries: 3
+            timeout: 5s
 networks:
     sail:
         driver: bridge
@@ -94,4 +116,6 @@ volumes:
     sail-typesense:
         driver: local
     sail-redis:
+        driver: local
+    sail-minio:
         driver: local

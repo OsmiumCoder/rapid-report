@@ -17,9 +17,10 @@ class CommentAdded extends BaseNotification
     public function __construct(
         public string $comment,
         public User $user,
-        public string $url
+        public string $url,
+        public string $incidentSlug,
     ) {
-        $this->message = "{$this->user->name} commented: $this->comment";
+        $this->message = "$user->name commented on incident #$incidentSlug: $comment";
     }
 
     /**
@@ -31,8 +32,10 @@ class CommentAdded extends BaseNotification
             ->subject('Comment Created')
             ->line($this->message)
             ->markdown('mail.comment-made', [
+                'incidentSlug' => $this->incidentSlug,
                 'commenter' => $this->user->name,
                 'content' => $this->comment,
+                'url' => $this->url,
             ]);
     }
 }

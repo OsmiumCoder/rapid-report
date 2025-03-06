@@ -6,8 +6,8 @@ import { Method } from '@/types/Method';
 import { Menu, MenuButton, MenuItem, MenuItems, Transition } from '@headlessui/react';
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 import { Bars3Icon, BellIcon, UserCircleIcon } from '@heroicons/react/24/outline';
-import { Link, usePage } from '@inertiajs/react';
-import { RefObject, useRef, useState } from 'react';
+import { Link, usePage, usePoll } from '@inertiajs/react';
+import { RefObject, useEffect, useRef, useState } from 'react';
 
 const userNavigation: { name: string; href: string; method?: Method }[] = [
     { name: 'Your profile', href: route('profile.edit') },
@@ -16,20 +16,45 @@ const userNavigation: { name: string; href: string; method?: Method }[] = [
 
 export default function TopBar({ onClick }: { onClick: () => void }) {
     const user = usePage().props.auth.user;
+    const { notifications } = usePage().props;
 
     const { modalRef } = useConfirmationModal();
 
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [isNotificationOpen, setIsNotificationOpen] = useState(false);
 
+    const [hasUnreadNotifications, setHasUnreadNotifications] = useState(notifications?.some(({ read_at }) => read_at === null) ?? false);
+
     const notificationButtonRef = useRef<HTMLButtonElement>(null) as RefObject<HTMLButtonElement>;
 
+    const handleDismissNotificationMenu = () => {
+        start();
+        setIsNotificationOpen(false);
+    };
+
     const notificationRef = useDismiss<HTMLDivElement>({
-        onDismiss: () => setIsNotificationOpen(false),
+        onDismiss: handleDismissNotificationMenu,
         ignoreRefs: [notificationButtonRef, modalRef],
     });
 
-    const hasUnreadNotifications = usePage().props.notifications?.some(({ read_at }) => read_at === null) ?? false;
+    const { start, stop } = usePoll(1000 * 60, {
+        only: ['notifications', 'notifications_paginator'],
+        reset: ['notifications', 'notifications_paginator'],
+    });
+
+    useEffect(() => {
+        setHasUnreadNotifications(notifications?.some(({ read_at }) => read_at === null) ?? false);
+    }, [notifications]);
+
+    const handleOpenNotifications = () => {
+        if (isNotificationOpen) {
+            start();
+        } else {
+            stop();
+        }
+        setIsNotificationOpen((prev) => !prev);
+    };
+
     return (
         <>
             <Searchbar isOpen={isSearchOpen} setIsOpen={setIsSearchOpen} />
@@ -43,7 +68,7 @@ export default function TopBar({ onClick }: { onClick: () => void }) {
                 {/* Separator */}
                 <div aria-hidden="true" className="h-6 w-px bg-gray-900/10 lg:hidden" />
 
-                <div className="flex flex-1 items-center justify-end self-stretch lg:gap-x-6">
+                <div className="flex flex-1 items-center justify-end gap-x-4 self-stretch lg:gap-x-6">
                     {user.roles.some((role) => role.name === 'admin') && (
                         <button type="button" className="cursor-pointer text-gray-400 hover:text-gray-500" onClick={() => setIsSearchOpen(true)}>
                             <MagnifyingGlassIcon aria-hidden="true" className="pointer-events-none col-start-1 row-start-1 size-5 self-center" />
@@ -55,7 +80,7 @@ export default function TopBar({ onClick }: { onClick: () => void }) {
                                 ref={notificationButtonRef}
                                 type="button"
                                 className="cursor-pointer text-gray-400 hover:text-gray-500"
-                                onClick={() => setIsNotificationOpen((prev) => !prev)}
+                                onClick={handleOpenNotifications}
                             >
                                 <span className="sr-only">View notifications</span>
                                 <BellIcon aria-hidden="true" className="size-6" />
@@ -83,7 +108,7 @@ export default function TopBar({ onClick }: { onClick: () => void }) {
 
                         {/* Profile dropdown */}
                         <Menu as="div" className="relative">
-                            <MenuButton className="-m-1.5 flex items-center p-1.5">
+                            <MenuButton className="-m-1.5 flex cursor-pointer items-center p-1.5">
                                 <span className="sr-only">Open user menu</span>
                                 <UserCircleIcon className="size-8 rounded-full bg-gray-50" />
                                 <span className="hidden lg:flex lg:items-center">

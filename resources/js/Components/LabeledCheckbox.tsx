@@ -1,4 +1,4 @@
-import classNames from '@/Filters/classNames';
+import classNames from '@/Formatters/classNames';
 import { InputHTMLAttributes } from 'react';
 
 interface LabeledCheckBoxProps extends InputHTMLAttributes<HTMLInputElement> {

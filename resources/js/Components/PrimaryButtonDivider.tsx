@@ -1,4 +1,4 @@
-import classNames from '@/Filters/classNames';
+import classNames from '@/Formatters/classNames';
 import { ButtonHTMLAttributes, PropsWithChildren } from 'react';
 
 export default function PrimaryButtonDivider({ children, className = '', ...props }: PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement>>) {
