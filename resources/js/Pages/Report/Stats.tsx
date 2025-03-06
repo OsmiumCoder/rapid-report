@@ -2,6 +2,7 @@ import classNames from '@/Formatters/classNames';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import Graph from '@/Pages/Report/Partials/Graph';
 import { useState } from 'react';
+import { Head } from '@inertiajs/react';
 
 interface dataEntry {
     labels: string[];
@@ -135,6 +136,7 @@ export default function Stats({
 
     return (
         <AuthenticatedLayout>
+            <Head title='Statistics' />
             <div className="mx-8 grid grid-cols-1 gap-5 lg:grid-cols-6">
                 {selected_statistics.map((indexValue, i) => (
                     <div key={i} className={classNames('relative', i < 3 ? 'lg:col-span-2' : 'lg:col-span-3')}>

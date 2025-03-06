@@ -117,6 +117,5 @@
     "include": [
       "resources/js/**/*.ts",
       "resources/js/**/*.tsx",
-      "node_modules/eslint-plugin-react/lib/types.d.ts"
     ]
 }

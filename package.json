@@ -30,7 +30,6 @@
         "@types/underscore": "^1.13.0",
         "@vitejs/plugin-react": "^4.3.4",
         "chart.js": "^4.4.8",
-        "chartjs": "^0.3.24",
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
         "concurrently": "^9.0.1",
