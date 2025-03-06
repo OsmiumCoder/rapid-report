@@ -14,11 +14,21 @@ use Illuminate\Support\Facades\Notification;
 
 class SupervisorAssigned extends StoredEvent
 {
+    private ?Incident $incident = null;
     private ?User $supervisor = null;
 
     public function __construct(
         public int $supervisor_id,
     ) {
+    }
+
+    public function incident()
+    {
+        if (!$this->incident) {
+            $this->incident = Incident::find($this->aggregateRootUuid());
+        }
+
+        return $this->incident;
     }
 
     public function supervisor()
@@ -32,7 +42,7 @@ class SupervisorAssigned extends StoredEvent
 
     public function handle()
     {
-        $incident = Incident::find($this->aggregateRootUuid());
+        $incident = $this->incident();
 
         $incident->supervisor_id = $this->supervisor_id;
         $incident->status->transitionTo(Assigned::class);
@@ -53,7 +63,7 @@ class SupervisorAssigned extends StoredEvent
     public function react()
     {
         $admin = User::find($this->metaData['user_id']);
-        $incident = Incident::find($this->aggregateRootUuid());
+        $incident = $this->incident();
 
         Notification::send($this->supervisor(), new SupervisorAssignedNotification($incident->slug, $this->supervisor(), $admin));
 

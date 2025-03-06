@@ -81,8 +81,12 @@ class RootCauseAnalysisCreatedTest extends TestCase
 
         Notification::assertSentTo(
             $admins,
-            function (RootCauseAnalysisSubmittedNotification $notification, array $channels) use ($aggregateUuid, $supervisor) {
-                return $notification->rootCauseAnalysisId === $aggregateUuid && $notification->supervisor->id === $supervisor->id;
+            function (RootCauseAnalysisSubmittedNotification $notification, array $channels) use ($aggregateUuid, $supervisor, $incident) {
+                return (
+                    $notification->rootCauseAnalysisId === $aggregateUuid
+                    && $notification->supervisor->id === $supervisor->id
+                    && $notification->incidentSlug === $incident->slug
+                );
             }
         );
     }

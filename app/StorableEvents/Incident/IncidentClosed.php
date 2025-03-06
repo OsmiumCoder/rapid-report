@@ -13,9 +13,20 @@ use Illuminate\Support\Facades\Notification;
 
 class IncidentClosed extends StoredEvent
 {
+    private ?Incident $incident = null;
+
+    public function incident()
+    {
+        if (!$this->incident) {
+            $this->incident = Incident::find($this->aggregateRootUuid());
+        }
+
+        return $this->incident;
+    }
+
     public function handle()
     {
-        $incident = Incident::find($this->aggregateRootUuid());
+        $incident = $this->incident();
         $incident->status->transitionTo(Closed::class);
         $incident->closed_at = now();
         $incident->save();
@@ -33,7 +44,7 @@ class IncidentClosed extends StoredEvent
 
     public function react()
     {
-        $incident = Incident::find($this->aggregateRootUuid());
+        $incident = $this->incident();
 
         if ($incident->supervisor) {
             Notification::send($incident->supervisor, new IncidentClosedNotification($incident->id));

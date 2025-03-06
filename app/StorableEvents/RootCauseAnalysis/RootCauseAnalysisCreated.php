@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Notification;
 
 class RootCauseAnalysisCreated extends StoredEvent
 {
+    private ?Incident $incident = null;
+
     public function __construct(
         public string $incident_id,
         public ?array $individuals_involved,
@@ -35,9 +37,18 @@ class RootCauseAnalysisCreated extends StoredEvent
     ) {
     }
 
+    public function incident()
+    {
+        if (!$this->incident) {
+            $this->incident = Incident::find($this->incident_id);
+        }
+
+        return $this->incident;
+    }
+
     public function handle()
     {
-        $incident = Incident::find($this->incident_id);
+        $incident = $this->incident();
 
         $rca = new RootCauseAnalysis;
 
@@ -82,7 +93,8 @@ class RootCauseAnalysisCreated extends StoredEvent
         $admins = User::role('admin')->get();
 
         $supervisor = User::find($this->metaData['user_id']);
+        $incident = $this->incident();
 
-        Notification::send($admins, new RootCauseAnalysisSubmittedNotification($this->incident_id, $this->aggregateRootUuid(), $supervisor));
+        Notification::send($admins, new RootCauseAnalysisSubmittedNotification($incident->slug, $this->aggregateRootUuid(), $supervisor));
     }
 }

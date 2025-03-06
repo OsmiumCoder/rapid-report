@@ -14,13 +14,20 @@ use App\Notifications\Investigation\InvestigationReturnedNotification;
 
 class InvestigationReturned extends StoredEvent
 {
-    public function __construct()
+    private ?Incident $incident = null;
+
+    public function incident()
     {
+        if (!$this->incident) {
+            $this->incident = Incident::find($this->aggregateRootUuid());
+        }
+
+        return $this->incident;
     }
 
     public function handle()
     {
-        $incident = Incident::find($this->aggregateRootUuid());
+        $incident = $this->incident();
 
         $incident->status->transitionTo(Returned::class);
 
@@ -40,7 +47,7 @@ class InvestigationReturned extends StoredEvent
     public function react()
     {
         $admin = User::find($this->metaData['user_id']);
-        $incident = Incident::find($this->aggregateRootUuid());
+        $incident = $this->incident();
         $investigation = Investigation::where('incident_id', $this->aggregateRootUuid())->first();
 
         Notification::send($investigation->supervisor, new InvestigationReturnedNotification($incident->slug, $investigation->id, $admin));
