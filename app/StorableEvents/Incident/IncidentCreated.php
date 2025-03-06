@@ -20,7 +20,7 @@ class IncidentCreated extends StoredEvent
         public bool $anonymous,
         public bool $on_behalf,
         public bool $on_behalf_anonymous,
-        public int $role,
+        public ?int $role,
         public ?string $last_name,
         public ?string $first_name,
         public ?string $upei_id,

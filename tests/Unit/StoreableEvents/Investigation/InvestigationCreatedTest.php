@@ -148,8 +148,12 @@ class InvestigationCreatedTest extends TestCase
 
         Notification::assertSentTo(
             $admins,
-            function (InvestigationSubmittedNotification $notification, array $channels) use ($aggregateUuid, $supervisor) {
-                return $notification->investigationId === $aggregateUuid && $notification->supervisor->id === $supervisor->id;
+            function (InvestigationSubmittedNotification $notification, array $channels) use ($aggregateUuid, $supervisor, $incident) {
+                return (
+                    $notification->investigationId === $aggregateUuid
+                    && $notification->supervisor->id === $supervisor->id
+                    && $notification->incidentSlug === $incident->slug
+                );
             }
         );
     }

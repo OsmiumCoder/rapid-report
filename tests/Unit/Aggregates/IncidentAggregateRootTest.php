@@ -991,7 +991,7 @@ class IncidentAggregateRootTest extends TestCase
         $this->assertEquals($incidentData->phone, $incident->phone);
         $this->assertEquals($incidentData->work_related, $incident->work_related);
         $this->assertEquals($incidentData->workers_comp_submitted, $incident->workers_comp_submitted);
-        $this->assertEquals($incidentData->happened_at->toDateString(), $incident->happened_at);
+        $this->assertEquals($incidentData->happened_at, $incident->happened_at);
         $this->assertEquals($incidentData->location, $incident->location);
         $this->assertEquals($incidentData->room_number, $incident->room_number);
         $this->assertEquals($incidentData->witnesses, $incident->witnesses);

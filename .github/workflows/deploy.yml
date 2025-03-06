@@ -1,0 +1,33 @@
+name: deploy
+
+on:
+  push:
+    branches:
+      - staging
+
+concurrency:
+  group: deploy
+  cancel-in-progress: true
+  
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{secrets.SSH_HOST}} >> ~/.ssh/known_hosts
+
+      - name: Deploy
+        uses: appleboy/ssh-action@v1.2.1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: /home/${{ secrets.SSH_USER }}/deploy.sh

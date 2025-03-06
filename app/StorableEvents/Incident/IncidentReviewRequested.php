@@ -13,13 +13,20 @@ use Illuminate\Support\Facades\Notification;
 
 class IncidentReviewRequested extends StoredEvent
 {
-    public function __construct()
+    private ?Incident $incident = null;
+
+    public function incident()
     {
+        if (!$this->incident) {
+            $this->incident = Incident::find($this->aggregateRootUuid());
+        }
+
+        return $this->incident;
     }
 
     public function handle()
     {
-        $incident = Incident::find($this->aggregateRootUuid());
+        $incident = $this->incident();
 
         $incident->status->transitionTo(InReview::class);
 
@@ -41,7 +48,7 @@ class IncidentReviewRequested extends StoredEvent
         $admins = User::role('admin')->get();
         $supervisor = User::find($this->metaData['user_id']);
 
-        $incident = Incident::find($this->aggregateRootUuid());
+        $incident = $this->incident();
 
         Notification::send($admins, new IncidentReviewRequestNotification($incident->slug, $supervisor));
     }
