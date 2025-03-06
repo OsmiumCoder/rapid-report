@@ -6,167 +6,123 @@ import classNames from '@/Formatters/classNames';
 import dateFormat from '@/Formatters/dateFormat';
 import { uppercaseWordFormat } from '@/Formatters/uppercaseWordFormat';
 import { downloadFile } from '@/Helpers/downloadFile';
-import ReportData from '@/types/report/ReportData';
 import { Field, Label, Switch } from '@headlessui/react';
+import { useForm } from '@inertiajs/react';
 import axios from 'axios';
-import dayjs, { Dayjs, ManipulateType } from 'dayjs';
-import { useEffect, useState } from 'react';
+import dayjs, { ManipulateType } from 'dayjs';
+import { useState } from 'react';
+import _ from 'underscore';
 
-export interface ReportBuilderProps {
-    formData: ReportData;
-    setFormData: (key: keyof ReportData, value: ReportData[keyof ReportData]) => void;
-}
-
-interface TimelineLengths {
-    stringify: string;
-    stringifyPlural: string;
+interface RelativeTimeUnit {
     unit: ManipulateType;
+    options: number[];
 }
 
-interface Timeline {
-    startDate: Dayjs;
-    endDate: Dayjs;
-}
+export default function ReportBuilder() {
+    const fields = [
+        'slug',
+        'happened_at',
+        'location',
+        'room_number',
+        'incident_type',
+        'descriptor',
+        'description',
+        'injury_description',
+        'first_aid_description',
+        'created_at',
+        'status',
+        'closed_at',
+    ];
 
-interface Relative {
-    unit: TimelineLengths;
-    iter: number;
-}
-
-type TimeLengthsCollection = {
-    [key: string]: TimelineLengths;
-};
-
-export default function ReportBuilder({ formData, setFormData }: ReportBuilderProps) {
-    const currentDate = dayjs(new Date());
-
-    const [timeline, setTimeline] = useState<Timeline>({
-        startDate: currentDate.subtract(1, 'day'),
-        endDate: currentDate,
+    const { data, setData } = useForm({
+        start: dateFormat(dayjs().subtract(1, 'year').toDate()),
+        end: dateFormat(dayjs().toDate()),
+        fields: [] as string[],
     });
 
-    const setRelativeTimeline = (iter: number, unit: ManipulateType) => {
-        if (unit !== 'millisecond') {
-            setTimeline(() => ({
-                startDate: currentDate.subtract(iter, unit),
-                endDate: currentDate,
-            }));
-        } else {
-            setTimeline(() => ({
-                startDate: dayjs(0),
-                endDate: currentDate,
-            }));
-        }
-    };
-    const setConTimeline = (date: Dayjs, isStart: boolean) => {
-        if (isStart) {
-            if (date.isAfter(timeline.endDate) || date.isSame(timeline.endDate)) {
-                setTimeline({
-                    endDate: date.add(1, 'day'),
-                    startDate: date,
-                });
-            } else {
-                setTimeline((prev) => ({
-                    ...prev,
-                    startDate: date,
-                }));
-            }
-        } else {
-            if (date.isBefore(timeline.startDate) || date.isSame(timeline.endDate)) {
-                setTimeline({
-                    endDate: date,
-                    startDate: date.subtract(1, 'day'),
-                });
-            } else {
-                setTimeline((prev) => ({
-                    ...prev,
-                    endDate: date,
-                }));
-            }
-        }
+    const toggleSelectedFields = (value: string, isChecked: boolean) => {
+        const updatedFields = isChecked && !data.fields.includes(value) ? [...data.fields, value] : data.fields.filter((item) => item !== value);
+
+        setData('fields', updatedFields);
     };
 
-    useEffect(() => {
-        setFormData('start', timeline.startDate.format('YYYY-MM-DD'));
-        setFormData('end', timeline.endDate.format('YYYY-MM-DD'));
-    }, [setFormData, timeline]);
+    const [relativeTimeFrameSelected, setRelativeTimeFrameSelected] = useState(false);
+
+    const setTimePeriod = (start: string, end: string) => {
+        if (data.start != start && dayjs(start).isAfter(dayjs(end))) {
+            end = dateFormat(dayjs(start).add(1, 'day').toDate());
+        } else if (data.end != end && dayjs(end).isBefore(dayjs(start))) {
+            start = dateFormat(dayjs(end).subtract(1, 'day').toDate());
+        }
+
+        setData('start', start);
+        setData('end', end);
+    };
+
+    const setRelativeTimePeriod = (value: number, unit: ManipulateType) => {
+        setData('end', dateFormat(dayjs().toDate()));
+
+        const start = dateFormat(dayjs(data.end).subtract(value, unit).toDate());
+
+        setData('start', start);
+    };
+
+    const relativeTimeUnits: RelativeTimeUnit[] = [
+        {
+            unit: 'day',
+            options: _.range(1, 8),
+        },
+        {
+            unit: 'week',
+            options: _.range(1, 5),
+        },
+        {
+            unit: 'month',
+            options: _.range(1, 13),
+        },
+        {
+            unit: 'year',
+            options: _.range(1, 6),
+        },
+    ];
+
+    const [selectedRelativeTimeLength, setSelectedRelativeTimeLength] = useState(1);
+    const [selectedRelativeTimeUnit, setSelectedRelativeTimeUnit] = useState<ManipulateType>('day');
 
     const downloadExcel = async () => {
-        const response = await axios.post(route('report.downloadFileXLSX'), formData, {
-            responseType: 'arraybuffer',
+        const response = await axios.post(route('report.export-xlsx'), data, {
+            responseType: 'blob',
         });
 
-        const blob = new Blob([response.data], {
-            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        });
+        const fileName = response.headers['content-disposition'].split('filename=')[1];
 
-        downloadFile(blob, `${dateFormat(Date.now())} - report.xlsx`);
+        downloadFile(response.data, fileName);
     };
 
     const downloadCSV = async () => {
-        const response = await axios.post(route('report.downloadFileCSV', { ...formData }));
+        const response = await axios.post(route('report.export-csv'), data, {
+            responseType: 'blob',
+        });
 
-        const blob = new Blob([response.data], { type: 'text/csv' });
+        const fileName = response.headers['content-disposition'].split('filename=')[1];
 
-        downloadFile(blob, `${dateFormat(Date.now())} - report.csv`);
+        downloadFile(response.data, fileName);
     };
-
-    const timelineLengths: TimeLengthsCollection = {
-        day: {
-            stringify: 'Day',
-            stringifyPlural: 'Days',
-            unit: 'day',
-        },
-        week: {
-            stringify: 'Week',
-            stringifyPlural: 'Weeks',
-            unit: 'week',
-        },
-        month: {
-            stringify: 'Month',
-            stringifyPlural: 'Months',
-            unit: 'month',
-        },
-        year: {
-            stringify: 'Year',
-            stringifyPlural: 'Years',
-            unit: 'year',
-        },
-        alltime: {
-            stringify: 'All Time',
-            stringifyPlural: 'All Time',
-            unit: 'millisecond',
-        },
-    };
-    const lengthItems = Object.keys(timelineLengths) as Array<keyof typeof timelineLengths>;
-
-    const [timelineLength, setTimelineLength] = useState<Relative>({
-        unit: timelineLengths.day,
-        iter: 1,
-    });
-
-    const numIters = Array.from({ length: 12 }, (_, i) => i + 1);
-
-    const formItems = (Object.keys(formData) as Array<keyof ReportData>).filter((key) => key !== 'start' && key !== 'end');
-
-    const [relativeTimeFrameSelected, setRelativeTimeFrameSelected] = useState(false);
 
     return (
         <div className="mx-4 space-y-6 rounded-xl bg-white p-4 shadow-lg">
             <div className="text-black-500 text-lg font-semibold sm:text-xl/8">Build your report:</div>
             <div>
                 <p className="text-m text-black-500">Select Categories for Export:</p>
-                <ul className="mt-2 grid grid-rows-1 md:grid-cols-2 lg:grid-cols-3">
-                    {formItems.map((key) => (
-                        <li key={key}>
-                            <LabeledCheckbox
-                                checked={formData[key] as boolean}
-                                onChange={(e) => setFormData(key, e.target.checked)}
-                                label={uppercaseWordFormat(key)}
-                            />
-                        </li>
+                <div className="mt-2 grid grid-rows-1 md:grid-cols-2 lg:grid-cols-3">
+                    {fields.map((value, index) => (
+                        <LabeledCheckbox
+                            key={index}
+                            label={uppercaseWordFormat(value)}
+                            onChange={(e) => toggleSelectedFields(value, e.target.checked)}
+                        />
                     ))}
-                </ul>
+                </div>
             </div>
 
             <div>
@@ -181,7 +137,17 @@ export default function ReportBuilder({ formData, setFormData }: ReportBuilderPr
                             </Label>
                             <Switch
                                 checked={relativeTimeFrameSelected}
-                                onChange={setRelativeTimeFrameSelected}
+                                onChange={(isRelative) => {
+                                    if (isRelative) {
+                                        setSelectedRelativeTimeLength(1);
+                                        setSelectedRelativeTimeUnit('day');
+                                        setRelativeTimePeriod(selectedRelativeTimeLength, selectedRelativeTimeUnit);
+                                    } else {
+                                        setTimePeriod(dateFormat(dayjs().subtract(1, 'year').toDate()), dateFormat(dayjs().toDate()));
+                                    }
+
+                                    setRelativeTimeFrameSelected(isRelative);
+                                }}
                                 className="group bg-upei-green-600 focus:ring-upei-green-600 relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:ring-2 focus:ring-offset-2 focus:outline-hidden"
                             >
                                 <span
@@ -200,61 +166,43 @@ export default function ReportBuilder({ formData, setFormData }: ReportBuilderPr
                     {relativeTimeFrameSelected ? (
                         <div className="mt-2 flex gap-5">
                             <SelectInput
-                                value={timelineLength.iter}
+                                value={selectedRelativeTimeLength}
                                 onChange={(e) => {
-                                    setTimelineLength((prev) => ({
-                                        ...prev,
-                                        iter: +e.target.value,
-                                    }));
-                                    setRelativeTimeline(+e.target.value, timelineLength.unit.unit);
+                                    setSelectedRelativeTimeLength(parseInt(e.target.value));
+                                    setRelativeTimePeriod(parseInt(e.target.value), selectedRelativeTimeUnit);
                                 }}
                             >
-                                {numIters.map((i) => (
-                                    <option key={i}>{i}</option>
-                                ))}
+                                {relativeTimeUnits
+                                    .find((element) => element.unit === selectedRelativeTimeUnit)!
+                                    .options.map((value, index) => (
+                                        <option key={index}>{value}</option>
+                                    ))}
                             </SelectInput>
                             <SelectInput
-                                value={timelineLength.iter > 1 ? timelineLength.unit.stringifyPlural : timelineLength.unit.stringify}
+                                value={selectedRelativeTimeUnit}
                                 onChange={(e) => {
-                                    setTimelineLength((prev) => ({
-                                        ...prev,
-                                        unit: timelineLengths[
-                                            e.target.value.slice(-1) == 's'
-                                                ? e.target.value.toLowerCase().slice(0, -1)
-                                                : e.target.value.toLowerCase().replace(/\s/g, '')
-                                        ],
-                                    }));
-                                    setRelativeTimeline(
-                                        timelineLength.iter,
-                                        timelineLengths[
-                                            e.target.value.slice(-1) == 's'
-                                                ? e.target.value.toLowerCase().slice(0, -1)
-                                                : e.target.value.toLowerCase().replace(/\s/g, '')
-                                        ].unit,
-                                    );
+                                    setSelectedRelativeTimeLength(1);
+                                    setSelectedRelativeTimeUnit(e.target.value as ManipulateType);
+                                    setRelativeTimePeriod(selectedRelativeTimeLength, e.target.value as ManipulateType);
                                 }}
                             >
-                                {lengthItems.map((index, value) =>
-                                    timelineLength.iter > 1 ? (
-                                        <option key={value}>{timelineLengths[index].stringifyPlural}</option>
-                                    ) : (
-                                        <option key={value}>{timelineLengths[index].stringify}</option>
-                                    ),
-                                )}
+                                {relativeTimeUnits.map((value, index) => (
+                                    <option key={index}>{value.unit}</option>
+                                ))}
                             </SelectInput>
                         </div>
                     ) : (
                         <div className="mt-4 flex w-1/2 gap-5">
                             <DateInput
-                                value={timeline.startDate.format('YYYY-MM-DD')}
+                                value={data.start}
                                 onChange={(e) => {
-                                    setConTimeline(dayjs(e.target.value), true);
+                                    setTimePeriod(dateFormat(e.target.value), data.end);
                                 }}
                             />
                             <DateInput
-                                value={timeline.endDate.format('YYYY-MM-DD')}
+                                value={data.end}
                                 onChange={(e) => {
-                                    setConTimeline(dayjs(e.target.value), false);
+                                    setTimePeriod(data.start, dateFormat(e.target.value));
                                 }}
                             />
                         </div>

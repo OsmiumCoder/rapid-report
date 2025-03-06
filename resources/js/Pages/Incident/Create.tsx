@@ -83,8 +83,10 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
             setFormData('last_name', '');
             setFormData('phone', '');
             setFormData('email', '');
-            setFormData('role', roles[0].value);
+            setFormData('role', '');
             setFormData('upei_id', '');
+        } else {
+            setFormData('role', roles[0].value);
         }
     }, [formData.on_behalf, formData.on_behalf_anonymous, formData.anonymous, setFormData]);
 
@@ -95,8 +97,10 @@ export default function Create({ form }: PageProps<{ form: IncidentData }>) {
             setFormData('last_name', '');
             setFormData('phone', '');
             setFormData('email', '');
-            setFormData('role', roles[0].value);
+            setFormData('role', '');
             setFormData('upei_id', '');
+        } else {
+            setFormData('role', roles[0].value);
         }
     }, [formData.anonymous, formData.on_behalf, setFormData]);
 

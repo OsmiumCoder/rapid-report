@@ -19,7 +19,7 @@ return new class () extends Migration {
             $table->boolean('on_behalf');
             $table->boolean('on_behalf_anonymous');
 
-            $table->integer('role');
+            $table->integer('role')->nullable();
 
             $table->string('last_name')->nullable();
             $table->index('last_name');
@@ -49,11 +49,11 @@ return new class () extends Migration {
             $table->string('descriptor');
             $table->index('descriptor');
 
-            $table->string('description')->nullable();
+            $table->text('description')->nullable();
 
-            $table->string('injury_description')->nullable();
+            $table->text('injury_description')->nullable();
 
-            $table->string('first_aid_description')->nullable();
+            $table->text('first_aid_description')->nullable();
 
             $table->string('reporters_email')->nullable();
             $table->index('reporters_email');

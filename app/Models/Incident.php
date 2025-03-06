@@ -49,11 +49,13 @@ class Incident extends Model
             'anonymous' => 'boolean',
             'on_behalf' => 'boolean',
             'on_behalf_anonymous' => 'boolean',
+            'happened_at' => 'date:Y-m-d',
             'work_related' => 'boolean',
             'witnesses' => 'array',
             'additional_information' => 'array',
             'status' => IncidentStatusState::class,
             'incident_type' => IncidentType::class,
+            'closed_at' => 'datetime',
         ];
     }
 
