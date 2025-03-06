@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Report;
 
-use App\Data\ReportExportData;
+use App\Data\ExportData;
 use App\Exports\IncidentsExport;
 use App\Models\Incident;
 use App\Models\User;
@@ -23,7 +23,7 @@ class ExportXLSXTest extends TestCase
         // these should thus not be returned
         Incident::factory(5)->create(['created_at' => now()->subDays(10)]);
 
-        $exportData = ReportExportData::from([
+        $exportData = ExportData::from([
             'start' => now()->toDateString(),
             'end' => now()->addDay()->toDateString(),
             'fields' => ['slug']
@@ -46,7 +46,7 @@ class ExportXLSXTest extends TestCase
         // these should thus not be returned
         Incident::factory(5)->create(['created_at' => now()->subDays(10)]);
 
-        $exportData = ReportExportData::from([
+        $exportData = ExportData::from([
             'start' => now()->toDateString(),
             'end' => now()->addDay()->toDateString(),
             'fields' => ['slug']
@@ -78,7 +78,7 @@ class ExportXLSXTest extends TestCase
     {
         $user = User::factory()->create()->syncRoles('user');
 
-        $exportData = ReportExportData::from([
+        $exportData = ExportData::from([
             'start' => now()->toDateString(),
             'end' => now()->toDateString(),
             'fields' => ['slug']
@@ -93,7 +93,7 @@ class ExportXLSXTest extends TestCase
     {
         $supervisor = User::factory()->create()->syncRoles('supervisor');
 
-        $exportData = ReportExportData::from([
+        $exportData = ExportData::from([
             'start' => now()->toDateString(),
             'end' => now()->toDateString(),
             'fields' => ['slug']

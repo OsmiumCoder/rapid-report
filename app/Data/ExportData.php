@@ -11,7 +11,7 @@ use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Support\Validation\ValidationContext;
 
 #[MergeValidationRules]
-class ReportExportData extends Data
+class ExportData extends Data
 {
     public function __construct(
         #[WithCast(DateTimeInterfaceCast::class)]

@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Data\ReportExportData;
+use App\Data\ExportData;
 use App\Enum\IncidentType;
 use App\Enum\RoleType;
 use App\Models\Incident;
@@ -14,7 +14,7 @@ use Maatwebsite\Excel\Concerns\WithMapping;
 class IncidentsExport implements FromQuery, ShouldAutoSize, WithHeadings, WithMapping
 {
     public function __construct(
-        public ReportExportData $exportData
+        public ExportData $exportData
     ) {
     }
 
