@@ -6,7 +6,6 @@ use App\Data\ReportExportData;
 use App\Exports\IncidentsExport;
 use App\Models\Incident;
 use App\Models\User;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Maatwebsite\Excel\Facades\Excel;
 use Tests\TestCase;

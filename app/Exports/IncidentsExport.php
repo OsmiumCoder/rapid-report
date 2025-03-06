@@ -6,7 +6,6 @@ use App\Data\ReportExportData;
 use App\Enum\IncidentType;
 use App\Enum\RoleType;
 use App\Models\Incident;
-use DateTime;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithHeadings;
