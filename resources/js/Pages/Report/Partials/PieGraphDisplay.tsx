@@ -2,7 +2,6 @@
 
 import Chart from 'chart.js/auto';
 import { CategoryScale } from "chart.js";
-import { useState } from 'react';
 import { Pie } from "react-chartjs-2";
 import { EditIcon } from 'lucide-react';
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
@@ -23,7 +22,7 @@ export interface PieGraphDataProps {
 export default function PieGraphDisplay({labels,entries,entries_number, title, description, graph_key, other_Items,setnewItem}: PieGraphDataProps) {
     //useEffect(() => {console.log(graph_key)})
     const color = ['#7c2d1c','#7fa33f','#fcd177', '#4e0f10','#5c8727','#fbb040', '#1a0604','#1f3912','#a76119'];
-    const [data, setData] = useState({
+    const data = {
         labels: labels,
         datasets: [{
             label: title,
@@ -31,17 +30,7 @@ export default function PieGraphDisplay({labels,entries,entries_number, title, d
             backgroundColor: color.slice(0,entries_number),
             hoverOffset: 10
         }]
-    });
-    const menuItems = other_Items.map((item, index) => {
-        return <MenuItem key={index}>
-            <a
-                onClick={() => setnewItem(graph_key,index)}
-                className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden"
-            >
-                {item}
-            </a>
-        </MenuItem>
-    })
+    };
 
     return (
         <div className="overflow-hidden rounded-lg bg-gray-700 ring-1 ring-white/15 max-lg:rounded lg:rounded">
@@ -58,7 +47,16 @@ export default function PieGraphDisplay({labels,entries,entries_number, title, d
                         className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white ring-1 shadow-lg ring-black/5 transition focus:outline-hidden data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
                     >
                         <div className="py-1">
-                            {menuItems}
+                            {other_Items.map((item, index) =>
+                                <MenuItem key={index}>
+                                    <a
+                                        onClick={() => setnewItem(graph_key,index)}
+                                        className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden"
+                                    >
+                                        {item}
+                                    </a>
+                                </MenuItem>
+                            )}
                         </div>
                     </MenuItems>
                 </Menu>

@@ -1,6 +1,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import PieGraphDisplay from '@/Pages/Report/Partials/PieGraphDisplay';
-import { JSX, useEffect, useState } from 'react';
+import {useState } from 'react';
+import classNames from '@/Filters/classNames';
 
 
 
@@ -18,19 +19,18 @@ export default function Stats({type_dist, witnesses_dist, role_dist,status_dist,
     status_dist:number[],
     anon_dist:number[],
 } ) {
-
     const type_label_key = {
         1:'Safety',
         2: 'Environmental',
         3: 'Security',
     }
+
     const role_label_key = {
         1: 'Employee',
         2: 'Student',
         3: 'Visitor',
         4: 'Contractor'
     }
-    console.log(status_dist)
 
     const data:dataEntry[] = [
         {
@@ -77,63 +77,30 @@ export default function Stats({type_dist, witnesses_dist, role_dist,status_dist,
     ]
 
     const data_key = ['Type', 'Witnesses', 'Roles', 'Status', "Anonymous"]
-    const [selected_statistics, setSelectedStatistics] = useState<number[]>([1,1,2,3,4])
-    const [display_graphs, setDisplayGraphs] = useState<JSX.Element[]>([])
 
+    const [selected_statistics, setSelectedStatistics] = useState<number[]>([0,1,2,3,4])
 
-
-    const setGraphs = () => {
-       console.log(selected_statistics)
-        const temp_graphs =selected_statistics.map((x,i)=> {
-                return (
-                    <PieGraphDisplay
-                        labels={data[x].labels}
-                        entries={data[x].entries}
-                        entries_number={data[x].entries_number}
-                        title={data[x].title}
-                        description={data[x].description}
-                        graph_key={i}
-                        other_Items={data_key}
-                        setnewItem={function (key:number, index:number) {
-                            setSelectedStatistics((prev) => prev.map((x,i)=>i==key?index:x))
-                            setGraphs()
-                        }}
-                    />
-                );
-
-            }
-        )
-        console.log(temp_graphs)
-        setDisplayGraphs(temp_graphs)
-    }
-    useEffect(() => {
-        setGraphs()
-    });
-    useEffect(() => {
-        console.log(display_graphs);
-    }, [display_graphs]);
     return (
         <AuthenticatedLayout>
-            {
-                <div className="m-10 grid grid-cols-1 gap-5 sm:mt-10 lg:grid-cols-6 lg:grid-rows-2">
-                    <div className="relative p-px lg:col-span-2">
-                        {display_graphs[0]}
-                    </div>
-                    <div className="relative p-px lg:col-span-2">
-                        {display_graphs[1]}
-                    </div>
-                    <div className="relative p-px lg:col-span-2">
-                        {display_graphs[2]}
-                    </div>
-
-                    <div className="relative p-px lg:col-span-3">
-                        {display_graphs[3]}
-                    </div>
-                    <div className="relative p-px lg:col-span-3">
-                        {display_graphs[4]}
-                    </div>
+                <div className=" mx-10 items-center bg-red-600 grid grid-cols-1 gap-5  lg:grid-cols-6 lg:grid-rows-2">
+                    {selected_statistics.map((indexValue,i)=>
+                                <div key={i} className={classNames("relative",
+                                    i<3 ? 'lg:col-span-2' : 'lg:col-span-3')}>
+                                <PieGraphDisplay
+                                    labels={data[indexValue].labels}
+                                    entries={data[indexValue].entries}
+                                    entries_number={data[indexValue].entries_number}
+                                    title={data[indexValue].title}
+                                    description={data[indexValue].description}
+                                    graph_key={i}
+                                    other_Items={data_key}
+                                    setnewItem={(key:number, index:number)=>{
+                                        setSelectedStatistics((prev) => prev.map((x, i) => (i == key ? index : x)));
+                                    }}
+                                />
+                                </div>
+                    )}
                 </div>
-            }
         </AuthenticatedLayout>
     );
 }
