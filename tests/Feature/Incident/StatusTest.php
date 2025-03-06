@@ -59,7 +59,7 @@ class StatusTest extends TestCase
                 $databaseStore = $notification->toArray($supervisor);
 
                 $this->assertEquals(
-                    route('incidents.investigations.show', ['incident' => $incident->id, 'investigation' => $investigation->id]),
+                    route('incidents.investigations.show', ['incident' => $incident->slug, 'investigation' => $investigation->id]),
                     $databaseStore['url']
                 );
 
@@ -105,7 +105,7 @@ class StatusTest extends TestCase
         Notification::assertSentTo(
             $supervisor,
             function (InvestigationReturnedNotification $notification, array $channels) use ($incident, $admin) {
-                return $notification->incidentSlug === $incident->id && $notification->admin->id === $admin->id;
+                return $notification->incidentSlug === $incident->slug && $notification->admin->id === $admin->id;
             }
         );
     }
