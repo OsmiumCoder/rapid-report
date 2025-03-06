@@ -7,7 +7,7 @@ export default function NoteComment({ comment }: { comment: Comment }) {
         <>
             <ChatBubbleBottomCenterTextIcon className="text-upei-green-600 relative flex size-6 flex-none items-center justify-center bg-white" />
 
-            <div className="flex-auto rounded-md p-3 ring-1 ring-gray-200 ring-inset">
+            <div className="w-[33%] flex-auto rounded-md p-3 ring-1 ring-gray-200 ring-inset">
                 <div className="flex justify-between gap-x-4">
                     <div className="py-0.5 text-xs/5 text-gray-500">
                         <div>
@@ -20,7 +20,7 @@ export default function NoteComment({ comment }: { comment: Comment }) {
                         </div>
                     </div>
                 </div>
-                <div className="text-sm/6 text-gray-500">{comment.content}</div>
+                <div className="text-sm/6 break-words whitespace-normal text-gray-500">{comment.content}</div>
             </div>
         </>
     );
