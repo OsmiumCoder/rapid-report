@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Notification;
 
 class SupervisorAssigned extends StoredEvent
 {
-    private ?User $supervisor;
+    private ?User $supervisor = null;
 
     public function __construct(
         public int $supervisor_id,
