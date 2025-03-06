@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { Bar, Pie } from 'react-chartjs-2';
 Chart.register(CategoryScale);
 
-export interface PieGraphDataProps {
+export interface GraphProps {
     labels: string[];
     entries: number[];
     entriesNumber: number;
@@ -29,7 +29,7 @@ export default function Graph({
     setNewItem,
     canEdit,
     isBarInit,
-}: PieGraphDataProps) {
+}: GraphProps) {
     const colors = ['#7c2d1c', '#7fa33f', '#fcd177', '#4e0f10', '#5c8727', '#fbb040', '#1a0604', '#1f3912', '#a76119'];
     const [isBar, setIsBar] = useState(isBarInit);
     const data = {
