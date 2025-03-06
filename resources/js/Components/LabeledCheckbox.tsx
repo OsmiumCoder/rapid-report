@@ -12,6 +12,7 @@ export default function LabeledCheckbox({ label, ...props }: LabeledCheckBoxProp
                 <div className="group ml-2 grid size-4 grid-cols-1">
                     <input
                         {...props}
+                        id={label}
                         type="checkbox"
                         className="checked:border-upei-green-600 checked:bg-upei-green-600 indeterminate:border-upei-green-600 indeterminate:bg-upei-green-600 focus-visible:outline-upei-green-600 col-start-1 row-start-1 cursor-pointer appearance-none rounded-sm border border-gray-300 bg-white focus-visible:outline-2 focus-visible:outline-offset-2 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto"
                     />
@@ -39,7 +40,9 @@ export default function LabeledCheckbox({ label, ...props }: LabeledCheckBoxProp
                 </div>
             </div>
 
-            <label className={classNames('text-base text-gray-600 sm:text-sm', props.disabled ? 'opacity-50' : '')}>{label}</label>
+            <label htmlFor={label} className={classNames('cursor-pointer text-base text-gray-600 sm:text-sm', props.disabled ? 'opacity-50' : '')}>
+                {label}
+            </label>
         </div>
     );
 }

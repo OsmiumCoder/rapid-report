@@ -75,6 +75,7 @@ class DatabaseSeeder extends Seeder
         Incident::factory(5)->hasComments(5)->create([
             'supervisor_id' => $supervisor->id,
             'status' => Closed::class,
+            'closed_at' => now(),
         ]);
 
         Incident::factory(5)->create([

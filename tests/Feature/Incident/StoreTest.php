@@ -204,7 +204,6 @@ class StoreTest extends TestCase
         $this->assertInstanceOf(ValidationException::class, $response->exception);
 
         $response->assertInvalid([
-            'role',
             'incident_type',
             'descriptor',
         ]);
@@ -217,7 +216,7 @@ class StoreTest extends TestCase
             'anonymous' => true,
             'on_behalf' => false,
             'on_behalf_anonymous' => false,
-            'role' => 0,
+            'role' => null,
             'last_name' => null,
             'first_name' => null,
             'upei_id' => null,
@@ -250,14 +249,14 @@ class StoreTest extends TestCase
         $this->assertFalse($incident->on_behalf);
         $this->assertFalse($incident->on_behalf_anonymous);
 
-        $this->assertEquals($incidentData->role, $incident->role);
+        $this->assertNull($incident->role);
         $this->assertNull($incident->last_name);
         $this->assertNull($incident->first_name);
         $this->assertNull($incident->upei_id);
         $this->assertNull($incident->email);
         $this->assertNull($incident->phone);
         $this->assertEquals($incidentData->work_related, $incident->work_related);
-        $this->assertEquals($incidentData->happened_at->toDateString(), $incident->happened_at);
+        $this->assertEquals($incidentData->happened_at, $incident->happened_at);
         $this->assertEquals($incidentData->location, $incident->location);
         $this->assertNull($incident->room_number);
         $this->assertNull($incident->witnesses);
@@ -358,7 +357,7 @@ class StoreTest extends TestCase
         $this->assertEquals($incidentData->phone, $incident->phone);
         $this->assertEquals($incidentData->work_related, $incident->work_related);
         $this->assertEquals($incidentData->workers_comp_submitted, $incident->workers_comp_submitted);
-        $this->assertEquals($incidentData->happened_at->toDateString(), $incident->happened_at);
+        $this->assertEquals($incidentData->happened_at, $incident->happened_at);
         $this->assertEquals($incidentData->location, $incident->location);
         $this->assertEquals($incidentData->room_number, $incident->room_number);
         $this->assertEquals($incidentData->witnesses, $incident->witnesses);

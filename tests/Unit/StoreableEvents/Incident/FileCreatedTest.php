@@ -1,6 +1,6 @@
 <?php
 
-namespace StoreableEvents\Incident;
+namespace Tests\Unit\StoreableEvents\Incident;
 
 use App\Models\File;
 use App\Models\Incident;
