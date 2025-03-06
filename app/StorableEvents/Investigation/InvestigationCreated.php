@@ -10,9 +10,12 @@ use App\Models\User;
 use App\Notifications\Investigation\InvestigationSubmittedNotification;
 use App\StorableEvents\StoredEvent;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Validation\Rules\In;
 
 class InvestigationCreated extends StoredEvent
 {
+    private ?Incident $incident = null;
+
     public function __construct(
         public string $incident_id,
         public ?string $immediate_causes,
@@ -29,9 +32,18 @@ class InvestigationCreated extends StoredEvent
     ) {
     }
 
+    public function incident()
+    {
+        if (!$this->incident) {
+            $this->incident = Incident::find($this->incident_id);
+        }
+
+        return $this->incident;
+    }
+
     public function handle()
     {
-        $incident = Incident::find($this->incident_id);
+        $incident = $this->incident();
 
         $investigation = new Investigation;
 
@@ -78,7 +90,8 @@ class InvestigationCreated extends StoredEvent
         $admins = User::role('admin')->get();
 
         $supervisor = User::find($this->metaData['user_id']);
+        $incident = $this->incident();
 
-        Notification::send($admins, new InvestigationSubmittedNotification($this->incident_id, $this->aggregateRootUuid(), $supervisor));
+        Notification::send($admins, new InvestigationSubmittedNotification($incident->slug, $this->aggregateRootUuid(), $supervisor));
     }
 }

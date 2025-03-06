@@ -14,9 +14,20 @@ use Illuminate\Support\Facades\Notification;
 
 class RootCauseAnalysisReturned extends StoredEvent
 {
+    private ?Incident $incident = null;
+
+    public function incident()
+    {
+        if (!$this->incident) {
+            $this->incident = Incident::find($this->aggregateRootUuid());
+        }
+
+        return $this->incident;
+    }
+
     public function handle()
     {
-        $incident = Incident::find($this->aggregateRootUuid());
+        $incident = $this->incident();
 
         $incident->status->transitionTo(Returned::class);
 
@@ -36,7 +47,7 @@ class RootCauseAnalysisReturned extends StoredEvent
     public function react()
     {
         $admin = User::find($this->metaData['user_id']);
-        $incident = Incident::find($this->aggregateRootUuid());
+        $incident = $this->incident();
         $rca = RootCauseAnalysis::where('incident_id', $this->aggregateRootUuid())->first();
 
         Notification::send($rca->supervisor, new RootCauseAnalysisReturnedNotification($incident->slug, $rca->id, $admin));

@@ -12,14 +12,25 @@ use Illuminate\Support\Facades\Notification;
 
 class AdditionalInformationAdded extends StoredEvent
 {
+    private ?Incident $incident = null;
+
     public function __construct(public string $additionalInformation)
     {
         //
     }
 
+    public function incident()
+    {
+        if (!$this->incident) {
+            $this->incident = Incident::find($this->aggregateRootUuid());
+        }
+
+        return $this->incident;
+    }
+
     public function handle()
     {
-        $incident = Incident::find($this->aggregateRootUuid());
+        $incident = $this->incident();
 
         $newInfo = [
             'created_at' => now(),
@@ -49,7 +60,7 @@ class AdditionalInformationAdded extends StoredEvent
     public function react()
     {
         $admins = User::role('admin')->get();
-        $incident = Incident::find($this->aggregateRootUuid());
+        $incident = $this->incident();
 
         Notification::send($admins, new AdditionalInformationNotification($incident->slug, $this->additionalInformation));
     }

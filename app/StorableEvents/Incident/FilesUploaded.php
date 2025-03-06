@@ -12,13 +12,20 @@ use Illuminate\Support\Facades\Notification;
 
 class FilesUploaded extends StoredEvent
 {
-    public function __construct(
-    ) {
+    private ?Incident $incident = null;
+
+    public function incident()
+    {
+        if (!$this->incident) {
+            $this->incident = Incident::find($this->aggregateRootUuid());
+        }
+
+        return $this->incident;
     }
 
     public function handle()
     {
-        $incident = Incident::find($this->aggregateRootUuid());
+        $incident = $this->incident();
 
         $comment = new Comment;
 
@@ -36,7 +43,7 @@ class FilesUploaded extends StoredEvent
         $admins = User::role('admin')->get();
         $supervisor = User::find($this->metaData['user_id']);
 
-        $incident = Incident::find($this->aggregateRootUuid());
+        $incident = $this->incident();
 
         Notification::send($admins, new FilesUploadedNotification($incident->slug, $supervisor));
     }
