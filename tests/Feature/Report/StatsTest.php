@@ -22,7 +22,7 @@ class StatsTest extends TestCase
         $response->assertStatus(200);
 
         $response->assertInertia(function (AssertableInertia $page) {
-          //  dd($page);
+            //  dd($page);
             $page->component('Report/Stats')
                 ->has('type_dist', 3)
                 ->has('role_dist', 4)

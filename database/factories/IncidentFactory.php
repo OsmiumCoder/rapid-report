@@ -48,7 +48,7 @@ class IncidentFactory extends Factory
                     'email' => '',
                     'phone' => fake()->phoneNumber(),
                 ]
-            ],fake()->numberBetween(0,3)),
+            ], fake()->numberBetween(0, 3)),
             'incident_type' => fake()->randomElement(IncidentType::cases()),
             'descriptor' => fake()->randomElement([
                 'Injury',
