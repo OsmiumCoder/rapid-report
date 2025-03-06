@@ -6,7 +6,7 @@ export default function Index() {
     return (
         <AuthenticatedLayout>
             <Head title="Reports" />
-            <ReportBuilder/>
+            <ReportBuilder />
         </AuthenticatedLayout>
     );
 }

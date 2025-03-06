@@ -7,10 +7,10 @@ import dateFormat from '@/Formatters/dateFormat';
 import { uppercaseWordFormat } from '@/Formatters/uppercaseWordFormat';
 import { downloadFile } from '@/Helpers/downloadFile';
 import { Field, Label, Switch } from '@headlessui/react';
+import { useForm } from '@inertiajs/react';
 import axios from 'axios';
 import dayjs, { ManipulateType } from 'dayjs';
-import {useState} from 'react';
-import {useForm} from "@inertiajs/react";
+import { useState } from 'react';
 import _ from 'underscore';
 
 interface RelativeTimeUnit {
@@ -37,13 +37,11 @@ export default function ReportBuilder() {
     const { data, setData } = useForm({
         start: dateFormat(dayjs().subtract(1, 'year').toDate()),
         end: dateFormat(dayjs().toDate()),
-        fields: [] as string[]
+        fields: [] as string[],
     });
 
     const toggleSelectedFields = (value: string, isChecked: boolean) => {
-        const updatedFields = isChecked && !data.fields.includes(value)
-            ? [...data.fields, value]
-            : data.fields.filter((item) => item !== value);
+        const updatedFields = isChecked && !data.fields.includes(value) ? [...data.fields, value] : data.fields.filter((item) => item !== value);
 
         setData('fields', updatedFields);
     };
@@ -53,8 +51,7 @@ export default function ReportBuilder() {
     const setTimePeriod = (start: string, end: string) => {
         if (data.start != start && dayjs(start).isAfter(dayjs(end))) {
             end = dateFormat(dayjs(start).add(1, 'day').toDate());
-        }
-        else if (data.end != end && dayjs(end).isBefore(dayjs(start))) {
+        } else if (data.end != end && dayjs(end).isBefore(dayjs(start))) {
             start = dateFormat(dayjs(end).subtract(1, 'day').toDate());
         }
 
@@ -86,18 +83,18 @@ export default function ReportBuilder() {
         {
             unit: 'year',
             options: _.range(1, 6),
-        }
+        },
     ];
 
     const [selectedRelativeTimeLength, setSelectedRelativeTimeLength] = useState(1);
-    const [selectedRelativeTimeUnit, setSelectedRelativeTimeUnit] = useState<ManipulateType>("day");
+    const [selectedRelativeTimeUnit, setSelectedRelativeTimeUnit] = useState<ManipulateType>('day');
 
     const downloadExcel = async () => {
         const response = await axios.post(route('report.export-xlsx'), data, {
             responseType: 'blob',
         });
 
-        const fileName = response.headers["content-disposition"].split('filename=')[1]
+        const fileName = response.headers['content-disposition'].split('filename=')[1];
 
         downloadFile(response.data, fileName);
     };
@@ -107,7 +104,7 @@ export default function ReportBuilder() {
             responseType: 'blob',
         });
 
-        const fileName = response.headers["content-disposition"].split('filename=')[1]
+        const fileName = response.headers['content-disposition'].split('filename=')[1];
 
         downloadFile(response.data, fileName);
     };
@@ -144,9 +141,8 @@ export default function ReportBuilder() {
                                     if (isRelative) {
                                         setSelectedRelativeTimeLength(1);
                                         setSelectedRelativeTimeUnit('day');
-                                        setRelativeTimePeriod(selectedRelativeTimeLength, selectedRelativeTimeUnit)
-                                    }
-                                    else {
+                                        setRelativeTimePeriod(selectedRelativeTimeLength, selectedRelativeTimeUnit);
+                                    } else {
                                         setTimePeriod(dateFormat(dayjs().subtract(1, 'year').toDate()), dateFormat(dayjs().toDate()));
                                     }
 
