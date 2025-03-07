@@ -4,6 +4,7 @@ namespace App\StorableEvents\User;
 
 use App\Aggregates\IncidentAggregateRoot;
 use App\Enum\RolesEnum;
+use App\Exceptions\UserNotSupervisorException;
 use App\Mail\UserAdded;
 use App\Models\User;
 use App\StorableEvents\StoredEvent;
@@ -22,7 +23,10 @@ class UserCreated extends StoredEvent
     ) {
     }
 
-    public function handle()
+    /**
+     * @throws UserNotSupervisorException
+     */
+    public function handle(): void
     {
         $user = User::create([
             'name' => $this->name,
@@ -37,7 +41,7 @@ class UserCreated extends StoredEvent
         }
     }
 
-    public function react()
+    public function react(): void
     {
         Mail::to($this->email)->send(new UserAdded);
     }

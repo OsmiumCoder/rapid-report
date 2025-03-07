@@ -10,12 +10,13 @@ use App\Notifications\Incident\IncidentClosedNotification;
 use App\States\IncidentStatus\Closed;
 use App\StorableEvents\StoredEvent;
 use Illuminate\Support\Facades\Notification;
+use Spatie\ModelStates\Exceptions\CouldNotPerformTransition;
 
 class IncidentClosed extends StoredEvent
 {
     private ?Incident $incident = null;
 
-    public function incident()
+    public function incident(): Incident
     {
         if (!$this->incident) {
             $this->incident = Incident::find($this->aggregateRootUuid());
@@ -24,7 +25,10 @@ class IncidentClosed extends StoredEvent
         return $this->incident;
     }
 
-    public function handle()
+    /**
+     * @throws CouldNotPerformTransition
+     */
+    public function handle(): void
     {
         $incident = $this->incident();
         $incident->status->transitionTo(Closed::class);
@@ -42,7 +46,7 @@ class IncidentClosed extends StoredEvent
         $comment->save();
     }
 
-    public function react()
+    public function react(): void
     {
         $incident = $this->incident();
 

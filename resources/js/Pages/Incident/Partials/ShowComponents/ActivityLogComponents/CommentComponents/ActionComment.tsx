@@ -8,8 +8,8 @@ export default function ActionComment({ comment }: { comment: Comment }) {
             <div className="relative flex size-6 flex-none items-center justify-center bg-white">
                 <InformationCircleIcon aria-hidden="true" className="text-upei-red-500 size-6" />
             </div>
-            <div className="flex-auto py-0.5 text-xs/5 text-gray-500">
-                <div>
+            <div className="w-[33%] flex-auto py-0.5 text-xs/5 text-gray-500">
+                <div className="break-words whitespace-normal">
                     <span className="font-medium text-gray-900">{comment.user?.name ?? 'Anonymous User'}</span> {comment.content}
                 </div>
 

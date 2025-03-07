@@ -17,9 +17,10 @@ interface AddUserFormProps {
     isOpen: boolean;
     onClose: (userCreated: boolean) => void;
     assignToIncidentId?: string;
+    withRole?: boolean;
 }
 
-export default function AddUserModal({ roles, isOpen, onClose, assignToIncidentId }: AddUserFormProps) {
+export default function AddUserModal({ roles, isOpen, onClose, assignToIncidentId, withRole = true }: AddUserFormProps) {
     const { data, setData, post, processing, errors, clearErrors, reset, cancel } = useForm({
         name: '',
         email: '',
@@ -159,7 +160,12 @@ export default function AddUserModal({ roles, isOpen, onClose, assignToIncidentI
                 <div className="mt-4">
                     <InputLabel htmlFor="role" value="Role" />
 
-                    <SelectInput value={data.role} onChange={(e) => setData('role', e.target.value)} className="w-full">
+                    <SelectInput
+                        disabled={!withRole}
+                        value={data.role}
+                        onChange={(e) => setData('role', e.target.value)}
+                        className="w-full disabled:text-gray-600"
+                    >
                         {roles.map(({ name }, index) => (
                             <option className="hover:bg-upei-green-500" key={index} value={name}>
                                 {uppercaseWordFormat(name, '-')}

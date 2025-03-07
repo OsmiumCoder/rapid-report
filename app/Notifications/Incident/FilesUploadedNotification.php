@@ -36,6 +36,9 @@ class FilesUploadedNotification extends BaseNotification
     {
         return (new MailMessage)
             ->subject("Files Have Been Uploaded to Incident #$this->incidentSlug")
-            ->markdown('mail.files-uploaded-notification', ['url' => $this->url, 'message' => $this->message]);
+            ->markdown('mail.files-uploaded-notification', [
+                'url' => $this->url,
+                'message' => $this->message
+            ]);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class RootCauseAnalysis extends Model
@@ -35,12 +36,12 @@ class RootCauseAnalysis extends Model
         ];
     }
 
-    public function incident()
+    public function incident(): BelongsTo
     {
         return $this->belongsTo(Incident::class);
     }
 
-    public function supervisor()
+    public function supervisor(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }

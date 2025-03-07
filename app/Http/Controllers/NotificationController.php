@@ -2,23 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 
 class NotificationController extends Controller
 {
-    public function markAllRead(Request $request)
+    public function markAllRead(): RedirectResponse
     {
         auth()->user()->notifications->markAsRead();
         return back();
     }
 
-    public function destroyAll(Request $request)
+    public function destroyAll(): RedirectResponse
     {
         auth()->user()->notifications()->delete();
         return back();
     }
 
-    public function destroy(string $notification)
+    public function destroy(string $notification): RedirectResponse
     {
         auth()->user()->notifications()->find($notification)->delete();
         return back();
