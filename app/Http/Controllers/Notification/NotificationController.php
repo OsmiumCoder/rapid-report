@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Notification;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 
 class NotificationController extends Controller
