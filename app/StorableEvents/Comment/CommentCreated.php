@@ -19,7 +19,7 @@ class CommentCreated extends StoredEvent
     ) {
     }
 
-    public function handle()
+    public function handle(): void
     {
         $comment = new Comment;
 
@@ -33,7 +33,7 @@ class CommentCreated extends StoredEvent
         $comment->save();
     }
 
-    public function react()
+    public function react(): void
     {
         $commentable = $this->commentable_type::find($this->commentable_id);
         $commenter = User::find($this->metaData['user_id']);

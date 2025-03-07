@@ -3,13 +3,19 @@
 namespace App\Http\Controllers\Incident;
 
 use App\Aggregates\IncidentAggregateRoot;
+use App\Exceptions\UserNotSupervisorException;
 use App\Http\Controllers\Controller;
 use App\Models\Incident;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class IncidentStatusController extends Controller
 {
-    public function requestReview(Incident $incident)
+    /**
+     * @throws AuthorizationException
+     */
+    public function requestReview(Incident $incident): RedirectResponse
     {
         $this->authorize('requestReview', $incident);
 
@@ -20,7 +26,10 @@ class IncidentStatusController extends Controller
         return back();
     }
 
-    public function returnInvestigation(Incident $incident)
+    /**
+     * @throws AuthorizationException
+     */
+    public function returnInvestigation(Incident $incident): RedirectResponse
     {
         $this->authorize('performAdminActions', Incident::class);
 
@@ -31,7 +40,10 @@ class IncidentStatusController extends Controller
         return back();
     }
 
-    public function returnRCA(Incident $incident)
+    /**
+     * @throws AuthorizationException
+     */
+    public function returnRCA(Incident $incident): RedirectResponse
     {
         $this->authorize('performAdminActions', Incident::class);
 
@@ -42,7 +54,11 @@ class IncidentStatusController extends Controller
         return back();
     }
 
-    public function assignSupervisor(Request $request, Incident $incident)
+    /**
+     * @throws AuthorizationException
+     * @throws UserNotSupervisorException
+     */
+    public function assignSupervisor(Request $request, Incident $incident): RedirectResponse
     {
         $this->authorize('performAdminActions', Incident::class);
 
@@ -57,7 +73,10 @@ class IncidentStatusController extends Controller
         return back();
     }
 
-    public function unassignSupervisor(Incident $incident)
+    /**
+     * @throws AuthorizationException
+     */
+    public function unassignSupervisor(Incident $incident): RedirectResponse
     {
         $this->authorize('performAdminActions', Incident::class);
 
@@ -68,7 +87,10 @@ class IncidentStatusController extends Controller
         return back();
     }
 
-    public function closeIncident(Incident $incident)
+    /**
+     * @throws AuthorizationException
+     */
+    public function closeIncident(Incident $incident): RedirectResponse
     {
         $this->authorize('performAdminActions', Incident::class);
 
@@ -80,7 +102,10 @@ class IncidentStatusController extends Controller
 
     }
 
-    public function reopenIncident(Incident $incident)
+    /**
+     * @throws AuthorizationException
+     */
+    public function reopenIncident(Incident $incident): RedirectResponse
     {
         $this->authorize('performAdminActions', Incident::class);
 

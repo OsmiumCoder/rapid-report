@@ -56,6 +56,9 @@ class IncidentFollowUpOverdueNotification extends BaseNotification
     {
         return (new MailMessage)
             ->subject("Incident #$this->incidentSlug Follow Up Overdue")
-            ->markdown('mail.incident-follow-up-overdue-notification', ['url' => $this->url, 'message' => $this->message]);
+            ->markdown('mail.incident-follow-up-overdue-notification', [
+                'url' => $this->url,
+                'message' => $this->message
+            ]);
     }
 }

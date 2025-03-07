@@ -11,12 +11,13 @@ use App\States\IncidentStatus\Returned;
 use App\StorableEvents\StoredEvent;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\Investigation\InvestigationReturnedNotification;
+use Spatie\ModelStates\Exceptions\CouldNotPerformTransition;
 
 class InvestigationReturned extends StoredEvent
 {
     private ?Incident $incident = null;
 
-    public function incident()
+    public function incident(): Incident
     {
         if (!$this->incident) {
             $this->incident = Incident::find($this->aggregateRootUuid());
@@ -25,7 +26,10 @@ class InvestigationReturned extends StoredEvent
         return $this->incident;
     }
 
-    public function handle()
+    /**
+     * @throws CouldNotPerformTransition
+     */
+    public function handle(): void
     {
         $incident = $this->incident();
 
@@ -44,7 +48,7 @@ class InvestigationReturned extends StoredEvent
         $comment->save();
     }
 
-    public function react()
+    public function react(): void
     {
         $admin = User::find($this->metaData['user_id']);
         $incident = $this->incident();
