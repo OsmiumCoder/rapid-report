@@ -13,7 +13,7 @@ class ExportDataTest extends TestCase
         $exportData = ExportData::validateAndCreate([
             'start' => now()->toDateString(),
             'end' => now()->toDateString(),
-            'fields' => ['slug']
+            'fields' => ['ID']
         ]);
 
         $this->assertInstanceOf(ExportData::class, $exportData);
