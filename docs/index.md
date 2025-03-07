@@ -17,7 +17,7 @@ This is an automatically generated documentation for **Rapid Report Documentatio
 
 | Class | Description |
 |-------|-------------|
-| [`IncidentAggregateRoot`](./classes/App/Aggregates/IncidentAggregateRoot.md) | |
+| [`IncidentAggregateRoot`](./classes/App/Aggregates/IncidentAggregateRoot.md) | Any<br />author<br />copyright<br />deprecated<br />example<br />final<br />ignore<br />internal<br />link<br />see<br />since<br />source<br />todo<br />uses<br />version|
 | [`InvestigationAggregateRoot`](./classes/App/Aggregates/InvestigationAggregateRoot.md) | |
 | [`RootCauseAnalysisAggregateRoot`](./classes/App/Aggregates/RootCauseAnalysisAggregateRoot.md) | |
 

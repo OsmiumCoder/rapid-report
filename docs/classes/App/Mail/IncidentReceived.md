@@ -116,27 +116,6 @@ public content(): \Illuminate\Mail\Mailables\Content
 
 ***
 
-### attachments
-
-Get the attachments for the message.
-
-```php
-public attachments(): array&lt;int,\Illuminate\Mail\Mailables\Attachment&gt;
-```
-
-
-
-
-
-
-
-
-
-
-
-
-***
-
 
 ***
 > Automatically generated on 2025-03-07

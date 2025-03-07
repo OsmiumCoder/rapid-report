@@ -20,7 +20,7 @@
 
 
 ```php
-public static hasRoles(\Illuminate\Support\Collection $roles): mixed
+public static hasRoles(\Illuminate\Support\Collection $roles): static
 ```
 
 
@@ -47,7 +47,7 @@ public static hasRoles(\Illuminate\Support\Collection $roles): mixed
 Render the exception as an HTTP response.
 
 ```php
-public render(\Illuminate\Http\Request $request): mixed
+public render(\Illuminate\Http\Request $request): \Illuminate\Http\RedirectResponse
 ```
 
 

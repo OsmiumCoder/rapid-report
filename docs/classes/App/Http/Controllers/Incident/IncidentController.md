@@ -20,7 +20,7 @@
 Display a listing of the Incident.
 
 ```php
-public index(\Illuminate\Http\Request $request): mixed
+public index(\Illuminate\Http\Request $request): \Inertia\Response
 ```
 
 
@@ -39,6 +39,11 @@ public index(\Illuminate\Http\Request $request): mixed
 
 
 
+**Throws:**
+
+- [`AuthorizationException`](../../../../Illuminate/Auth/Access/AuthorizationException.md)
+
+
 
 ***
 
@@ -47,7 +52,7 @@ public index(\Illuminate\Http\Request $request): mixed
 Show the form for creating a new Incident.
 
 ```php
-public create(): mixed
+public create(): \Inertia\Response
 ```
 
 
@@ -68,7 +73,7 @@ public create(): mixed
 Store a newly created Incident in storage.
 
 ```php
-public store(\App\Data\IncidentData $incidentData): mixed
+public store(\App\Data\IncidentData $incidentData): \Inertia\Response
 ```
 
 
@@ -95,7 +100,7 @@ public store(\App\Data\IncidentData $incidentData): mixed
 Display the specified Incident.
 
 ```php
-public show(\App\Models\Incident $incident): mixed
+public show(\App\Models\Incident $incident): \Inertia\Response
 ```
 
 
@@ -112,6 +117,11 @@ public show(\App\Models\Incident $incident): mixed
 | `$incident` | **\App\Models\Incident** |  |
 
 
+
+
+**Throws:**
+
+- [`AuthorizationException`](../../../../Illuminate/Auth/Access/AuthorizationException.md)
 
 
 

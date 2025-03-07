@@ -20,7 +20,7 @@
 
 
 ```php
-public __invoke(\Illuminate\Http\Request $request, \App\Models\Incident $incident): mixed
+public __invoke(\Illuminate\Http\Request $request, \App\Models\Incident $incident): \Illuminate\Http\RedirectResponse
 ```
 
 
@@ -38,6 +38,11 @@ public __invoke(\Illuminate\Http\Request $request, \App\Models\Incident $inciden
 | `$incident` | **\App\Models\Incident** |  |
 
 
+
+
+**Throws:**
+
+- [`AuthorizationException`](../../../../Illuminate/Auth/Access/AuthorizationException.md)
 
 
 

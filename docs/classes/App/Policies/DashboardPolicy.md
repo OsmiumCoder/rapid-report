@@ -19,7 +19,7 @@
 
 
 ```php
-public viewAdminOverview(\App\Models\User $user): mixed
+public viewAdminOverview(\App\Models\User $user): bool
 ```
 
 
@@ -46,7 +46,7 @@ public viewAdminOverview(\App\Models\User $user): mixed
 
 
 ```php
-public viewSupervisorOverview(\App\Models\User $user): mixed
+public viewSupervisorOverview(\App\Models\User $user): bool
 ```
 
 
@@ -73,7 +73,7 @@ public viewSupervisorOverview(\App\Models\User $user): mixed
 
 
 ```php
-public viewUserManagement(\App\Models\User $user): mixed
+public viewUserManagement(\App\Models\User $user): bool
 ```
 
 

@@ -20,7 +20,7 @@
 
 
 ```php
-public requestReview(\App\Models\Incident $incident): mixed
+public requestReview(\App\Models\Incident $incident): \Illuminate\Http\RedirectResponse
 ```
 
 
@@ -37,6 +37,11 @@ public requestReview(\App\Models\Incident $incident): mixed
 | `$incident` | **\App\Models\Incident** |  |
 
 
+
+
+**Throws:**
+
+- [`AuthorizationException`](../../../../Illuminate/Auth/Access/AuthorizationException.md)
 
 
 
@@ -47,7 +52,7 @@ public requestReview(\App\Models\Incident $incident): mixed
 
 
 ```php
-public returnInvestigation(\App\Models\Incident $incident): mixed
+public returnInvestigation(\App\Models\Incident $incident): \Illuminate\Http\RedirectResponse
 ```
 
 
@@ -64,6 +69,11 @@ public returnInvestigation(\App\Models\Incident $incident): mixed
 | `$incident` | **\App\Models\Incident** |  |
 
 
+
+
+**Throws:**
+
+- [`AuthorizationException`](../../../../Illuminate/Auth/Access/AuthorizationException.md)
 
 
 
@@ -74,7 +84,7 @@ public returnInvestigation(\App\Models\Incident $incident): mixed
 
 
 ```php
-public returnRCA(\App\Models\Incident $incident): mixed
+public returnRCA(\App\Models\Incident $incident): \Illuminate\Http\RedirectResponse
 ```
 
 
@@ -93,6 +103,11 @@ public returnRCA(\App\Models\Incident $incident): mixed
 
 
 
+**Throws:**
+
+- [`AuthorizationException`](../../../../Illuminate/Auth/Access/AuthorizationException.md)
+
+
 
 ***
 
@@ -101,7 +116,7 @@ public returnRCA(\App\Models\Incident $incident): mixed
 
 
 ```php
-public assignSupervisor(\Illuminate\Http\Request $request, \App\Models\Incident $incident): mixed
+public assignSupervisor(\Illuminate\Http\Request $request, \App\Models\Incident $incident): \Illuminate\Http\RedirectResponse
 ```
 
 
@@ -121,6 +136,13 @@ public assignSupervisor(\Illuminate\Http\Request $request, \App\Models\Incident 
 
 
 
+**Throws:**
+
+- [`AuthorizationException`](../../../../Illuminate/Auth/Access/AuthorizationException.md)
+
+- [`UserNotSupervisorException`](../../../Exceptions/UserNotSupervisorException.md)
+
+
 
 ***
 
@@ -129,7 +151,7 @@ public assignSupervisor(\Illuminate\Http\Request $request, \App\Models\Incident 
 
 
 ```php
-public unassignSupervisor(\App\Models\Incident $incident): mixed
+public unassignSupervisor(\App\Models\Incident $incident): \Illuminate\Http\RedirectResponse
 ```
 
 
@@ -146,6 +168,11 @@ public unassignSupervisor(\App\Models\Incident $incident): mixed
 | `$incident` | **\App\Models\Incident** |  |
 
 
+
+
+**Throws:**
+
+- [`AuthorizationException`](../../../../Illuminate/Auth/Access/AuthorizationException.md)
 
 
 
@@ -156,7 +183,7 @@ public unassignSupervisor(\App\Models\Incident $incident): mixed
 
 
 ```php
-public closeIncident(\App\Models\Incident $incident): mixed
+public closeIncident(\App\Models\Incident $incident): \Illuminate\Http\RedirectResponse
 ```
 
 
@@ -173,6 +200,11 @@ public closeIncident(\App\Models\Incident $incident): mixed
 | `$incident` | **\App\Models\Incident** |  |
 
 
+
+
+**Throws:**
+
+- [`AuthorizationException`](../../../../Illuminate/Auth/Access/AuthorizationException.md)
 
 
 
@@ -183,7 +215,7 @@ public closeIncident(\App\Models\Incident $incident): mixed
 
 
 ```php
-public reopenIncident(\App\Models\Incident $incident): mixed
+public reopenIncident(\App\Models\Incident $incident): \Illuminate\Http\RedirectResponse
 ```
 
 
@@ -200,6 +232,11 @@ public reopenIncident(\App\Models\Incident $incident): mixed
 | `$incident` | **\App\Models\Incident** |  |
 
 
+
+
+**Throws:**
+
+- [`AuthorizationException`](../../../../Illuminate/Auth/Access/AuthorizationException.md)
 
 
 

@@ -20,7 +20,7 @@
 
 
 ```php
-public index(): mixed
+public index(): \Inertia\Response
 ```
 
 
@@ -31,6 +31,11 @@ public index(): mixed
 
 
 
+
+
+**Throws:**
+
+- [`AuthorizationException`](../../../../Illuminate/Auth/Access/AuthorizationException.md)
 
 
 
@@ -41,7 +46,7 @@ public index(): mixed
 
 
 ```php
-public stats(): mixed
+public stats(): \Inertia\Response
 ```
 
 
@@ -52,6 +57,11 @@ public stats(): mixed
 
 
 
+
+
+**Throws:**
+
+- [`AuthorizationException`](../../../../Illuminate/Auth/Access/AuthorizationException.md)
 
 
 

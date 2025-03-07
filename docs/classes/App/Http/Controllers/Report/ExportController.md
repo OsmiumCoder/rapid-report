@@ -20,7 +20,7 @@
 
 
 ```php
-public exportXLSX(\App\Data\ExportData $exportData): mixed
+public exportXLSX(\App\Data\ExportData $exportData): \Symfony\Component\HttpFoundation\BinaryFileResponse
 ```
 
 
@@ -37,6 +37,15 @@ public exportXLSX(\App\Data\ExportData $exportData): mixed
 | `$exportData` | **\App\Data\ExportData** |  |
 
 
+
+
+**Throws:**
+
+- [`AuthorizationException`](../../../../Illuminate/Auth/Access/AuthorizationException.md)
+
+- [`Exception`](../../../../PhpOffice/PhpSpreadsheet/Exception.md)
+
+- [`Exception`](../../../../PhpOffice/PhpSpreadsheet/Writer/Exception.md)
 
 
 
@@ -47,7 +56,7 @@ public exportXLSX(\App\Data\ExportData $exportData): mixed
 
 
 ```php
-public exportCSV(\App\Data\ExportData $exportData): mixed
+public exportCSV(\App\Data\ExportData $exportData): \Symfony\Component\HttpFoundation\BinaryFileResponse
 ```
 
 
@@ -64,6 +73,15 @@ public exportCSV(\App\Data\ExportData $exportData): mixed
 | `$exportData` | **\App\Data\ExportData** |  |
 
 
+
+
+**Throws:**
+
+- [`AuthorizationException`](../../../../Illuminate/Auth/Access/AuthorizationException.md)
+
+- [`Exception`](../../../../PhpOffice/PhpSpreadsheet/Exception.md)
+
+- [`Exception`](../../../../PhpOffice/PhpSpreadsheet/Writer/Exception.md)
 
 
 

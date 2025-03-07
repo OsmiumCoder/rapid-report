@@ -26,36 +26,36 @@ use Spatie\EventSourcing\AggregateRoots\AggregateRoot;
 
 /**
  * Any
- * @author
- * @copyright
+ * author
+ * copyright
  * deprecated
- * @example
+ * example
  * final
- * @ignore
+ * ignore
  * internal
- * @link
- * @see
- * @since
- * @source
- * @todo
- * @uses
- * @version
+ * link
+ * see
+ * since
+ * source
+ * todo
+ * uses
+ * version
  *
  * Class
- * @category
- * @licence
- * @method
- * @package
- * @property
- * @property-read
- * @property-write
- * @subpackage
+ * category
+ * licence
+ * method
+ * package
+ * property
+ * property-read
+ * property-write
+ * subpackage
  *
  * Methods
- * @api
- * @param
- * @return
- * @throw
+ * api
+ * param
+ * return
+ * throw
  */
 class IncidentAggregateRoot extends AggregateRoot
 {

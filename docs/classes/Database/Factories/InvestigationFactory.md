@@ -20,7 +20,7 @@
 
 
 ```php
-public definition(): mixed
+public definition(): array
 ```
 
 

@@ -20,7 +20,7 @@
 Update the specified User Role in storage.
 
 ```php
-public update(\Illuminate\Http\Request $request, \App\Models\User $user): mixed
+public update(\Illuminate\Http\Request $request, \App\Models\User $user): \Illuminate\Http\RedirectResponse
 ```
 
 
@@ -38,6 +38,11 @@ public update(\Illuminate\Http\Request $request, \App\Models\User $user): mixed
 | `$user` | **\App\Models\User** |  |
 
 
+
+
+**Throws:**
+
+- [`AuthorizationException`](../../../../Illuminate/Auth/Access/AuthorizationException.md)
 
 
 

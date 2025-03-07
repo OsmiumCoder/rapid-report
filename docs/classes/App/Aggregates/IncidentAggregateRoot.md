@@ -2,9 +2,37 @@
 
 # IncidentAggregateRoot
 
+Any
+author
+copyright
+deprecated
+example
+final
+ignore
+internal
+link
+see
+since
+source
+todo
+uses
+version
 
+Class
+category
+licence
+method
+package
+property
+property-read
+property-write
+subpackage
 
-
+Methods
+api
+param
+return
+throw
 
 * Full name: `\App\Aggregates\IncidentAggregateRoot`
 * Parent class: [`AggregateRoot`](../../Spatie/EventSourcing/AggregateRoots/AggregateRoot.md)
@@ -20,7 +48,7 @@
 
 
 ```php
-public createIncident(\App\Data\IncidentData $incidentData): mixed
+public createIncident(\App\Data\IncidentData $incidentData): static
 ```
 
 
@@ -47,7 +75,7 @@ public createIncident(\App\Data\IncidentData $incidentData): mixed
 
 
 ```php
-public assignSupervisor(int $supervisorId): mixed
+public assignSupervisor(int $supervisorId): static
 ```
 
 
@@ -79,7 +107,7 @@ public assignSupervisor(int $supervisorId): mixed
 
 
 ```php
-public unassignSupervisor(): mixed
+public unassignSupervisor(): static
 ```
 
 
@@ -100,7 +128,7 @@ public unassignSupervisor(): mixed
 
 
 ```php
-public requestReview(): mixed
+public requestReview(): static
 ```
 
 
@@ -121,7 +149,7 @@ public requestReview(): mixed
 
 
 ```php
-public returnInvestigation(): mixed
+public returnInvestigation(): static
 ```
 
 
@@ -142,7 +170,7 @@ public returnInvestigation(): mixed
 
 
 ```php
-public returnRCA(): mixed
+public returnRCA(): static
 ```
 
 
@@ -163,7 +191,7 @@ public returnRCA(): mixed
 
 
 ```php
-public closeIncident(): mixed
+public closeIncident(): static
 ```
 
 
@@ -184,7 +212,7 @@ public closeIncident(): mixed
 
 
 ```php
-public reopenIncident(): mixed
+public reopenIncident(): static
 ```
 
 
@@ -205,7 +233,7 @@ public reopenIncident(): mixed
 
 
 ```php
-public addComment(\App\Data\CommentData $commentData): mixed
+public addComment(\App\Data\CommentData $commentData): static
 ```
 
 
@@ -232,7 +260,7 @@ public addComment(\App\Data\CommentData $commentData): mixed
 
 
 ```php
-public addAdditionalInformation(string $additionalInformation): mixed
+public addAdditionalInformation(string $additionalInformation): static
 ```
 
 
@@ -259,7 +287,7 @@ public addAdditionalInformation(string $additionalInformation): mixed
 
 
 ```php
-public uploadFiles(array $files): mixed
+public uploadFiles(array $files): static
 ```
 
 

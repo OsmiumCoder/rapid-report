@@ -20,7 +20,7 @@
 Show the form for creating a new resource.
 
 ```php
-public create(\App\Models\Incident $incident): mixed
+public create(\App\Models\Incident $incident): \Inertia\Response
 ```
 
 
@@ -39,6 +39,11 @@ public create(\App\Models\Incident $incident): mixed
 
 
 
+**Throws:**
+
+- [`AuthorizationException`](../../../../Illuminate/Auth/Access/AuthorizationException.md)
+
+
 
 ***
 
@@ -47,7 +52,7 @@ public create(\App\Models\Incident $incident): mixed
 Store a newly created resource in storage.
 
 ```php
-public store(\App\Models\Incident $incident, \App\Data\RootCauseAnalysisData $rcaData): mixed
+public store(\App\Models\Incident $incident, \App\Data\RootCauseAnalysisData $rcaData): \Illuminate\Http\RedirectResponse
 ```
 
 
@@ -67,6 +72,11 @@ public store(\App\Models\Incident $incident, \App\Data\RootCauseAnalysisData $rc
 
 
 
+**Throws:**
+
+- [`AuthorizationException`](../../../../Illuminate/Auth/Access/AuthorizationException.md)
+
+
 
 ***
 
@@ -75,7 +85,7 @@ public store(\App\Models\Incident $incident, \App\Data\RootCauseAnalysisData $rc
 Display the specified resource.
 
 ```php
-public show(\App\Models\Incident $incident, \App\Models\RootCauseAnalysis $rootCauseAnalysis): mixed
+public show(\App\Models\Incident $incident, \App\Models\RootCauseAnalysis $rootCauseAnalysis): \Inertia\Response
 ```
 
 
@@ -95,86 +105,9 @@ public show(\App\Models\Incident $incident, \App\Models\RootCauseAnalysis $rootC
 
 
 
+**Throws:**
 
-***
-
-### edit
-
-Show the form for editing the specified resource.
-
-```php
-public edit(\App\Models\RootCauseAnalysis $rootCauseAnalysis): mixed
-```
-
-
-
-
-
-
-
-
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$rootCauseAnalysis` | **\App\Models\RootCauseAnalysis** |  |
-
-
-
-
-
-***
-
-### update
-
-Update the specified resource in storage.
-
-```php
-public update(\Illuminate\Http\Request $request, \App\Models\RootCauseAnalysis $rootCauseAnalysis): mixed
-```
-
-
-
-
-
-
-
-
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$request` | **\Illuminate\Http\Request** |  |
-| `$rootCauseAnalysis` | **\App\Models\RootCauseAnalysis** |  |
-
-
-
-
-
-***
-
-### destroy
-
-Remove the specified resource from storage.
-
-```php
-public destroy(\App\Models\RootCauseAnalysis $rootCauseAnalysis): mixed
-```
-
-
-
-
-
-
-
-
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$rootCauseAnalysis` | **\App\Models\RootCauseAnalysis** |  |
-
-
+- [`AuthorizationException`](../../../../Illuminate/Auth/Access/AuthorizationException.md)
 
 
 

@@ -20,7 +20,7 @@
 
 
 ```php
-public __invoke(\App\Models\Incident $incident, \App\Data\CommentData $commentData): mixed
+public __invoke(\App\Models\Incident $incident, \App\Data\CommentData $commentData): \Illuminate\Http\RedirectResponse
 ```
 
 
@@ -38,6 +38,11 @@ public __invoke(\App\Models\Incident $incident, \App\Data\CommentData $commentDa
 | `$commentData` | **\App\Data\CommentData** |  |
 
 
+
+
+**Throws:**
+
+- [`AuthorizationException`](../../../../Illuminate/Auth/Access/AuthorizationException.md)
 
 
 

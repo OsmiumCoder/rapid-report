@@ -20,7 +20,7 @@
 
 
 ```php
-public markAllRead(\Illuminate\Http\Request $request): mixed
+public markAllRead(): \Illuminate\Http\RedirectResponse
 ```
 
 
@@ -29,12 +29,6 @@ public markAllRead(\Illuminate\Http\Request $request): mixed
 
 
 
-
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$request` | **\Illuminate\Http\Request** |  |
 
 
 
@@ -47,7 +41,7 @@ public markAllRead(\Illuminate\Http\Request $request): mixed
 
 
 ```php
-public destroyAll(\Illuminate\Http\Request $request): mixed
+public destroyAll(): \Illuminate\Http\RedirectResponse
 ```
 
 
@@ -56,12 +50,6 @@ public destroyAll(\Illuminate\Http\Request $request): mixed
 
 
 
-
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$request` | **\Illuminate\Http\Request** |  |
 
 
 
@@ -74,7 +62,7 @@ public destroyAll(\Illuminate\Http\Request $request): mixed
 
 
 ```php
-public destroy(string $notification): mixed
+public destroy(string $notification): \Illuminate\Http\RedirectResponse
 ```
 
 

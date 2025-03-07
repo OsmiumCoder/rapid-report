@@ -20,7 +20,7 @@
 Show the form for creating a new investigation.
 
 ```php
-public create(\App\Models\Incident $incident): mixed
+public create(\App\Models\Incident $incident): \Inertia\Response
 ```
 
 
@@ -39,6 +39,11 @@ public create(\App\Models\Incident $incident): mixed
 
 
 
+**Throws:**
+
+- [`AuthorizationException`](../../../../Illuminate/Auth/Access/AuthorizationException.md)
+
+
 
 ***
 
@@ -47,7 +52,7 @@ public create(\App\Models\Incident $incident): mixed
 Store a newly created investigation in storage.
 
 ```php
-public store(\App\Models\Incident $incident, \App\Data\InvestigationData $investigationData): mixed
+public store(\App\Models\Incident $incident, \App\Data\InvestigationData $investigationData): \Illuminate\Http\RedirectResponse
 ```
 
 
@@ -67,6 +72,11 @@ public store(\App\Models\Incident $incident, \App\Data\InvestigationData $invest
 
 
 
+**Throws:**
+
+- [`AuthorizationException`](../../../../Illuminate/Auth/Access/AuthorizationException.md)
+
+
 
 ***
 
@@ -75,7 +85,7 @@ public store(\App\Models\Incident $incident, \App\Data\InvestigationData $invest
 Display the specified investigation.
 
 ```php
-public show(\App\Models\Incident $incident, \App\Models\Investigation $investigation): mixed
+public show(\App\Models\Incident $incident, \App\Models\Investigation $investigation): \Inertia\Response
 ```
 
 
@@ -95,86 +105,9 @@ public show(\App\Models\Incident $incident, \App\Models\Investigation $investiga
 
 
 
+**Throws:**
 
-***
-
-### edit
-
-Show the form for editing the specified investigation.
-
-```php
-public edit(\App\Models\Investigation $investigation): mixed
-```
-
-
-
-
-
-
-
-
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$investigation` | **\App\Models\Investigation** |  |
-
-
-
-
-
-***
-
-### update
-
-Update the specified investigation in storage.
-
-```php
-public update(\Illuminate\Http\Request $request, \App\Models\Investigation $investigation): mixed
-```
-
-
-
-
-
-
-
-
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$request` | **\Illuminate\Http\Request** |  |
-| `$investigation` | **\App\Models\Investigation** |  |
-
-
-
-
-
-***
-
-### destroy
-
-Remove the specified investigation from storage.
-
-```php
-public destroy(\App\Models\Investigation $investigation): mixed
-```
-
-
-
-
-
-
-
-
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$investigation` | **\App\Models\Investigation** |  |
-
-
+- [`AuthorizationException`](../../../../Illuminate/Auth/Access/AuthorizationException.md)
 
 
 

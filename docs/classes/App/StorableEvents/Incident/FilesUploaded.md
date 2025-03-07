@@ -38,7 +38,7 @@ private ?\App\Models\Incident $incident
 
 
 ```php
-public incident(): mixed
+public incident(): \App\Models\Incident
 ```
 
 
@@ -83,7 +83,8 @@ Called by the reactor.
 public react(): void
 ```
 
-Will not be replayed on event replays.
+In the event of an event replay code executed
+within this method will not be replayed.
 
 
 
@@ -129,7 +130,8 @@ Called by the reactor.
 public react(): void
 ```
 
-Will not be replayed on event replays.
+In the event of an event replay code executed
+within this method will not be replayed.
 
 
 

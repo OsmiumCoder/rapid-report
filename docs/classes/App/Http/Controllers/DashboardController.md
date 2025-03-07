@@ -20,7 +20,7 @@
 
 
 ```php
-public dashboard(): mixed
+public dashboard(): \Inertia\Response
 ```
 
 
@@ -41,7 +41,7 @@ public dashboard(): mixed
 
 
 ```php
-public adminOverview(): mixed
+public adminOverview(): \Inertia\Response
 ```
 
 
@@ -52,6 +52,11 @@ public adminOverview(): mixed
 
 
 
+
+
+**Throws:**
+
+- [`AuthorizationException`](../../../Illuminate/Auth/Access/AuthorizationException.md)
 
 
 
@@ -62,7 +67,7 @@ public adminOverview(): mixed
 
 
 ```php
-public supervisorOverview(): mixed
+public supervisorOverview(): \Inertia\Response
 ```
 
 
@@ -75,6 +80,11 @@ public supervisorOverview(): mixed
 
 
 
+**Throws:**
+
+- [`AuthorizationException`](../../../Illuminate/Auth/Access/AuthorizationException.md)
+
+
 
 ***
 
@@ -83,7 +93,7 @@ public supervisorOverview(): mixed
 
 
 ```php
-public userManagement(\Illuminate\Http\Request $request): mixed
+public userManagement(\Illuminate\Http\Request $request): \Inertia\Response
 ```
 
 
@@ -100,6 +110,11 @@ public userManagement(\Illuminate\Http\Request $request): mixed
 | `$request` | **\Illuminate\Http\Request** |  |
 
 
+
+
+**Throws:**
+
+- [`AuthorizationException`](../../../Illuminate/Auth/Access/AuthorizationException.md)
 
 
 

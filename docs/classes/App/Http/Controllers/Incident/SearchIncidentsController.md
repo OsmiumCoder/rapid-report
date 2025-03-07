@@ -20,7 +20,7 @@
 Handle the incoming request.
 
 ```php
-public __invoke(\Illuminate\Http\Request $request): mixed
+public __invoke(\Illuminate\Http\Request $request): \Illuminate\Http\JsonResponse
 ```
 
 
@@ -37,6 +37,11 @@ public __invoke(\Illuminate\Http\Request $request): mixed
 | `$request` | **\Illuminate\Http\Request** |  |
 
 
+
+
+**Throws:**
+
+- [`AuthorizationException`](../../../../Illuminate/Auth/Access/AuthorizationException.md)
 
 
 

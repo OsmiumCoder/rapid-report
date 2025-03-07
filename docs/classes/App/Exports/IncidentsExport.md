@@ -113,7 +113,7 @@ public map(\App\Models\Incident $row): array
 
 
 ```php
-public query(): mixed
+public query(): \Illuminate\Database\Eloquent\Builder
 ```
 
 

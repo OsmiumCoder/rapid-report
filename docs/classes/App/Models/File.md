@@ -20,7 +20,7 @@
 
 
 ```php
-public user(): mixed
+public user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
 ```
 
 
@@ -41,7 +41,7 @@ public user(): mixed
 
 
 ```php
-public fileable(): mixed
+public fileable(): \Illuminate\Database\Eloquent\Relations\MorphTo
 ```
 
 

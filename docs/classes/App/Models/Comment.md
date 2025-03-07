@@ -41,7 +41,7 @@ protected casts(): array
 
 
 ```php
-public commentable(): mixed
+public commentable(): \Illuminate\Database\Eloquent\Relations\MorphTo
 ```
 
 
@@ -62,7 +62,7 @@ public commentable(): mixed
 
 
 ```php
-public user(): mixed
+public user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
 ```
 
 

@@ -41,7 +41,7 @@ protected casts(): mixed
 
 
 ```php
-public incident(): mixed
+public incident(): \Illuminate\Database\Eloquent\Relations\BelongsTo
 ```
 
 
@@ -62,7 +62,7 @@ public incident(): mixed
 
 
 ```php
-public supervisor(): mixed
+public supervisor(): \Illuminate\Database\Eloquent\Relations\BelongsTo
 ```
 
 

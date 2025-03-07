@@ -22,7 +22,7 @@
 
 
 ```php
-public onStoredEvent(\App\StorableEvents\StoredEvent $event): mixed
+public onStoredEvent(\App\StorableEvents\StoredEvent $event): void
 ```
 
 

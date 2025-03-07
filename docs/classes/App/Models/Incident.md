@@ -20,7 +20,7 @@
 
 
 ```php
-protected static boot(): mixed
+protected static boot(): void
 ```
 
 
@@ -89,7 +89,7 @@ protected casts(): array
 
 
 ```php
-public toSearchableArray(): mixed
+public toSearchableArray(): array
 ```
 
 
@@ -110,7 +110,7 @@ public toSearchableArray(): mixed
 
 
 ```php
-public supervisor(): mixed
+public supervisor(): \Illuminate\Database\Eloquent\Relations\HasOne
 ```
 
 
@@ -131,7 +131,7 @@ public supervisor(): mixed
 
 
 ```php
-public comments(): mixed
+public comments(): \Illuminate\Database\Eloquent\Relations\MorphMany
 ```
 
 
@@ -152,7 +152,7 @@ public comments(): mixed
 
 
 ```php
-public files(): mixed
+public files(): \Illuminate\Database\Eloquent\Relations\MorphMany
 ```
 
 
@@ -173,7 +173,7 @@ public files(): mixed
 
 
 ```php
-public investigations(): mixed
+public investigations(): \Illuminate\Database\Eloquent\Relations\HasMany
 ```
 
 
@@ -194,7 +194,7 @@ public investigations(): mixed
 
 
 ```php
-public rootCauseAnalyses(): mixed
+public rootCauseAnalyses(): \Illuminate\Database\Eloquent\Relations\HasMany
 ```
 
 
@@ -215,7 +215,7 @@ public rootCauseAnalyses(): mixed
 
 
 ```php
-public scopeFilter(mixed $query, ?array $filters): mixed
+public scopeFilter(mixed $query, ?array $filters): void
 ```
 
 

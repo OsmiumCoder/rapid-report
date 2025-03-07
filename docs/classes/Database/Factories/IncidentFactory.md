@@ -17,10 +17,10 @@
 
 ### definition
 
-Define the model's default state.
+
 
 ```php
-public definition(): array&lt;string,mixed&gt;
+public definition(): array
 ```
 
 

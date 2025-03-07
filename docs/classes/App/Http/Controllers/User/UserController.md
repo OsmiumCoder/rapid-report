@@ -20,7 +20,7 @@
 Store a newly created user in storage.
 
 ```php
-public store(\Illuminate\Http\Request $request): mixed
+public store(\Illuminate\Http\Request $request): \Illuminate\Http\RedirectResponse
 ```
 
 
@@ -39,6 +39,11 @@ public store(\Illuminate\Http\Request $request): mixed
 
 
 
+**Throws:**
+
+- [`AuthorizationException`](../../../../Illuminate/Auth/Access/AuthorizationException.md)
+
+
 
 ***
 
@@ -47,7 +52,7 @@ public store(\Illuminate\Http\Request $request): mixed
 Remove the specified user from storage.
 
 ```php
-public destroy(\App\Models\User $user): mixed
+public destroy(\App\Models\User $user): \Illuminate\Http\RedirectResponse
 ```
 
 
@@ -64,6 +69,11 @@ public destroy(\App\Models\User $user): mixed
 | `$user` | **\App\Models\User** |  |
 
 
+
+
+**Throws:**
+
+- [`AuthorizationException`](../../../../Illuminate/Auth/Access/AuthorizationException.md)
 
 
 

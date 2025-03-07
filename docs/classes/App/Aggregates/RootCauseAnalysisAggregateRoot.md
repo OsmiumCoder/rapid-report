@@ -20,7 +20,7 @@
 
 
 ```php
-public createRootCauseAnalysis(\App\Data\RootCauseAnalysisData $investigationData, \App\Models\Incident $incident): mixed
+public createRootCauseAnalysis(\App\Data\RootCauseAnalysisData $investigationData, \App\Models\Incident $incident): static
 ```
 
 

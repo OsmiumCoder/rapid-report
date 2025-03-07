@@ -20,7 +20,7 @@
 
 
 ```php
-public upload(\Illuminate\Http\Request $request, \App\Models\Incident $incident): mixed
+public upload(\Illuminate\Http\Request $request, \App\Models\Incident $incident): \Illuminate\Http\RedirectResponse
 ```
 
 
@@ -40,6 +40,11 @@ public upload(\Illuminate\Http\Request $request, \App\Models\Incident $incident)
 
 
 
+**Throws:**
+
+- [`AuthorizationException`](../../../../Illuminate/Auth/Access/AuthorizationException.md)
+
+
 
 ***
 
@@ -48,7 +53,7 @@ public upload(\Illuminate\Http\Request $request, \App\Models\Incident $incident)
 
 
 ```php
-public download(\App\Models\Incident $incident, \App\Models\File $file): mixed
+public download(\App\Models\Incident $incident, \App\Models\File $file): \Symfony\Component\HttpFoundation\StreamedResponse
 ```
 
 

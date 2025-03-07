@@ -20,7 +20,7 @@
 
 
 ```php
-public static boot(): mixed
+public static boot(): void
 ```
 
 

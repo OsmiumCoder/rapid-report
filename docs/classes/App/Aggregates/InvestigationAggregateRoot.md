@@ -20,7 +20,7 @@
 
 
 ```php
-public createInvestigation(\App\Data\InvestigationData $investigationData, \App\Models\Incident $incident): mixed
+public createInvestigation(\App\Data\InvestigationData $investigationData, \App\Models\Incident $incident): static
 ```
 
 
