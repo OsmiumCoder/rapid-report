@@ -16,10 +16,10 @@ jobs:
       mysql:
         image: mysql:8
         env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: testing
-          MYSQL_USER: user
-          MYSQL_PASSWORD: password
+          MYSQL_ROOT_PASSWORD: ${{secrets.TEST_DB_ROOT_PASSWORD}}
+          MYSQL_DATABASE: ${{secrets.TEST_DB_DATABASE}}
+          MYSQL_USER: ${{secrets.TEST_DB_USER}}
+          MYSQL_PASSWORD: ${{secrets.TEST_DB_PASSWORD}}
         ports:
           - 3306:3306
         options: >-
@@ -62,8 +62,8 @@ jobs:
       - name: Tests
         env:
           DB_HOST: 127.0.0.1
-          DB_DATABASE: testing
-          DB_USERNAME: user
-          DB_PASSWORD: password
+          DB_DATABASE: ${{secrets.TEST_DB_DATABASE}}
+          DB_USERNAME: ${{secrets.TEST_DB_USER}}
+          DB_PASSWORD: ${{secrets.TEST_DB_PASSWORD}}
 
         run: ./vendor/bin/phpunit
