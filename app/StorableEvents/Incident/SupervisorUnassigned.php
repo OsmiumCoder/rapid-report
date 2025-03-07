@@ -7,10 +7,14 @@ use App\Models\Comment;
 use App\Models\Incident;
 use App\States\IncidentStatus\Opened;
 use App\StorableEvents\StoredEvent;
+use Spatie\ModelStates\Exceptions\CouldNotPerformTransition;
 
 class SupervisorUnassigned extends StoredEvent
 {
-    public function handle()
+    /**
+     * @throws CouldNotPerformTransition
+     */
+    public function handle(): void
     {
         $incident = Incident::find($this->aggregateRootUuid());
         $incident->supervisor_id = null;

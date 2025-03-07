@@ -7,17 +7,20 @@ use App\Data\IncidentData;
 use App\Http\Controllers\Controller;
 use App\Models\Incident;
 use App\Models\User;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
+use Inertia\Response;
 use Spatie\Permission\Models\Role;
 
 class IncidentController extends Controller
 {
     /**
      * Display a listing of the Incident.
+     * @throws AuthorizationException
      */
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
         $this->authorize('viewAny', Incident::class);
 
@@ -43,7 +46,7 @@ class IncidentController extends Controller
     /**
      * Show the form for creating a new Incident.
      */
-    public function create()
+    public function create(): Response
     {
         return Inertia::render('Incident/Create', [
             'form' => IncidentData::empty(),
@@ -53,7 +56,7 @@ class IncidentController extends Controller
     /**
      * Store a newly created Incident in storage.
      */
-    public function store(IncidentData $incidentData)
+    public function store(IncidentData $incidentData): Response
     {
         $uuid = Str::uuid()->toString();
 
@@ -69,8 +72,9 @@ class IncidentController extends Controller
 
     /**
      * Display the specified Incident.
+     * @throws AuthorizationException
      */
-    public function show(Incident $incident)
+    public function show(Incident $incident): Response
     {
         $this->authorize('view', $incident);
 

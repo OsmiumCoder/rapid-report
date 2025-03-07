@@ -9,7 +9,7 @@ use Spatie\EventSourcing\AggregateRoots\AggregateRoot;
 
 class InvestigationAggregateRoot extends AggregateRoot
 {
-    public function createInvestigation(InvestigationData $investigationData, Incident $incident)
+    public function createInvestigation(InvestigationData $investigationData, Incident $incident): static
     {
         $this->recordThat(new InvestigationCreated(
             incident_id: $incident->id,

@@ -12,21 +12,19 @@ abstract class StoredEvent extends ShouldBeStored
 {
     /**
      * Called by the projector.
-     *
-     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
 
     }
 
     /**
      * Called by the reactor.
-     * Will not be replayed on event replays.
      *
-     * @return void
+     * In the event of an event replay code executed
+     * within this method will not be replayed.
      */
-    public function react()
+    public function react(): void
     {
 
     }

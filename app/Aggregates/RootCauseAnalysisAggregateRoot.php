@@ -9,7 +9,7 @@ use Spatie\EventSourcing\AggregateRoots\AggregateRoot;
 
 class RootCauseAnalysisAggregateRoot extends AggregateRoot
 {
-    public function createRootCauseAnalysis(RootCauseAnalysisData $investigationData, Incident $incident)
+    public function createRootCauseAnalysis(RootCauseAnalysisData $investigationData, Incident $incident): static
     {
         $this->recordThat(new RootCauseAnalysisCreated(
             incident_id: $incident->id,

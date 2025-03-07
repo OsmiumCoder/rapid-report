@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\StorableEvents\User\UserCreated;
 use App\StorableEvents\User\UserDeleted;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
@@ -16,8 +18,9 @@ class UserController extends Controller
 {
     /**
      * Store a newly created user in storage.
+     * @throws AuthorizationException
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $this->authorize('create', User::class);
 
@@ -48,8 +51,9 @@ class UserController extends Controller
 
     /**
      * Remove the specified user from storage.
+     * @throws AuthorizationException
      */
-    public function destroy(User $user)
+    public function destroy(User $user): RedirectResponse
     {
         $this->authorize('delete', $user);
 

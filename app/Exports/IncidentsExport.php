@@ -6,6 +6,7 @@ use App\Data\ExportData;
 use App\Enum\IncidentType;
 use App\Enum\RoleType;
 use App\Models\Incident;
+use Illuminate\Database\Eloquent\Builder;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -51,7 +52,7 @@ class IncidentsExport implements FromQuery, ShouldAutoSize, WithHeadings, WithMa
         return $rowItems;
     }
 
-    public function query()
+    public function query(): Builder
     {
         return Incident::query()
             ->whereBetween('created_at', [
