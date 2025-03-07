@@ -43,12 +43,16 @@ class DashboardController extends Controller
         $incidentCount = Incident::count();
         $closedCount = Incident::whereState('status', Closed::class)->count();
         $unresolvedCount = $incidentCount - $closedCount;
+        $averageDaysOpen = Incident::whereNotNull('closed_at')
+            ->selectRaw('ROUND(AVG(DATEDIFF(closed_at, created_at)), 2) as average')
+            ->value('average');
 
         return Inertia::render('Dashboard/AdminOverview', [
             'incidents' => $incidents,
             'incidentCount' => $incidentCount,
             'closedCount' => $closedCount,
             'unresolvedCount' => $unresolvedCount,
+            'averageDaysOpen' => $averageDaysOpen,
         ]);
     }
 
