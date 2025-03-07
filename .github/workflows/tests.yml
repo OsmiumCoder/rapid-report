@@ -61,7 +61,7 @@ jobs:
 
       - name: Tests
         env:
-          DB_CONNECTION: 127.0.0.1
+          DB_HOST: 127.0.0.1
           DB_DATABASE: testing
           DB_USERNAME: user
           DB_PASSWORD: password
