@@ -6,7 +6,7 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextArea from '@/Components/TextArea';
 import Authenticated from '@/Layouts/AuthenticatedLayout';
 import { NotificationMessage } from '@/types/notification/NotificationMessage';
-import { router, useForm } from '@inertiajs/react';
+import { Head, router, useForm } from '@inertiajs/react';
 import { useState } from 'react';
 
 export default function Settings({ incidentReceivedMessage }: { incidentReceivedMessage: NotificationMessage }) {
@@ -35,6 +35,7 @@ export default function Settings({ incidentReceivedMessage }: { incidentReceived
 
     return (
         <Authenticated>
+            <Head title="Settings" />
             <div className="px-4 sm:px-6 lg:px-8">
                 <div className="pb-2 text-lg font-semibold text-gray-800">Settings</div>
                 <div className="rounded-md bg-white p-6 shadow-xs ring-1 ring-gray-900/5 sm:rounded-lg">
