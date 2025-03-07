@@ -63,4 +63,9 @@ jobs:
         run: php artisan key:generate
 
       - name: Tests
+        env:
+          DB_DATABASE: testing
+          DB_USERNAME: user
+          DB_PASSWORD: password
+
         run: ./vendor/bin/phpunit
