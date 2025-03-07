@@ -8,7 +8,7 @@ use Spatie\EventSourcing\EventHandlers\Reactors\Reactor;
 
 class StoredEventReactor extends Reactor implements ShouldQueue
 {
-    public function onStoredEvent(StoredEvent $event)
+    public function onStoredEvent(StoredEvent $event): void
     {
         $event->react();
     }

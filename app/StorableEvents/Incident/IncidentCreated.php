@@ -42,7 +42,7 @@ class IncidentCreated extends StoredEvent
     ) {
     }
 
-    public function handle()
+    public function handle(): void
     {
         $incident = new Incident;
 
@@ -85,7 +85,7 @@ class IncidentCreated extends StoredEvent
         $comment->save();
     }
 
-    public function react()
+    public function react(): void
     {
         if ($this->reporters_email) {
             Mail::to($this->reporters_email)->send(new IncidentReceived($this->aggregateRootUuid()));

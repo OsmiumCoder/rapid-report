@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class InvestigationFactory extends Factory
 {
-    public function definition()
+    public function definition(): array
     {
         return [
             'supervisor_id' => User::factory(),

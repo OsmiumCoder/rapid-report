@@ -7,7 +7,7 @@ use Spatie\EventSourcing\StoredEvents\Models\EloquentStoredEvent;
 
 class CustomStoredEvent extends EloquentStoredEvent
 {
-    public static function boot()
+    public static function boot(): void
     {
         parent::boot();
 

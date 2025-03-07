@@ -11,6 +11,7 @@ use App\Notifications\Incident\SupervisorAssignedNotification;
 use App\States\IncidentStatus\Assigned;
 use App\StorableEvents\StoredEvent;
 use Illuminate\Support\Facades\Notification;
+use Spatie\ModelStates\Exceptions\CouldNotPerformTransition;
 
 class SupervisorAssigned extends StoredEvent
 {
@@ -22,7 +23,7 @@ class SupervisorAssigned extends StoredEvent
     ) {
     }
 
-    public function incident()
+    public function incident(): Incident
     {
         if (!$this->incident) {
             $this->incident = Incident::find($this->aggregateRootUuid());
@@ -31,7 +32,7 @@ class SupervisorAssigned extends StoredEvent
         return $this->incident;
     }
 
-    public function supervisor()
+    public function supervisor(): User
     {
         if (!$this->supervisor) {
             $this->supervisor = User::find($this->supervisor_id);
@@ -40,7 +41,10 @@ class SupervisorAssigned extends StoredEvent
         return $this->supervisor;
     }
 
-    public function handle()
+    /**
+     * @throws CouldNotPerformTransition
+     */
+    public function handle(): void
     {
         $incident = $this->incident();
 
@@ -60,7 +64,7 @@ class SupervisorAssigned extends StoredEvent
         $comment->save();
     }
 
-    public function react()
+    public function react(): void
     {
         $admin = User::find($this->metaData['user_id']);
         $incident = $this->incident();

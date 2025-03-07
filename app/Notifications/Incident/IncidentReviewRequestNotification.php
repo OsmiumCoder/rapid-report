@@ -26,6 +26,9 @@ class IncidentReviewRequestNotification extends BaseNotification
     {
         return (new MailMessage)
             ->subject("Incident #$this->incidentSlug Follow Up Review Request")
-            ->markdown('mail.incident-review-request', ['url' => $this->url, 'message' => $this->message]);
+            ->markdown('mail.incident-review-request', [
+                'url' => $this->url,
+                'message' => $this->message
+            ]);
     }
 }

@@ -7,13 +7,16 @@ use App\Models\User;
 use App\States\IncidentStatus\Assigned;
 use App\States\IncidentStatus\Closed;
 use App\States\IncidentStatus\Returned;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Inertia\Inertia;
+use Inertia\Response;
 use Spatie\Permission\Models\Role;
 
 class DashboardController extends Controller
 {
-    public function dashboard()
+    public function dashboard(): Response
     {
         $user = auth()->user();
 
@@ -22,14 +25,17 @@ class DashboardController extends Controller
         $closedCount = Incident::whereState('status', Closed::class)->where('reporters_email', $user->email)->count();
         $unresolvedCount = $incidentCount - $closedCount;
 
-        return inertia('Dashboard/UserDashboard', [
+        return Inertia::render('Dashboard/UserDashboard', [
             'incidents' => $incidents,
             'incidentCount' => $incidentCount,
             'unresolvedCount' => $unresolvedCount,
         ]);
     }
 
-    public function adminOverview()
+    /**
+     * @throws AuthorizationException
+     */
+    public function adminOverview(): Response
     {
         Gate::authorize('view-admin-overview');
 
@@ -38,7 +44,7 @@ class DashboardController extends Controller
         $closedCount = Incident::whereState('status', Closed::class)->count();
         $unresolvedCount = $incidentCount - $closedCount;
 
-        return inertia('Dashboard/AdminOverview', [
+        return Inertia::render('Dashboard/AdminOverview', [
             'incidents' => $incidents,
             'incidentCount' => $incidentCount,
             'closedCount' => $closedCount,
@@ -46,7 +52,10 @@ class DashboardController extends Controller
         ]);
     }
 
-    public function supervisorOverview()
+    /**
+     * @throws AuthorizationException
+     */
+    public function supervisorOverview(): Response
     {
         Gate::authorize('view-supervisor-overview');
 
@@ -68,7 +77,7 @@ class DashboardController extends Controller
             ->where('supervisor_id', $user->id)
             ->count();
 
-        return inertia('Dashboard/SupervisorOverview', [
+        return Inertia::render('Dashboard/SupervisorOverview', [
             'unresolvedIncidents' => $unresolvedIncidents,
             'incidentCount' => $incidentCount,
             'closedCount' => $closedCount,
@@ -76,7 +85,10 @@ class DashboardController extends Controller
         ]);
     }
 
-    public function userManagement(Request $request)
+    /**
+     * @throws AuthorizationException
+     */
+    public function userManagement(Request $request): Response
     {
         Gate::authorize('view-user-management');
 
@@ -91,7 +103,7 @@ class DashboardController extends Controller
             ->paginate()
             ->appends($request->query());
 
-        return inertia('Dashboard/UserManagement', [
+        return Inertia::render('Dashboard/UserManagement', [
             'users' => $paginatedUsers,
             'roles' => Role::all()
         ]);

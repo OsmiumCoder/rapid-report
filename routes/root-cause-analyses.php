@@ -5,5 +5,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('incidents.root-cause-analyses', RootCauseAnalysisController::class)
-        ->except(['index']);
+        ->only([
+            'create',
+            'store',
+            'show'
+        ]);
 });

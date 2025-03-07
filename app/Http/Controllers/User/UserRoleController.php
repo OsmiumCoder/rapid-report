@@ -6,6 +6,8 @@ use App\Enum\RolesEnum;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\StorableEvents\User\UserRoleUpdated;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -13,8 +15,9 @@ class UserRoleController extends Controller
 {
     /**
      * Update the specified User Role in storage.
+     * @throws AuthorizationException
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, User $user): RedirectResponse
     {
         $this->authorize('updateRole', $user);
 

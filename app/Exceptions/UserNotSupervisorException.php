@@ -3,13 +3,14 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 
 class UserNotSupervisorException extends Exception
 {
-    public static function hasRoles(Collection $roles)
+    public static function hasRoles(Collection $roles): static
     {
         $message = 'The user given has roles: ' . $roles->implode(', ');
 
@@ -19,7 +20,7 @@ class UserNotSupervisorException extends Exception
     /**
      * Render the exception as an HTTP response.
      */
-    public function render(Request $request)
+    public function render(Request $request): RedirectResponse
     {
         return back()->with([]);
     }

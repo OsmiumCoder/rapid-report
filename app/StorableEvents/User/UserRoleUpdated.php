@@ -14,7 +14,7 @@ class UserRoleUpdated extends StoredEvent
     ) {
     }
 
-    public function handle()
+    public function handle(): void
     {
         $user = User::find($this->user_id);
 

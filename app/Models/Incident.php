@@ -7,6 +7,9 @@ use App\States\IncidentStatus\IncidentStatusState;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
 use Spatie\ModelStates\HasStates;
@@ -19,7 +22,7 @@ class Incident extends Model
     use SoftDeletes;
     use Searchable;
 
-    protected static function boot()
+    protected static function boot(): void
     {
         parent::boot();
 
@@ -59,7 +62,7 @@ class Incident extends Model
         ];
     }
 
-    public function toSearchableArray()
+    public function toSearchableArray(): array
     {
         $array = $this->toArray();
 
@@ -79,32 +82,32 @@ class Incident extends Model
         ]);
     }
 
-    public function supervisor()
+    public function supervisor(): HasOne
     {
         return $this->hasOne(User::class, 'id', 'supervisor_id');
     }
 
-    public function comments()
+    public function comments(): MorphMany
     {
         return $this->morphMany(Comment::class, 'commentable');
     }
 
-    public function files()
+    public function files(): MorphMany
     {
         return $this->morphMany(File::class, 'fileable');
     }
 
-    public function investigations()
+    public function investigations(): HasMany
     {
         return $this->hasMany(Investigation::class);
     }
 
-    public function rootCauseAnalyses()
+    public function rootCauseAnalyses(): HasMany
     {
         return $this->hasMany(RootCauseAnalysis::class);
     }
 
-    public function scopeFilter($query, ?array $filters)
+    public function scopeFilter($query, ?array $filters): void
     {
         if ($filters == null) {
             return;

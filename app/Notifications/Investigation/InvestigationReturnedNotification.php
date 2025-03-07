@@ -30,6 +30,9 @@ class InvestigationReturnedNotification extends BaseNotification
     {
         return (new MailMessage)
             ->subject("Investigation For Incident #$this->incidentSlug Returned")
-            ->markdown('mail.investigation-returned', ['url' => $this->url, 'message' => $this->message]);
+            ->markdown('mail.investigation-returned', [
+                'url' => $this->url,
+                'message' => $this->message
+            ]);
     }
 }

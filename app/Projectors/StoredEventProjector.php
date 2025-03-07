@@ -7,7 +7,7 @@ use Spatie\EventSourcing\EventHandlers\Projectors\Projector;
 
 class StoredEventProjector extends Projector
 {
-    public function onStoredEvent(StoredEvent $event)
+    public function onStoredEvent(StoredEvent $event): void
     {
         $event->handle();
     }

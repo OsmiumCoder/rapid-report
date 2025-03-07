@@ -48,6 +48,6 @@ class IncidentReopenedNotification extends BaseNotification
             ->markdown('mail.incident-reopened-notification', [
                 'url' => $this->url,
                 'message' => $this->message,
-                ]);
+            ]);
     }
 }
