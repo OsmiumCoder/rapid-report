@@ -7,14 +7,15 @@ import { useState } from 'react';
 
 import { useConfirmationModal } from '@/Components/ConfirmationModal/ConfirmationModalProvider';
 import DangerButton from '@/Components/DangerButton';
-import FileIcon from '@/Components/FileIcon';
-import dateFormat from '@/Formatters/dateFormat';
 import dateTimeFormat from '@/Formatters/dateTimeFormat';
 import { closeIncident, reopenIncident, returnInvestigation, returnRCA } from '@/Helpers/Incident/statusUpdates';
+import IncidentFiles from '@/Pages/Incident/Partials/ShowComponents/IncidentFiles';
 
 export default function StatusUpdate({ incident }: { incident: Incident }) {
     const [isLoading, setIsLoading] = useState(false);
+    const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
     const { setModalProps } = useConfirmationModal();
+
     return (
         <>
             <div className="mt-6 flex w-full flex-col gap-y-6 border-t border-gray-900/5 p-6">
@@ -22,22 +23,6 @@ export default function StatusUpdate({ incident }: { incident: Incident }) {
                     <LoadingIndicator />
                 ) : (
                     <>
-                        {incident.status === IncidentStatus.CLOSED && (
-                            <PrimaryButton
-                                className="col-span-2"
-                                onClick={() =>
-                                    setModalProps({
-                                        title: 'Reopen Incident',
-                                        text: 'Are you sure you want to reopen this incident?',
-                                        action: () => reopenIncident(incident, setIsLoading, () => router.reload({ only: ['incident'] })),
-                                        show: true,
-                                    })
-                                }
-                            >
-                                Reopen Incident
-                            </PrimaryButton>
-                        )}
-
                         {incident.investigations.length > 0 && (
                             <>
                                 <div className="font-semibold">
@@ -78,27 +63,25 @@ export default function StatusUpdate({ incident }: { incident: Incident }) {
                                 </div>
                             </>
                         )}
-                        {incident.files.length > 0 && (
-                            <div className="mt-6 flex w-full flex-col gap-y-6 px-6 pb-6">
-                                <div className="font-semibold">
-                                    Files
-                                    {incident.files.map((file) => (
-                                        <div key={file.url} className="font-normal">
-                                            <a
-                                                href={route('incidents.download-files', { incident: incident.id, file: file.id })}
-                                                target="_blank"
-                                                className="cursor-pointer text-sm text-blue-500 hover:text-blue-400"
-                                            >
-                                                <div className="mt-3 flex items-center">
-                                                    <FileIcon extension={file.extension} className="mr-6 size-6" />
-                                                    {file.user.name} - {dateFormat(file.created_at)} - {file.original_name}
-                                                </div>
-                                            </a>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
+
+                        <IncidentFiles incident={incident} />
+
+                        {incident.status === IncidentStatus.CLOSED && (
+                            <PrimaryButton
+                                className="col-span-2"
+                                onClick={() =>
+                                    setModalProps({
+                                        title: 'Reopen Incident',
+                                        text: 'Are you sure you want to reopen this incident?',
+                                        action: () => reopenIncident(incident, setIsLoading, () => router.reload({ only: ['incident'] })),
+                                        show: true,
+                                    })
+                                }
+                            >
+                                Reopen Incident
+                            </PrimaryButton>
                         )}
+
                         {incident.status === IncidentStatus.IN_REVIEW && incident.supervisor && (
                             <>
                                 <PrimaryButton
@@ -137,20 +120,24 @@ export default function StatusUpdate({ incident }: { incident: Incident }) {
                                 </PrimaryButton>
                             </>
                         )}
+
                         {incident.status !== IncidentStatus.CLOSED && (
-                            <DangerButton
-                                className="col-span-2"
-                                onClick={() =>
-                                    setModalProps({
-                                        title: 'Close Incident',
-                                        text: 'Are you sure you want to close this incident?',
-                                        action: () => closeIncident(incident, setIsLoading, () => router.reload({ only: ['incident'] })),
-                                        show: true,
-                                    })
-                                }
-                            >
-                                Close Incident
-                            </DangerButton>
+                            <>
+                                <PrimaryButton onClick={() => setIsUploadModalOpen(true)}>Upload Files</PrimaryButton>
+                                <DangerButton
+                                    className="col-span-2"
+                                    onClick={() =>
+                                        setModalProps({
+                                            title: 'Close Incident',
+                                            text: 'Are you sure you want to close this incident?',
+                                            action: () => closeIncident(incident, setIsLoading, () => router.reload({ only: ['incident'] })),
+                                            show: true,
+                                        })
+                                    }
+                                >
+                                    Close Incident
+                                </DangerButton>
+                            </>
                         )}
                     </>
                 )}
