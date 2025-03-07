@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enum\NotificationMessageType;
 use App\Models\NotificationMessage;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
@@ -14,7 +15,7 @@ class NotificationMessageSeeder extends Seeder
     public function run(): void
     {
         $incidentReceivedMessage = NotificationMessage::firstOrNew([
-            'name' => 'incident-received',
+            'name' => NotificationMessageType::INCIDENT_RECEIVED,
         ]);
 
         if (!$incidentReceivedMessage->exists) {
