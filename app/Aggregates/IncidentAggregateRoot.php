@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Storage;
 use Spatie\EventSourcing\AggregateRoots\AggregateRoot;
 
 /**
+ * All available tags:
  * Any
  * author
  * copyright
