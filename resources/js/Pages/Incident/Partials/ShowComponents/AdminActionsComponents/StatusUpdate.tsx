@@ -9,6 +9,7 @@ import { useConfirmationModal } from '@/Components/ConfirmationModal/Confirmatio
 import DangerButton from '@/Components/DangerButton';
 import dateTimeFormat from '@/Formatters/dateTimeFormat';
 import { closeIncident, reopenIncident, returnInvestigation, returnRCA } from '@/Helpers/Incident/statusUpdates';
+import FileUploadModal from '@/Pages/Incident/Partials/ShowComponents/FileUploadModal';
 import IncidentFiles from '@/Pages/Incident/Partials/ShowComponents/IncidentFiles';
 
 export default function StatusUpdate({ incident }: { incident: Incident }) {
@@ -18,6 +19,7 @@ export default function StatusUpdate({ incident }: { incident: Incident }) {
 
     return (
         <>
+            <FileUploadModal incident={incident} isOpen={isUploadModalOpen} onClose={() => setIsUploadModalOpen(false)} />
             <div className="mt-6 flex w-full flex-col gap-y-6 border-t border-gray-900/5 p-6">
                 {isLoading ? (
                     <LoadingIndicator />

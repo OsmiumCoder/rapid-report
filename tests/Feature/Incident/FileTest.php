@@ -235,9 +235,28 @@ class FileTest extends TestCase
         $this->assertInstanceOf(ValidationException::class, $response->exception);
     }
 
-    public function test_user_forbidden_to_upload_files()
+    public function test_user_can_upload_files_on_own_incident()
     {
-        $user = User::factory()->create()->syncRoles('user');
+        $user = User::factory()->create(['email' => 'a@b.com'])->syncRoles('user');
+        $this->actingAs($user);
+
+        $incident = Incident::factory()->create([
+            'reporters_email' => $user->email,
+        ]);
+
+        $files = [
+            UploadedFile::fake()->image('file.jpg')->size(100),
+            UploadedFile::fake()->create('file.pdf')->size(100),
+        ];
+
+        $response = $this->post(route('incidents.upload-files', $incident), ['files' => $files]);
+
+        $response->assertRedirect();
+    }
+
+    public function test_user_forbidden_to_upload_files_on_unowned_incident()
+    {
+        $user = User::factory()->create(['email' => 'a@b.com'])->syncRoles('user');
         $this->actingAs($user);
 
         $incident = Incident::factory()->create();
@@ -252,7 +271,7 @@ class FileTest extends TestCase
         $response->assertForbidden();
     }
 
-    public function test_admin_forbidden_to_upload_files()
+    public function test_admin_can_upload_files()
     {
         $admin = User::factory()->create()->syncRoles('admin');
         $this->actingAs($admin);
@@ -266,6 +285,6 @@ class FileTest extends TestCase
 
         $response = $this->post(route('incidents.upload-files', $incident), ['files' => $files]);
 
-        $response->assertForbidden();
+        $response->assertRedirect();
     }
 }

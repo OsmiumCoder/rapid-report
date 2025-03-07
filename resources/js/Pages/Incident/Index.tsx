@@ -59,7 +59,7 @@ const pageDescriptions: {
 };
 
 type SortDirection = 'asc' | 'desc';
-type SortBy = 'name' | 'descriptor' | 'location' | 'created_at' | 'status';
+type SortBy = 'name' | 'descriptor' | 'location' | 'created_at' | 'status' | 'slug';
 
 const initialFilters = {
     incident_type: descriptors.map(({ name, value }) => ({
@@ -214,6 +214,35 @@ export default function Index({ incidents, indexType, currentFilters, currentSor
                                 <table className="min-w-full divide-y divide-gray-300">
                                     <thead>
                                         <tr>
+                                            <th
+                                                scope="col"
+                                                className="hidden px-6 py-3.5 text-left text-sm font-semibold text-gray-900 md:table-cell"
+                                            >
+                                                <div
+                                                    onClick={() => handleSortCycle('slug')}
+                                                    className="flex items-center select-none hover:cursor-pointer"
+                                                >
+                                                    ID
+                                                    <div className="ml-2 rounded-sm text-gray-400 group-hover:visible group-focus:visible">
+                                                        <ChevronUpIcon
+                                                            aria-hidden="true"
+                                                            onClick={(e) => handleSort(e as unknown as MouseEvent, 'slug', 'asc')}
+                                                            className={classNames(
+                                                                'size-5 pt-1',
+                                                                sortedDirection === 'asc' && sortedBy === 'slug' ? 'text-gray-900' : 'text-gray-400',
+                                                            )}
+                                                        />
+                                                        <ChevronDownIcon
+                                                            aria-hidden="true"
+                                                            onClick={(e) => handleSort(e as unknown as MouseEvent, 'slug', 'desc')}
+                                                            className={classNames(
+                                                                'size-5 pb-1',
+                                                                sortedDirection === 'desc' && sortedBy === 'slug' ? 'text-gray-900' : 'text-gray-400',
+                                                            )}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </th>
                                             <th
                                                 scope="col"
                                                 className="hidden px-6 py-3.5 text-left text-sm font-semibold text-gray-900 md:table-cell"
@@ -391,6 +420,7 @@ export default function Index({ incidents, indexType, currentFilters, currentSor
                                                 })}
                                                 key={incident.slug}
                                             >
+                                                <td className="hidden px-6 py-4 text-sm text-gray-500 md:table-cell">{incident.slug}</td>
                                                 <td className="hidden px-6 py-4 text-sm text-gray-500 md:table-cell">
                                                     {new Date(incident.created_at).toLocaleDateString()}
                                                 </td>

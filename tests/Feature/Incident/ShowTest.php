@@ -18,7 +18,64 @@ use Tests\TestCase;
 
 class ShowTest extends TestCase
 {
-    public function test_show_page_loads_user_on_files()
+    public function test_show_page_loads_user_on_files_for_user()
+    {
+        $user = User::factory(['email' => 'a@b.com'])->create()->syncRoles('user');
+        $this->actingAs($user);
+
+        $incident = Incident::factory()->create([
+            'reporters_email' => $user->email
+        ]);
+        $file = File::factory()
+            ->for($incident, 'fileable')
+            ->create([
+                'user_id' => $user->id,
+            ]);
+
+
+        $response = $this->get(route('incidents.show', ['incident' => $incident->id]));
+
+        $response->assertStatus(200);
+
+        $response->assertInertia(function ($page) use ($file, $user) {
+            $page->component('Incident/Show')
+                ->has('incident.files')
+                ->count('incident.files', 1)
+                ->where('incident.files.0.id', $file->id)
+                ->where('incident.files.0.user_id', $user->id)
+            ;
+        });
+    }
+    public function test_show_page_loads_user_on_files_for_supervisor()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+        $this->actingAs($supervisor);
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+        ]);
+
+        $file = File::factory()
+            ->for($incident, 'fileable')
+            ->create([
+                'user_id' => $supervisor->id,
+            ]);
+
+
+        $response = $this->get(route('incidents.show', ['incident' => $incident->id]));
+
+        $response->assertStatus(200);
+
+        $response->assertInertia(function ($page) use ($file, $supervisor) {
+            $page->component('Incident/Show')
+                ->has('incident.files')
+                ->count('incident.files', 1)
+                ->where('incident.files.0.id', $file->id)
+                ->where('incident.files.0.user_id', $supervisor->id)
+            ;
+        });
+    }
+    public function test_show_page_loads_user_on_files_for_admin()
     {
         $admin = User::factory()->create()->syncRoles('admin');
         $this->actingAs($admin);
@@ -45,7 +102,66 @@ class ShowTest extends TestCase
         });
     }
 
-    public function test_show_page_loads_incident_files()
+    public function test_show_page_only_loads_users_files_for_user()
+    {
+        $user = User::factory()->create(['email' => 'a@b.com'])->syncRoles('user');
+        $this->actingAs($user);
+
+        $incident = Incident::factory()->create([
+            'reporters_email' => $user->email,
+        ]);
+
+        File::factory()
+            ->for($incident, 'fileable')
+            ->create();
+
+        $userFile = File::factory()
+            ->for($incident, 'fileable')
+            ->create(['user_id' => $user->id]);
+
+        $this->assertDatabaseCount('files', 2);
+
+        $response = $this->get(route('incidents.show', ['incident' => $incident->id]));
+
+        $response->assertStatus(200);
+
+        $response->assertInertia(function ($page) use ($userFile) {
+            $page->component('Incident/Show')
+                ->has('incident.files')
+                ->count('incident.files', 1)
+                ->where('incident.files.0.id', $userFile->id)
+            ;
+        });
+    }
+
+    public function test_show_page_loads_all_incident_files_for_supervisor()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+        $this->actingAs($supervisor);
+
+        $incident = Incident::factory()->create([
+            'supervisor_id' => $supervisor->id,
+        ]);
+
+        $file = File::factory()
+            ->for($incident, 'fileable')
+            ->create();
+
+
+        $response = $this->get(route('incidents.show', ['incident' => $incident->id]));
+
+        $response->assertStatus(200);
+
+        $response->assertInertia(function ($page) use ($file) {
+            $page->component('Incident/Show')
+                ->has('incident.files')
+                ->count('incident.files', 1)
+                ->where('incident.files.0.id', $file->id)
+            ;
+        });
+    }
+
+    public function test_show_page_loads_all_incident_files_for_admin()
     {
         $admin = User::factory()->create()->syncRoles('admin');
         $this->actingAs($admin);
