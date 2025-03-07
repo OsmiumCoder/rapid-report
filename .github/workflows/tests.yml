@@ -50,9 +50,6 @@ jobs:
       - name: Build Assets
         run: npm run build
 
-      - name: Create SQLite Database
-        run: touch database/database.sqlite
-
       - name: Install Dependencies
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
 
@@ -64,6 +61,7 @@ jobs:
 
       - name: Tests
         env:
+          DB_CONNECTION: 127.0.0.1
           DB_DATABASE: testing
           DB_USERNAME: user
           DB_PASSWORD: password
