@@ -13,9 +13,15 @@ class NotificationMessageSeeder extends Seeder
      */
     public function run(): void
     {
-        NotificationMessage::firstOrCreate([
+        $incidentReceivedMessage = NotificationMessage::firstOrNew([
             'name' => 'incident-received',
-            'message' => 'Thank you for submitting this incident report. HSE may reach out to you for follow up or additional questions. You may add any additional information to this file by clicking the below link:'
         ]);
+
+        if (!$incidentReceivedMessage->exists) {
+            $incidentReceivedMessage->message =
+                'Thank you for submitting this incident report. HSE may reach out to you for follow up or additional questions. You may add any additional information to this file by clicking the below link:';
+        }
+
+        $incidentReceivedMessage->save();
     }
 }
