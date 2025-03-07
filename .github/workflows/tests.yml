@@ -61,7 +61,6 @@ jobs:
 
       - name: Tests
         env:
-          DB_HOST: 127.0.0.1
           DB_DATABASE: ${{secrets.TEST_DB_DATABASE}}
           DB_USERNAME: ${{secrets.TEST_DB_USER}}
           DB_PASSWORD: ${{secrets.TEST_DB_PASSWORD}}
