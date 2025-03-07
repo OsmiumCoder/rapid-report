@@ -145,7 +145,7 @@ class ShowTest extends TestCase
 
         $file = File::factory()
             ->for($incident, 'fileable')
-            ->create();
+            ->create(['user_id' => $supervisor->id]);
 
 
         $response = $this->get(route('incidents.show', ['incident' => $incident->id]));

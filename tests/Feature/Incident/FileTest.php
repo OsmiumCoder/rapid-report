@@ -16,6 +16,54 @@ use Tests\TestCase;
 
 class FileTest extends TestCase
 {
+    public function test_forbidden_user_cant_download_not_owned_file()
+    {
+        $user = User::factory()->create(['email' => 'a@b.com'])->syncRoles('user');
+
+        $this->actingAs($user);
+
+        $incident = Incident::factory()->create([
+            'reporters_email' => $user->email,
+        ]);
+
+        $files = [
+            UploadedFile::fake()->create('file.pdf')->size(100),
+        ];
+
+        $response = $this->post(route('incidents.upload-files', $incident), ['files' => $files]);
+
+        $file = File::first();
+
+        $user = User::factory()->create()->syncRoles('supervisor');
+        $this->actingAs($user);
+
+        $response = $this->get(route('incidents.download-files', ['incident' => $incident->id, 'file' => $file->id]));
+
+        $response->assertForbidden();
+    }
+
+    public function test_user_can_download_own_file()
+    {
+        $user = User::factory()->create(['email' => 'a@b.com'])->syncRoles('user');
+        $this->actingAs($user);
+
+        $incident = Incident::factory()->create([
+            'reporters_email' => $user->email,
+        ]);
+
+        $files = [
+            UploadedFile::fake()->create('file.pdf')->size(100),
+        ];
+
+        $response = $this->post(route('incidents.upload-files', $incident), ['files' => $files]);
+
+        $file = File::first();
+
+        $response = $this->get(route('incidents.download-files', ['incident' => $incident->id, 'file' => $file->id]));
+
+        $response->assertDownload($file->original_name);
+    }
+
     public function test_forbidden_supervisor_cant_download_not_owned_file()
     {
         $supervisor = User::factory()->create()->syncRoles('supervisor');
@@ -63,22 +111,6 @@ class FileTest extends TestCase
         $response = $this->get(route('incidents.download-files', ['incident' => $incident->id, 'file' => $file->id]));
 
         $response->assertDownload($file->original_name);
-    }
-
-    public function test_user_forbidden_to_download_file()
-    {
-        $incident = Incident::factory()->create();
-        $file = File::factory()
-            ->for($incident, 'fileable')
-            ->for(User::factory(), 'user')
-            ->create();
-
-        $user = User::factory()->create()->syncRoles('user');
-        $this->actingAs($user);
-
-        $response = $this->get(route('incidents.download-files', ['incident' => $incident->id, 'file' => $file->id]));
-
-        $response->assertForbidden();
     }
 
     public function test_download_file_downloads_file()

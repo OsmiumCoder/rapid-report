@@ -23,7 +23,6 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'manage users']);
         Permission::firstOrCreate(['name' => 'add comments']);
         Permission::firstOrCreate(['name' => 'download any files']);
-        Permission::firstOrCreate(['name' => 'download files']);
         Permission::firstOrCreate(['name' => 'download own files']);
 
         Role::firstOrCreate(['name' => 'admin'])
@@ -44,7 +43,7 @@ class RolesAndPermissionsSeeder extends Seeder
                 'view own incidents',
                 'provide incident follow-up',
                 'add comments',
-                'download files',
+                'download own files',
             ]);
 
         Role::firstOrCreate(['name' => 'user'])

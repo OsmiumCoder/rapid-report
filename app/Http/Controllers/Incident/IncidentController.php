@@ -101,7 +101,7 @@ class IncidentController extends Controller
             ]);
         }
 
-        if ($user->can('download any files') || $user->can('download files')) {
+        if ($user->can('download any files')) {
             $incident->load('files.user');
         } elseif ($user->can('download own files')) {
             $incident->load(['files' => function ($query) use ($user) {
