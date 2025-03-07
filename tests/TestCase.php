@@ -3,7 +3,6 @@
 namespace Tests;
 
 use Carbon\Carbon;
-use Database\Seeders\RolesAndPermissionsSeeder;
 use Database\Seeders\TestSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;

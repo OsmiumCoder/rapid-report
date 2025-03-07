@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Enum\NotificationMessageType;
 use App\Models\NotificationMessage;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Str;
 
 class NotificationMessageSeeder extends Seeder
 {

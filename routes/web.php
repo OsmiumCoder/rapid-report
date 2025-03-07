@@ -65,14 +65,14 @@ Route::get('/notification', function () {
     //    return $followupOverdue->toMail($supervisor);
     //    return $incidentReopened->toMail($supervisor);
     //    return $incidentFollowupReview->toMail($supervisor);
-        return $incidentReceived->render();
+    return $incidentReceived->render();
     //    return $userAdded->render();
     //    return $incidentSubmitted->toMail($supervisor);
     //    return $investigationSubmitted->toMail($supervisor);
     //    return $investigationReturned->toMail($supervisor);
     //    return $incidentAssigned->toMail($supervisor);
     //    return $rcaSubmitted->toMail($supervisor);
-//    return $additionalInfo->toMail($supervisor);
+    //    return $additionalInfo->toMail($supervisor);
 
 });
 
