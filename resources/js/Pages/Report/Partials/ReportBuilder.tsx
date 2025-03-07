@@ -114,16 +114,6 @@ export default function ReportBuilder() {
         downloadFile(response.data, fileName);
     };
 
-    const downloadCSV = async () => {
-        const response = await axios.post(route('report.export-csv'), data, {
-            responseType: 'blob',
-        });
-
-        const fileName = response.headers['content-disposition'].split('filename=')[1];
-
-        downloadFile(response.data, fileName);
-    };
-
     return (
         <div className="mx-4 space-y-6 rounded-xl bg-white p-4 shadow-lg">
             <div className="text-black-500 text-lg font-semibold sm:text-xl/8">Build your report:</div>
@@ -226,9 +216,6 @@ export default function ReportBuilder() {
             </div>
 
             <div className="flex w-full justify-center space-x-2">
-                <PrimaryButton type={'button'} onClick={downloadCSV}>
-                    Export as CSV
-                </PrimaryButton>
                 <PrimaryButton type={'button'} onClick={downloadExcel}>
                     Export as Excel
                 </PrimaryButton>
