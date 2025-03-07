@@ -21,17 +21,32 @@ interface RelativeTimeUnit {
 export default function ReportBuilder() {
     const fields = [
         'slug',
+        'anonymous',
+        'on_behalf',
+        'on_behalf_anonymous',
+        'role',
+        'last_name',
+        'first_name',
+        'upei_id',
+        'email',
+        'phone',
+        'work_related',
+        'workers_comp_submitted',
         'happened_at',
         'location',
         'room_number',
+        'witnesses',
         'incident_type',
         'descriptor',
         'description',
         'injury_description',
         'first_aid_description',
-        'created_at',
+        'reporters_email',
+        'supervisor_name',
         'status',
+        'additional_information',
         'closed_at',
+        'created_at',
     ];
 
     const { data, setData } = useForm({

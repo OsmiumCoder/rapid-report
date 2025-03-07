@@ -43,6 +43,29 @@ class IncidentsExport implements FromQuery, ShouldAutoSize, WithHeadings, WithMa
                     continue;
                 }
                 $rowItems[] = $row->$field->format("Y-m-d h:i A");
+            } elseif ($field == 'additional_information') {
+                $additionalInformation = '';
+
+                if ($row->additional_information) {
+                    foreach ($row->additional_information as $value) {
+                        $additionalInformation .= "{$value['information']}, ";
+                    }
+
+                }
+
+                $rowItems[] = $additionalInformation;
+
+            } elseif ($field == 'witnesses') {
+                $witnesses = '';
+
+                if ($row->witnesses) {
+                    foreach ($row->witnesses as $value) {
+                        $witnesses .= "Name: {$value['name']} Phone: {$value['phone']} Email: {$value['email']}, ";
+                    }
+
+                }
+
+                $rowItems[] = $witnesses;
             } else {
                 $rowItems[] = $row->$field;
             }
