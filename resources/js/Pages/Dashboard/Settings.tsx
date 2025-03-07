@@ -10,7 +10,7 @@ import { Head, router, useForm } from '@inertiajs/react';
 import { useState } from 'react';
 
 export default function Settings({ incidentReceivedMessage }: { incidentReceivedMessage: NotificationMessage }) {
-    const { data, setData, put, processing, errors, cancel } = useForm({
+    const { data, setData, put, processing, errors, cancel, clearErrors } = useForm({
         message: incidentReceivedMessage.message,
     });
 
@@ -31,6 +31,8 @@ export default function Settings({ incidentReceivedMessage }: { incidentReceived
         }
 
         setIsEditingIncidentReceivedMessage(false);
+        setData('message', incidentReceivedMessage.message);
+        clearErrors();
     };
 
     return (
