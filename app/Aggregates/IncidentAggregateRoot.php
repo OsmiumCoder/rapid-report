@@ -24,6 +24,39 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Spatie\EventSourcing\AggregateRoots\AggregateRoot;
 
+/**
+ * Any
+ * @author
+ * @copyright
+ * @deprecated
+ * @example
+ * @final
+ * @ignore
+ * @internal
+ * @link
+ * @see
+ * @since
+ * @source
+ * @todo
+ * @uses
+ * @version
+ *
+ * Class
+ * @category
+ * @licence
+ * @method
+ * @package
+ * @property
+ * @property-read
+ * @property-write
+ * @subpackage
+ *
+ * Methods
+ * @api
+ * @param
+ * @return
+ * @throw
+ */
 class IncidentAggregateRoot extends AggregateRoot
 {
     public function createIncident(IncidentData $incidentData)
