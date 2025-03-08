@@ -20,7 +20,7 @@ class IncidentFileController extends Controller
      */
     public function upload(Request $request, Incident $incident): RedirectResponse
     {
-        $this->authorize('provideFollowUp', $incident);
+        $this->authorize('view', $incident);
 
         $request->validate([
             'files' => 'required|array',

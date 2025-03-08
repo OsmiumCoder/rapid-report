@@ -106,6 +106,6 @@ class IncidentPolicy
     public function downloadFiles(User $user, File $file): bool
     {
         return $user->can('download any files') ||
-            ($user->can('download files') && $user->id == $file->user_id);
+            ($user->can('download own files') && $user->id == $file->user_id);
     }
 }
