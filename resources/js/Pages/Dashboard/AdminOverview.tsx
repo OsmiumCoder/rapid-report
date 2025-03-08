@@ -9,15 +9,16 @@ interface AdminDashboardProps {
     incidentCount: number;
     closedCount: number;
     unresolvedCount: number;
+    averageDaysOpen: number;
 }
 
-export default function AdminOverview({ incidents, incidentCount, closedCount, unresolvedCount }: AdminDashboardProps) {
+export default function AdminOverview({ incidents, incidentCount, closedCount, unresolvedCount, averageDaysOpen }: AdminDashboardProps) {
     return (
         <Authenticated>
             <Head title="Admin Overview" />
             <div className="px-4 sm:px-6 lg:px-8">
                 {/* Index Summary */}
-                <div className="grid grid-cols-1 gap-6 text-center md:grid-cols-2 lg:grid-cols-3">
+                <div className="grid grid-cols-1 gap-6 text-center md:grid-cols-2 lg:grid-cols-4">
                     {/* Incident Count Card */}
                     <div className="rounded-lg bg-white p-6 shadow-lg">
                         <h3 className="text-lg font-semibold text-gray-700">Total Incidents</h3>
@@ -90,6 +91,12 @@ export default function AdminOverview({ incidents, incidentCount, closedCount, u
                         >
                             {closedCount}
                         </Link>
+                    </div>
+
+                    {/* Average Days Open */}
+                    <div className="rounded-lg bg-white p-6 shadow-lg">
+                        <h3 className="text-lg font-semibold text-gray-700">Average Days Open</h3>
+                        <div className="text-upei-green-500 text-3xl font-bold">{averageDaysOpen}</div>
                     </div>
                 </div>
 

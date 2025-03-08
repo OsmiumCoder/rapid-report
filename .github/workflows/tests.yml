@@ -12,6 +12,21 @@ jobs:
   ci:
     runs-on: ubuntu-latest
 
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_ROOT_PASSWORD: ${{secrets.TEST_DB_ROOT_PASSWORD}}
+          MYSQL_DATABASE: ${{secrets.TEST_DB_DATABASE}}
+          MYSQL_USER: ${{secrets.TEST_DB_USER}}
+          MYSQL_PASSWORD: ${{secrets.TEST_DB_PASSWORD}}
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --host=127.0.0.1 --user=root --password=$TEST_DB_ROOT_PASSWORD"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -35,9 +50,6 @@ jobs:
       - name: Build Assets
         run: npm run build
 
-      - name: Create SQLite Database
-        run: touch database/database.sqlite
-
       - name: Install Dependencies
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
 
@@ -49,6 +61,8 @@ jobs:
 
       - name: Tests
         env:
-          DB_CONNECTION: sqlite
-          DB_DATABASE: database/database.sqlite
+          DB_HOST: 127.0.0.1
+          DB_DATABASE: "${{ secrets.TEST_DB_DATABASE }}"
+          DB_USERNAME: "${{ secrets.TEST_DB_USER }}"
+          DB_PASSWORD: "${{ secrets.TEST_DB_PASSWORD }}"
         run: ./vendor/bin/phpunit
