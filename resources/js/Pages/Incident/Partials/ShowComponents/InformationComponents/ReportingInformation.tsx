@@ -1,5 +1,6 @@
 import dateTimeFormat from '@/Formatters/dateTimeFormat';
 import { Incident } from '@/types/incident/Incident';
+import dayjs from 'dayjs';
 
 export default function ReportingInformation({ incident }: { incident: Incident }) {
     return (
@@ -10,6 +11,18 @@ export default function ReportingInformation({ incident }: { incident: Incident 
                     <span className="font-semibold">Submitted at: </span>
                     {dateTimeFormat(incident.created_at)}
                 </div>
+                {incident.closed_at && (
+                    <>
+                        <div>
+                            <span className="font-semibold">Closed at: </span>
+                            {dateTimeFormat(incident.closed_at)}
+                        </div>
+                        <div>
+                            <span className="font-semibold">Opened for: </span>
+                            {dayjs(incident.closed_at).diff(dayjs(incident.created_at), 'day')} Days
+                        </div>
+                    </>
+                )}
                 <div>
                     <span className="font-semibold">Anonymous: </span>
                     {incident.anonymous ? 'Yes' : 'No'}
