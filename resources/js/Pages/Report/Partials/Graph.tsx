@@ -1,9 +1,10 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
-import { CategoryScale } from 'chart.js';
-import Chart, { ChartTypeRegistry, TooltipItem } from 'chart.js/auto';
+import { CategoryScale, ChartData } from 'chart.js';
+import Chart from 'chart.js/auto';
 import { ChartBar, ChartPie, EditIcon } from 'lucide-react';
 import { useState } from 'react';
-import { Bar, Pie } from 'react-chartjs-2';
+import PieGraph from '@/Pages/Report/Partials/PieGraph';
+import BarGraph from '@/Pages/Report/Partials/BarGraph';
 Chart.register(CategoryScale);
 
 export interface GraphProps {
@@ -32,7 +33,17 @@ export default function Graph({
 }: GraphProps) {
     const colors = ['#7c2d1c', '#7fa33f', '#fcd177', '#4e0f10', '#5c8727', '#fbb040', '#1a0604', '#1f3912', '#a76119'];
     const [isBar, setIsBar] = useState(isBarInit);
-    const data = {
+    const bar_data:ChartData<'bar'> = {
+        labels: labels,
+        datasets: [
+            {
+                label: title,
+                data: entries,
+                backgroundColor: colors.slice(0, entriesNumber),
+            },
+        ],
+    };
+    const pie_data:ChartData<'pie'> = {
         labels: labels,
         datasets: [
             {
@@ -42,17 +53,6 @@ export default function Graph({
                 hoverOffset: 10,
             },
         ],
-    };
-
-    const footer = (ctx: TooltipItem<keyof ChartTypeRegistry>[]) => {
-        let sum = 0;
-        for (let item = 0; item < ctx[0].dataset.data.length; item = item + 1) {
-            if (ctx[0].dataset.data[item] != null) {
-                sum += +(ctx[0].dataset.data[item] ?? 0);
-            }
-        }
-        const percent = Math.round(sum == 0 ? 100 : (+ctx[0].formattedValue / sum) * 10000) / 100;
-        return percent + '%';
     };
     return (
         <div className="overflow-hidden rounded-lg bg-white ring-1 ring-white/15 max-lg:rounded lg:rounded">
@@ -100,63 +100,14 @@ export default function Graph({
                 )}
             </div>
             {isBar ? (
-                <Bar
-                    key={graphKey}
-                    data={data}
-                    options={{
-                        plugins: {
-                            legend: {
-                                display: false,
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    footer: footer,
-                                },
-                            },
-                            title: {
-                                display: true,
-                                text: data.datasets[0].label,
-                                color: 'gray-900',
-                                font: {
-                                    size: 20,
-                                },
-                            },
-                        },
-                    }}
+                <BarGraph
+                    graphKey={graphKey}
+                    data={bar_data}
                 />
             ) : (
-                <Pie
-                    data={data}
-                    options={{
-                        plugins: {
-                            legend: {
-                                labels: {
-                                    color: 'gray-900',
-                                    font: {
-                                        size: 16,
-                                    },
-                                    padding: 20,
-                                    boxWidth: 20,
-                                    boxHeight: 20,
-                                    usePointStyle: true,
-                                    pointStyle: 'circle',
-                                },
-                            },
-                            title: {
-                                display: true,
-                                text: data.datasets[0].label,
-                                color: 'gray-900',
-                                font: {
-                                    size: 20,
-                                },
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    footer: footer,
-                                },
-                            },
-                        },
-                    }}
+                <PieGraph
+                    graphKey={graphKey}
+                    data={pie_data}
                 />
             )}
             <div className="flex justify-center p-5 text-gray-900">
