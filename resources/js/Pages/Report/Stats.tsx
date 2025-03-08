@@ -12,8 +12,8 @@ interface dataEntry {
     description: string;
 }
 export default function Stats({
+    incident_live_time_dist,
     type_dist,
-    witnesses_dist,
     role_dist,
     status_dist,
     anon_dist,
@@ -23,9 +23,9 @@ export default function Stats({
     security_dist,
     on_behalf_anon_dist,
     on_behalf_dist,
+    location,
 }: {
     type_dist: number[];
-    witnesses_dist: number[];
     role_dist: number[];
     status_dist: number[];
     anon_dist: number[];
@@ -35,6 +35,8 @@ export default function Stats({
     security_dist: number[];
     on_behalf_anon_dist: number[];
     on_behalf_dist: number[];
+    location: number[];
+    incident_live_time_dist: number[];
 }) {
     const type_label_key = {
         1: 'Safety',
@@ -51,18 +53,25 @@ export default function Stats({
 
     const data: dataEntry[] = [
         {
+            labels: Object.keys(location),
+            entries: Object.values(location),
+            entries_number: location.length,
+            title: 'Incident Location',
+            description: 'Distribution of Incident Location',
+        },
+        {
+            labels: Object.keys(incident_live_time_dist),
+            entries: Object.values(incident_live_time_dist),
+            entries_number: incident_live_time_dist.length,
+            title: 'Incident Lifetime',
+            description: 'Distribution of Incident Lifetimes',
+        },
+        {
             labels: Object.keys(type_dist).map((x) => type_label_key[parseInt(x) as keyof typeof type_label_key]),
             entries: Object.values(type_dist),
             entries_number: type_dist.length,
             title: 'Incident Type',
             description: 'Distribution of Incident Type',
-        },
-        {
-            labels: Object.keys(witnesses_dist),
-            entries: Object.values(witnesses_dist),
-            entries_number: Object.keys(witnesses_dist).length,
-            title: 'Witness Counts',
-            description: 'Distribution of Witnesses per Incident',
         },
         {
             labels: Object.keys(role_dist).map((x) => role_label_key[parseInt(x) as keyof typeof type_label_key]),
@@ -129,16 +138,17 @@ export default function Stats({
         },
     ];
 
-    const data_key = ['Type', 'Witnesses', 'Roles', 'Status', 'Anonymous', 'On Behalf', 'On Behalf Anonymous'];
+    const data_key = ['Location','Incident Lifetime','Type', 'Roles', 'Status', 'Anonymous', 'On Behalf', 'On Behalf Anonymous'];
     const descriptor_key = ['All Descriptors', 'Safety', 'Environment', 'Security'];
 
-    const [selected_statistics, setSelectedStatistics] = useState<number[]>([3, 1, 2, 0, 7]);
+    const [selected_statistics, setSelectedStatistics] = useState<number[]>([1, 2, 3, 2, 8]);
 
     return (
         <AuthenticatedLayout>
             <Head title="Statistics" />
             <div className="mx-8 grid grid-cols-1 gap-5 lg:grid-cols-6">
                 {selected_statistics.map((indexValue, i) => (
+
                     <div key={i} className={classNames('relative', i < 3 ? 'lg:col-span-2' : 'lg:col-span-3')}>
                         <Graph
                             labels={data[indexValue].labels}
@@ -153,7 +163,7 @@ export default function Stats({
                                     if (i != 4) {
                                         setSelectedStatistics((prev) => prev.map((x, i) => (i == key ? index : x)));
                                     } else {
-                                        setSelectedStatistics((prev) => prev.map((x, i) => (i == key ? index + 7 : x)));
+                                        setSelectedStatistics((prev) => prev.map((x, i) => (i == key ? index + 8 : x)));
                                     }
                                 }
                             }}

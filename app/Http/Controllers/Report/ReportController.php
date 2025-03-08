@@ -19,19 +19,34 @@ class ReportController extends Controller
     public function stats()
     {
         Gate::authorize('view-report-page');
-        $witnesses = Incident::selectRaw('witnesses')
-            ->pluck('witnesses')
+        $pairs = Incident::selectRaw('created_at')
+            ->addSelect('closed_at')
+            ->whereNotNull('closed_at')
+            ->get(['created_at', 'closed_at'])
             ->toArray();
-        $witness_count = [];
-        foreach ($witnesses as $witness) {
-            $witness_count[] = count($witness);
+        $diffs = array_map(fn($item):false|int =>
+            date_diff(date_create($item['created_at']),date_create($item['closed_at']))->days, $pairs);
+        $count = array_count_values(array_reduce($diffs, function($carry, $value) {
+            if ($value < 1) {
+                $carry[] = 'Less then 1 day ';
+            } elseif ($value >= 1 && $value < 7) {
+                $carry[] = 'Between 1 day and a Week';
+            } elseif ($value >= 7 && $value < 31) {
+                $carry[] = 'Between 1 week and a Month';
+            } elseif ($value >= 31 ) {
+                $carry[] = 'Over a month';
+            }
+            return $carry;
+        }, []));
 
-        }
         return Inertia::render('Report/Stats', [
+            'location' => Incident::selectRaw('location ,count(location) as total')
+                ->groupBy('location')
+                ->pluck('total', 'location'),
+            'incident_live_time_dist' => $count,
             'type_dist' => Incident::selectRaw('incident_type ,count(incident_type) as total')
                 ->groupBy('incident_type')
                 ->pluck('total', 'incident_type'),
-            'witnesses_dist' => array_count_values($witness_count),
             'role_dist' => Incident::selectRaw('role, count(role) as total')
                 ->groupBy('role')
                 ->pluck('total', 'role'),
