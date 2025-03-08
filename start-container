@@ -9,6 +9,8 @@ npm run build:ssr
 
 php artisan migrate --force
 php artisan db:seed --class=RolesAndPermissionsSeeder --force
+php artisan db:seed --class=NotificationMessageSeeder --force
+
 
 php artisan optimize
 

@@ -20,4 +20,9 @@ class DashboardPolicy
     {
         return $user->can('perform admin actions');
     }
+
+    public function viewSettings(User $user): bool
+    {
+        return $user->can('perform admin actions');
+    }
 }

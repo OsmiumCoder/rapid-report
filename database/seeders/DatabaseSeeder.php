@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             RolesAndPermissionsSeeder::class,
+            NotificationMessageSeeder::class,
         ]);
 
         $admin = User::factory()->create([

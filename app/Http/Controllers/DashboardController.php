@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Incident;
+use App\Models\NotificationMessage;
 use App\Models\User;
 use App\States\IncidentStatus\Assigned;
 use App\States\IncidentStatus\Closed;
@@ -111,5 +112,14 @@ class DashboardController extends Controller
             'users' => $paginatedUsers,
             'roles' => Role::all()
         ]);
+    }
+
+    public function settings(): Response
+    {
+        Gate::authorize('view-settings');
+
+        $incidentReceivedMessage = NotificationMessage::firstWhere('name', 'incident-received');
+
+        return Inertia::render('Dashboard/Settings', ['incidentReceivedMessage' => $incidentReceivedMessage]);
     }
 }
