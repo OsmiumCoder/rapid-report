@@ -26,7 +26,7 @@ class ExportCSVTest extends TestCase
         $exportData = ExportData::from([
             'start' => now()->toDateString(),
             'end' => now()->addDay()->toDateString(),
-            'fields' => ['slug']
+            'fields' => ['ID']
         ]);
 
         $response = $this->actingAs($admin)->post(route('report.export-csv'), $exportData->toArray());
@@ -49,7 +49,7 @@ class ExportCSVTest extends TestCase
         $exportData = ExportData::from([
             'start' => now()->toDateString(),
             'end' => now()->addDay()->toDateString(),
-            'fields' => ['slug']
+            'fields' => ['ID']
         ]);
 
         $response = $this->actingAs($admin)->post(route('report.export-csv'), $exportData->toArray());
@@ -81,7 +81,7 @@ class ExportCSVTest extends TestCase
         $exportData = ExportData::from([
             'start' => now()->toDateString(),
             'end' => now()->toDateString(),
-            'fields' => ['slug']
+            'fields' => ['ID']
         ]);
 
         $response = $this->actingAs($user)->post(route('report.export-csv'), $exportData->toArray());
@@ -96,7 +96,7 @@ class ExportCSVTest extends TestCase
         $exportData = ExportData::from([
             'start' => now()->toDateString(),
             'end' => now()->toDateString(),
-            'fields' => ['slug']
+            'fields' => ['ID']
         ]);
 
         $response = $this->actingAs($supervisor)->post(route('report.export-csv'), $exportData->toArray());

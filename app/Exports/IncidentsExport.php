@@ -38,6 +38,8 @@ class IncidentsExport implements FromQuery, ShouldAutoSize, WithHeadings, WithMa
                 $rowItems[] = $row->role ? RoleType::toString($row->role) : 'Anonymous';
             } elseif ($field == "happened_at") {
                 $rowItems[] = $row->happened_at->toDateString();
+            } elseif ($field == 'ID') {
+                $rowItems[] = $row->slug;
             } elseif (str_ends_with($field, "_at")) {
                 if (!$row->$field) {
                     $rowItems[] = $row->$field;

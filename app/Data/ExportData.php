@@ -20,7 +20,7 @@ class ExportData extends Data
         public CarbonImmutable $end,
         public array $fields
     ) {
-        //        slug
+        //        ID
         //        happened_at
         //        location
         //        room_number
@@ -57,7 +57,7 @@ class ExportData extends Data
         return [
             'fields' => ['min:1', 'distinct'],
             'fields.*' => [Rule::in([
-                'slug',
+                'ID',
                 'happened_at',
                 'location',
                 'room_number',

@@ -80,6 +80,26 @@ class DatabaseSeeder extends Seeder
             'created_at' => now()->subDays(rand(7, 60)),
             'closed_at' => now(),
         ]);
+        Incident::factory(2)->hasComments(5)->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Closed::class,
+            'closed_at' => now()->addDays(2)
+        ]);
+        Incident::factory(3)->hasComments(5)->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Closed::class,
+            'closed_at' => now()->addDays(8)
+        ]);
+        Incident::factory(6)->hasComments(5)->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Closed::class,
+            'closed_at' => now()->addDays(13)
+        ]);
+        Incident::factory(2)->hasComments(5)->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Closed::class,
+            'closed_at' => now()->addWeeks(5)
+        ]);
 
         Incident::factory(5)->create([
             'reporters_email' => $admin->email,

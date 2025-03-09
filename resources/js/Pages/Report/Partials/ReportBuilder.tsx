@@ -20,7 +20,7 @@ interface RelativeTimeUnit {
 
 export default function ReportBuilder() {
     const fields = [
-        'slug',
+        'ID',
         'happened_at',
         'location',
         'room_number',
@@ -91,16 +91,6 @@ export default function ReportBuilder() {
 
     const downloadExcel = async () => {
         const response = await axios.post(route('report.export-xlsx'), data, {
-            responseType: 'blob',
-        });
-
-        const fileName = response.headers['content-disposition'].split('filename=')[1];
-
-        downloadFile(response.data, fileName);
-    };
-
-    const downloadCSV = async () => {
-        const response = await axios.post(route('report.export-csv'), data, {
             responseType: 'blob',
         });
 
@@ -211,9 +201,6 @@ export default function ReportBuilder() {
             </div>
 
             <div className="flex w-full justify-center space-x-2">
-                <PrimaryButton type={'button'} onClick={downloadCSV}>
-                    Export as CSV
-                </PrimaryButton>
                 <PrimaryButton type={'button'} onClick={downloadExcel}>
                     Export as Excel
                 </PrimaryButton>
