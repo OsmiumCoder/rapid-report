@@ -32,20 +32,43 @@ class IncidentsExport implements FromQuery, ShouldAutoSize, WithHeadings, WithMa
         $rowItems = [];
 
         foreach ($this->exportData->fields as $field) {
-            if ($field == "incident_type") {
+            if ($field == 'ID') {
+                $rowItems[] = $row->slug;
+            } elseif ($field == "incident_type") {
                 $rowItems[] = IncidentType::toString($row->incident_type);
             } elseif ($field == "role") {
                 $rowItems[] = $row->role ? RoleType::toString($row->role) : 'Anonymous';
             } elseif ($field == "happened_at") {
                 $rowItems[] = $row->happened_at->toDateString();
-            } elseif ($field == 'ID') {
-                $rowItems[] = $row->slug;
             } elseif (str_ends_with($field, "_at")) {
                 if (!$row->$field) {
                     $rowItems[] = $row->$field;
                     continue;
                 }
                 $rowItems[] = $row->$field->format("Y-m-d h:i A");
+            } elseif ($field == 'additional_information') {
+                $additionalInformation = '';
+
+                if ($row->additional_information) {
+                    foreach ($row->additional_information as $value) {
+                        $additionalInformation .= "{$value['information']}, ";
+                    }
+
+                }
+
+                $rowItems[] = $additionalInformation;
+
+            } elseif ($field == 'witnesses') {
+                $witnesses = '';
+
+                if ($row->witnesses) {
+                    foreach ($row->witnesses as $value) {
+                        $witnesses .= "Name: {$value['name']} Phone: {$value['phone']} Email: {$value['email']}, ";
+                    }
+
+                }
+
+                $rowItems[] = $witnesses;
             } else {
                 $rowItems[] = $row->$field;
             }

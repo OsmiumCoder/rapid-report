@@ -20,36 +20,41 @@ class ExportData extends Data
         public CarbonImmutable $end,
         public array $fields
     ) {
-        //        ID
-        //        happened_at
-        //        location
-        //        room_number
-        //        incident_type
-        //        descriptor
-        //        description
-        //        injury_description
-        //        first_aid_description
-        //        created_at
-        //        status
-        //        closed_at
+        usort($this->fields, function ($a, $b) {
+            $referenceArray = [
+                'ID',
+                'anonymous',
+                'on_behalf',
+                'on_behalf_anonymous',
+                'role',
+                'last_name',
+                'first_name',
+                'upei_id',
+                'email',
+                'phone',
+                'work_related',
+                'workers_comp_submitted',
+                'happened_at',
+                'location',
+                'room_number',
+                'witnesses',
+                'incident_type',
+                'descriptor',
+                'description',
+                'injury_description',
+                'first_aid_description',
+                'reporters_email',
+                'supervisor_name',
+                'status',
+                'additional_information',
+                'closed_at',
+                'created_at',
+            ];
+            $posA = array_search($a, $referenceArray);
+            $posB = array_search($b, $referenceArray);
+            return $posA - $posB;
+        });
 
-        //        anonymous
-        //        on_behalf
-        //        on_behalf_anonymous
-        //        role
-        //        work_related
-        //        workers_comp_submitted
-
-        //        last_name
-        //        first_name
-        //        upei_id
-        //        email
-        //        phone
-        //        witnesses
-        //        reporters_email
-        //        supervisor_name
-
-        //        additional_information
     }
 
     public static function rules(ValidationContext $context): array
@@ -58,17 +63,32 @@ class ExportData extends Data
             'fields' => ['min:1', 'distinct'],
             'fields.*' => [Rule::in([
                 'ID',
+                'anonymous',
+                'on_behalf',
+                'on_behalf_anonymous',
+                'role',
+                'last_name',
+                'first_name',
+                'upei_id',
+                'email',
+                'phone',
+                'work_related',
+                'workers_comp_submitted',
                 'happened_at',
                 'location',
                 'room_number',
+                'witnesses',
                 'incident_type',
                 'descriptor',
                 'description',
                 'injury_description',
                 'first_aid_description',
-                'created_at',
+                'reporters_email',
+                'supervisor_name',
                 'status',
+                'additional_information',
                 'closed_at',
+                'created_at',
             ])],
         ];
     }
