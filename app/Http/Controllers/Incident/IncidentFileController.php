@@ -6,15 +6,21 @@ use App\Aggregates\IncidentAggregateRoot;
 use App\Http\Controllers\Controller;
 use App\Models\File;
 use App\Models\Incident;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\File as FileRules;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class IncidentFileController extends Controller
 {
-    public function upload(Request $request, Incident $incident)
+    /**
+     * @throws AuthorizationException
+     */
+    public function upload(Request $request, Incident $incident): RedirectResponse
     {
-        $this->authorize('provideFollowUp', $incident);
+        $this->authorize('view', $incident);
 
         $request->validate([
             'files' => 'required|array',
@@ -39,7 +45,7 @@ class IncidentFileController extends Controller
         return back();
     }
 
-    public function download(Incident $incident, File $file)
+    public function download(Incident $incident, File $file): StreamedResponse
     {
         $this->authorize('downloadFiles', [Incident::class, $file]);
 

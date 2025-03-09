@@ -13,7 +13,6 @@ class RolesAndPermissionsSeeder extends Seeder
         // Reset cached roles and permissions
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // create permissions
         Permission::firstOrCreate(['name' => 'view all incidents']);
         Permission::firstOrCreate(['name' => 'view own incidents']);
         Permission::firstOrCreate(['name' => 'view assigned incidents']);
@@ -24,10 +23,8 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'manage users']);
         Permission::firstOrCreate(['name' => 'add comments']);
         Permission::firstOrCreate(['name' => 'download any files']);
-        Permission::firstOrCreate(['name' => 'download files']);
+        Permission::firstOrCreate(['name' => 'download own files']);
 
-
-        // create roles and assign created permissions
         Role::firstOrCreate(['name' => 'admin'])
             ->syncPermissions([
                 'view all incidents',
@@ -46,12 +43,13 @@ class RolesAndPermissionsSeeder extends Seeder
                 'view own incidents',
                 'provide incident follow-up',
                 'add comments',
-                'download files',
+                'download own files',
             ]);
 
         Role::firstOrCreate(['name' => 'user'])
             ->syncPermissions([
                 'view own incidents',
+                'download own files',
             ]);
     }
 }

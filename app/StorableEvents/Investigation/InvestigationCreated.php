@@ -31,7 +31,7 @@ class InvestigationCreated extends StoredEvent
     ) {
     }
 
-    public function incident()
+    public function incident(): Incident
     {
         if (!$this->incident) {
             $this->incident = Incident::find($this->incident_id);
@@ -40,7 +40,7 @@ class InvestigationCreated extends StoredEvent
         return $this->incident;
     }
 
-    public function handle()
+    public function handle(): void
     {
         $incident = $this->incident();
 
@@ -84,7 +84,7 @@ class InvestigationCreated extends StoredEvent
         $comment->save();
     }
 
-    public function react()
+    public function react(): void
     {
         $admins = User::role('admin')->get();
 

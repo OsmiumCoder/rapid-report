@@ -5,12 +5,17 @@ import LoadingIndicator from '@/Components/LoadingIndicator';
 import Modal from '@/Components/Modal';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextArea from '@/Components/TextArea';
+import { IncidentStatus } from '@/Enums/IncidentStatus';
+import FileUploadModal from '@/Pages/Incident/Partials/ShowComponents/FileUploadModal';
+import IncidentFiles from '@/Pages/Incident/Partials/ShowComponents/IncidentFiles';
 import { Incident } from '@/types/incident/Incident';
 import { router, useForm } from '@inertiajs/react';
 import { useState } from 'react';
 
 export default function IncidentUserActions({ incident }: { incident: Incident }) {
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+    const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+
     const { data, setData, patch, processing, cancel, errors, clearErrors } = useForm({
         additional_information: '',
     });
@@ -18,7 +23,7 @@ export default function IncidentUserActions({ incident }: { incident: Incident }
     const handleSubmit = () => {
         patch(route('incidents.additional-information', { incident: incident.slug }), {
             onSuccess: () => {
-                setIsModalOpen(false);
+                setIsInfoModalOpen(false);
                 setData('additional_information', '');
                 clearErrors();
                 router.reload({ only: ['incident'] });
@@ -35,7 +40,7 @@ export default function IncidentUserActions({ incident }: { incident: Incident }
             cancel();
         }
 
-        setIsModalOpen(false);
+        setIsInfoModalOpen(false);
         clearErrors();
         setData('additional_information', '');
     };
@@ -47,12 +52,18 @@ export default function IncidentUserActions({ incident }: { incident: Incident }
                     <div className="flex flex-col flex-wrap items-center justify-between">
                         <div className="mt-1 pt-6 text-base font-semibold text-gray-900">User Actions</div>
                         <div className="mt-6 flex w-full flex-col gap-y-6 border-t border-gray-900/5 p-6">
-                            <PrimaryButton onClick={() => setIsModalOpen(true)}>Add Additional Information</PrimaryButton>
+                            {incident.status !== IncidentStatus.CLOSED && (
+                                <>
+                                    <PrimaryButton onClick={() => setIsInfoModalOpen(true)}>Add Additional Information</PrimaryButton>
+                                    <PrimaryButton onClick={() => setIsUploadModalOpen(true)}>Upload Files</PrimaryButton>
+                                </>
+                            )}
                         </div>
+                        <IncidentFiles incident={incident} />
                     </div>
                 </div>
             </div>
-            <Modal show={isModalOpen} onClose={() => setIsModalOpen(false)}>
+            <Modal show={isInfoModalOpen} onClose={() => setIsInfoModalOpen(false)}>
                 <div className="space-y-4 p-6">
                     <div className="text-center text-lg font-medium text-gray-900">Add Additional Information</div>
                     <div>
@@ -70,6 +81,7 @@ export default function IncidentUserActions({ incident }: { incident: Incident }
                     {processing && <LoadingIndicator />}
                 </div>
             </Modal>
+            <FileUploadModal incident={incident} isOpen={isUploadModalOpen} onClose={() => setIsUploadModalOpen(false)} />
         </>
     );
 }

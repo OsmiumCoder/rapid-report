@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Incident;
 
 use App\Http\Controllers\Controller;
 use App\Models\Incident;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 
@@ -11,8 +13,9 @@ class SearchIncidentsController extends Controller
 {
     /**
      * Handle the incoming request.
+     * @throws AuthorizationException
      */
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): JsonResponse
     {
         $form = $request->validate([
             'search' => ['required', 'string'],

@@ -38,6 +38,6 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('view-admin-overview', [DashboardPolicy::class, 'viewAdminOverview']);
         Gate::define('view-supervisor-overview', [DashboardPolicy::class, 'viewSupervisorOverview']);
         Gate::define('view-user-management', [DashboardPolicy::class, 'viewUserManagement']);
-
+        Gate::define('view-settings', [DashboardPolicy::class, 'viewSettings']);
     }
 }

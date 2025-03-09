@@ -2,6 +2,8 @@
 
 namespace App\Mail;
 
+use App\Enum\NotificationMessageType;
+use App\Models\NotificationMessage;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
@@ -14,6 +16,7 @@ class IncidentReceived extends Mailable
     use SerializesModels;
 
     public string $url;
+    public string $message;
 
     /**
      * Create a new message instance.
@@ -21,6 +24,7 @@ class IncidentReceived extends Mailable
     public function __construct(public string $incidentId)
     {
         $this->url = route('incidents.show', ['incident' => $this->incidentId]);
+        $this->message = NotificationMessage::firstWhere('name', NotificationMessageType::INCIDENT_RECEIVED)->message;
     }
 
     /**
@@ -42,17 +46,8 @@ class IncidentReceived extends Mailable
             markdown: 'mail.incident-received',
             with: [
                 'url' => $this->url,
+                'message' => $this->message,
             ],
         );
-    }
-
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
-    public function attachments(): array
-    {
-        return [];
     }
 }

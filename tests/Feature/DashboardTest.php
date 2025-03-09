@@ -12,6 +12,31 @@ use Tests\TestCase;
 
 class DashboardTest extends TestCase
 {
+    public function test_admin_overview_returns_correct_days_open_average()
+    {
+        $admin = User::factory()->create()->syncRoles('admin');
+        $this->actingAs($admin);
+
+        Incident::factory(2)->create([
+            'created_at' => now()->subDays(7),
+            'closed_at' => now()
+        ]);
+
+        $this->assertDatabaseCount('incidents', 2);
+
+        $response = $this->get(route('dashboard.admin'));
+
+        $response->assertStatus(200);
+
+        $response->assertInertia(function (AssertableInertia $page) {
+            $page->component('Dashboard/AdminOverview')
+                ->has('averageDaysOpen')
+                ->where('averageDaysOpen', function ($daysOpen) {
+                    return round($daysOpen, 2) == 7.00;
+                });
+        });
+    }
+
     public function test_user_management_does_not_return_self()
     {
         $admin = User::factory()->create()->syncRoles('admin');

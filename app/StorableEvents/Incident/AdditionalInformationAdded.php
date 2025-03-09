@@ -19,7 +19,7 @@ class AdditionalInformationAdded extends StoredEvent
         //
     }
 
-    public function incident()
+    public function incident(): Incident
     {
         if (!$this->incident) {
             $this->incident = Incident::find($this->aggregateRootUuid());
@@ -28,7 +28,7 @@ class AdditionalInformationAdded extends StoredEvent
         return $this->incident;
     }
 
-    public function handle()
+    public function handle(): void
     {
         $incident = $this->incident();
 
@@ -57,7 +57,7 @@ class AdditionalInformationAdded extends StoredEvent
         $comment->save();
     }
 
-    public function react()
+    public function react(): void
     {
         $admins = User::role('admin')->get();
         $incident = $this->incident();

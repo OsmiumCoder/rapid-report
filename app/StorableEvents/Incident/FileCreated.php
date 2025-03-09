@@ -19,7 +19,7 @@ class FileCreated extends StoredEvent
     ) {
     }
 
-    public function handle()
+    public function handle(): void
     {
         $file = new File;
 

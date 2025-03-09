@@ -14,7 +14,7 @@ class FilesUploaded extends StoredEvent
 {
     private ?Incident $incident = null;
 
-    public function incident()
+    public function incident(): Incident
     {
         if (!$this->incident) {
             $this->incident = Incident::find($this->aggregateRootUuid());
@@ -23,7 +23,7 @@ class FilesUploaded extends StoredEvent
         return $this->incident;
     }
 
-    public function handle()
+    public function handle(): void
     {
         $incident = $this->incident();
 
@@ -38,7 +38,7 @@ class FilesUploaded extends StoredEvent
         $comment->save();
     }
 
-    public function react()
+    public function react(): void
     {
         $admins = User::role('admin')->get();
         $supervisor = User::find($this->metaData['user_id']);

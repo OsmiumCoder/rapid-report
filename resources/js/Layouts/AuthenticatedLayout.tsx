@@ -19,6 +19,7 @@ export default function Authenticated({ children }: PropsWithChildren<{ header?:
             roles: ['admin'],
         },
         { name: 'User Management', href: 'dashboard.user-management', roles: ['admin'] },
+        { name: 'Settings', href: 'dashboard.settings', roles: ['admin'] },
     ];
     const reportNav: NavigationItem[] = [
         {

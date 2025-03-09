@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Notification;
 
 use App\Data\IncidentData;
 use App\Enum\IncidentType;

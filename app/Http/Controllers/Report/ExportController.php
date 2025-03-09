@@ -5,12 +5,21 @@ namespace App\Http\Controllers\Report;
 use App\Data\ExportData;
 use App\Exports\IncidentsExport;
 use App\Http\Controllers\Controller;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Gate;
 use Maatwebsite\Excel\Facades\Excel;
+use PhpOffice\PhpSpreadsheet\Exception as PhpSpreadSheetException;
+use PhpOffice\PhpSpreadsheet\Writer\Exception as WriterException;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ExportController extends Controller
 {
-    public function exportXLSX(ExportData $exportData)
+    /**
+     * @throws AuthorizationException
+     * @throws PhpSpreadSheetException
+     * @throws WriterException
+     */
+    public function exportXLSX(ExportData $exportData): BinaryFileResponse
     {
         Gate::authorize('view-report-page');
 
@@ -21,7 +30,12 @@ class ExportController extends Controller
         );
     }
 
-    public function exportCSV(ExportData $exportData)
+    /**
+     * @throws AuthorizationException
+     * @throws PhpSpreadSheetException
+     * @throws WriterException
+     */
+    public function exportCSV(ExportData $exportData): BinaryFileResponse
     {
         Gate::authorize('view-report-page');
 

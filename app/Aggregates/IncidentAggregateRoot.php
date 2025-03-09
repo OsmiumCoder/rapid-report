@@ -24,9 +24,43 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Spatie\EventSourcing\AggregateRoots\AggregateRoot;
 
+/**
+ * All available tags:
+ * Any
+ * author
+ * copyright
+ * deprecated
+ * example
+ * final
+ * ignore
+ * internal
+ * link
+ * see
+ * since
+ * source
+ * todo
+ * uses
+ * version
+ *
+ * Class
+ * category
+ * licence
+ * method
+ * package
+ * property
+ * property-read
+ * property-write
+ * subpackage
+ *
+ * Methods
+ * api
+ * param
+ * return
+ * throw
+ */
 class IncidentAggregateRoot extends AggregateRoot
 {
-    public function createIncident(IncidentData $incidentData)
+    public function createIncident(IncidentData $incidentData): static
     {
         $this->recordThat(new IncidentCreated(
             anonymous: $incidentData->anonymous,
@@ -59,7 +93,7 @@ class IncidentAggregateRoot extends AggregateRoot
     /**
      * @throws UserNotSupervisorException
      */
-    public function assignSupervisor(int $supervisorId)
+    public function assignSupervisor(int $supervisorId): static
     {
         $user = User::find($supervisorId);
 
@@ -72,49 +106,49 @@ class IncidentAggregateRoot extends AggregateRoot
         return $this;
     }
 
-    public function unassignSupervisor()
+    public function unassignSupervisor(): static
     {
         $this->recordThat(new SupervisorUnassigned);
 
         return $this;
     }
 
-    public function requestReview()
+    public function requestReview(): static
     {
         $this->recordThat(new IncidentReviewRequested);
 
         return $this;
     }
 
-    public function returnInvestigation()
+    public function returnInvestigation(): static
     {
         $this->recordThat(new InvestigationReturned);
 
         return $this;
     }
 
-    public function returnRCA()
+    public function returnRCA(): static
     {
         $this->recordThat(new RootCauseAnalysisReturned);
 
         return $this;
     }
 
-    public function closeIncident()
+    public function closeIncident(): static
     {
         $this->recordThat(new IncidentClosed);
 
         return $this;
     }
 
-    public function reopenIncident()
+    public function reopenIncident(): static
     {
         $this->recordThat(new IncidentReopened);
 
         return $this;
     }
 
-    public function addComment(CommentData $commentData)
+    public function addComment(CommentData $commentData): static
     {
         $this->recordThat(new CommentCreated(
             content: $commentData->content,
@@ -126,14 +160,14 @@ class IncidentAggregateRoot extends AggregateRoot
         return $this;
     }
 
-    public function addAdditionalInformation(string $additionalInformation)
+    public function addAdditionalInformation(string $additionalInformation): static
     {
         $this->recordThat(new AdditionalInformationAdded($additionalInformation));
 
         return $this;
     }
 
-    public function uploadFiles(array $files)
+    public function uploadFiles(array $files): static
     {
         /* @var UploadedFile $file */
         foreach ($files as $file) {

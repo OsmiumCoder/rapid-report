@@ -10,12 +10,13 @@ use App\Notifications\Incident\IncidentReviewRequestNotification;
 use App\States\IncidentStatus\InReview;
 use App\StorableEvents\StoredEvent;
 use Illuminate\Support\Facades\Notification;
+use Spatie\ModelStates\Exceptions\CouldNotPerformTransition;
 
 class IncidentReviewRequested extends StoredEvent
 {
     private ?Incident $incident = null;
 
-    public function incident()
+    public function incident(): Incident
     {
         if (!$this->incident) {
             $this->incident = Incident::find($this->aggregateRootUuid());
@@ -24,7 +25,10 @@ class IncidentReviewRequested extends StoredEvent
         return $this->incident;
     }
 
-    public function handle()
+    /**
+     * @throws CouldNotPerformTransition
+     */
+    public function handle(): void
     {
         $incident = $this->incident();
 
@@ -43,7 +47,7 @@ class IncidentReviewRequested extends StoredEvent
         $comment->save();
     }
 
-    public function react()
+    public function react(): void
     {
         $admins = User::role('admin')->get();
         $supervisor = User::find($this->metaData['user_id']);
