@@ -9,7 +9,6 @@ use App\Models\User;
 use App\States\IncidentStatus\Assigned;
 use App\States\IncidentStatus\Closed;
 use App\States\IncidentStatus\InReview;
-use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder

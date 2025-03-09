@@ -1,10 +1,10 @@
+import BarGraph from '@/Pages/Report/Partials/BarGraph';
+import PieGraph from '@/Pages/Report/Partials/PieGraph';
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { CategoryScale, ChartData } from 'chart.js';
 import Chart from 'chart.js/auto';
 import { ChartBar, ChartPie, EditIcon } from 'lucide-react';
 import { useState } from 'react';
-import PieGraph from '@/Pages/Report/Partials/PieGraph';
-import BarGraph from '@/Pages/Report/Partials/BarGraph';
 Chart.register(CategoryScale);
 
 export interface GraphProps {
@@ -33,7 +33,7 @@ export default function Graph({
 }: GraphProps) {
     const colors = ['#7c2d1c', '#7fa33f', '#fcd177', '#4e0f10', '#5c8727', '#fbb040', '#1a0604', '#1f3912', '#a76119'];
     const [isBar, setIsBar] = useState(isBarInit);
-    const bar_data:ChartData<'bar'> = {
+    const bar_data: ChartData<'bar'> = {
         labels: labels,
         datasets: [
             {
@@ -43,7 +43,7 @@ export default function Graph({
             },
         ],
     };
-    const pie_data:ChartData<'pie'> = {
+    const pie_data: ChartData<'pie'> = {
         labels: labels,
         datasets: [
             {
@@ -99,17 +99,7 @@ export default function Graph({
                     <></>
                 )}
             </div>
-            {isBar ? (
-                <BarGraph
-                    graphKey={graphKey}
-                    data={bar_data}
-                />
-            ) : (
-                <PieGraph
-                    graphKey={graphKey}
-                    data={pie_data}
-                />
-            )}
+            {isBar ? <BarGraph graphKey={graphKey} data={bar_data} /> : <PieGraph graphKey={graphKey} data={pie_data} />}
             <div className="flex justify-center p-5 text-gray-900">
                 <h3 className="text-sm/4 font-semibold">{description}</h3>
             </div>

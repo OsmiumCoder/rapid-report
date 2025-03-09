@@ -138,7 +138,7 @@ export default function Stats({
         },
     ];
 
-    const data_key = ['Location','Incident Lifetime','Type', 'Roles', 'Status', 'Anonymous', 'On Behalf', 'On Behalf Anonymous'];
+    const data_key = ['Location', 'Incident Lifetime', 'Type', 'Roles', 'Status', 'Anonymous', 'On Behalf', 'On Behalf Anonymous'];
     const descriptor_key = ['All Descriptors', 'Safety', 'Environment', 'Security'];
 
     const [selected_statistics, setSelectedStatistics] = useState<number[]>([1, 2, 3, 2, 8]);
@@ -148,7 +148,6 @@ export default function Stats({
             <Head title="Statistics" />
             <div className="mx-8 grid grid-cols-1 gap-5 lg:grid-cols-6">
                 {selected_statistics.map((indexValue, i) => (
-
                     <div key={i} className={classNames('relative', i < 3 ? 'lg:col-span-2' : 'lg:col-span-3')}>
                         <Graph
                             labels={data[indexValue].labels}
