@@ -22,7 +22,7 @@ class ExportData extends Data
     ) {
         usort($this->fields, function ($a, $b) {
             $referenceArray = [
-                'slug',
+                'ID',
                 'anonymous',
                 'on_behalf',
                 'on_behalf_anonymous',
