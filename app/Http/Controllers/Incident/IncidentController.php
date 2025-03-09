@@ -101,8 +101,16 @@ class IncidentController extends Controller
             ]);
         }
 
+        if ($user->can('download any files')) {
+            $incident->load('files.user');
+        } elseif ($user->can('download own files')) {
+            $incident->load(['files' => function ($query) use ($user) {
+                $query->where('user_id', $user->id)->with('user');
+            }]);
+        }
+
         return Inertia::render('Incident/Show', [
-            'incident' => $incident->load(['comments.user', 'supervisor', 'files.user']),
+            'incident' => $incident->load(['comments.user', 'supervisor']),
             'supervisors' => $supervisors,
             'roles' => $roles,
             'canRequestReview' => $user->can('requestReview', $incident),

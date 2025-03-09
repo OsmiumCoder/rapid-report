@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -66,27 +65,18 @@ Route::get('/notification', function () {
     //    return $followupOverdue->toMail($supervisor);
     //    return $incidentReopened->toMail($supervisor);
     //    return $incidentFollowupReview->toMail($supervisor);
-    //    return $incidentReceived->render();
+    return $incidentReceived->render();
     //    return $userAdded->render();
     //    return $incidentSubmitted->toMail($supervisor);
     //    return $investigationSubmitted->toMail($supervisor);
     //    return $investigationReturned->toMail($supervisor);
     //    return $incidentAssigned->toMail($supervisor);
     //    return $rcaSubmitted->toMail($supervisor);
-    return $additionalInfo->toMail($supervisor);
+    //    return $additionalInfo->toMail($supervisor);
 
 });
 
 Route::permanentRedirect('/', '/login');
-
-
-Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
-    Route::get('/dashboard/admin', [DashboardController::class, 'adminOverview'])->name('dashboard.admin');
-    Route::get('/dashboard/supervisor', [DashboardController::class, 'supervisorOverview'])->name('dashboard.supervisor');
-    Route::get('/dashboard/user-management', [DashboardController::class, 'userManagement'])->name('dashboard.user-management');
-});
-
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -102,3 +92,4 @@ require __DIR__ . '/notifications.php';
 require __DIR__ . '/root-cause-analyses.php';
 require __DIR__ . '/reports.php';
 require __DIR__ . '/users.php';
+require __DIR__ . '/dashboard.php';

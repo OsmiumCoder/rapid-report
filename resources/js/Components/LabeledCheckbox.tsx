@@ -40,7 +40,10 @@ export default function LabeledCheckbox({ label, ...props }: LabeledCheckBoxProp
                 </div>
             </div>
 
-            <label htmlFor={label} className={classNames('cursor-pointer text-base text-gray-600 sm:text-sm', props.disabled ? 'opacity-50' : '')}>
+            <label
+                htmlFor={label}
+                className={classNames('cursor-pointer text-base text-gray-600 select-none sm:text-sm', props.disabled ? 'opacity-50' : '')}
+            >
                 {label}
             </label>
         </div>

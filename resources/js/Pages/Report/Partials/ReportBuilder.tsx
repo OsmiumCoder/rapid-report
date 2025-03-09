@@ -20,7 +20,7 @@ interface RelativeTimeUnit {
 
 export default function ReportBuilder() {
     const fields = [
-        'slug',
+        'ID',
         'anonymous',
         'on_behalf',
         'on_behalf_anonymous',

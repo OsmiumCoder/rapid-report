@@ -9,7 +9,7 @@ use Tests\TestCase;
 
 class StatsTest extends TestCase
 {
-    public function test_statistics_page_receives_all_incidents()
+    public function test_statistics_page_receives_correct_distribution_props()
     {
         $admin = User::factory()->create()->syncRoles('admin');
 
@@ -22,8 +22,20 @@ class StatsTest extends TestCase
         $response->assertStatus(200);
 
         $response->assertInertia(function (AssertableInertia $page) {
+            //  dd($page);
             $page->component('Report/Stats')
-                ->has('incidents', 40);
+                ->has('type_dist', 3)
+                ->has('role_dist', 4)
+                ->has('status_dist')
+                ->has('anon_dist')
+                ->has('on_behalf_dist')
+                ->has('on_behalf_anon_dist')
+                ->has('descriptor_dist')
+                ->has('safety_dist')
+                ->has('environmental_dist')
+                ->has('security_dist')
+                ->has('witnesses_dist');
+
         });
     }
 

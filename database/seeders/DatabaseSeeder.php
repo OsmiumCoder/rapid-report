@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             RolesAndPermissionsSeeder::class,
+            NotificationMessageSeeder::class,
         ]);
 
         $admin = User::factory()->create([
@@ -67,6 +68,7 @@ class DatabaseSeeder extends Seeder
         Incident::factory(5)->hasComments(5)->create([
             'supervisor_id' => $supervisor->id,
             'status' => InReview::class,
+            'created_at' => now()->subDays(rand(0, 60)),
         ])->each(function (Incident $incident) use ($supervisor) {
             Investigation::factory()->create(['supervisor_id' => $supervisor->id, 'incident_id' => $incident->id]);
             RootCauseAnalysis::factory()->create(['supervisor_id' => $supervisor->id, 'incident_id' => $incident->id]);
@@ -75,19 +77,43 @@ class DatabaseSeeder extends Seeder
         Incident::factory(5)->hasComments(5)->create([
             'supervisor_id' => $supervisor->id,
             'status' => Closed::class,
+            'created_at' => now()->subDays(rand(7, 60)),
             'closed_at' => now(),
+        ]);
+        Incident::factory(2)->hasComments(5)->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Closed::class,
+            'closed_at' => now()->addDays(2)
+        ]);
+        Incident::factory(3)->hasComments(5)->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Closed::class,
+            'closed_at' => now()->addDays(8)
+        ]);
+        Incident::factory(6)->hasComments(5)->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Closed::class,
+            'closed_at' => now()->addDays(13)
+        ]);
+        Incident::factory(2)->hasComments(5)->create([
+            'supervisor_id' => $supervisor->id,
+            'status' => Closed::class,
+            'closed_at' => now()->addWeeks(5)
         ]);
 
         Incident::factory(5)->create([
             'reporters_email' => $admin->email,
+            'created_at' => now()->subDays(rand(0, 60)),
         ]);
 
         Incident::factory(5)->create([
             'reporters_email' => $supervisor->email,
+            'created_at' => now()->subDays(rand(0, 60)),
         ]);
 
         Incident::factory(5)->create([
             'reporters_email' => $user->email,
+            'created_at' => now()->subDays(rand(0, 60)),
         ]);
     }
 }

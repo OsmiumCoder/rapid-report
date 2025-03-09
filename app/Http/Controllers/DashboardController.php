@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Incident;
+use App\Models\NotificationMessage;
 use App\Models\User;
 use App\States\IncidentStatus\Assigned;
 use App\States\IncidentStatus\Closed;
@@ -43,12 +44,16 @@ class DashboardController extends Controller
         $incidentCount = Incident::count();
         $closedCount = Incident::whereState('status', Closed::class)->count();
         $unresolvedCount = $incidentCount - $closedCount;
+        $averageDaysOpen = Incident::whereNotNull('closed_at')
+            ->selectRaw('ROUND(AVG(DATEDIFF(closed_at, created_at)), 2) as average')
+            ->value('average');
 
         return Inertia::render('Dashboard/AdminOverview', [
             'incidents' => $incidents,
             'incidentCount' => $incidentCount,
             'closedCount' => $closedCount,
             'unresolvedCount' => $unresolvedCount,
+            'averageDaysOpen' => $averageDaysOpen,
         ]);
     }
 
@@ -107,5 +112,14 @@ class DashboardController extends Controller
             'users' => $paginatedUsers,
             'roles' => Role::all()
         ]);
+    }
+
+    public function settings(): Response
+    {
+        Gate::authorize('view-settings');
+
+        $incidentReceivedMessage = NotificationMessage::firstWhere('name', 'incident-received');
+
+        return Inertia::render('Dashboard/Settings', ['incidentReceivedMessage' => $incidentReceivedMessage]);
     }
 }

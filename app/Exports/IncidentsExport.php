@@ -32,7 +32,9 @@ class IncidentsExport implements FromQuery, ShouldAutoSize, WithHeadings, WithMa
         $rowItems = [];
 
         foreach ($this->exportData->fields as $field) {
-            if ($field == "incident_type") {
+            if ($field == 'ID') {
+                $rowItems[] = $row->slug;
+            } elseif ($field == "incident_type") {
                 $rowItems[] = IncidentType::toString($row->incident_type);
             } elseif ($field == "role") {
                 $rowItems[] = $row->role ? RoleType::toString($row->role) : 'Anonymous';

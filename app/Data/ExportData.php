@@ -62,7 +62,7 @@ class ExportData extends Data
         return [
             'fields' => ['min:1', 'distinct'],
             'fields.*' => [Rule::in([
-                'slug',
+                'ID',
                 'anonymous',
                 'on_behalf',
                 'on_behalf_anonymous',
