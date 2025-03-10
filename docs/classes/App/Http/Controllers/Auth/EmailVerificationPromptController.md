@@ -44,4 +44,4 @@ public __invoke(\Illuminate\Http\Request $request): \Illuminate\Http\RedirectRes
 
 
 ***
-> Automatically generated on 2025-03-07
+> Automatically generated on 2025-03-10

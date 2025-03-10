@@ -91,7 +91,7 @@ Copy the example env file and make the required configuration changes in the .en
 
 Start Docker containers
 ```bash
- sail up -d
+  sail up -d
 ```
 
 Generate a new application key

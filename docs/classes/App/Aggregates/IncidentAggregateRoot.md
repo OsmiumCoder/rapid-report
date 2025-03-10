@@ -2,34 +2,21 @@
 
 # IncidentAggregateRoot
 
+All available tags:
 Any
 author
-copyright
 deprecated
 example
-final
-ignore
-internal
 link
 see
-since
-source
-todo
 uses
-version
 
 Class
-category
-licence
-method
-package
 property
 property-read
 property-write
-subpackage
 
 Methods
-api
 param
 return
 throw
@@ -311,4 +298,4 @@ public uploadFiles(array $files): static
 
 
 ***
-> Automatically generated on 2025-03-07
+> Automatically generated on 2025-03-10

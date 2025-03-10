@@ -120,4 +120,4 @@ public static rules(\Spatie\LaravelData\Support\Validation\ValidationContext $co
 
 
 ***
-> Automatically generated on 2025-03-07
+> Automatically generated on 2025-03-10

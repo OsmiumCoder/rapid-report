@@ -1,12 +1,12 @@
 ***
 
-# PasswordController
+# NotificationMessageController
 
 
 
 
 
-* Full name: `\App\Http\Controllers\Auth\PasswordController`
+* Full name: `\App\Http\Controllers\Notification\NotificationMessageController`
 * Parent class: [`\App\Http\Controllers\Controller`](../Controller.md)
 
 
@@ -17,10 +17,10 @@
 
 ### update
 
-Update the user's password.
+
 
 ```php
-public update(\Illuminate\Http\Request $request): \Illuminate\Http\RedirectResponse
+public update(\Illuminate\Http\Request $request, \App\Models\NotificationMessage $notificationMessage): \Illuminate\Http\RedirectResponse
 ```
 
 
@@ -35,6 +35,7 @@ public update(\Illuminate\Http\Request $request): \Illuminate\Http\RedirectRespo
 | Parameter | Type | Description |
 |-----------|------|-------------|
 | `$request` | **\Illuminate\Http\Request** |  |
+| `$notificationMessage` | **\App\Models\NotificationMessage** |  |
 
 
 

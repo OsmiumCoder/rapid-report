@@ -88,4 +88,4 @@ public share(\Illuminate\Http\Request $request): array&lt;string,mixed&gt;
 
 
 ***
-> Automatically generated on 2025-03-07
+> Automatically generated on 2025-03-10

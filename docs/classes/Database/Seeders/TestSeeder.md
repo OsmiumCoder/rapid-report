@@ -1,12 +1,12 @@
 ***
 
-# DatabaseSeeder
+# TestSeeder
 
 
 
 
 
-* Full name: `\Database\Seeders\DatabaseSeeder`
+* Full name: `\Database\Seeders\TestSeeder`
 * Parent class: [`Seeder`](../../Illuminate/Database/Seeder.md)
 
 
@@ -17,7 +17,7 @@
 
 ### run
 
-Seed the application's database.
+Seed the application's database for testing.
 
 ```php
 public run(): void

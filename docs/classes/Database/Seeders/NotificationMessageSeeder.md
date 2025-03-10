@@ -1,12 +1,12 @@
 ***
 
-# DatabaseSeeder
+# NotificationMessageSeeder
 
 
 
 
 
-* Full name: `\Database\Seeders\DatabaseSeeder`
+* Full name: `\Database\Seeders\NotificationMessageSeeder`
 * Parent class: [`Seeder`](../../Illuminate/Database/Seeder.md)
 
 
@@ -17,7 +17,7 @@
 
 ### run
 
-Seed the application's database.
+Run the database seeds.
 
 ```php
 public run(): void

@@ -115,4 +115,4 @@ public show(\App\Models\Incident $incident, \App\Models\Investigation $investiga
 
 
 ***
-> Automatically generated on 2025-03-07
+> Automatically generated on 2025-03-10

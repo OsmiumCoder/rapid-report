@@ -2,12 +2,16 @@
 
 # InvestigationAggregateRoot
 
-
+Handles all events related to investigations.
 
 
 
 * Full name: `\App\Aggregates\InvestigationAggregateRoot`
 * Parent class: [`AggregateRoot`](../../Spatie/EventSourcing/AggregateRoots/AggregateRoot.md)
+
+**See Also:**
+
+* \App\Aggregates\Investigation - 
 
 
 
@@ -17,10 +21,10 @@
 
 ### createInvestigation
 
-
+Records an InvestigationCreated event.
 
 ```php
-public createInvestigation(\App\Data\InvestigationData $investigationData, \App\Models\Incident $incident): static
+public createInvestigation(\App\Data\InvestigationData $investigationData, \App\Models\Incident $incident): $this
 ```
 
 
@@ -34,15 +38,19 @@ public createInvestigation(\App\Data\InvestigationData $investigationData, \App\
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `$investigationData` | **\App\Data\InvestigationData** |  |
-| `$incident` | **\App\Models\Incident** |  |
+| `$investigationData` | **\App\Data\InvestigationData** | The request data for the new investigation. |
+| `$incident` | **\App\Models\Incident** | The Incident in which to attach the Investigation to. |
 
 
 
 
+
+**See Also:**
+
+* \App\StorableEvents\Investigation\InvestigationCreated - 
 
 ***
 
 
 ***
-> Automatically generated on 2025-03-07
+> Automatically generated on 2025-03-10

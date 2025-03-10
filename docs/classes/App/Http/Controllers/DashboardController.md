@@ -120,6 +120,27 @@ public userManagement(\Illuminate\Http\Request $request): \Inertia\Response
 
 ***
 
+### settings
+
+
+
+```php
+public settings(): \Inertia\Response
+```
+
+
+
+
+
+
+
+
+
+
+
 
 ***
-> Automatically generated on 2025-03-07
+
+
+***
+> Automatically generated on 2025-03-10

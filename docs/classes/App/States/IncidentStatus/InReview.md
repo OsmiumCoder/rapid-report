@@ -62,4 +62,4 @@ public static config(): \Spatie\ModelStates\StateConfig
 
 
 ***
-> Automatically generated on 2025-03-07
+> Automatically generated on 2025-03-10

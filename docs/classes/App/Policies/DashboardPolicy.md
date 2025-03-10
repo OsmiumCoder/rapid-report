@@ -95,6 +95,33 @@ public viewUserManagement(\App\Models\User $user): bool
 
 ***
 
+### viewSettings
+
+
+
+```php
+public viewSettings(\App\Models\User $user): bool
+```
+
+
+
+
+
+
+
+
+**Parameters:**
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `$user` | **\App\Models\User** |  |
+
+
+
+
 
 ***
-> Automatically generated on 2025-03-07
+
+
+***
+> Automatically generated on 2025-03-10

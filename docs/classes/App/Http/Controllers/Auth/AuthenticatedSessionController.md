@@ -92,4 +92,4 @@ public destroy(\Illuminate\Http\Request $request): \Illuminate\Http\RedirectResp
 
 
 ***
-> Automatically generated on 2025-03-07
+> Automatically generated on 2025-03-10

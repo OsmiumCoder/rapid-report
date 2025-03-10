@@ -244,4 +244,4 @@ public reopenIncident(\App\Models\Incident $incident): \Illuminate\Http\Redirect
 
 
 ***
-> Automatically generated on 2025-03-07
+> Automatically generated on 2025-03-10
