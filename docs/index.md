@@ -30,7 +30,7 @@ This is an automatically generated documentation for **Rapid Report**.
 
 | Class | Description |
 |-------|-------------|
-| [`CommentData`](./classes/App/Data/CommentData.md) | |
+| [`CommentData`](./classes/App/Data/CommentData.md) | Request data object for creating and attaching comments to other models.|
 | [`ExportData`](./classes/App/Data/ExportData.md) | |
 | [`IncidentData`](./classes/App/Data/IncidentData.md) | |
 | [`InvestigationData`](./classes/App/Data/InvestigationData.md) | |
