@@ -11,7 +11,7 @@ Handles all events related to investigations.
 
 **See Also:**
 
-* \App\Aggregates\Investigation - 
+* [`\App\Models\Investigation`](../Models/Investigation.md) - The model that is being aggregated.
 
 
 
@@ -47,7 +47,7 @@ public createInvestigation(\App\Data\InvestigationData $investigationData, \App\
 
 **See Also:**
 
-* \App\StorableEvents\Investigation\InvestigationCreated - 
+* [`\App\StorableEvents\Investigation\InvestigationCreated`](../StorableEvents/Investigation/InvestigationCreated.md) - The event recorded by this method.
 
 ***
 

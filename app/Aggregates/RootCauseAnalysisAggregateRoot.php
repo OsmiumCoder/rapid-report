@@ -4,11 +4,25 @@ namespace App\Aggregates;
 
 use App\Data\RootCauseAnalysisData;
 use App\Models\Incident;
+use App\Models\RootCauseAnalysis;
 use App\StorableEvents\RootCauseAnalysis\RootCauseAnalysisCreated;
 use Spatie\EventSourcing\AggregateRoots\AggregateRoot;
 
+/**
+ * Handles all events related to root cause analyses.
+ *
+ * @see RootCauseAnalysis The model that is being aggregated.
+ */
 class RootCauseAnalysisAggregateRoot extends AggregateRoot
 {
+    /**
+     * Records an RootCauseAnalysisCreated event.
+     *
+     * @param RootCauseAnalysisData $investigationData The request data for the new root cause analysis.
+     * @param Incident $incident The Incident in which to attach the root cause analysis to.
+     * @return $this
+     * @see RootCauseAnalysisCreated The event recorded by this method.
+     */
     public function createRootCauseAnalysis(RootCauseAnalysisData $investigationData, Incident $incident): static
     {
         $this->recordThat(new RootCauseAnalysisCreated(

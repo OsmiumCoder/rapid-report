@@ -4,11 +4,25 @@ namespace App\Aggregates;
 
 use App\Data\InvestigationData;
 use App\Models\Incident;
+use App\Models\Investigation;
 use App\StorableEvents\Investigation\InvestigationCreated;
 use Spatie\EventSourcing\AggregateRoots\AggregateRoot;
 
+/**
+ * Handles all events related to investigations.
+ *
+ * @see Investigation The model that is being aggregated.
+ */
 class InvestigationAggregateRoot extends AggregateRoot
 {
+    /**
+     * Records an InvestigationCreated event.
+     *
+     * @param InvestigationData $investigationData The request data for the new investigation.
+     * @param Incident $incident The Incident in which to attach the Investigation to.
+     * @return $this
+     * @see InvestigationCreated The event recorded by this method.
+     */
     public function createInvestigation(InvestigationData $investigationData, Incident $incident): static
     {
         $this->recordThat(new InvestigationCreated(

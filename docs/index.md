@@ -17,9 +17,9 @@ This is an automatically generated documentation for **Rapid Report**.
 
 | Class | Description |
 |-------|-------------|
-| [`IncidentAggregateRoot`](./classes/App/Aggregates/IncidentAggregateRoot.md) | All available tags:<br />Any<br />author<br />deprecated<br />example<br />link<br />see<br />uses|
+| [`IncidentAggregateRoot`](./classes/App/Aggregates/IncidentAggregateRoot.md) | Handles all events related to incidents.|
 | [`InvestigationAggregateRoot`](./classes/App/Aggregates/InvestigationAggregateRoot.md) | Handles all events related to investigations.|
-| [`RootCauseAnalysisAggregateRoot`](./classes/App/Aggregates/RootCauseAnalysisAggregateRoot.md) | |
+| [`RootCauseAnalysisAggregateRoot`](./classes/App/Aggregates/RootCauseAnalysisAggregateRoot.md) | Handles all events related to root cause analyses.|
 
 
 

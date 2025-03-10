@@ -31,7 +31,7 @@
 **See Also:**
 
 {% for see in node.tags.see %}
-* {{ see.reference }} {% if see.description %}- {{ see.description|raw }}{% endif %}
+* {{ macros.mdClassLink(see.reference, macros.mdClassPath(node), see.reference) }} {% if see.description %}- {{ see.description|raw }}{% endif %}
 
 {% endfor %}
 {% for link in node.tags.link %}

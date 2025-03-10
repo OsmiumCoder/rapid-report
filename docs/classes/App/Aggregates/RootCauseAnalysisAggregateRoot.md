@@ -2,12 +2,16 @@
 
 # RootCauseAnalysisAggregateRoot
 
-
+Handles all events related to root cause analyses.
 
 
 
 * Full name: `\App\Aggregates\RootCauseAnalysisAggregateRoot`
 * Parent class: [`AggregateRoot`](../../Spatie/EventSourcing/AggregateRoots/AggregateRoot.md)
+
+**See Also:**
+
+* [`\App\Models\RootCauseAnalysis`](../Models/RootCauseAnalysis.md) - The model that is being aggregated.
 
 
 
@@ -17,10 +21,10 @@
 
 ### createRootCauseAnalysis
 
-
+Records an RootCauseAnalysisCreated event.
 
 ```php
-public createRootCauseAnalysis(\App\Data\RootCauseAnalysisData $investigationData, \App\Models\Incident $incident): static
+public createRootCauseAnalysis(\App\Data\RootCauseAnalysisData $investigationData, \App\Models\Incident $incident): $this
 ```
 
 
@@ -34,12 +38,16 @@ public createRootCauseAnalysis(\App\Data\RootCauseAnalysisData $investigationDat
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `$investigationData` | **\App\Data\RootCauseAnalysisData** |  |
-| `$incident` | **\App\Models\Incident** |  |
+| `$investigationData` | **\App\Data\RootCauseAnalysisData** | The request data for the new root cause analysis. |
+| `$incident` | **\App\Models\Incident** | The Incident in which to attach the root cause analysis to. |
 
 
 
 
+
+**See Also:**
+
+* [`\App\StorableEvents\RootCauseAnalysis\RootCauseAnalysisCreated`](../StorableEvents/RootCauseAnalysis/RootCauseAnalysisCreated.md) - The event recorded by this method.
 
 ***
 
