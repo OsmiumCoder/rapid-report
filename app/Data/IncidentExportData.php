@@ -2,17 +2,28 @@
 
 namespace App\Data;
 
+use App\Models\Incident;
 use Carbon\CarbonImmutable;
 use Illuminate\Validation\Rule;
 use Spatie\LaravelData\Attributes\MergeValidationRules;
 use Spatie\LaravelData\Attributes\WithCast;
 use Spatie\LaravelData\Casts\DateTimeInterfaceCast;
 use Spatie\LaravelData\Data;
-use Spatie\LaravelData\Support\Validation\ValidationContext;
 
+/**
+ * Request data for incident export criteria.
+ *
+ * Rules method is overridden, and custom rules are merged with existing, inferred, rules.
+ */
 #[MergeValidationRules]
-class ExportData extends Data
+class IncidentExportData extends Data
 {
+    /**
+     * @param CarbonImmutable $start The start date to export data for.
+     * @param CarbonImmutable $end The end date to export data for.
+     * @param string[] $fields The fields of the incident model to be exported.
+     * @see Incident For a list of the incident fields.
+     */
     public function __construct(
         #[WithCast(DateTimeInterfaceCast::class)]
         public CarbonImmutable $start,
@@ -57,7 +68,15 @@ class ExportData extends Data
 
     }
 
-    public static function rules(ValidationContext $context): array
+    /**
+     * Provides the validation rules for the request.
+     *
+     * $fields property must contain at least one element, and all elements must be distinct.
+     * In addition, all elements of the array must be a valid incident field.
+     *
+     * @return array The custom validation rules for request data.
+     */
+    public static function rules(): array
     {
         return [
             'fields' => ['min:1', 'distinct'],

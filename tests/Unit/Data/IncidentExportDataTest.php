@@ -2,21 +2,21 @@
 
 namespace Tests\Unit\Data;
 
-use App\Data\ExportData;
+use App\Data\IncidentExportData;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
-class ExportDataTest extends TestCase
+class IncidentExportDataTest extends TestCase
 {
     public function test_report_data_valid_with_correct_values()
     {
-        $exportData = ExportData::validateAndCreate([
+        $exportData = IncidentExportData::validateAndCreate([
             'start' => now()->toDateString(),
             'end' => now()->toDateString(),
             'fields' => ['ID']
         ]);
 
-        $this->assertInstanceOf(ExportData::class, $exportData);
+        $this->assertInstanceOf(IncidentExportData::class, $exportData);
     }
 
 
@@ -24,7 +24,7 @@ class ExportDataTest extends TestCase
     {
         $this->expectException(ValidationException::class);
 
-        ExportData::validateAndCreate([
+        IncidentExportData::validateAndCreate([
             'start' => now()->toDateString(),
             'end' => now()->toDateString(),
             'fields' => []
@@ -35,7 +35,7 @@ class ExportDataTest extends TestCase
     {
         $this->expectException(ValidationException::class);
 
-        ExportData::validateAndCreate([
+        IncidentExportData::validateAndCreate([
             'start' => now()->toDateString(),
             'end' => now()->toDateString(),
             'fields' => ['not a field']
