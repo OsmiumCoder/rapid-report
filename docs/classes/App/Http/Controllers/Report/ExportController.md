@@ -20,7 +20,7 @@
 
 
 ```php
-public exportXLSX(\App\Data\ExportData $exportData): \Symfony\Component\HttpFoundation\BinaryFileResponse
+public exportXLSX(\App\Data\IncidentExportData $exportData): \Symfony\Component\HttpFoundation\BinaryFileResponse
 ```
 
 
@@ -34,7 +34,7 @@ public exportXLSX(\App\Data\ExportData $exportData): \Symfony\Component\HttpFoun
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `$exportData` | **\App\Data\ExportData** |  |
+| `$exportData` | **\App\Data\IncidentExportData** |  |
 
 
 
@@ -56,7 +56,7 @@ public exportXLSX(\App\Data\ExportData $exportData): \Symfony\Component\HttpFoun
 
 
 ```php
-public exportCSV(\App\Data\ExportData $exportData): \Symfony\Component\HttpFoundation\BinaryFileResponse
+public exportCSV(\App\Data\IncidentExportData $exportData): \Symfony\Component\HttpFoundation\BinaryFileResponse
 ```
 
 
@@ -70,7 +70,7 @@ public exportCSV(\App\Data\ExportData $exportData): \Symfony\Component\HttpFound
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `$exportData` | **\App\Data\ExportData** |  |
+| `$exportData` | **\App\Data\IncidentExportData** |  |
 
 
 

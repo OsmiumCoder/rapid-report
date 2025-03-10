@@ -20,7 +20,7 @@
 
 
 ```php
-public \App\Data\ExportData $exportData
+public \App\Data\IncidentExportData $exportData
 ```
 
 
@@ -38,7 +38,7 @@ public \App\Data\ExportData $exportData
 
 
 ```php
-public __construct(\App\Data\ExportData $exportData): mixed
+public __construct(\App\Data\IncidentExportData $exportData): mixed
 ```
 
 
@@ -52,7 +52,7 @@ public __construct(\App\Data\ExportData $exportData): mixed
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `$exportData` | **\App\Data\ExportData** |  |
+| `$exportData` | **\App\Data\IncidentExportData** |  |
 
 
 

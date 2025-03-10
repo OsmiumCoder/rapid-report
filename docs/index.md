@@ -31,8 +31,8 @@ This is an automatically generated documentation for **Rapid Report**.
 | Class | Description |
 |-------|-------------|
 | [`CommentData`](./classes/App/Data/CommentData.md) | Request data object for creating and attaching comments to other models.|
-| [`ExportData`](./classes/App/Data/ExportData.md) | |
 | [`IncidentData`](./classes/App/Data/IncidentData.md) | |
+| [`IncidentExportData`](./classes/App/Data/IncidentExportData.md) | Request data for incident export criteria.|
 | [`InvestigationData`](./classes/App/Data/InvestigationData.md) | |
 | [`RootCauseAnalysisData`](./classes/App/Data/RootCauseAnalysisData.md) | |
 
