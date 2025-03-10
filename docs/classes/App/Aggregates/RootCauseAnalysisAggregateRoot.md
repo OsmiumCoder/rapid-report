@@ -49,6 +49,7 @@ public createRootCauseAnalysis(\App\Data\RootCauseAnalysisData $investigationDat
 
 * [`\App\StorableEvents\RootCauseAnalysis\RootCauseAnalysisCreated`](../StorableEvents/RootCauseAnalysis/RootCauseAnalysisCreated.md) - The event recorded by this method.
 
+
 ***
 
 

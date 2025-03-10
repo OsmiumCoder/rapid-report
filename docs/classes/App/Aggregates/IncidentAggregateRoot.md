@@ -48,6 +48,7 @@ public createIncident(\App\Data\IncidentData $incidentData): $this
 
 * [`\App\StorableEvents\Incident\IncidentCreated`](../StorableEvents/Incident/IncidentCreated.md) - The event recorded by this method.
 
+
 ***
 
 ### assignSupervisor
@@ -85,6 +86,7 @@ public assignSupervisor(int $supervisorId): $this
 
 * [`\App\StorableEvents\Incident\SupervisorAssigned`](../StorableEvents/Incident/SupervisorAssigned.md) - The event recored by this method.
 
+
 ***
 
 ### unassignSupervisor
@@ -109,6 +111,7 @@ public unassignSupervisor(): $this
 **See Also:**
 
 * [`\App\StorableEvents\Incident\SupervisorUnassigned`](../StorableEvents/Incident/SupervisorUnassigned.md) - The event recorded by this method.
+
 
 ***
 
@@ -135,6 +138,7 @@ public requestReview(): $this
 
 * [`\App\StorableEvents\Incident\IncidentReviewRequested`](../StorableEvents/Incident/IncidentReviewRequested.md) - The event recorded by this method.
 
+
 ***
 
 ### returnInvestigation
@@ -158,7 +162,9 @@ public returnInvestigation(): $this
 
 **See Also:**
 
-* [`\App\StorableEvents\Investigation\InvestigationReturned`](../StorableEvents/Investigation/InvestigationReturned.md) - The event recorded by this method.* [`\App\States\IncidentStatus\Returned`](../States/IncidentStatus/Returned.md) - The status the incident will transition to.
+* [`\App\StorableEvents\Investigation\InvestigationReturned`](../StorableEvents/Investigation/InvestigationReturned.md) - The event recorded by this method.
+* [`\App\States\IncidentStatus\Returned`](../States/IncidentStatus/Returned.md) - The status the incident will transition to.
+
 
 ***
 
@@ -183,7 +189,9 @@ public returnRCA(): $this
 
 **See Also:**
 
-* [`\App\StorableEvents\RootCauseAnalysis\RootCauseAnalysisReturned`](../StorableEvents/RootCauseAnalysis/RootCauseAnalysisReturned.md) - The event recorded by this method.* [`\App\States\IncidentStatus\Returned`](../States/IncidentStatus/Returned.md) - The status the incident will transition to.
+* [`\App\StorableEvents\RootCauseAnalysis\RootCauseAnalysisReturned`](../StorableEvents/RootCauseAnalysis/RootCauseAnalysisReturned.md) - The event recorded by this method.
+* [`\App\States\IncidentStatus\Returned`](../States/IncidentStatus/Returned.md) - The status the incident will transition to.
+
 
 ***
 
@@ -208,7 +216,9 @@ public closeIncident(): $this
 
 **See Also:**
 
-* [`\App\StorableEvents\Incident\IncidentClosed`](../StorableEvents/Incident/IncidentClosed.md) - The event recorded by this method.* [`\App\States\IncidentStatus\Closed`](../States/IncidentStatus/Closed.md) - The status the incident will transition to.
+* [`\App\StorableEvents\Incident\IncidentClosed`](../StorableEvents/Incident/IncidentClosed.md) - The event recorded by this method.
+* [`\App\States\IncidentStatus\Closed`](../States/IncidentStatus/Closed.md) - The status the incident will transition to.
+
 
 ***
 
@@ -233,7 +243,9 @@ public reopenIncident(): $this
 
 **See Also:**
 
-* [`\App\StorableEvents\Incident\IncidentReopened`](../StorableEvents/Incident/IncidentReopened.md) - The event recorded by this method.* [`\App\States\IncidentStatus\Reopened`](../States/IncidentStatus/Reopened.md) - The status the incident will transition to.
+* [`\App\StorableEvents\Incident\IncidentReopened`](../StorableEvents/Incident/IncidentReopened.md) - The event recorded by this method.
+* [`\App\States\IncidentStatus\Reopened`](../States/IncidentStatus/Reopened.md) - The status the incident will transition to.
+
 
 ***
 
@@ -265,6 +277,7 @@ public addComment(\App\Data\CommentData $commentData): $this
 **See Also:**
 
 * [`\App\StorableEvents\Comment\CommentCreated`](../StorableEvents/Comment/CommentCreated.md) - The event recorded by this method.
+
 
 ***
 
@@ -322,7 +335,9 @@ public uploadFiles(\Illuminate\Http\UploadedFile[] $files): $this
 
 **See Also:**
 
-* [`\App\StorableEvents\Incident\FileCreated`](../StorableEvents/Incident/FileCreated.md) - Is recorded for every file that is stored.* [`\App\StorableEvents\Incident\FilesUploaded`](../StorableEvents/Incident/FilesUploaded.md) - Is recorded when all files have been stored.
+* [`\App\StorableEvents\Incident\FileCreated`](../StorableEvents/Incident/FileCreated.md) - Is recorded for every file that is stored.
+* [`\App\StorableEvents\Incident\FilesUploaded`](../StorableEvents/Incident/FilesUploaded.md) - Is recorded when all files have been stored.
+
 
 ***
 

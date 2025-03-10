@@ -49,6 +49,7 @@ public createInvestigation(\App\Data\InvestigationData $investigationData, \App\
 
 * [`\App\StorableEvents\Investigation\InvestigationCreated`](../StorableEvents/Investigation/InvestigationCreated.md) - The event recorded by this method.
 
+
 ***
 
 
