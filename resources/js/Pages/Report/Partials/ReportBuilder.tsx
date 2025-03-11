@@ -55,10 +55,16 @@ export default function ReportBuilder() {
         fields: [] as string[],
     });
 
-    const toggleSelectedFields = (value: string, isChecked: boolean) => {
-        const updatedFields = isChecked && !data.fields.includes(value) ? [...data.fields, value] : data.fields.filter((item) => item !== value);
+    const toggleSelectedFields = (values: string[], isChecked: boolean) => {
+        const updatedFields = new Set(data.fields);
 
-        setData('fields', updatedFields);
+        if (isChecked) {
+            values.forEach((value) => updatedFields.add(value));
+        } else {
+            values.forEach((value) => updatedFields.delete(value));
+        }
+
+        setData('fields', Array.from(updatedFields));
     };
 
     const [relativeTimeFrameSelected, setRelativeTimeFrameSelected] = useState(false);
@@ -120,11 +126,17 @@ export default function ReportBuilder() {
             <div>
                 <p className="text-m text-black-500">Select Categories for Export:</p>
                 <div className="mt-2 grid grid-rows-1 gap-2 md:grid-flow-col md:grid-rows-4 lg:grid-rows-5">
+                    <LabeledCheckbox
+                        label={'All'}
+                        checked={fields.length === data.fields.length}
+                        onChange={(e) => toggleSelectedFields(fields, e.target.checked)}
+                    />
                     {fields.map((value, index) => (
                         <LabeledCheckbox
                             key={index}
-                            label={value === 'upei_id' ? 'UPEI ID' : uppercaseWordFormat(value)}
-                            onChange={(e) => toggleSelectedFields(value, e.target.checked)}
+                            checked={data.fields.includes(value)}
+                            label={uppercaseWordFormat(value)}
+                            onChange={(e) => toggleSelectedFields([value], e.target.checked)}
                         />
                     ))}
                 </div>
