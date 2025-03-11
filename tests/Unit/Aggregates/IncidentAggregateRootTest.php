@@ -7,7 +7,7 @@ use App\Data\CommentData;
 use App\Data\IncidentData;
 use App\Enum\CommentType;
 use App\Enum\IncidentType;
-use App\Enum\RoleType;
+use App\Enum\IncidentRoles;
 use App\Exceptions\UserNotSupervisorException;
 use App\Mail\IncidentReceived;
 use App\Models\Incident;
@@ -797,7 +797,7 @@ class IncidentAggregateRootTest extends TestCase
             'anonymous' => false,
             'on_behalf' => false,
             'on_behalf_anonymous' => false,
-            'role' => RoleType::EMPLOYEE,
+            'role' => IncidentRoles::EMPLOYEE,
             'last_name' => 'last',
             'first_name' => 'first',
             'upei_id' => '322',
@@ -846,7 +846,7 @@ class IncidentAggregateRootTest extends TestCase
             'anonymous' => false,
             'on_behalf' => false,
             'on_behalf_anonymous' => false,
-            'role' => RoleType::EMPLOYEE,
+            'role' => IncidentRoles::EMPLOYEE,
             'last_name' => 'last',
             'first_name' => 'first',
             'upei_id' => '322',
@@ -905,7 +905,7 @@ class IncidentAggregateRootTest extends TestCase
             'anonymous' => false,
             'on_behalf' => false,
             'on_behalf_anonymous' => false,
-            'role' => RoleType::EMPLOYEE,
+            'role' => IncidentRoles::EMPLOYEE,
             'last_name' => 'last',
             'first_name' => 'first',
             'upei_id' => '322',
@@ -947,7 +947,7 @@ class IncidentAggregateRootTest extends TestCase
             'anonymous' => false,
             'on_behalf' => false,
             'on_behalf_anonymous' => false,
-            'role' => RoleType::EMPLOYEE,
+            'role' => IncidentRoles::EMPLOYEE,
             'last_name' => 'last',
             'first_name' => 'first',
             'upei_id' => '322',
@@ -1021,7 +1021,7 @@ class IncidentAggregateRootTest extends TestCase
             'anonymous' => false,
             'on_behalf' => false,
             'on_behalf_anonymous' => false,
-            'role' => RoleType::EMPLOYEE,
+            'role' => IncidentRoles::EMPLOYEE,
             'last_name' => 'last',
             'first_name' => 'first',
             'upei_id' => '322',
@@ -1067,7 +1067,7 @@ class IncidentAggregateRootTest extends TestCase
             'anonymous' => false,
             'on_behalf' => false,
             'on_behalf_anonymous' => false,
-            'role' => RoleType::EMPLOYEE,
+            'role' => IncidentRoles::EMPLOYEE,
             'last_name' => 'last',
             'first_name' => 'first',
             'upei_id' => '322',
@@ -1110,7 +1110,7 @@ class IncidentAggregateRootTest extends TestCase
             'anonymous' => false,
             'on_behalf' => false,
             'on_behalf_anonymous' => false,
-            'role' => RoleType::EMPLOYEE,
+            'role' => IncidentRoles::EMPLOYEE,
             'last_name' => 'last',
             'first_name' => 'first',
             'upei_id' => '322',

@@ -2,7 +2,7 @@
 
 namespace App\Enum;
 
-enum RoleType: int
+enum IncidentRoles: int
 {
     case EMPLOYEE = 1;
     case STUDENT = 2;

@@ -4,7 +4,7 @@ namespace App\Exports;
 
 use App\Data\IncidentExportData;
 use App\Enum\IncidentType;
-use App\Enum\RoleType;
+use App\Enum\IncidentRoles;
 use App\Models\Incident;
 use Illuminate\Database\Eloquent\Builder;
 use Maatwebsite\Excel\Concerns\FromQuery;
@@ -37,7 +37,7 @@ class IncidentsExport implements FromQuery, ShouldAutoSize, WithHeadings, WithMa
             } elseif ($field == "incident_type") {
                 $rowItems[] = IncidentType::toString($row->incident_type);
             } elseif ($field == "role") {
-                $rowItems[] = $row->role ? RoleType::toString($row->role) : 'Anonymous';
+                $rowItems[] = $row->role ? IncidentRoles::toString($row->role) : 'Anonymous';
             } elseif ($field == "happened_at") {
                 $rowItems[] = $row->happened_at->toDateString();
             } elseif (str_ends_with($field, "_at")) {
