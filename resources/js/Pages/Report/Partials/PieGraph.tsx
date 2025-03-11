@@ -2,10 +2,10 @@ import { getPercent } from '@/Helpers/Report/getPercent';
 import { ChartData } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 
-interface pieProps {
+interface PieProps {
     data: ChartData<'pie'>;
 }
-export default function PieGraph({ data }: pieProps) {
+export default function PieGraph({ data }: PieProps) {
     return (
         <Pie
             data={data}
