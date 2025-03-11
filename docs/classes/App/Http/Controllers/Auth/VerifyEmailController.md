@@ -44,4 +44,4 @@ public __invoke(\Illuminate\Foundation\Auth\EmailVerificationRequest $request): 
 
 
 ***
-> Automatically generated on 2025-03-10
+> Automatically generated on 2025-03-11

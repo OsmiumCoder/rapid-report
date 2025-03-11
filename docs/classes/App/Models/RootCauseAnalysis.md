@@ -80,4 +80,4 @@ public supervisor(): \Illuminate\Database\Eloquent\Relations\BelongsTo
 
 
 ***
-> Automatically generated on 2025-03-10
+> Automatically generated on 2025-03-11

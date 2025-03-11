@@ -2,12 +2,16 @@
 
 # IncidentData
 
-
+Request data for creation of an incident.
 
 
 
 * Full name: `\App\Data\IncidentData`
 * Parent class: [`Data`](../../Spatie/LaravelData/Data.md)
+
+**See Also:**
+
+* [`\App\Models\Incident`](../Models/Incident.md) - The model that will be created for this data.
 
 
 
@@ -64,7 +68,7 @@ public bool $on_behalf_anonymous
 
 
 ```php
-public ?int $role
+public ?\App\Enum\RoleType $role
 ```
 
 
@@ -352,7 +356,7 @@ public ?string $supervisor_name
 
 
 ```php
-public __construct(bool $anonymous, bool $on_behalf, bool $on_behalf_anonymous, ?int $role, ?string $last_name, ?string $first_name, ?string $upei_id, ?string $email, ?string $phone, bool $work_related, bool $workers_comp_submitted, ?\Carbon\Carbon $happened_at, ?string $location, ?string $room_number, ?array $witnesses, \App\Enum\IncidentType $incident_type, string $descriptor, ?string $description, ?string $injury_description, ?string $first_aid_description, ?string $reporters_email, ?string $supervisor_name): mixed
+public __construct(bool $anonymous, bool $on_behalf, bool $on_behalf_anonymous, \App\Enum\RoleType|null $role, string|null $last_name, string|null $first_name, string|null $upei_id, string|null $email, string|null $phone, bool $work_related, bool $workers_comp_submitted, \Carbon\Carbon|null $happened_at, string|null $location, string|null $room_number, array|null $witnesses, \App\Enum\IncidentType $incident_type, string $descriptor, string|null $description, string|null $injury_description, string|null $first_aid_description, string|null $reporters_email, string|null $supervisor_name): mixed
 ```
 
 
@@ -366,28 +370,28 @@ public __construct(bool $anonymous, bool $on_behalf, bool $on_behalf_anonymous, 
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `$anonymous` | **bool** |  |
-| `$on_behalf` | **bool** |  |
-| `$on_behalf_anonymous` | **bool** |  |
-| `$role` | **?int** |  |
-| `$last_name` | **?string** |  |
-| `$first_name` | **?string** |  |
-| `$upei_id` | **?string** |  |
-| `$email` | **?string** |  |
-| `$phone` | **?string** |  |
-| `$work_related` | **bool** |  |
-| `$workers_comp_submitted` | **bool** |  |
-| `$happened_at` | **?\Carbon\Carbon** |  |
-| `$location` | **?string** |  |
-| `$room_number` | **?string** |  |
-| `$witnesses` | **?array** |  |
-| `$incident_type` | **\App\Enum\IncidentType** |  |
-| `$descriptor` | **string** |  |
-| `$description` | **?string** |  |
-| `$injury_description` | **?string** |  |
-| `$first_aid_description` | **?string** |  |
-| `$reporters_email` | **?string** |  |
-| `$supervisor_name` | **?string** |  |
+| `$anonymous` | **bool** | If the reporter of this incident is remaining anonymous. |
+| `$on_behalf` | **bool** | If the reporter is reporting for themselves or for someone else. |
+| `$on_behalf_anonymous` | **bool** | If the incident is about someone who is not the reporter and wants to be anonymous. |
+| `$role` | **\App\Enum\RoleType&#124;null** | Optional. The role of the individual involved in the incident. |
+| `$last_name` | **string&#124;null** | Optional. The last name of the individual involved in the incident. |
+| `$first_name` | **string&#124;null** | Optional. The first name of the individual involved in the incident. |
+| `$upei_id` | **string&#124;null** | Optional. The UPEI ID number of the individual involved in the incident. |
+| `$email` | **string&#124;null** | Optional. The email of the individual involved in the incident. |
+| `$phone` | **string&#124;null** | Optional. The phone number of the individual involved in the incident. |
+| `$work_related` | **bool** | If the incident was related to workplace conditions. |
+| `$workers_comp_submitted` | **bool** | If the individual involved submitted workers compensation. |
+| `$happened_at` | **\Carbon\Carbon&#124;null** | Optional. The date on which the incident occurred. |
+| `$location` | **string&#124;null** | Optional. The location of the incident. |
+| `$room_number` | **string&#124;null** | Optional. The room number or general area of the incident within the location. |
+| `$witnesses` | **array&#124;null** | Optional. The list of witnesses to the incident. Each witness has a name and optionally an email and phone. |
+| `$incident_type` | **\App\Enum\IncidentType** | The category or type of incident. |
+| `$descriptor` | **string** | The descriptor chosen based on the incident type. |
+| `$description` | **string&#124;null** | Optional. The general description of the incident. |
+| `$injury_description` | **string&#124;null** | Optional. The description of any injuries that occurred. |
+| `$first_aid_description` | **string&#124;null** | Optional. The description of any first aid that was administered. |
+| `$reporters_email` | **string&#124;null** | Optional. The email of the reporter. Will not be present if they remain anonymous. |
+| `$supervisor_name` | **string&#124;null** | Optional. The supervisor that was given on submission. |
 
 
 
@@ -397,4 +401,4 @@ public __construct(bool $anonymous, bool $on_behalf, bool $on_behalf_anonymous, 
 
 
 ***
-> Automatically generated on 2025-03-10
+> Automatically generated on 2025-03-11

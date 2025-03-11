@@ -31,10 +31,10 @@ This is an automatically generated documentation for **Rapid Report**.
 | Class | Description |
 |-------|-------------|
 | [`CommentData`](./classes/App/Data/CommentData.md) | Request data object for creating and attaching comments to other models.|
-| [`IncidentData`](./classes/App/Data/IncidentData.md) | |
+| [`IncidentData`](./classes/App/Data/IncidentData.md) | Request data for creation of an incident.|
 | [`IncidentExportData`](./classes/App/Data/IncidentExportData.md) | Request data for incident export criteria.|
-| [`InvestigationData`](./classes/App/Data/InvestigationData.md) | |
-| [`RootCauseAnalysisData`](./classes/App/Data/RootCauseAnalysisData.md) | |
+| [`InvestigationData`](./classes/App/Data/InvestigationData.md) | Request data for creation of an investigation.|
+| [`RootCauseAnalysisData`](./classes/App/Data/RootCauseAnalysisData.md) | Request data for creation of a root cause analysis.|
 
 
 
@@ -473,4 +473,4 @@ This is an automatically generated documentation for **Rapid Report**.
 
 
 ***
-> Automatically generated on 2025-03-10
+> Automatically generated on 2025-03-11

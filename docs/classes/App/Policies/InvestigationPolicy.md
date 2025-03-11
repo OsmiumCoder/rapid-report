@@ -72,4 +72,4 @@ public create(\App\Models\User $user, \App\Models\Incident $incident): bool
 
 
 ***
-> Automatically generated on 2025-03-10
+> Automatically generated on 2025-03-11

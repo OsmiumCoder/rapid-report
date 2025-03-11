@@ -2,12 +2,16 @@
 
 # InvestigationData
 
-
+Request data for creation of an investigation.
 
 
 
 * Full name: `\App\Data\InvestigationData`
 * Parent class: [`Data`](../../Spatie/LaravelData/Data.md)
+
+**See Also:**
+
+* [`\App\Models\Investigation`](../Models/Investigation.md) - The model that will be created for this data.
 
 
 
@@ -187,7 +191,7 @@ public ?array $job_factors
 
 
 ```php
-public __construct(?string $immediate_causes, ?string $basic_causes, string $remedial_actions, ?string $prevention, int $risk_rank, array $resulted_in, ?array $substandard_acts, ?array $substandard_conditions, ?array $energy_transfer_causes, ?array $personal_factors, ?array $job_factors): mixed
+public __construct(string|null $immediate_causes, string|null $basic_causes, string $remedial_actions, string|null $prevention, int $risk_rank, array $resulted_in, array|null $substandard_acts, array|null $substandard_conditions, array|null $energy_transfer_causes, array|null $personal_factors, array|null $job_factors): mixed
 ```
 
 
@@ -201,17 +205,17 @@ public __construct(?string $immediate_causes, ?string $basic_causes, string $rem
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `$immediate_causes` | **?string** |  |
-| `$basic_causes` | **?string** |  |
-| `$remedial_actions` | **string** |  |
-| `$prevention` | **?string** |  |
-| `$risk_rank` | **int** |  |
-| `$resulted_in` | **array** |  |
-| `$substandard_acts` | **?array** |  |
-| `$substandard_conditions` | **?array** |  |
-| `$energy_transfer_causes` | **?array** |  |
-| `$personal_factors` | **?array** |  |
-| `$job_factors` | **?array** |  |
+| `$immediate_causes` | **string&#124;null** | Optional. The immediate causes the supervisor attributed the incident to. |
+| `$basic_causes` | **string&#124;null** | Optional. The basic causes the supervisor attributed the incident to. |
+| `$remedial_actions` | **string** | The remedial actions the supervisor took to deal with the incident. |
+| `$prevention` | **string&#124;null** | Optional. The preventive measures that were taken as a result of the incident. |
+| `$risk_rank` | **int** | The Risk Ranking that was determined for the situation. |
+| `$resulted_in` | **array** | The result of the incident occurring and how it affected all parties. |
+| `$substandard_acts` | **array&#124;null** | Optional. Factors deemed as substandard acts that contributed to the incident. |
+| `$substandard_conditions` | **array&#124;null** | Optional. Factors deemed as substandard conditions that contributed to the incident. |
+| `$energy_transfer_causes` | **array&#124;null** | Optional. Physical exertion factors that contributed to the incident. |
+| `$personal_factors` | **array&#124;null** | Optional. Factors related to the individuals state that contributed to the incident. |
+| `$job_factors` | **array&#124;null** | Optional. Factors related to the workplace environment that contributed to the incident. |
 
 
 
@@ -221,4 +225,4 @@ public __construct(?string $immediate_causes, ?string $basic_causes, string $rem
 
 
 ***
-> Automatically generated on 2025-03-10
+> Automatically generated on 2025-03-11

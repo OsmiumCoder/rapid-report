@@ -129,4 +129,4 @@ public show(\App\Models\Incident $incident): \Inertia\Response
 
 
 ***
-> Automatically generated on 2025-03-10
+> Automatically generated on 2025-03-11

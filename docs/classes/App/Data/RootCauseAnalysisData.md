@@ -2,12 +2,17 @@
 
 # RootCauseAnalysisData
 
+Request data for creation of a root cause analysis.
 
-
-
+Rules method is overridden, and custom rules are merged with existing, inferred, rules.
+All properties of this data is optional.
 
 * Full name: `\App\Data\RootCauseAnalysisData`
 * Parent class: [`Data`](../../Spatie/LaravelData/Data.md)
+
+**See Also:**
+
+* [`\App\Models\RootCauseAnalysis`](../Models/RootCauseAnalysis.md) - The model that will be created for this data.
 
 
 
@@ -277,7 +282,7 @@ public ?array $root_causes
 
 
 ```php
-public __construct(?array $individuals_involved, ?string $primary_effect, ?array $whys, ?array $solutions_and_actions, ?array $peoples_positions, ?array $attention_to_work, ?array $communication, ?bool $ppe_in_good_condition, ?bool $ppe_in_use, ?bool $ppe_correct_type, ?bool $correct_tool_used, ?bool $policies_followed, ?bool $worked_safely, ?bool $used_tool_properly, ?bool $tool_in_good_condition, ?array $working_conditions, ?array $root_causes): mixed
+public __construct(array|null $individuals_involved, string|null $primary_effect, array|null $whys, array|null $solutions_and_actions, array|null $peoples_positions, array|null $attention_to_work, array|null $communication, bool|null $ppe_in_good_condition, bool|null $ppe_in_use, bool|null $ppe_correct_type, bool|null $correct_tool_used, bool|null $policies_followed, bool|null $worked_safely, bool|null $used_tool_properly, bool|null $tool_in_good_condition, array|null $working_conditions, array|null $root_causes): mixed
 ```
 
 
@@ -291,23 +296,23 @@ public __construct(?array $individuals_involved, ?string $primary_effect, ?array
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `$individuals_involved` | **?array** |  |
-| `$primary_effect` | **?string** |  |
-| `$whys` | **?array** |  |
-| `$solutions_and_actions` | **?array** |  |
-| `$peoples_positions` | **?array** |  |
-| `$attention_to_work` | **?array** |  |
-| `$communication` | **?array** |  |
-| `$ppe_in_good_condition` | **?bool** |  |
-| `$ppe_in_use` | **?bool** |  |
-| `$ppe_correct_type` | **?bool** |  |
-| `$correct_tool_used` | **?bool** |  |
-| `$policies_followed` | **?bool** |  |
-| `$worked_safely` | **?bool** |  |
-| `$used_tool_properly` | **?bool** |  |
-| `$tool_in_good_condition` | **?bool** |  |
-| `$working_conditions` | **?array** |  |
-| `$root_causes` | **?array** |  |
+| `$individuals_involved` | **array&#124;null** | A list of the individuals that were deemed involved in the incident. |
+| `$primary_effect` | **string&#124;null** | The primary effect that caused the incident. |
+| `$whys` | **array&#124;null** | A list of the reasons why the incident likely occurred. |
+| `$solutions_and_actions` | **array&#124;null** | A list of the solutions and corrective actions taken by the supervisor. |
+| `$peoples_positions` | **array&#124;null** | A list of physical workplace conditions that if done correct may have prevented the incident. |
+| `$attention_to_work` | **array&#124;null** | A list visual workplace conditions that if done correct may have prevented the incident. |
+| `$communication` | **array&#124;null** | A list communication workplace conditions that if done correct may have prevented the incident. |
+| `$ppe_in_good_condition` | **bool&#124;null** | If the PPE was in good condition prior to the incident. |
+| `$ppe_in_use` | **bool&#124;null** | If PPE was in use during the incident. |
+| `$ppe_correct_type` | **bool&#124;null** | If the correct PPE was used for the environment. |
+| `$correct_tool_used` | **bool&#124;null** | If the correct tool for the job was used. |
+| `$policies_followed` | **bool&#124;null** | If the correct workplace policies were followed. |
+| `$worked_safely` | **bool&#124;null** | If the job was performed in a safe manner. |
+| `$used_tool_properly` | **bool&#124;null** | If the tool used during the job was used properly. |
+| `$tool_in_good_condition` | **bool&#124;null** | If the tool was in good condition prior to the incident. |
+| `$working_conditions` | **array&#124;null** | A list physical workplace environment factors that if done correct may have prevented the incident. |
+| `$root_causes` | **array&#124;null** | A list of the top 3 major contributing root causes to the incident. |
 
 
 
@@ -317,25 +322,26 @@ public __construct(?array $individuals_involved, ?string $primary_effect, ?array
 
 ### rules
 
-
+Provides the validation rules for the request.
 
 ```php
-public static rules(\Spatie\LaravelData\Support\Validation\ValidationContext $context): array
+public static rules(): array&lt;string,array&gt;
 ```
 
-
+Each individual involved may contain a name email and phone,
+all of which occur sometimes. Each solution and action may contain a cause,
+control, remedial action, by whom, and by when.
+All other arrays are arrays of only strings.
 
 * This method is **static**.
 
 
 
 
-**Parameters:**
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$context` | **\Spatie\LaravelData\Support\Validation\ValidationContext** |  |
+**Return Value:**
 
+The custom validation rules for request data.
 
 
 
@@ -344,10 +350,10 @@ public static rules(\Spatie\LaravelData\Support\Validation\ValidationContext $co
 
 ### messages
 
-
+Overridden validation messages.
 
 ```php
-public static messages(): array
+public static messages(): array&lt;string,string&gt;
 ```
 
 
@@ -358,6 +364,10 @@ public static messages(): array
 
 
 
+**Return Value:**
+
+The custom validation error messages.
+
 
 
 
@@ -365,4 +375,4 @@ public static messages(): array
 
 
 ***
-> Automatically generated on 2025-03-10
+> Automatically generated on 2025-03-11

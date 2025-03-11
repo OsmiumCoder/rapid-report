@@ -205,4 +205,4 @@ public toArray(object $notifiable): array&lt;string,mixed&gt;
 
 
 ***
-> Automatically generated on 2025-03-10
+> Automatically generated on 2025-03-11

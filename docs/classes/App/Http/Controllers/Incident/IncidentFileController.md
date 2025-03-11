@@ -78,4 +78,4 @@ public download(\App\Models\Incident $incident, \App\Models\File $file): \Symfon
 
 
 ***
-> Automatically generated on 2025-03-10
+> Automatically generated on 2025-03-11

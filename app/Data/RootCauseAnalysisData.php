@@ -2,14 +2,41 @@
 
 namespace App\Data;
 
+use App\Models\RootCauseAnalysis;
 use Illuminate\Validation\Rule;
 use Spatie\LaravelData\Attributes\MergeValidationRules;
 use Spatie\LaravelData\Data;
-use Spatie\LaravelData\Support\Validation\ValidationContext;
 
+/**
+ * Request data for creation of a root cause analysis.
+ *
+ * Rules method is overridden, and custom rules are merged with existing, inferred, rules.
+ * All properties of this data is optional.
+ *
+ * @see RootCauseAnalysis The model that will be created for this data.
+ */
 #[MergeValidationRules]
 class RootCauseAnalysisData extends Data
 {
+    /**
+     * @param array|null $individuals_involved A list of the individuals that were deemed involved in the incident.
+     * @param string|null $primary_effect The primary effect that caused the incident.
+     * @param array|null $whys A list of the reasons why the incident likely occurred.
+     * @param array|null $solutions_and_actions A list of the solutions and corrective actions taken by the supervisor.
+     * @param array|null $peoples_positions A list of physical workplace conditions that if done correct may have prevented the incident.
+     * @param array|null $attention_to_work A list visual workplace conditions that if done correct may have prevented the incident.
+     * @param array|null $communication A list communication workplace conditions that if done correct may have prevented the incident.
+     * @param bool|null $ppe_in_good_condition If the PPE was in good condition prior to the incident.
+     * @param bool|null $ppe_in_use If PPE was in use during the incident.
+     * @param bool|null $ppe_correct_type If the correct PPE was used for the environment.
+     * @param bool|null $correct_tool_used If the correct tool for the job was used.
+     * @param bool|null $policies_followed If the correct workplace policies were followed.
+     * @param bool|null $worked_safely If the job was performed in a safe manner.
+     * @param bool|null $used_tool_properly If the tool used during the job was used properly.
+     * @param bool|null $tool_in_good_condition If the tool was in good condition prior to the incident.
+     * @param array|null $working_conditions A list physical workplace environment factors that if done correct may have prevented the incident.
+     * @param array|null $root_causes A list of the top 3 major contributing root causes to the incident.
+     */
     public function __construct(
         public ?array $individuals_involved,
         public ?string $primary_effect,
@@ -31,7 +58,17 @@ class RootCauseAnalysisData extends Data
     ) {
     }
 
-    public static function rules(ValidationContext $context): array
+    /**
+     * Provides the validation rules for the request.
+     *
+     * Each individual involved may contain a name email and phone,
+     * all of which occur sometimes. Each solution and action may contain a cause,
+     * control, remedial action, by whom, and by when.
+     * All other arrays are arrays of only strings.
+     *
+     * @return array<string, array> The custom validation rules for request data.
+     */
+    public static function rules(): array
     {
         return [
             'individuals_involved.*.name' => ['sometimes', 'nullable', 'string'],
@@ -55,6 +92,11 @@ class RootCauseAnalysisData extends Data
         ];
     }
 
+    /**
+     * Overridden validation messages.
+     *
+     * @return array<string, string> The custom validation error messages.
+     */
     public static function messages(): array
     {
         return [
