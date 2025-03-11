@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enum\IncidentType;
+use App\Enum\RoleType;
 use App\States\IncidentStatus\IncidentStatusState;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -52,6 +53,7 @@ class Incident extends Model
             'anonymous' => 'boolean',
             'on_behalf' => 'boolean',
             'on_behalf_anonymous' => 'boolean',
+            'role' => RoleType::class,
             'happened_at' => 'date:Y-m-d',
             'work_related' => 'boolean',
             'witnesses' => 'array',
