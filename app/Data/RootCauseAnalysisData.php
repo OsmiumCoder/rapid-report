@@ -19,10 +19,10 @@ use Spatie\LaravelData\Data;
 class RootCauseAnalysisData extends Data
 {
     /**
-     * @param array<int, array<string, string>>|null $individuals_involved A list of the individuals that were deemed involved in the incident.
+     * @param array|null $individuals_involved A list of the individuals that were deemed involved in the incident.
      * @param string|null $primary_effect The primary effect that caused the incident.
      * @param string[]|null $whys A list of the reasons why the incident likely occurred.
-     * @param array<int, array<string, string>>|null $solutions_and_actions A list of the solutions and corrective actions taken by the supervisor.
+     * @param array|null $solutions_and_actions A list of the solutions and corrective actions taken by the supervisor.
      * @param string[]|null $peoples_positions A list of physical workplace conditions that if done correct may have prevented the incident.
      * @param string[]|null $attention_to_work A list visual workplace conditions that if done correct may have prevented the incident.
      * @param string[]|null $communication A list communication workplace conditions that if done correct may have prevented the incident.

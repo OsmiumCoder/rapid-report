@@ -282,7 +282,7 @@ public ?array $root_causes
 
 
 ```php
-public __construct(array&lt;int,array&lt;string,string&gt;&gt;|null $individuals_involved, string|null $primary_effect, string[]|null $whys, array&lt;int,array&lt;string,string&gt;&gt;|null $solutions_and_actions, string[]|null $peoples_positions, string[]|null $attention_to_work, string[]|null $communication, bool|null $ppe_in_good_condition, bool|null $ppe_in_use, bool|null $ppe_correct_type, bool|null $correct_tool_used, bool|null $policies_followed, bool|null $worked_safely, bool|null $used_tool_properly, bool|null $tool_in_good_condition, string[]|null $working_conditions, string[]|null $root_causes): mixed
+public __construct(array|null $individuals_involved, string|null $primary_effect, string[]|null $whys, array|null $solutions_and_actions, string[]|null $peoples_positions, string[]|null $attention_to_work, string[]|null $communication, bool|null $ppe_in_good_condition, bool|null $ppe_in_use, bool|null $ppe_correct_type, bool|null $correct_tool_used, bool|null $policies_followed, bool|null $worked_safely, bool|null $used_tool_properly, bool|null $tool_in_good_condition, string[]|null $working_conditions, string[]|null $root_causes): mixed
 ```
 
 
@@ -296,10 +296,10 @@ public __construct(array&lt;int,array&lt;string,string&gt;&gt;|null $individuals
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `$individuals_involved` | **array<int,array<string,string>>&#124;null** | A list of the individuals that were deemed involved in the incident. |
+| `$individuals_involved` | **array&#124;null** | A list of the individuals that were deemed involved in the incident. |
 | `$primary_effect` | **string&#124;null** | The primary effect that caused the incident. |
 | `$whys` | **string[]&#124;null** | A list of the reasons why the incident likely occurred. |
-| `$solutions_and_actions` | **array<int,array<string,string>>&#124;null** | A list of the solutions and corrective actions taken by the supervisor. |
+| `$solutions_and_actions` | **array&#124;null** | A list of the solutions and corrective actions taken by the supervisor. |
 | `$peoples_positions` | **string[]&#124;null** | A list of physical workplace conditions that if done correct may have prevented the incident. |
 | `$attention_to_work` | **string[]&#124;null** | A list visual workplace conditions that if done correct may have prevented the incident. |
 | `$communication` | **string[]&#124;null** | A list communication workplace conditions that if done correct may have prevented the incident. |

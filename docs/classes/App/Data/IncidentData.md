@@ -356,7 +356,7 @@ public ?string $supervisor_name
 
 
 ```php
-public __construct(bool $anonymous, bool $on_behalf, bool $on_behalf_anonymous, \App\Enum\RoleType|null $role, string|null $last_name, string|null $first_name, string|null $upei_id, string|null $email, string|null $phone, bool $work_related, bool $workers_comp_submitted, \Carbon\Carbon|null $happened_at, string|null $location, string|null $room_number, array&lt;int,array&lt;string,string&gt;&gt;|null $witnesses, \App\Enum\IncidentType $incident_type, string $descriptor, string|null $description, string|null $injury_description, string|null $first_aid_description, string|null $reporters_email, string|null $supervisor_name): mixed
+public __construct(bool $anonymous, bool $on_behalf, bool $on_behalf_anonymous, \App\Enum\RoleType|null $role, string|null $last_name, string|null $first_name, string|null $upei_id, string|null $email, string|null $phone, bool $work_related, bool $workers_comp_submitted, \Carbon\Carbon|null $happened_at, string|null $location, string|null $room_number, array|null $witnesses, \App\Enum\IncidentType $incident_type, string $descriptor, string|null $description, string|null $injury_description, string|null $first_aid_description, string|null $reporters_email, string|null $supervisor_name): mixed
 ```
 
 
@@ -384,7 +384,7 @@ public __construct(bool $anonymous, bool $on_behalf, bool $on_behalf_anonymous, 
 | `$happened_at` | **\Carbon\Carbon&#124;null** | Optional. The date on which the incident occurred. |
 | `$location` | **string&#124;null** | Optional. The location of the incident. |
 | `$room_number` | **string&#124;null** | Optional. The room number or general area of the incident within the location. |
-| `$witnesses` | **array<int,array<string,string>>&#124;null** | Optional. The list of witnesses to the incident. Each witness has a name and optionally an email and phone. |
+| `$witnesses` | **array&#124;null** | Optional. The list of witnesses to the incident. Each witness has a name and optionally an email and phone. |
 | `$incident_type` | **\App\Enum\IncidentType** | The category or type of incident. |
 | `$descriptor` | **string** | The descriptor chosen based on the incident type. |
 | `$description` | **string&#124;null** | Optional. The general description of the incident. |
