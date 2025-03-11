@@ -56,7 +56,7 @@ export default function NavigationItems() {
                 <li>
                     <ul role="list" className="-mx-2 space-y-1">
                         {navigationItems.map((item, index) => (
-                            <>
+                            <div key={index + item.name}>
                                 {item.subItems ? (
                                     <div>
                                         <NavigationDropDownItem
@@ -67,15 +67,14 @@ export default function NavigationItems() {
                                         {incidentDropDownIsOpen && (
                                             <div>
                                                 {item.subItems.map(
-                                                    (item, index) =>
-                                                        canView(item, auth.user.roles) && <NavigationItem key={`${item.name}${index}`} item={item} />,
+                                                    (item, i) => canView(item, auth.user.roles) && <NavigationItem key={i + item.name} item={item} />,
                                                 )}
                                             </div>
                                         )}
                                     </div>
                                 ) : (
                                     canView(item, auth.user.roles) && (
-                                        <li key={`${item.name}${index}`}>
+                                        <li>
                                             <Link
                                                 href={route(item.route as string)}
                                                 className={classNames(
@@ -91,7 +90,7 @@ export default function NavigationItems() {
                                         </li>
                                     )
                                 )}
-                            </>
+                            </div>
                         ))}
                     </ul>
                 </li>
