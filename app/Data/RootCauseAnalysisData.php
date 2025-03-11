@@ -19,13 +19,13 @@ use Spatie\LaravelData\Data;
 class RootCauseAnalysisData extends Data
 {
     /**
-     * @param array|null $individuals_involved A list of the individuals that were deemed involved in the incident.
+     * @param array<int, array<string, string>>|null $individuals_involved A list of the individuals that were deemed involved in the incident.
      * @param string|null $primary_effect The primary effect that caused the incident.
-     * @param array|null $whys A list of the reasons why the incident likely occurred.
-     * @param array|null $solutions_and_actions A list of the solutions and corrective actions taken by the supervisor.
-     * @param array|null $peoples_positions A list of physical workplace conditions that if done correct may have prevented the incident.
-     * @param array|null $attention_to_work A list visual workplace conditions that if done correct may have prevented the incident.
-     * @param array|null $communication A list communication workplace conditions that if done correct may have prevented the incident.
+     * @param string[]|null $whys A list of the reasons why the incident likely occurred.
+     * @param array<int, array<string, string>>|null $solutions_and_actions A list of the solutions and corrective actions taken by the supervisor.
+     * @param string[]|null $peoples_positions A list of physical workplace conditions that if done correct may have prevented the incident.
+     * @param string[]|null $attention_to_work A list visual workplace conditions that if done correct may have prevented the incident.
+     * @param string[]|null $communication A list communication workplace conditions that if done correct may have prevented the incident.
      * @param bool|null $ppe_in_good_condition If the PPE was in good condition prior to the incident.
      * @param bool|null $ppe_in_use If PPE was in use during the incident.
      * @param bool|null $ppe_correct_type If the correct PPE was used for the environment.
@@ -34,8 +34,8 @@ class RootCauseAnalysisData extends Data
      * @param bool|null $worked_safely If the job was performed in a safe manner.
      * @param bool|null $used_tool_properly If the tool used during the job was used properly.
      * @param bool|null $tool_in_good_condition If the tool was in good condition prior to the incident.
-     * @param array|null $working_conditions A list physical workplace environment factors that if done correct may have prevented the incident.
-     * @param array|null $root_causes A list of the top 3 major contributing root causes to the incident.
+     * @param string[]|null $working_conditions A list physical workplace environment factors that if done correct may have prevented the incident.
+     * @param string[]|null $root_causes A list of the top 3 major contributing root causes to the incident.
      */
     public function __construct(
         public ?array $individuals_involved,
@@ -66,7 +66,7 @@ class RootCauseAnalysisData extends Data
      * control, remedial action, by whom, and by when.
      * All other arrays are arrays of only strings.
      *
-     * @return array<string, array> The custom validation rules for request data.
+     * @return array The custom validation rules for request data.
      */
     public static function rules(): array
     {
@@ -95,7 +95,7 @@ class RootCauseAnalysisData extends Data
     /**
      * Overridden validation messages.
      *
-     * @return array<string, string> The custom validation error messages.
+     * @return array The custom validation error messages.
      */
     public static function messages(): array
     {

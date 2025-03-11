@@ -191,7 +191,7 @@ public ?array $job_factors
 
 
 ```php
-public __construct(string|null $immediate_causes, string|null $basic_causes, string $remedial_actions, string|null $prevention, int $risk_rank, array $resulted_in, array|null $substandard_acts, array|null $substandard_conditions, array|null $energy_transfer_causes, array|null $personal_factors, array|null $job_factors): mixed
+public __construct(string|null $immediate_causes, string|null $basic_causes, string $remedial_actions, string|null $prevention, int $risk_rank, string[] $resulted_in, string[]|null $substandard_acts, string[]|null $substandard_conditions, string[]|null $energy_transfer_causes, string[]|null $personal_factors, string[]|null $job_factors): mixed
 ```
 
 
@@ -210,12 +210,12 @@ public __construct(string|null $immediate_causes, string|null $basic_causes, str
 | `$remedial_actions` | **string** | The remedial actions the supervisor took to deal with the incident. |
 | `$prevention` | **string&#124;null** | Optional. The preventive measures that were taken as a result of the incident. |
 | `$risk_rank` | **int** | The Risk Ranking that was determined for the situation. |
-| `$resulted_in` | **array** | The result of the incident occurring and how it affected all parties. |
-| `$substandard_acts` | **array&#124;null** | Optional. Factors deemed as substandard acts that contributed to the incident. |
-| `$substandard_conditions` | **array&#124;null** | Optional. Factors deemed as substandard conditions that contributed to the incident. |
-| `$energy_transfer_causes` | **array&#124;null** | Optional. Physical exertion factors that contributed to the incident. |
-| `$personal_factors` | **array&#124;null** | Optional. Factors related to the individuals state that contributed to the incident. |
-| `$job_factors` | **array&#124;null** | Optional. Factors related to the workplace environment that contributed to the incident. |
+| `$resulted_in` | **string[]** | The result of the incident occurring and how it affected all parties. |
+| `$substandard_acts` | **string[]&#124;null** | Optional. Factors deemed as substandard acts that contributed to the incident. |
+| `$substandard_conditions` | **string[]&#124;null** | Optional. Factors deemed as substandard conditions that contributed to the incident. |
+| `$energy_transfer_causes` | **string[]&#124;null** | Optional. Physical exertion factors that contributed to the incident. |
+| `$personal_factors` | **string[]&#124;null** | Optional. Factors related to the individuals state that contributed to the incident. |
+| `$job_factors` | **string[]&#124;null** | Optional. Factors related to the workplace environment that contributed to the incident. |
 
 
 

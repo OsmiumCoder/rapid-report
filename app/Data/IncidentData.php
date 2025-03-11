@@ -32,7 +32,7 @@ class IncidentData extends Data
      * @param Carbon|null $happened_at Optional. The date on which the incident occurred.
      * @param string|null $location Optional. The location of the incident.
      * @param string|null $room_number Optional. The room number or general area of the incident within the location.
-     * @param array|null $witnesses Optional. The list of witnesses to the incident. Each witness has a name and optionally an email and phone.
+     * @param array<int, array<string, string>>|null $witnesses Optional. The list of witnesses to the incident. Each witness has a name and optionally an email and phone.
      * @param IncidentType $incident_type The category or type of incident.
      * @param string $descriptor The descriptor chosen based on the incident type.
      * @param string|null $description Optional. The general description of the incident.

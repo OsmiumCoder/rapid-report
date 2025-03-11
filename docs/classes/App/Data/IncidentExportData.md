@@ -101,7 +101,7 @@ public __construct(\Carbon\CarbonImmutable $start, \Carbon\CarbonImmutable $end,
 Provides the validation rules for the request.
 
 ```php
-public static rules(): array&lt;string,array&gt;
+public static rules(): array
 ```
 
 $fields property must contain at least one element, and all elements must be distinct.

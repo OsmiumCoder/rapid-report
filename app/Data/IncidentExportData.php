@@ -74,7 +74,7 @@ class IncidentExportData extends Data
      * $fields property must contain at least one element, and all elements must be distinct.
      * In addition, all elements of the array must be a valid incident field.
      *
-     * @return array<string, array> The custom validation rules for request data.
+     * @return array The custom validation rules for request data.
      */
     public static function rules(): array
     {

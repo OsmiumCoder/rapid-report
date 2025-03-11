@@ -282,7 +282,7 @@ public ?array $root_causes
 
 
 ```php
-public __construct(array|null $individuals_involved, string|null $primary_effect, array|null $whys, array|null $solutions_and_actions, array|null $peoples_positions, array|null $attention_to_work, array|null $communication, bool|null $ppe_in_good_condition, bool|null $ppe_in_use, bool|null $ppe_correct_type, bool|null $correct_tool_used, bool|null $policies_followed, bool|null $worked_safely, bool|null $used_tool_properly, bool|null $tool_in_good_condition, array|null $working_conditions, array|null $root_causes): mixed
+public __construct(array&lt;int,array&lt;string,string&gt;&gt;|null $individuals_involved, string|null $primary_effect, string[]|null $whys, array&lt;int,array&lt;string,string&gt;&gt;|null $solutions_and_actions, string[]|null $peoples_positions, string[]|null $attention_to_work, string[]|null $communication, bool|null $ppe_in_good_condition, bool|null $ppe_in_use, bool|null $ppe_correct_type, bool|null $correct_tool_used, bool|null $policies_followed, bool|null $worked_safely, bool|null $used_tool_properly, bool|null $tool_in_good_condition, string[]|null $working_conditions, string[]|null $root_causes): mixed
 ```
 
 
@@ -296,13 +296,13 @@ public __construct(array|null $individuals_involved, string|null $primary_effect
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `$individuals_involved` | **array&#124;null** | A list of the individuals that were deemed involved in the incident. |
+| `$individuals_involved` | **array<int,array<string,string>>&#124;null** | A list of the individuals that were deemed involved in the incident. |
 | `$primary_effect` | **string&#124;null** | The primary effect that caused the incident. |
-| `$whys` | **array&#124;null** | A list of the reasons why the incident likely occurred. |
-| `$solutions_and_actions` | **array&#124;null** | A list of the solutions and corrective actions taken by the supervisor. |
-| `$peoples_positions` | **array&#124;null** | A list of physical workplace conditions that if done correct may have prevented the incident. |
-| `$attention_to_work` | **array&#124;null** | A list visual workplace conditions that if done correct may have prevented the incident. |
-| `$communication` | **array&#124;null** | A list communication workplace conditions that if done correct may have prevented the incident. |
+| `$whys` | **string[]&#124;null** | A list of the reasons why the incident likely occurred. |
+| `$solutions_and_actions` | **array<int,array<string,string>>&#124;null** | A list of the solutions and corrective actions taken by the supervisor. |
+| `$peoples_positions` | **string[]&#124;null** | A list of physical workplace conditions that if done correct may have prevented the incident. |
+| `$attention_to_work` | **string[]&#124;null** | A list visual workplace conditions that if done correct may have prevented the incident. |
+| `$communication` | **string[]&#124;null** | A list communication workplace conditions that if done correct may have prevented the incident. |
 | `$ppe_in_good_condition` | **bool&#124;null** | If the PPE was in good condition prior to the incident. |
 | `$ppe_in_use` | **bool&#124;null** | If PPE was in use during the incident. |
 | `$ppe_correct_type` | **bool&#124;null** | If the correct PPE was used for the environment. |
@@ -311,8 +311,8 @@ public __construct(array|null $individuals_involved, string|null $primary_effect
 | `$worked_safely` | **bool&#124;null** | If the job was performed in a safe manner. |
 | `$used_tool_properly` | **bool&#124;null** | If the tool used during the job was used properly. |
 | `$tool_in_good_condition` | **bool&#124;null** | If the tool was in good condition prior to the incident. |
-| `$working_conditions` | **array&#124;null** | A list physical workplace environment factors that if done correct may have prevented the incident. |
-| `$root_causes` | **array&#124;null** | A list of the top 3 major contributing root causes to the incident. |
+| `$working_conditions` | **string[]&#124;null** | A list physical workplace environment factors that if done correct may have prevented the incident. |
+| `$root_causes` | **string[]&#124;null** | A list of the top 3 major contributing root causes to the incident. |
 
 
 
@@ -325,7 +325,7 @@ public __construct(array|null $individuals_involved, string|null $primary_effect
 Provides the validation rules for the request.
 
 ```php
-public static rules(): array&lt;string,array&gt;
+public static rules(): array
 ```
 
 Each individual involved may contain a name email and phone,
@@ -353,7 +353,7 @@ The custom validation rules for request data.
 Overridden validation messages.
 
 ```php
-public static messages(): array&lt;string,string&gt;
+public static messages(): array
 ```
 
 
