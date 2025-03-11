@@ -3,7 +3,7 @@ import SelectInput from '@/Components/SelectInput';
 import TextInput from '@/Components/TextInput';
 import ToggleSwitch from '@/Components/ToggleSwitch';
 import dateFormat from '@/Formatters/dateFormat';
-import {descriptors, locations} from '@/Pages/Incident/Stages/IncidentDropDownValues';
+import { descriptors, locations } from '@/Pages/Incident/Stages/IncidentDropDownValues';
 import { StageProps } from '@/Pages/Incident/Stages/StageWrapper';
 
 export default function IncidentInformationStage({ formData, setFormData }: StageProps) {
@@ -43,11 +43,7 @@ export default function IncidentInformationStage({ formData, setFormData }: Stag
                     <label className="block text-sm/6 font-medium text-gray-900">Location</label>
                 </div>
                 <div className="mt-1 grid grid-cols-1">
-                    <SelectInput
-                        value={formData.location || ""}
-                        onChange={(e) => setFormData('location', e.target.value)}
-                        className="w-full"
-                    >
+                    <SelectInput value={formData.location || ''} onChange={(e) => setFormData('location', e.target.value)} className="w-full">
                         {locations[0].options.map((option, index) => (
                             <option key={index} value={option}>
                                 {option}
