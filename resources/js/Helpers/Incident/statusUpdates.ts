@@ -5,7 +5,7 @@ import { Dispatch, SetStateAction } from 'react';
 export const returnInvestigation = (incident: Incident, setIsLoading: Dispatch<SetStateAction<boolean>>, onSuccess: () => void) => {
     setIsLoading(true);
     router.patch(route('incidents.return-investigation', { incident: incident.slug }), undefined, {
-        onSuccess: () => onSuccess(),
+        onSuccess: onSuccess,
         onFinish: () => setIsLoading(false),
         preserveScroll: true,
     });
@@ -14,7 +14,7 @@ export const returnInvestigation = (incident: Incident, setIsLoading: Dispatch<S
 export const returnRCA = (incident: Incident, setIsLoading: Dispatch<SetStateAction<boolean>>, onSuccess: () => void) => {
     setIsLoading(true);
     router.patch(route('incidents.return-rca', { incident: incident.slug }), undefined, {
-        onSuccess: () => onSuccess(),
+        onSuccess: onSuccess,
         onFinish: () => setIsLoading(false),
         preserveScroll: true,
     });
@@ -23,7 +23,7 @@ export const returnRCA = (incident: Incident, setIsLoading: Dispatch<SetStateAct
 export const closeIncident = (incident: Incident, setIsLoading: Dispatch<SetStateAction<boolean>>, onSuccess: () => void) => {
     setIsLoading(true);
     router.patch(route('incidents.close', { incident: incident.slug }), undefined, {
-        onSuccess: () => onSuccess(),
+        onSuccess: onSuccess,
         onFinish: () => setIsLoading(false),
         preserveScroll: true,
     });
@@ -32,7 +32,7 @@ export const closeIncident = (incident: Incident, setIsLoading: Dispatch<SetStat
 export const reopenIncident = (incident: Incident, setIsLoading: Dispatch<SetStateAction<boolean>>, onSuccess: () => void) => {
     setIsLoading(true);
     router.patch(route('incidents.reopen', { incident: incident.slug }), undefined, {
-        onSuccess: () => onSuccess(),
+        onSuccess: onSuccess,
         onFinish: () => setIsLoading(false),
         preserveScroll: true,
     });
@@ -49,7 +49,7 @@ export const assignSupervisor = (
         route('incidents.assign-supervisor', { incident: incident.slug }),
         { supervisor_id: supervisorId },
         {
-            onSuccess: () => onSuccess(),
+            onSuccess: onSuccess,
             onFinish: () => setIsLoading(false),
             preserveScroll: true,
         },
@@ -59,7 +59,7 @@ export const assignSupervisor = (
 export const unassignSupervisor = (incident: Incident, setIsLoading: Dispatch<SetStateAction<boolean>>, onSuccess: () => void) => {
     setIsLoading(true);
     router.patch(route('incidents.unassign-supervisor', { incident: incident.slug }), undefined, {
-        onSuccess: () => onSuccess(),
+        onSuccess: onSuccess,
         onFinish: () => setIsLoading(false),
         preserveScroll: true,
     });

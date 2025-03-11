@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Report;
 
+use App\Enum\IncidentType;
 use App\Http\Controllers\Controller;
 use App\Models\Incident;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -28,63 +29,58 @@ class ReportController extends Controller
     {
         Gate::authorize('view-report-page');
 
-        $pairs = Incident::select(['created_at', 'closed_at'])
-            ->whereNotNull('closed_at')
-            ->get(['created_at', 'closed_at'])
-            ->toArray();
+        $closeTimes = Incident::selectRaw("DATEDIFF(closed_at, created_at) as diff")
+            ->whereNotNull('closed_at')->pluck('diff')->toArray();
 
-        $diffs = array_map(fn ($item): false|int =>
-            date_diff(date_create($item['created_at']), date_create($item['closed_at']))->days, $pairs);
-
-        $count = array_count_values(array_reduce($diffs, function ($carry, $value) {
+        $closedCounts = array_count_values(array_map(function ($value) {
             if ($value < 1) {
-                $carry[] = 'Less then 1 day ';
-            } elseif ($value < 7) {
-                $carry[] = 'Between 1 day and a Week';
-            } elseif ($value < 31) {
-                $carry[] = 'Between 1 week and a Month';
-            } else {
-                $carry[] = 'Over a month';
+                return 'Less then 1 day';
             }
-            return $carry;
-        }, []));
+            if ($value < 7) {
+                return 'Between 1 day and a Week';
+            }
+            if ($value < 31) {
+                return 'Between 1 week and a Month';
+            }
+            return 'Over a month';
+        }, $closeTimes));
 
         return Inertia::render('Report/Stats', [
-            'location' => Incident::selectRaw('location, count(location) as total')
+            'locationCount' => Incident::selectRaw('location, count(location) as total')
                 ->groupBy('location')
                 ->pluck('total', 'location'),
-            'incident_live_time_dist' => $count,
-            'type_dist' => Incident::selectRaw('incident_type, count(incident_type) as total')
+            'closedTimeCount' => $closedCounts,
+            'typeCount' => Incident::selectRaw('incident_type, count(incident_type) as total')
                 ->groupBy('incident_type')
                 ->pluck('total', 'incident_type'),
-            'role_dist' => Incident::selectRaw('role, count(role) as total')
+            'roleCount' => Incident::selectRaw('role, count(role) as total')
                 ->groupBy('role')
                 ->pluck('total', 'role'),
-            'status_dist' => Incident::selectRaw('status, count(status) as total')
+            'statusCount' => Incident::selectRaw('status, count(status) as total')
                 ->groupBy('status')
                 ->pluck('total', 'status'),
-            'anon_dist' => Incident::selectRaw('anonymous, count(anonymous) as total')
+            'anonymousCount' => Incident::selectRaw('anonymous, count(anonymous) as total')
                 ->groupBy('anonymous')
                 ->pluck('total', 'anonymous'),
-            'descriptor_dist' => Incident::selectRaw('descriptor, count(descriptor) as total')
+            'descriptorCount' => Incident::selectRaw('descriptor, count(descriptor) as total')
                 ->groupBy('descriptor')
                 ->pluck('total', 'descriptor'),
-            'safety_dist' => Incident::selectRaw('descriptor, count(descriptor) as total')
-                ->where('incident_type', 1)
+            'safetyCount' => Incident::selectRaw('descriptor, count(descriptor) as total')
+                ->where('incident_type', IncidentType::SAFETY)
                 ->groupBy('descriptor')
                 ->pluck('total', 'descriptor'),
-            'environmental_dist' => Incident::selectRaw('descriptor, count(descriptor) as total')
-                ->where('incident_type', 2)
+            'environmentalCount' => Incident::selectRaw('descriptor, count(descriptor) as total')
+                ->where('incident_type', IncidentType::ENVIRONMENTAL)
                 ->groupBy('descriptor')
                 ->pluck('total', 'descriptor'),
-            'security_dist' => Incident::selectRaw('descriptor, count(descriptor) as total')
-                ->where('incident_type', 3)
+            'securityCount' => Incident::selectRaw('descriptor, count(descriptor) as total')
+                ->where('incident_type', IncidentType::SECURITY)
                 ->groupBy('descriptor')
                 ->pluck('total', 'descriptor'),
-            'on_behalf_dist' => Incident::selectRaw('on_behalf, count(on_behalf) as total')
+            'onBehalfCount' => Incident::selectRaw('on_behalf, count(on_behalf) as total')
                 ->groupBy('on_behalf')
                 ->pluck('total', 'on_behalf'),
-            'on_behalf_anon_dist' => Incident::selectRaw('on_behalf_anonymous, count(on_behalf_anonymous) as total')
+            'onBehalfAnonymousCount' => Incident::selectRaw('on_behalf_anonymous, count(on_behalf_anonymous) as total')
                 ->groupBy('on_behalf_anonymous')
                 ->pluck('total', 'on_behalf_anonymous'),
 
