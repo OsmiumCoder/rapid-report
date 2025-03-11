@@ -1,4 +1,4 @@
-import DashboardNavBar, { NavigationItem } from '@/Components/DashboardNavBar';
+import NavigationBar, { NavigationItem } from '@/Components/NavigationBar';
 import DesktopSidebar from '@/Layouts/Partials/DesktopSidebar';
 import MobileSidebar from '@/Layouts/Partials/MobileSidebar';
 import TopBar from '@/Layouts/Partials/TopBar';
@@ -43,10 +43,8 @@ export default function Authenticated({ children }: PropsWithChildren<{ header?:
                 <div className="lg:pl-72">
                     <TopBar onClick={() => setSidebarOpen(true)} />
 
-                    {(route().current('dashboard') || route().current('dashboard.*')) && (
-                        <DashboardNavBar navigationItems={dashboardNavigationItems} />
-                    )}
-                    {(route().current('report') || route().current('report.*')) && <DashboardNavBar navigationItems={reportNav} />}
+                    {(route().current('dashboard') || route().current('dashboard.*')) && <NavigationBar navigationItems={dashboardNavigationItems} />}
+                    {(route().current('report') || route().current('report.*')) && <NavigationBar navigationItems={reportNav} />}
 
                     <main className="bg-gray-100 py-10">
                         <div>{children}</div>
