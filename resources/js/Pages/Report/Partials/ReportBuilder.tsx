@@ -25,8 +25,8 @@ export default function ReportBuilder() {
         'on_behalf',
         'on_behalf_anonymous',
         'role',
-        'last_name',
         'first_name',
+        'last_name',
         'upei_id',
         'email',
         'phone',
@@ -119,11 +119,11 @@ export default function ReportBuilder() {
             <div className="text-black-500 text-lg font-semibold sm:text-xl/8">Build your report:</div>
             <div>
                 <p className="text-m text-black-500">Select Categories for Export:</p>
-                <div className="mt-2 grid grid-rows-1 md:grid-cols-2 lg:grid-cols-3">
+                <div className="mt-2 grid grid-rows-1 gap-2 md:grid-flow-col md:grid-rows-4 lg:grid-rows-5">
                     {fields.map((value, index) => (
                         <LabeledCheckbox
                             key={index}
-                            label={uppercaseWordFormat(value)}
+                            label={value === 'upei_id' ? 'UPEI ID' : uppercaseWordFormat(value)}
                             onChange={(e) => toggleSelectedFields(value, e.target.checked)}
                         />
                     ))}
