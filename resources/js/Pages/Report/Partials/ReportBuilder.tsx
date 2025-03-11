@@ -5,7 +5,7 @@ import SelectInput from '@/Components/SelectInput';
 import classNames from '@/Formatters/classNames';
 import dateFormat from '@/Formatters/dateFormat';
 import { uppercaseWordFormat } from '@/Formatters/uppercaseWordFormat';
-import { downloadFile } from '@/Helpers/downloadFile';
+import { downloadFile } from '@/Helpers/Report/downloadFile';
 import { Field, Label, Switch } from '@headlessui/react';
 import { useForm } from '@inertiajs/react';
 import axios from 'axios';
