@@ -1,6 +1,5 @@
 import LoadingIndicator from '@/Components/LoadingIndicator';
 import { ChatBubbleBottomCenterTextIcon } from '@heroicons/react/16/solid';
-import { PaperClipIcon } from '@heroicons/react/20/solid';
 import { PaperAirplaneIcon } from '@heroicons/react/24/solid';
 import { FormEvent } from 'react';
 
@@ -36,8 +35,7 @@ export default function AddCommentForm({ submit, setData, processing, data }: Ad
 
                 <div className="absolute inset-x-0 bottom-0 flex justify-between py-2 pr-2 pl-3">
                     <div className="flex items-center space-x-5">
-                        <div className="flex items-center">
-                        </div>
+                        <div className="flex items-center"></div>
                     </div>
                     {!processing ? (
                         <button
