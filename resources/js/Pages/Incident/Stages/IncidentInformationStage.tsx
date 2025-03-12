@@ -48,7 +48,7 @@ export default function IncidentInformationStage({ formData, setFormData }: Stag
                         onChange={(e) => setFormData('location', e.target.value)}
                         className="w-full"
                     >
-                        {locations[0].options.map((option, index) => (
+                        {locations.map((option, index) => (
                             <option key={index} value={option}>
                                 {option}
                             </option>
