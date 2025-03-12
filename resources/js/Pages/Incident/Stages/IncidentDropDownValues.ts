@@ -84,7 +84,7 @@ export const locations = [
     'Regis and Joan Duffy Research Centre (DRC) - (28)',
     'Faculty of Sustainable Design Engineering building (FSDE) - (30)',
     'Alumni Hall (ALH) - (38)',
-    'Canadian Centre for Climate Change and Adaptation (St. Peter\'s, PEI)',
+    "Canadian Centre for Climate Change and Adaptation (St. Peter's, PEI)",
     'Campus',
-    'Off Campus'
+    'Off Campus',
 ];
