@@ -1,15 +1,13 @@
-import { GraphFooter } from '@/Pages/Report/Partials/GraphFooter';
+import { getPercent } from '@/Helpers/Report/getPercent';
 import { ChartData } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 
-interface pieProps {
-    graphKey: number;
+interface PieProps {
     data: ChartData<'pie'>;
 }
-export default function PieGraph({ graphKey, data }: pieProps) {
+export default function PieGraph({ data }: PieProps) {
     return (
         <Pie
-            key={graphKey}
             data={data}
             options={{
                 plugins: {
@@ -36,7 +34,7 @@ export default function PieGraph({ graphKey, data }: pieProps) {
                     },
                     tooltip: {
                         callbacks: {
-                            footer: GraphFooter,
+                            footer: getPercent,
                         },
                     },
                 },

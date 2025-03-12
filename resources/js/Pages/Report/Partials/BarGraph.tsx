@@ -1,24 +1,29 @@
-import { GraphFooter } from '@/Pages/Report/Partials/GraphFooter';
+import { getPercent } from '@/Helpers/Report/getPercent';
 import { ChartData } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 
-interface barProps {
-    graphKey: number;
+interface BarProps {
     data: ChartData<'bar'>;
 }
-export default function BarGraph({ graphKey, data }: barProps) {
+export default function BarGraph({ data }: BarProps) {
     return (
         <Bar
-            key={graphKey}
             data={data}
             options={{
+                scales: {
+                    x: {
+                        ticks: {
+                            autoSkip: false,
+                        },
+                    },
+                },
                 plugins: {
                     legend: {
                         display: false,
                     },
                     tooltip: {
                         callbacks: {
-                            footer: GraphFooter,
+                            footer: getPercent,
                         },
                     },
                     title: {
