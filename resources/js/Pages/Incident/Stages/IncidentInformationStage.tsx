@@ -3,7 +3,7 @@ import SelectInput from '@/Components/SelectInput';
 import TextInput from '@/Components/TextInput';
 import ToggleSwitch from '@/Components/ToggleSwitch';
 import dateFormat from '@/Formatters/dateFormat';
-import { descriptors } from '@/Pages/Incident/Stages/IncidentDropDownValues';
+import { descriptors, locations } from '@/Pages/Incident/Stages/IncidentDropDownValues';
 import { StageProps } from '@/Pages/Incident/Stages/StageWrapper';
 
 export default function IncidentInformationStage({ formData, setFormData }: StageProps) {
@@ -41,17 +41,15 @@ export default function IncidentInformationStage({ formData, setFormData }: Stag
             <div className="mt-4">
                 <div>
                     <label className="block text-sm/6 font-medium text-gray-900">Location</label>
-                    <p className="text-xs text-gray-500">Enter the building or description of area where the incident occurred.</p>
                 </div>
-
-                <div className="mt-2">
-                    <TextInput
-                        placeholder="e.g Cass Science Hall"
-                        aria-describedby="location-description"
-                        required
-                        value={formData.location ?? ''}
-                        onChange={(e) => setFormData('location', e.target.value)}
-                    />
+                <div className="mt-1 grid grid-cols-1">
+                    <SelectInput value={formData.location || ''} onChange={(e) => setFormData('location', e.target.value)} className="w-full">
+                        {locations.map((option, index) => (
+                            <option key={index} value={option}>
+                                {option}
+                            </option>
+                        ))}
+                    </SelectInput>
                 </div>
             </div>
 
