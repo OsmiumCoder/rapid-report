@@ -16,12 +16,4 @@ class UserNotSupervisorException extends Exception
 
         return new static($message);
     }
-
-    /**
-     * Render the exception as an HTTP response.
-     */
-    public function render(Request $request): RedirectResponse
-    {
-        return back()->with([]);
-    }
 }
