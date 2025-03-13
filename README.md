@@ -2,7 +2,6 @@
 
 An incident reporting platform for health and safety departments.
 
-
 ## Features
 
 - Incident Report Submission
@@ -20,7 +19,6 @@ An incident reporting platform for health and safety departments.
 - Supporting Document File Uploads
 - Excel Data Exports
 - Statistical Data Dashboard
-
 
 ## Tech Stack
 
@@ -41,6 +39,7 @@ An incident reporting platform for health and safety departments.
 - [Laravel Event Sourcing](https://spatie.be/docs/laravel-event-sourcing/v7/introduction)
 - [Laravel Model States](https://spatie.be/docs/laravel-model-states/v2/01-introduction)
 - [Laravel Permission](https://spatie.be/docs/laravel-permission/v6/introduction)
+
 ## Environment Variables
 
 To run this project, you will need to add the following environment variables to your .env file:
@@ -146,7 +145,6 @@ To run linting tests, run the following commands
 ## Deployment
 
 Deployment of this project is handled by GitHub Actions. The live server will always point to the `staging` branch of this project.
-
 
 ## Documentation
 
