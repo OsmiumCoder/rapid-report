@@ -34,9 +34,6 @@ export default function AddCommentForm({ submit, setData, processing, data }: Ad
                 </div>
 
                 <div className="absolute inset-x-0 bottom-0 flex justify-between py-2 pr-2 pl-3">
-                    <div className="flex items-center space-x-5">
-                        <div className="flex items-center"></div>
-                    </div>
                     {!processing ? (
                         <button
                             type="submit"
