@@ -4,8 +4,11 @@ import classNames from '@/Formatters/classNames';
 import { getLocationAcronym } from '@/Helpers/Report/getLocationAcronym';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import Graph from '@/Pages/Report/Partials/Graph';
-import { Head } from '@inertiajs/react';
+import {Head, router} from '@inertiajs/react';
 import { useState } from 'react';
+import DateInput from "@/Components/DateInput";
+import dateFormat from "@/Formatters/dateFormat";
+import dayjs from "dayjs";
 
 interface Statistic {
     labels: string[];
@@ -43,6 +46,24 @@ export default function Stats({
     locationCount,
     closedTimeCount,
 }: StatsProps) {
+
+    const [startDate, setStartDate] = useState(route().queryParams.start as string ?? dateFormat(dayjs().subtract(1, 'year').toDate()));
+
+    const [endDate, setEndDate] = useState(route().queryParams.end as string ?? dateFormat(dayjs().toDate()));
+
+    const setTimePeriod = (start: string, end: string) => {
+        if (dayjs(start).isAfter(dayjs(end))) {
+            end = dateFormat(dayjs(start).add(1, 'day').toDate());
+        } else if (dayjs(end).isBefore(dayjs(start))) {
+            start = dateFormat(dayjs(end).subtract(1, 'day').toDate());
+        }
+
+        setStartDate(start);
+        setEndDate(end);
+
+        router.get(route('report.stats', { start: start, end: end }))
+    };
+
     const statistics: Statistic[] = [
         {
             labels: Object.keys(locationCount).map(getLocationAcronym),
@@ -126,6 +147,25 @@ export default function Stats({
     return (
         <AuthenticatedLayout>
             <Head title="Statistics" />
+
+            <div className="mb-10 flex w-full justify-center">
+                <div className='flex w-1/2 gap-5 items-center'>
+                    <DateInput
+                        value={startDate}
+                        onChange={(e) => {
+                            setTimePeriod(dateFormat(e.target.value), endDate);
+                        }}
+                    />
+                    <div>to</div>
+                    <DateInput
+                        value={endDate}
+                        onChange={(e) => {
+                            setTimePeriod(startDate, dateFormat(e.target.value));
+                        }}
+                    />
+                </div>
+            </div>
+
             <div className="mx-8 grid grid-cols-1 gap-5 lg:grid-cols-6">
                 {selectedStatistics.map((selectedStatistic, i) => (
                     <div key={i} className={classNames('relative', i < 3 ? 'lg:col-span-2' : 'lg:col-span-3')}>
