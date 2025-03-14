@@ -43,7 +43,7 @@ export default function IncidentInformationStage({ formData, setFormData }: Stag
                     <label className="block text-sm/6 font-medium text-gray-900">Location</label>
                 </div>
                 <div className="mt-1 grid grid-cols-1">
-                    <SelectInput value={formData.location || ''} onChange={(e) => setFormData('location', e.target.value)} className="w-full">
+                    <SelectInput value={formData.location ?? ''} onChange={(e) => setFormData('location', e.target.value)} className="w-full">
                         {locations.map((option, index) => (
                             <option key={index} value={option}>
                                 {option}

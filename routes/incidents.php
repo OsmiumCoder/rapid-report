@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Incident\AssignedIncidentsController;
 use App\Http\Controllers\Incident\IncidentAdditionalInformationController;
+use App\Http\Controllers\Incident\IncidentAdminCreateController;
 use App\Http\Controllers\Incident\IncidentCommentController;
 use App\Http\Controllers\Incident\IncidentController;
 use App\Http\Controllers\Incident\IncidentFileController;
@@ -55,4 +56,5 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::post('/incidents/{incident}/comments', IncidentCommentController::class)->name('incidents.comments.store');
 
+    Route::get('/incidents/create/admin', IncidentAdminCreateController::class)->name('incidents.create.admin');
 });

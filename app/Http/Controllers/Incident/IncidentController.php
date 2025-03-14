@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Incident;
 use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
@@ -56,13 +57,21 @@ class IncidentController extends Controller
     /**
      * Store a newly created Incident in storage.
      */
-    public function store(IncidentData $incidentData): Response
+    public function store(Request $request, IncidentData $incidentData): Response | RedirectResponse
     {
+        $validated = $request->validate([
+            'admin_submission' => 'boolean',
+        ]);
+
         $uuid = Str::uuid()->toString();
 
         IncidentAggregateRoot::retrieve(uuid: $uuid)
             ->createIncident($incidentData)
             ->persist();
+
+        if (isset($validated['admin_submission']) && $validated['admin_submission']) {
+            return redirect(route('incidents.show', ['incident' => $uuid]));
+        }
 
         return Inertia::render('Incident/Created', [
             'incident_id' => $uuid,

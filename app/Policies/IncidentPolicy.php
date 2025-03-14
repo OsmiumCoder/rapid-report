@@ -108,4 +108,9 @@ class IncidentPolicy
         return $user->can('download any files') ||
             ($user->can('download own files') && $user->id == $file->user_id);
     }
+
+    public function viewAdminCreateForm(User $user): bool
+    {
+        return $user->can('perform admin actions');
+    }
 }
