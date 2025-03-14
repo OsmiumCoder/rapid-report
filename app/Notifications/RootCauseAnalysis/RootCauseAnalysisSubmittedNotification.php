@@ -3,7 +3,6 @@
 namespace App\Notifications\RootCauseAnalysis;
 
 use App\Enum\NotificationMessageType;
-use App\Models\User;
 use App\Notifications\BaseNotification;
 use Illuminate\Notifications\Messages\MailMessage;
 

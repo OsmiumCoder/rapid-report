@@ -4,7 +4,6 @@ namespace App\Notifications\Incident;
 
 use App\Enum\NotificationMessageType;
 use App\Models\Incident;
-use App\Models\User;
 use App\Notifications\BaseNotification;
 use App\States\IncidentStatus\Assigned;
 use App\States\IncidentStatus\Returned;

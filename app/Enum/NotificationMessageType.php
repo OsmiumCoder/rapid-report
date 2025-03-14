@@ -18,5 +18,4 @@ enum NotificationMessageType: string
     case RCA_CREATED = 'rca-created';
     case RCA_RETURNED = 'rca-returned';
     case COMMENT_ADDED = 'comment-added';
-
 }

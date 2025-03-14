@@ -3,7 +3,6 @@
 namespace App\Notifications\Comment;
 
 use App\Enum\NotificationMessageType;
-use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use App\Notifications\BaseNotification;
