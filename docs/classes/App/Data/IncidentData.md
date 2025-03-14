@@ -68,7 +68,7 @@ public bool $on_behalf_anonymous
 
 
 ```php
-public ?\App\Enum\RoleType $role
+public ?\App\Enum\IncidentRoles $role
 ```
 
 
@@ -356,7 +356,7 @@ public ?string $supervisor_name
 
 
 ```php
-public __construct(bool $anonymous, bool $on_behalf, bool $on_behalf_anonymous, \App\Enum\RoleType|null $role, string|null $last_name, string|null $first_name, string|null $upei_id, string|null $email, string|null $phone, bool $work_related, bool $workers_comp_submitted, \Carbon\Carbon|null $happened_at, string|null $location, string|null $room_number, array|null $witnesses, \App\Enum\IncidentType $incident_type, string $descriptor, string|null $description, string|null $injury_description, string|null $first_aid_description, string|null $reporters_email, string|null $supervisor_name): mixed
+public __construct(bool $anonymous, bool $on_behalf, bool $on_behalf_anonymous, \App\Enum\IncidentRoles|null $role, string|null $last_name, string|null $first_name, string|null $upei_id, string|null $email, string|null $phone, bool $work_related, bool $workers_comp_submitted, \Carbon\Carbon|null $happened_at, string|null $location, string|null $room_number, array|null $witnesses, \App\Enum\IncidentType $incident_type, string $descriptor, string|null $description, string|null $injury_description, string|null $first_aid_description, string|null $reporters_email, string|null $supervisor_name): mixed
 ```
 
 
@@ -373,7 +373,7 @@ public __construct(bool $anonymous, bool $on_behalf, bool $on_behalf_anonymous, 
 | `$anonymous` | **bool** | If the reporter of this incident is remaining anonymous. |
 | `$on_behalf` | **bool** | If the reporter is reporting for themselves or for someone else. |
 | `$on_behalf_anonymous` | **bool** | If the incident is about someone who is not the reporter and wants to be anonymous. |
-| `$role` | **\App\Enum\RoleType&#124;null** | Optional. The role of the individual involved in the incident. |
+| `$role` | **\App\Enum\IncidentRoles&#124;null** | Optional. The role of the individual involved in the incident. |
 | `$last_name` | **string&#124;null** | Optional. The last name of the individual involved in the incident. |
 | `$first_name` | **string&#124;null** | Optional. The first name of the individual involved in the incident. |
 | `$upei_id` | **string&#124;null** | Optional. The UPEI ID number of the individual involved in the incident. |
@@ -401,4 +401,4 @@ public __construct(bool $anonymous, bool $on_behalf, bool $on_behalf_anonymous, 
 
 
 ***
-> Automatically generated on 2025-03-11
+> Automatically generated on 2025-03-14

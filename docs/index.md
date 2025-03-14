@@ -473,4 +473,4 @@ This is an automatically generated documentation for **Rapid Report**.
 
 
 ***
-> Automatically generated on 2025-03-11
+> Automatically generated on 2025-03-14

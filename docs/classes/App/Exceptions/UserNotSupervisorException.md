@@ -42,33 +42,6 @@ public static hasRoles(\Illuminate\Support\Collection $roles): static
 
 ***
 
-### render
-
-Render the exception as an HTTP response.
-
-```php
-public render(\Illuminate\Http\Request $request): \Illuminate\Http\RedirectResponse
-```
-
-
-
-
-
-
-
-
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `$request` | **\Illuminate\Http\Request** |  |
-
-
-
-
 
 ***
-
-
-***
-> Automatically generated on 2025-03-11
+> Automatically generated on 2025-03-14

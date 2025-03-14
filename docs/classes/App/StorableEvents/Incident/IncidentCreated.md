@@ -65,7 +65,7 @@ public bool $on_behalf_anonymous
 
 
 ```php
-public ?int $role
+public ?\App\Enum\IncidentRoles $role
 ```
 
 
@@ -353,7 +353,7 @@ public ?string $supervisor_name
 
 
 ```php
-public __construct(bool $anonymous, bool $on_behalf, bool $on_behalf_anonymous, ?int $role, ?string $last_name, ?string $first_name, ?string $upei_id, ?string $email, ?string $phone, bool $work_related, bool $workers_comp_submitted, \Carbon\Carbon $happened_at, ?string $location, ?string $room_number, ?array $witnesses, \App\Enum\IncidentType $incident_type, string $descriptor, ?string $description, ?string $injury_description, ?string $first_aid_description, ?string $reporters_email, ?string $supervisor_name): mixed
+public __construct(bool $anonymous, bool $on_behalf, bool $on_behalf_anonymous, ?\App\Enum\IncidentRoles $role, ?string $last_name, ?string $first_name, ?string $upei_id, ?string $email, ?string $phone, bool $work_related, bool $workers_comp_submitted, \Carbon\Carbon $happened_at, ?string $location, ?string $room_number, ?array $witnesses, \App\Enum\IncidentType $incident_type, string $descriptor, ?string $description, ?string $injury_description, ?string $first_aid_description, ?string $reporters_email, ?string $supervisor_name): mixed
 ```
 
 
@@ -370,7 +370,7 @@ public __construct(bool $anonymous, bool $on_behalf, bool $on_behalf_anonymous, 
 | `$anonymous` | **bool** |  |
 | `$on_behalf` | **bool** |  |
 | `$on_behalf_anonymous` | **bool** |  |
-| `$role` | **?int** |  |
+| `$role` | **?\App\Enum\IncidentRoles** |  |
 | `$last_name` | **?string** |  |
 | `$first_name` | **?string** |  |
 | `$upei_id` | **?string** |  |
@@ -488,4 +488,4 @@ within this method will not be replayed.
 
 
 ***
-> Automatically generated on 2025-03-11
+> Automatically generated on 2025-03-14

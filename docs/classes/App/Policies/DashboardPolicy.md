@@ -124,4 +124,4 @@ public viewSettings(\App\Models\User $user): bool
 
 
 ***
-> Automatically generated on 2025-03-11
+> Automatically generated on 2025-03-14

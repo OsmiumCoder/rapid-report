@@ -131,4 +131,4 @@ public query(): \Illuminate\Database\Eloquent\Builder
 
 
 ***
-> Automatically generated on 2025-03-11
+> Automatically generated on 2025-03-14

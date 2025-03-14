@@ -44,4 +44,4 @@ public update(\App\Models\User $user, \App\Models\NotificationMessage $notificat
 
 
 ***
-> Automatically generated on 2025-03-11
+> Automatically generated on 2025-03-14

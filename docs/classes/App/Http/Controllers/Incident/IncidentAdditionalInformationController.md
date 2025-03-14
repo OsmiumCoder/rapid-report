@@ -50,4 +50,4 @@ public __invoke(\Illuminate\Http\Request $request, \App\Models\Incident $inciden
 
 
 ***
-> Automatically generated on 2025-03-11
+> Automatically generated on 2025-03-14

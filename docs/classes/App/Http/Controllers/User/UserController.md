@@ -81,4 +81,4 @@ public destroy(\App\Models\User $user): \Illuminate\Http\RedirectResponse
 
 
 ***
-> Automatically generated on 2025-03-11
+> Automatically generated on 2025-03-14
