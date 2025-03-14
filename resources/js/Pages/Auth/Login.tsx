@@ -4,7 +4,7 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
-import { PencilIcon } from '@heroicons/react/24/outline';
+import { PencilIcon, PencilSquareIcon } from '@heroicons/react/24/outline';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 
@@ -102,6 +102,25 @@ export default function Login({ status, canResetPassword }: { status?: string; c
                     <PrimaryButton className="ms-4" disabled={processing}>
                         Log in
                     </PrimaryButton>
+                </div>
+
+                <div className="relative my-6">
+                    <div aria-hidden="true" className="absolute inset-0 flex items-center">
+                        <div className="w-full border-t border-gray-300" />
+                    </div>
+                    <div className="relative flex justify-center">
+                        <span className="bg-white px-2 text-sm text-gray-500">Or</span>
+                    </div>
+                </div>
+                <div className="mb-4 flex justify-center">
+                    <Link
+                        href={route('register')}
+                        as="button"
+                        className="bg-upei-green-500 hover:bg-upei-green-600 focus-visible:outline-upei-green-600 flex cursor-pointer items-center rounded-md px-3 py-2 text-center text-sm font-semibold text-white shadow-xs focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                    >
+                        <PencilSquareIcon className="mr-2 h-4 w-4" />
+                        Register
+                    </Link>
                 </div>
             </form>
         </GuestLayout>
