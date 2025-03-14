@@ -1,14 +1,14 @@
+import DateInput from '@/Components/DateInput';
 import { getIncidentRoleKey } from '@/Enums/IncidentRole';
 import { getIncidentTypeKey } from '@/Enums/IncidentType';
 import classNames from '@/Formatters/classNames';
+import dateFormat from '@/Formatters/dateFormat';
 import { getLocationAcronym } from '@/Helpers/Report/getLocationAcronym';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import Graph from '@/Pages/Report/Partials/Graph';
-import {Head, router} from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
+import dayjs from 'dayjs';
 import { useState } from 'react';
-import DateInput from "@/Components/DateInput";
-import dateFormat from "@/Formatters/dateFormat";
-import dayjs from "dayjs";
 
 interface Statistic {
     labels: string[];
@@ -46,10 +46,9 @@ export default function Stats({
     locationCount,
     closedTimeCount,
 }: StatsProps) {
+    const [startDate, setStartDate] = useState((route().queryParams.start as string) ?? dateFormat(dayjs().subtract(1, 'year').toDate()));
 
-    const [startDate, setStartDate] = useState(route().queryParams.start as string ?? dateFormat(dayjs().subtract(1, 'year').toDate()));
-
-    const [endDate, setEndDate] = useState(route().queryParams.end as string ?? dateFormat(dayjs().toDate()));
+    const [endDate, setEndDate] = useState((route().queryParams.end as string) ?? dateFormat(dayjs().toDate()));
 
     const setTimePeriod = (start: string, end: string) => {
         if (dayjs(start).isAfter(dayjs(end))) {
@@ -61,7 +60,7 @@ export default function Stats({
         setStartDate(start);
         setEndDate(end);
 
-        router.get(route('report.stats', { start: start, end: end }))
+        router.get(route('report.stats', { start: start, end: end }));
     };
 
     const statistics: Statistic[] = [
@@ -149,7 +148,7 @@ export default function Stats({
             <Head title="Statistics" />
 
             <div className="mb-10 flex w-full justify-center">
-                <div className='flex w-1/2 gap-5 items-center'>
+                <div className="flex w-1/2 items-center gap-5">
                     <DateInput
                         value={startDate}
                         onChange={(e) => {
