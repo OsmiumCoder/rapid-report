@@ -44,6 +44,7 @@ abstract class BaseNotification extends Notification implements ShouldQueue
      * Parse the notification message and replace the placeholders with the data from $data array.
      * Assign the parsed message to $this->message
      *
+     * @param NotificationMessageType $notificationMessageType
      * @return void
      */
     public function parseMessage(NotificationMessageType $notificationMessageType)
