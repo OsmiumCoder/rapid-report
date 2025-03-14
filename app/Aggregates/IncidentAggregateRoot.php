@@ -27,7 +27,6 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Spatie\EventSourcing\AggregateRoots\AggregateRoot;
 
-
 /**
  * Handles all events related to incidents.
  *
