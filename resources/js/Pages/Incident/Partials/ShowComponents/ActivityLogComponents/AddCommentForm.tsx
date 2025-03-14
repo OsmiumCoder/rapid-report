@@ -33,7 +33,7 @@ export default function AddCommentForm({ submit, setData, processing, data }: Ad
                     />
                 </div>
 
-                <div className="absolute inset-x-0 bottom-0 flex justify-between py-2 pr-2 pl-3">
+                <div className="absolute inset-x-0 bottom-0 flex justify-end py-2 pr-2 pl-3">
                     {!processing ? (
                         <button
                             type="submit"
