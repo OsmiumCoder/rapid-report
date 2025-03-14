@@ -42,7 +42,7 @@ class ReportController extends Controller
             $end = Carbon::now()->endOfDay();
         }
 
-        $incidents = Incident::query()->whereBetween('created_at', [$start, $end]);
+        $incidentsQuery = Incident::query()->whereBetween('created_at', [$start, $end]);
 
         $closeTimes = Incident::selectRaw("DATEDIFF(closed_at, created_at) as diff")
             ->whereNotNull('closed_at')
@@ -63,41 +63,41 @@ class ReportController extends Controller
         }, $closeTimes));
 
         return Inertia::render('Report/Stats', [
-            'locationCount' => $incidents->selectRaw('location, count(location) as total')
+            'locationCount' => $incidentsQuery->selectRaw('location, count(location) as total')
                 ->groupBy('location')
                 ->pluck('total', 'location'),
             'closedTimeCount' => $closedCounts,
-            'typeCount' => $incidents->selectRaw('incident_type, count(incident_type) as total')
+            'typeCount' => $incidentsQuery->selectRaw('incident_type, count(incident_type) as total')
                 ->groupBy('incident_type')
                 ->pluck('total', 'incident_type'),
-            'roleCount' => $incidents->selectRaw('role, count(role) as total')
+            'roleCount' => $incidentsQuery->selectRaw('role, count(role) as total')
                 ->groupBy('role')
                 ->pluck('total', 'role'),
-            'statusCount' => $incidents->selectRaw('status, count(status) as total')
+            'statusCount' => $incidentsQuery->selectRaw('status, count(status) as total')
                 ->groupBy('status')
                 ->pluck('total', 'status'),
-            'anonymousCount' => $incidents->selectRaw('anonymous, count(anonymous) as total')
+            'anonymousCount' => $incidentsQuery->selectRaw('anonymous, count(anonymous) as total')
                 ->groupBy('anonymous')
                 ->pluck('total', 'anonymous'),
-            'descriptorCount' => $incidents->selectRaw('descriptor, count(descriptor) as total')
+            'descriptorCount' => $incidentsQuery->selectRaw('descriptor, count(descriptor) as total')
                 ->groupBy('descriptor')
                 ->pluck('total', 'descriptor'),
-            'safetyCount' => $incidents->selectRaw('descriptor, count(descriptor) as total')
+            'safetyCount' => $incidentsQuery->selectRaw('descriptor, count(descriptor) as total')
                 ->where('incident_type', IncidentType::SAFETY)
                 ->groupBy('descriptor')
                 ->pluck('total', 'descriptor'),
-            'environmentalCount' => $incidents->selectRaw('descriptor, count(descriptor) as total')
+            'environmentalCount' => $incidentsQuery->selectRaw('descriptor, count(descriptor) as total')
                 ->where('incident_type', IncidentType::ENVIRONMENTAL)
                 ->groupBy('descriptor')
                 ->pluck('total', 'descriptor'),
-            'securityCount' => $incidents->selectRaw('descriptor, count(descriptor) as total')
+            'securityCount' => $incidentsQuery->selectRaw('descriptor, count(descriptor) as total')
                 ->where('incident_type', IncidentType::SECURITY)
                 ->groupBy('descriptor')
                 ->pluck('total', 'descriptor'),
-            'onBehalfCount' => $incidents->selectRaw('on_behalf, count(on_behalf) as total')
+            'onBehalfCount' => $incidentsQuery->selectRaw('on_behalf, count(on_behalf) as total')
                 ->groupBy('on_behalf')
                 ->pluck('total', 'on_behalf'),
-            'onBehalfAnonymousCount' => $incidents->selectRaw('on_behalf_anonymous, count(on_behalf_anonymous) as total')
+            'onBehalfAnonymousCount' => $incidentsQuery->selectRaw('on_behalf_anonymous, count(on_behalf_anonymous) as total')
                 ->groupBy('on_behalf_anonymous')
                 ->pluck('total', 'on_behalf_anonymous'),
 
