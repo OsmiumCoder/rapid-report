@@ -45,6 +45,11 @@ class FilesUploaded extends StoredEvent
 
         $incident = $this->incident();
 
-        Notification::send($admins, new FilesUploadedNotification($incident->slug, $supervisor));
+        $data = [
+            'incidentSlug' => $incident->slug,
+            'name' => $supervisor->name,
+        ];
+
+        Notification::send($admins, new FilesUploadedNotification($data));
     }
 }

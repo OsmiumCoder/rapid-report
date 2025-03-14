@@ -51,9 +51,14 @@ class RootCauseAnalysisReturned extends StoredEvent
     public function react(): void
     {
         $admin = User::find($this->metaData['user_id']);
-        $incident = $this->incident();
         $rca = RootCauseAnalysis::where('incident_id', $this->aggregateRootUuid())->first();
 
-        Notification::send($rca->supervisor, new RootCauseAnalysisReturnedNotification($incident->slug, $rca->id, $admin));
+        $data = [
+            'incidentSlug' => $this->incident()->slug,
+            'rootCauseAnalysisId' => $rca->id,
+            'name' => $admin->name,
+        ];
+
+        Notification::send($rca->supervisor, new RootCauseAnalysisReturnedNotification($data));
     }
 }

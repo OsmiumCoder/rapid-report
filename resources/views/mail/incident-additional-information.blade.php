@@ -1,9 +1,7 @@
 <x-mail::message>
 # Incident Additional Information Added
 
-## Incident #{{$incidentSlug}} has had the following information added:
-
-{{$additionalInformation}}
+{{$message}}}
 
 <x-mail::button :url="$url">
     View Incident

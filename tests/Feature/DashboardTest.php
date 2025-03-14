@@ -2,7 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Enum\NotificationMessageType;
 use App\Models\Incident;
+use App\Models\NotificationMessage;
 use App\Models\User;
 use App\States\IncidentStatus\Assigned;
 use App\States\IncidentStatus\Closed;
@@ -12,6 +14,41 @@ use Tests\TestCase;
 
 class DashboardTest extends TestCase
 {
+    public function test_updating_notification_message()
+    {
+        $admin = User::factory()->create()->syncRoles('admin');
+        $this->actingAs($admin);
+
+        $notificationMessage = NotificationMessage::firstWhere('name', NotificationMessageType::INCIDENT_RECEIVED);
+
+        $response = $this->put(route('notifications.update-message', ['notification_message' => $notificationMessage->id]), [
+            'message' => 'some message'
+        ]);
+
+        $response->assertRedirect();
+
+        $notificationMessage->refresh();
+
+        $this->assertEquals('some message', $notificationMessage->message);
+    }
+
+    public function test_settings_page_returns_all_notification_messages()
+    {
+        $admin = User::factory()->create()->syncRoles('admin');
+        $this->actingAs($admin);
+
+        $response = $this->get(route('dashboard.settings'));
+
+
+        $response->assertStatus(200);
+
+        $response->assertInertia(function (AssertableInertia $page) {
+            $page->component('Dashboard/Settings')
+                ->has('notificationMessages', count(NotificationMessageType::cases()));
+        });
+
+    }
+
     public function test_admin_overview_returns_correct_days_open_average()
     {
         $admin = User::factory()->create()->syncRoles('admin');

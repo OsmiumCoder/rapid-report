@@ -19,6 +19,7 @@ class NotificationMessage extends Model
     {
         return [
             'name' => NotificationMessageType::class,
+            'data' => 'array',
         ];
     }
 }

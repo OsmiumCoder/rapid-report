@@ -2,7 +2,7 @@
 
 namespace App\Notifications\Incident;
 
-use App\Models\User;
+use App\Enum\NotificationMessageType;
 use App\Notifications\BaseNotification;
 use Illuminate\Notifications\Messages\MailMessage;
 
@@ -12,11 +12,10 @@ class IncidentReviewRequestNotification extends BaseNotification
      * Create a new notification instance.
      */
     public function __construct(
-        public string $incidentSlug,
-        public User   $supervisor,
+        public array $data
     ) {
-        $this->message = "{$this->supervisor->name} has requested follow-up review on incident #$incidentSlug.";
-        $this->url = route('incidents.show', ['incident' => $incidentSlug]);
+        $this->url = route('incidents.show', ['incident' => $this->data['incidentSlug']]);
+        $this->parseMessage(NotificationMessageType::INCIDENT_REVIEW_REQUESTED);
     }
 
     /**
@@ -25,7 +24,7 @@ class IncidentReviewRequestNotification extends BaseNotification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject("Incident #$this->incidentSlug Follow Up Review Request")
+            ->subject("Incident #{$this->data['incidentSlug']} Follow Up Review Request")
             ->markdown('mail.incident-review-request', [
                 'url' => $this->url,
                 'message' => $this->message

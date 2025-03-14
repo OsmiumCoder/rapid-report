@@ -54,6 +54,12 @@ class InvestigationReturned extends StoredEvent
         $incident = $this->incident();
         $investigation = Investigation::where('incident_id', $this->aggregateRootUuid())->first();
 
-        Notification::send($investigation->supervisor, new InvestigationReturnedNotification($incident->slug, $investigation->id, $admin));
+        $data = [
+          'incidentSlug' => $incident->slug,
+          'investigationId' => $investigation->id,
+          'name' => $admin->name,
+        ];
+
+        Notification::send($investigation->supervisor, new InvestigationReturnedNotification($data));
     }
 }

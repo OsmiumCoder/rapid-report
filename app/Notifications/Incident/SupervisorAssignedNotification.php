@@ -2,7 +2,7 @@
 
 namespace App\Notifications\Incident;
 
-use App\Models\User;
+use App\Enum\NotificationMessageType;
 use App\Notifications\BaseNotification;
 use Illuminate\Notifications\Messages\MailMessage;
 
@@ -12,12 +12,10 @@ class SupervisorAssignedNotification extends BaseNotification
      * Create a new notification instance.
      */
     public function __construct(
-        public string $incidentSlug,
-        public User   $supervisor,
-        public User   $admin,
+        public array $data
     ) {
-        $this->url = route('incidents.show', ['incident' => $incidentSlug]);
-        $this->message = "$admin->name has assigned you to incident #$incidentSlug.";
+        $this->url = route('incidents.show', ['incident' => $this->data['incidentSlug']]);
+        $this->parseMessage(NotificationMessageType::INCIDENT_ASSIGNED);
     }
 
     /**
@@ -26,12 +24,10 @@ class SupervisorAssignedNotification extends BaseNotification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject("Incident #$this->incidentSlug Assigned")
+            ->subject("Incident #{$this->data['incidentSlug']} Assigned")
             ->markdown('mail.incident-assigned', [
                 'url' => $this->url,
-                'supervisorName' => $this->supervisor->name,
-                'adminName' => $this->admin->name,
-                'incidentSlug' => $this->incidentSlug,
+                'message' => $this->message,
             ]);
     }
 }

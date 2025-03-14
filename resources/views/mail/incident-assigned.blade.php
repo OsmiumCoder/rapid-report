@@ -1,9 +1,7 @@
 <x-mail::message>
 # Incident Assigned
 
-{{$supervisorName}}, you have been assigned to review incident #{{$incidentSlug}} by {{$adminName}}.
-
-Please submit an investigation within 24 hours and root cause analysis within 72 hours by visiting the following link:
+{{$message}}
 
 <x-mail::button :url="$url">
 View Incident

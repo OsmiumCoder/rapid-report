@@ -1,9 +1,7 @@
 <x-mail::message>
 # Comment Created
 
-## {{ $commenter }} has commented the following on incident #{{$incidentSlug}}:
-
-{{ $content }}
+{{$message}}
 
 <x-mail::button :url="$url">
 View Incident

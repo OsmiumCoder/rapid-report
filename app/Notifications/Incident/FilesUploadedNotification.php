@@ -2,6 +2,7 @@
 
 namespace App\Notifications\Incident;
 
+use App\Enum\NotificationMessageType;
 use App\Models\User;
 use App\Notifications\BaseNotification;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -12,11 +13,10 @@ class FilesUploadedNotification extends BaseNotification
      * Create a new notification instance.
      */
     public function __construct(
-        public string $incidentSlug,
-        public User   $user
+        public array $data,
     ) {
-        $this->message = "{$this->user->name} has uploaded files to incident #$incidentSlug.";
-        $this->url = route('incidents.show', ['incident' => $incidentSlug]);
+        $this->url = route('incidents.show', ['incident' => $this->data['incidentSlug']]);
+        $this->parseMessage(NotificationMessageType::FILES_UPLOADED);
     }
 
     /**
@@ -35,7 +35,7 @@ class FilesUploadedNotification extends BaseNotification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject("Files Have Been Uploaded to Incident #$this->incidentSlug")
+            ->subject("Files Have Been Uploaded to Incident #{$this->data['incidentSlug']}")
             ->markdown('mail.files-uploaded-notification', [
                 'url' => $this->url,
                 'message' => $this->message

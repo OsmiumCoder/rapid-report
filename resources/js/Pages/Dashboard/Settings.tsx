@@ -4,34 +4,40 @@ import InputLabel from '@/Components/InputLabel';
 import LoadingIndicator from '@/Components/LoadingIndicator';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextArea from '@/Components/TextArea';
+import { uppercaseWordFormat } from '@/Formatters/uppercaseWordFormat';
 import Authenticated from '@/Layouts/AuthenticatedLayout';
 import { NotificationMessage } from '@/types/notification/NotificationMessage';
 import { Head, router, useForm } from '@inertiajs/react';
 import { useState } from 'react';
 
-export default function Settings({ incidentReceivedMessage }: { incidentReceivedMessage: NotificationMessage }) {
+export default function Settings({ notificationMessages }: { notificationMessages: NotificationMessage[] }) {
     const { data, setData, put, processing, errors, cancel, clearErrors } = useForm({
-        message: incidentReceivedMessage.message,
+        message: '',
     });
 
-    const [isEditingIncidentReceivedMessage, setIsEditingIncidentReceivedMessage] = useState(false);
+    const [notificationBeingEdited, setNotificationBeingEdited] = useState<NotificationMessage | null>(null);
 
-    const handleUpdateIncidentReceivedMessage = () => {
-        put(route('notifications.update-message', { notification_message: incidentReceivedMessage.id }), {
+    const handleNotificationBeingEditied = (notificationMessage: NotificationMessage) => {
+        setNotificationBeingEdited(notificationMessage);
+        setData('message', notificationMessage.message);
+    };
+
+    const handleUpdateNotificationMessage = (notificationMessage: NotificationMessage) => {
+        put(route('notifications.update-message', { notification_message: notificationMessage.id }), {
             onSuccess: () => {
-                setIsEditingIncidentReceivedMessage(false);
-                router.reload({ only: ['incidentReceivedMessage'] });
+                setNotificationBeingEdited(null);
+                router.reload({ only: ['notificationMessages'] });
             },
         });
     };
 
-    const handleCancelUpdateIncidentReceivedMessage = () => {
+    const handleCancelUpdateNotificationMessage = () => {
         if (processing) {
             cancel();
         }
 
-        setIsEditingIncidentReceivedMessage(false);
-        setData('message', incidentReceivedMessage.message);
+        setNotificationBeingEdited(null);
+        setData('message', '');
         clearErrors();
     };
 
@@ -41,29 +47,37 @@ export default function Settings({ incidentReceivedMessage }: { incidentReceived
             <div className="px-4 sm:px-6 lg:px-8">
                 <div className="pb-2 text-lg font-semibold text-gray-800">Settings</div>
                 <div className="rounded-md bg-white p-6 shadow-xs ring-1 ring-gray-900/5 sm:rounded-lg">
-                    <div className="space-y-2 p-2">
-                        <div className="font-semibold text-gray-900">Incident Received Message</div>
-                        <InputLabel>Update the content of the incident received notification.</InputLabel>
-                        <TextArea
-                            disabled={processing || !isEditingIncidentReceivedMessage}
-                            value={data.message}
-                            onChange={(e) => setData('message', e.target.value)}
-                        />
-                        <InputError message={errors.message} />
+                    {notificationMessages.map((notificationMessage, i) => (
+                        <div key={i} className="space-y-2 p-2">
+                            <div className="font-semibold text-gray-900">{uppercaseWordFormat(notificationMessage.name, '-')} Message</div>
+                            <InputLabel>Update the content of the {uppercaseWordFormat(notificationMessage.name, '-')} notification.</InputLabel>
+                            {notificationMessage.data.length > 0 && (
+                                <InputLabel>
+                                    <span className={'font-semibold'}>Available Variables: </span>
+                                    <span>{notificationMessage.data.join(', ')}</span>
+                                </InputLabel>
+                            )}
+                            <TextArea
+                                disabled={processing || notificationBeingEdited?.id !== notificationMessage.id}
+                                value={notificationBeingEdited?.id === notificationMessage.id ? data.message : notificationMessage.message}
+                                onChange={(e) => setData('message', e.target.value)}
+                            />
+                            <InputError message={errors.message} />
 
-                        {processing ? (
-                            <LoadingIndicator />
-                        ) : isEditingIncidentReceivedMessage ? (
-                            <div className="flex justify-between">
-                                <DangerButton onClick={handleCancelUpdateIncidentReceivedMessage}>Cancel</DangerButton>
-                                <PrimaryButton disabled={processing} onClick={handleUpdateIncidentReceivedMessage}>
-                                    Update
-                                </PrimaryButton>
-                            </div>
-                        ) : (
-                            <PrimaryButton onClick={() => setIsEditingIncidentReceivedMessage(true)}>Edit</PrimaryButton>
-                        )}
-                    </div>
+                            {processing ? (
+                                <LoadingIndicator />
+                            ) : notificationBeingEdited?.id === notificationMessage.id ? (
+                                <div className="flex justify-between">
+                                    <DangerButton onClick={handleCancelUpdateNotificationMessage}>Cancel</DangerButton>
+                                    <PrimaryButton disabled={processing} onClick={() => handleUpdateNotificationMessage(notificationMessage)}>
+                                        Update
+                                    </PrimaryButton>
+                                </div>
+                            ) : (
+                                <PrimaryButton onClick={() => handleNotificationBeingEditied(notificationMessage)}>Edit</PrimaryButton>
+                            )}
+                        </div>
+                    ))}
                 </div>
             </div>
         </Authenticated>

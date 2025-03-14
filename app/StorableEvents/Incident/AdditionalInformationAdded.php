@@ -62,6 +62,10 @@ class AdditionalInformationAdded extends StoredEvent
         $admins = User::role('admin')->get();
         $incident = $this->incident();
 
-        Notification::send($admins, new AdditionalInformationNotification($incident->slug, $this->additionalInformation));
+        $data = [
+            'incidentSlug' => $incident->slug
+        ];
+
+        Notification::send($admins, new AdditionalInformationNotification($data));
     }
 }

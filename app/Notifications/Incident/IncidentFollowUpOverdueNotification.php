@@ -2,6 +2,7 @@
 
 namespace App\Notifications\Incident;
 
+use App\Enum\NotificationMessageType;
 use App\Models\Incident;
 use App\Models\User;
 use App\Notifications\BaseNotification;
@@ -19,11 +20,10 @@ class IncidentFollowUpOverdueNotification extends BaseNotification
      * Create a new notification instance.
      */
     public function __construct(
-        public string $incidentSlug,
-        public User   $supervisor,
+        public array $data,
     ) {
-        $this->message = "Your required follow-up on incident #$incidentSlug is overdue.";
-        $this->url = route('incidents.show', ['incident' => $incidentSlug]);
+        $this->url = route('incidents.show', ['incident' => $this->data['incidentSlug']]);
+        $this->parseMessage(NotificationMessageType::INCIDENT_REVIEW_LATE);
     }
 
     /**
@@ -44,9 +44,9 @@ class IncidentFollowUpOverdueNotification extends BaseNotification
      */
     public function shouldSend(object $notifiable, string $channel): bool
     {
-        $incident = Incident::where('slug', $this->incidentSlug)->first();
+        $incident = Incident::where('slug', $this->data['incidentSlug'])->first();
         return ($incident->status::class == Assigned::class || $incident->status::class == Returned::class)
-            && $incident->supervisor_id == $this->supervisor->id;
+            && $incident->supervisor_id == $this->data['supervisorId'];
     }
 
     /**
@@ -55,7 +55,7 @@ class IncidentFollowUpOverdueNotification extends BaseNotification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject("Incident #$this->incidentSlug Follow Up Overdue")
+            ->subject("Incident #{$this->data['incidentSlug']} Follow Up Overdue")
             ->markdown('mail.incident-follow-up-overdue-notification', [
                 'url' => $this->url,
                 'message' => $this->message

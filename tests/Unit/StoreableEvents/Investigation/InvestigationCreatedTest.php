@@ -150,9 +150,9 @@ class InvestigationCreatedTest extends TestCase
             $admins,
             function (InvestigationSubmittedNotification $notification, array $channels) use ($aggregateUuid, $supervisor, $incident) {
                 return (
-                    $notification->investigationId === $aggregateUuid
-                    && $notification->supervisor->id === $supervisor->id
-                    && $notification->incidentSlug === $incident->slug
+                    $notification->data['incidentSlug'] === $incident->slug &&
+                    $notification->data['investigationId'] === $aggregateUuid &&
+                    $notification->data['name'] === $supervisor->name
                 );
             }
         );

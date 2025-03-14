@@ -93,8 +93,13 @@ class RootCauseAnalysisCreated extends StoredEvent
         $admins = User::role('admin')->get();
 
         $supervisor = User::find($this->metaData['user_id']);
-        $incident = $this->incident();
 
-        Notification::send($admins, new RootCauseAnalysisSubmittedNotification($incident->slug, $this->aggregateRootUuid(), $supervisor));
+        $data = [
+            'incidentSlug' => $this->incident()->slug,
+            'rootCauseAnalysisId' => $this->aggregateRootUuid(),
+            'name' => $supervisor->name,
+        ];
+
+        Notification::send($admins, new RootCauseAnalysisSubmittedNotification($data));
     }
 }

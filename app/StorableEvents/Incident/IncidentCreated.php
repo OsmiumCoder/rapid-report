@@ -93,6 +93,21 @@ class IncidentCreated extends StoredEvent
 
         $admins = User::role('admin')->get();
 
-        Notification::send($admins, new IncidentSubmittedNotification($this->aggregateRootUuid(), $this->first_name, $this->last_name));
+        if ($this->first_name == null && $this->last_name == null) {
+            $name = 'an Anonymous User';
+        } elseif ($this->first_name == null) {
+            $name = $this->last_name;
+        } elseif ($this->last_name == null) {
+            $name = $this->first_name;
+        } else {
+            $name = $this->first_name . ' ' . $this->last_name;
+        }
+
+        $data = [
+            'incidentId' => $this->aggregateRootUuid(),
+            'name' => $name,
+        ];
+
+        Notification::send($admins, new IncidentSubmittedNotification($data));
     }
 }

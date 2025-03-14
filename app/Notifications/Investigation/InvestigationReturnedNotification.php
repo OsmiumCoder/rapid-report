@@ -2,6 +2,7 @@
 
 namespace App\Notifications\Investigation;
 
+use App\Enum\NotificationMessageType;
 use App\Models\User;
 use App\Notifications\BaseNotification;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -12,15 +13,14 @@ class InvestigationReturnedNotification extends BaseNotification
      * Create a new notification instance.
      */
     public function __construct(
-        public string $incidentSlug,
-        public string $investigationId,
-        public User   $admin
+        public array $data
     ) {
-        $this->message = "$admin->name has returned your investigation on incident #$incidentSlug for further review";
         $this->url = route('incidents.investigations.show', [
-            'incident' => $incidentSlug,
-            'investigation' => $investigationId
+            'incident' => $this->data['incidentSlug'],
+            'investigation' => $this->data['investigationId']
         ]);
+
+        $this->parseMessage(NotificationMessageType::INVESTIGATION_RETURNED);
     }
 
     /**
@@ -29,7 +29,7 @@ class InvestigationReturnedNotification extends BaseNotification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject("Investigation For Incident #$this->incidentSlug Returned")
+            ->subject("Investigation For Incident #{$this->data['incidentSlug']} Returned")
             ->markdown('mail.investigation-returned', [
                 'url' => $this->url,
                 'message' => $this->message
