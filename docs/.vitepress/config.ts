@@ -18,17 +18,9 @@ export default defineConfig({
                 ],
             },
             {
-                text: 'Modules',
-                items: [
-
-                ],
-            },
-            {
                 text: 'Misc',
                 items: [
                     { text: 'Roles', link: '/roles-permissions' },
-                    { text: 'Search', link: '/global-search' },
-                    { text: 'File Uploads', link: '/file-uploads' },
                 ],
             },
         ],
