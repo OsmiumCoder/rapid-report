@@ -22,5 +22,6 @@ class BaseNotificationTest extends TestCase
         $notification->parseMessage($notificationMessage->name);
 
         $this->assertStringContainsString('Some Name', $notification->message);
+        $this->assertStringNotContainsString('{name}', $notification->message);
     }
 }
