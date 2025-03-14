@@ -30,6 +30,12 @@ export default function AnonymousStage({ formData, setFormData, failedStep, setV
                             }
                         }}
                     />
+
+                    {auth.user && formData.anonymous === true && (
+                        <div className="text-upei-red-500 mt-4 text-sm">
+                            Although you are signed in to this application, upon selecting 'anonymous' no personal information is captured.
+                        </div>
+                    )}
                 </div>
 
                 {!formData.anonymous && (

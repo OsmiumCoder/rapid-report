@@ -50,4 +50,4 @@ public update(\Illuminate\Http\Request $request, \App\Models\User $user): \Illum
 
 
 ***
-> Automatically generated on 2025-03-07
+> Automatically generated on 2025-03-14

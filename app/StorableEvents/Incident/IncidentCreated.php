@@ -4,6 +4,7 @@ namespace App\StorableEvents\Incident;
 
 use App\Enum\CommentType;
 use App\Enum\IncidentType;
+use App\Enum\IncidentRoles;
 use App\Mail\IncidentReceived;
 use App\Models\Comment;
 use App\Models\Incident;
@@ -17,20 +18,20 @@ use Illuminate\Support\Facades\Notification;
 class IncidentCreated extends StoredEvent
 {
     public function __construct(
-        public bool $anonymous,
-        public bool $on_behalf,
-        public bool $on_behalf_anonymous,
-        public ?int $role,
-        public ?string $last_name,
-        public ?string $first_name,
-        public ?string $upei_id,
-        public ?string $email,
-        public ?string $phone,
-        public bool $work_related,
-        public bool $workers_comp_submitted,
-        public Carbon $happened_at,
-        public ?string $location,
-        public ?string $room_number,
+        public bool           $anonymous,
+        public bool           $on_behalf,
+        public bool           $on_behalf_anonymous,
+        public ?IncidentRoles $role,
+        public ?string        $last_name,
+        public ?string        $first_name,
+        public ?string        $upei_id,
+        public ?string        $email,
+        public ?string        $phone,
+        public bool           $work_related,
+        public bool           $workers_comp_submitted,
+        public Carbon         $happened_at,
+        public ?string        $location,
+        public ?string        $room_number,
         public ?array $witnesses,
         public IncidentType $incident_type,
         public string $descriptor,

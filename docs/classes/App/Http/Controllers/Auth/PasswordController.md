@@ -44,4 +44,4 @@ public update(\Illuminate\Http\Request $request): \Illuminate\Http\RedirectRespo
 
 
 ***
-> Automatically generated on 2025-03-07
+> Automatically generated on 2025-03-14

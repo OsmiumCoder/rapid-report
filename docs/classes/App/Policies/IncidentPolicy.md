@@ -347,4 +347,4 @@ public downloadFiles(\App\Models\User $user, \App\Models\File $file): bool
 
 
 ***
-> Automatically generated on 2025-03-07
+> Automatically generated on 2025-03-14

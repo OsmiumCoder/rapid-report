@@ -76,4 +76,4 @@ public store(\Illuminate\Http\Request $request): \Illuminate\Http\RedirectRespon
 
 
 ***
-> Automatically generated on 2025-03-07
+> Automatically generated on 2025-03-14

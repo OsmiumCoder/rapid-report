@@ -4,6 +4,7 @@ namespace Tests\Unit\Data;
 
 use App\Data\IncidentData;
 use App\Enum\IncidentType;
+use App\Enum\IncidentRoles;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
@@ -49,7 +50,7 @@ class IncidentDataTest extends TestCase
             'anonymous' => false,
             'on_behalf' => false,
             'on_behalf_anonymous' => false,
-            'role' => 0,
+            'role' => IncidentRoles::EMPLOYEE,
             'last_name' => 'last',
             'first_name' => 'first',
             'upei_id' => '322',
@@ -83,7 +84,7 @@ class IncidentDataTest extends TestCase
             'anonymous' => false,
             'on_behalf' => false,
             'on_behalf_anonymous' => false,
-            'role' => 0,
+            'role' => IncidentRoles::EMPLOYEE,
             'work_related' => true,
             'workers_comp_submitted' => true,
             'happened_at' => $incidentDate,

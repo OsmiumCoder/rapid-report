@@ -2,7 +2,7 @@
 
 # CommentData
 
-
+Request data object for creating and attaching comments to other models.
 
 
 
@@ -51,7 +51,7 @@ public __construct(string $content): mixed
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `$content` | **string** |  |
+| `$content` | **string** | The comment string the user has given. |
 
 
 
@@ -61,4 +61,4 @@ public __construct(string $content): mixed
 
 
 ***
-> Automatically generated on 2025-03-07
+> Automatically generated on 2025-03-14

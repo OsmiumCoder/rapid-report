@@ -2,40 +2,16 @@
 
 # IncidentAggregateRoot
 
-Any
-author
-copyright
-deprecated
-example
-final
-ignore
-internal
-link
-see
-since
-source
-todo
-uses
-version
+Handles all events related to incidents.
 
-Class
-category
-licence
-method
-package
-property
-property-read
-property-write
-subpackage
 
-Methods
-api
-param
-return
-throw
 
 * Full name: `\App\Aggregates\IncidentAggregateRoot`
 * Parent class: [`AggregateRoot`](../../Spatie/EventSourcing/AggregateRoots/AggregateRoot.md)
+
+**See Also:**
+
+* [`\App\Models\Incident`](../Models/Incident.md) - The model that is being aggregated.
 
 
 
@@ -45,10 +21,10 @@ throw
 
 ### createIncident
 
-
+Records an IncidentCreated event.
 
 ```php
-public createIncident(\App\Data\IncidentData $incidentData): static
+public createIncident(\App\Data\IncidentData $incidentData): $this
 ```
 
 
@@ -62,20 +38,25 @@ public createIncident(\App\Data\IncidentData $incidentData): static
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `$incidentData` | **\App\Data\IncidentData** |  |
+| `$incidentData` | **\App\Data\IncidentData** | The request data for the new incident. |
 
 
 
+
+
+**See Also:**
+
+* [`\App\StorableEvents\Incident\IncidentCreated`](../StorableEvents/Incident/IncidentCreated.md) - The event recorded by this method.
 
 
 ***
 
 ### assignSupervisor
 
-
+Assigns the user of the given id to the aggregated incident.
 
 ```php
-public assignSupervisor(int $supervisorId): static
+public assignSupervisor(int $supervisorId): $this
 ```
 
 
@@ -89,25 +70,31 @@ public assignSupervisor(int $supervisorId): static
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `$supervisorId` | **int** |  |
+| `$supervisorId` | **int** | Is user id of the supervisor to assign. |
 
 
 
 
 **Throws:**
+<p>If the user for the given id is not a supervisor.</p>
 
 - [`UserNotSupervisorException`](../Exceptions/UserNotSupervisorException.md)
 
+
+
+**See Also:**
+
+* [`\App\StorableEvents\Incident\SupervisorAssigned`](../StorableEvents/Incident/SupervisorAssigned.md) - The event recored by this method.
 
 
 ***
 
 ### unassignSupervisor
 
-
+Unassigns the current supervisor from the aggregated incident.
 
 ```php
-public unassignSupervisor(): static
+public unassignSupervisor(): $this
 ```
 
 
@@ -119,16 +106,21 @@ public unassignSupervisor(): static
 
 
 
+
+
+**See Also:**
+
+* [`\App\StorableEvents\Incident\SupervisorUnassigned`](../StorableEvents/Incident/SupervisorUnassigned.md) - The event recorded by this method.
 
 
 ***
 
 ### requestReview
 
-
+Transitions the aggregated incident to In Review status.
 
 ```php
-public requestReview(): static
+public requestReview(): $this
 ```
 
 
@@ -140,16 +132,21 @@ public requestReview(): static
 
 
 
+
+
+**See Also:**
+
+* [`\App\StorableEvents\Incident\IncidentReviewRequested`](../StorableEvents/Incident/IncidentReviewRequested.md) - The event recorded by this method.
 
 
 ***
 
 ### returnInvestigation
 
-
+Transitions the aggregated incident to Returned status, for current investigation.
 
 ```php
-public returnInvestigation(): static
+public returnInvestigation(): $this
 ```
 
 
@@ -161,16 +158,22 @@ public returnInvestigation(): static
 
 
 
+
+
+**See Also:**
+
+* [`\App\StorableEvents\Investigation\InvestigationReturned`](../StorableEvents/Investigation/InvestigationReturned.md) - The event recorded by this method.
+* [`\App\States\IncidentStatus\Returned`](../States/IncidentStatus/Returned.md) - The status the incident will transition to.
 
 
 ***
 
 ### returnRCA
 
-
+Transitions the aggregated incident to Returned status, for current root cause analysis.
 
 ```php
-public returnRCA(): static
+public returnRCA(): $this
 ```
 
 
@@ -182,16 +185,22 @@ public returnRCA(): static
 
 
 
+
+
+**See Also:**
+
+* [`\App\StorableEvents\RootCauseAnalysis\RootCauseAnalysisReturned`](../StorableEvents/RootCauseAnalysis/RootCauseAnalysisReturned.md) - The event recorded by this method.
+* [`\App\States\IncidentStatus\Returned`](../States/IncidentStatus/Returned.md) - The status the incident will transition to.
 
 
 ***
 
 ### closeIncident
 
-
+Transitions the aggregated incident to Closed status.
 
 ```php
-public closeIncident(): static
+public closeIncident(): $this
 ```
 
 
@@ -203,16 +212,22 @@ public closeIncident(): static
 
 
 
+
+
+**See Also:**
+
+* [`\App\StorableEvents\Incident\IncidentClosed`](../StorableEvents/Incident/IncidentClosed.md) - The event recorded by this method.
+* [`\App\States\IncidentStatus\Closed`](../States/IncidentStatus/Closed.md) - The status the incident will transition to.
 
 
 ***
 
 ### reopenIncident
 
-
+Transitions the aggregated incident to Reopened status.
 
 ```php
-public reopenIncident(): static
+public reopenIncident(): $this
 ```
 
 
@@ -224,16 +239,22 @@ public reopenIncident(): static
 
 
 
+
+
+**See Also:**
+
+* [`\App\StorableEvents\Incident\IncidentReopened`](../StorableEvents/Incident/IncidentReopened.md) - The event recorded by this method.
+* [`\App\States\IncidentStatus\Reopened`](../States/IncidentStatus/Reopened.md) - The status the incident will transition to.
 
 
 ***
 
 ### addComment
 
-
+Attaches a comment to the aggregated incident.
 
 ```php
-public addComment(\App\Data\CommentData $commentData): static
+public addComment(\App\Data\CommentData $commentData): $this
 ```
 
 
@@ -247,20 +268,25 @@ public addComment(\App\Data\CommentData $commentData): static
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `$commentData` | **\App\Data\CommentData** |  |
+| `$commentData` | **\App\Data\CommentData** | The request containing the comment to add. |
 
 
 
+
+
+**See Also:**
+
+* [`\App\StorableEvents\Comment\CommentCreated`](../StorableEvents/Comment/CommentCreated.md) - The event recorded by this method.
 
 
 ***
 
 ### addAdditionalInformation
 
-
+Adds provided additional information to the aggregated incident.
 
 ```php
-public addAdditionalInformation(string $additionalInformation): static
+public addAdditionalInformation(string $additionalInformation): $this
 ```
 
 
@@ -274,7 +300,7 @@ public addAdditionalInformation(string $additionalInformation): static
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `$additionalInformation` | **string** |  |
+| `$additionalInformation` | **string** | The additional information text to add to the incident. |
 
 
 
@@ -284,10 +310,10 @@ public addAdditionalInformation(string $additionalInformation): static
 
 ### uploadFiles
 
-
+Stores and attaches files to the aggregated incident.
 
 ```php
-public uploadFiles(array $files): static
+public uploadFiles(\Illuminate\Http\UploadedFile[] $files): $this
 ```
 
 
@@ -301,14 +327,20 @@ public uploadFiles(array $files): static
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `$files` | **array** |  |
+| `$files` | **\Illuminate\Http\UploadedFile[]** | The list of uploaded files to store |
 
 
 
+
+
+**See Also:**
+
+* [`\App\StorableEvents\Incident\FileCreated`](../StorableEvents/Incident/FileCreated.md) - Is recorded for every file that is stored.
+* [`\App\StorableEvents\Incident\FilesUploaded`](../StorableEvents/Incident/FilesUploaded.md) - Is recorded when all files have been stored.
 
 
 ***
 
 
 ***
-> Automatically generated on 2025-03-07
+> Automatically generated on 2025-03-14

@@ -1,11 +1,11 @@
 
 ***
 
-# Rapid Report Documentation
+# Rapid Report
 
 
 
-This is an automatically generated documentation for **Rapid Report Documentation**.
+This is an automatically generated documentation for **Rapid Report**.
 
 
 ## Namespaces
@@ -17,9 +17,9 @@ This is an automatically generated documentation for **Rapid Report Documentatio
 
 | Class | Description |
 |-------|-------------|
-| [`IncidentAggregateRoot`](./classes/App/Aggregates/IncidentAggregateRoot.md) | Any<br />author<br />copyright<br />deprecated<br />example<br />final<br />ignore<br />internal<br />link<br />see<br />since<br />source<br />todo<br />uses<br />version|
-| [`InvestigationAggregateRoot`](./classes/App/Aggregates/InvestigationAggregateRoot.md) | |
-| [`RootCauseAnalysisAggregateRoot`](./classes/App/Aggregates/RootCauseAnalysisAggregateRoot.md) | |
+| [`IncidentAggregateRoot`](./classes/App/Aggregates/IncidentAggregateRoot.md) | Handles all events related to incidents.|
+| [`InvestigationAggregateRoot`](./classes/App/Aggregates/InvestigationAggregateRoot.md) | Handles all events related to investigations.|
+| [`RootCauseAnalysisAggregateRoot`](./classes/App/Aggregates/RootCauseAnalysisAggregateRoot.md) | Handles all events related to root cause analyses.|
 
 
 
@@ -30,11 +30,11 @@ This is an automatically generated documentation for **Rapid Report Documentatio
 
 | Class | Description |
 |-------|-------------|
-| [`CommentData`](./classes/App/Data/CommentData.md) | |
-| [`ExportData`](./classes/App/Data/ExportData.md) | |
-| [`IncidentData`](./classes/App/Data/IncidentData.md) | |
-| [`InvestigationData`](./classes/App/Data/InvestigationData.md) | |
-| [`RootCauseAnalysisData`](./classes/App/Data/RootCauseAnalysisData.md) | |
+| [`CommentData`](./classes/App/Data/CommentData.md) | Request data object for creating and attaching comments to other models.|
+| [`IncidentData`](./classes/App/Data/IncidentData.md) | Request data for creation of an incident.|
+| [`IncidentExportData`](./classes/App/Data/IncidentExportData.md) | Request data for incident export criteria.|
+| [`InvestigationData`](./classes/App/Data/InvestigationData.md) | Request data for creation of an investigation.|
+| [`RootCauseAnalysisData`](./classes/App/Data/RootCauseAnalysisData.md) | Request data for creation of a root cause analysis.|
 
 
 
@@ -69,7 +69,6 @@ This is an automatically generated documentation for **Rapid Report Documentatio
 |-------|-------------|
 | [`Controller`](./classes/App/Http/Controllers/Controller.md) | |
 | [`DashboardController`](./classes/App/Http/Controllers/DashboardController.md) | |
-| [`NotificationController`](./classes/App/Http/Controllers/NotificationController.md) | |
 | [`ProfileController`](./classes/App/Http/Controllers/ProfileController.md) | |
 
 
@@ -119,6 +118,18 @@ This is an automatically generated documentation for **Rapid Report Documentatio
 | Class | Description |
 |-------|-------------|
 | [`InvestigationController`](./classes/App/Http/Controllers/Investigation/InvestigationController.md) | |
+
+
+
+
+### \App\Http\Controllers\Notification
+
+#### Classes
+
+| Class | Description |
+|-------|-------------|
+| [`NotificationController`](./classes/App/Http/Controllers/Notification/NotificationController.md) | |
+| [`NotificationMessageController`](./classes/App/Http/Controllers/Notification/NotificationMessageController.md) | |
 
 
 
@@ -215,6 +226,7 @@ This is an automatically generated documentation for **Rapid Report Documentatio
 | [`File`](./classes/App/Models/File.md) | |
 | [`Incident`](./classes/App/Models/Incident.md) | |
 | [`Investigation`](./classes/App/Models/Investigation.md) | |
+| [`NotificationMessage`](./classes/App/Models/NotificationMessage.md) | |
 | [`RootCauseAnalysis`](./classes/App/Models/RootCauseAnalysis.md) | |
 | [`User`](./classes/App/Models/User.md) | |
 
@@ -294,6 +306,7 @@ This is an automatically generated documentation for **Rapid Report Documentatio
 | [`DashboardPolicy`](./classes/App/Policies/DashboardPolicy.md) | |
 | [`IncidentPolicy`](./classes/App/Policies/IncidentPolicy.md) | |
 | [`InvestigationPolicy`](./classes/App/Policies/InvestigationPolicy.md) | |
+| [`NotificationMessagePolicy`](./classes/App/Policies/NotificationMessagePolicy.md) | |
 | [`ReportPolicy`](./classes/App/Policies/ReportPolicy.md) | |
 | [`RootCauseAnalysisPolicy`](./classes/App/Policies/RootCauseAnalysisPolicy.md) | |
 | [`UserPolicy`](./classes/App/Policies/UserPolicy.md) | |
@@ -452,283 +465,12 @@ This is an automatically generated documentation for **Rapid Report Documentatio
 | Class | Description |
 |-------|-------------|
 | [`DatabaseSeeder`](./classes/Database/Seeders/DatabaseSeeder.md) | |
+| [`NotificationMessageSeeder`](./classes/Database/Seeders/NotificationMessageSeeder.md) | |
 | [`RolesAndPermissionsSeeder`](./classes/Database/Seeders/RolesAndPermissionsSeeder.md) | |
-
-
-
-
-### \Tests
-
-#### Classes
-
-| Class | Description |
-|-------|-------------|
-| [`TestCase`](./classes/Tests/TestCase.md) | |
-
-
-
-
-### \Tests\Feature
-
-#### Classes
-
-| Class | Description |
-|-------|-------------|
-| [`DashboardTest`](./classes/Tests/Feature/DashboardTest.md) | |
-| [`NotificationTest`](./classes/Tests/Feature/NotificationTest.md) | |
-| [`ProfileTest`](./classes/Tests/Feature/ProfileTest.md) | |
-
-
-
-
-### \Tests\Feature\Auth
-
-#### Classes
-
-| Class | Description |
-|-------|-------------|
-| [`AuthenticationTest`](./classes/Tests/Feature/Auth/AuthenticationTest.md) | |
-| [`EmailVerificationTest`](./classes/Tests/Feature/Auth/EmailVerificationTest.md) | |
-| [`PasswordConfirmationTest`](./classes/Tests/Feature/Auth/PasswordConfirmationTest.md) | |
-| [`PasswordResetTest`](./classes/Tests/Feature/Auth/PasswordResetTest.md) | |
-| [`PasswordUpdateTest`](./classes/Tests/Feature/Auth/PasswordUpdateTest.md) | |
-| [`RegistrationTest`](./classes/Tests/Feature/Auth/RegistrationTest.md) | |
-
-
-
-
-### \Tests\Feature\Incident
-
-#### Classes
-
-| Class | Description |
-|-------|-------------|
-| [`AddCommentTest`](./classes/Tests/Feature/Incident/AddCommentTest.md) | |
-| [`AdditionalInformationTest`](./classes/Tests/Feature/Incident/AdditionalInformationTest.md) | |
-| [`CreateTest`](./classes/Tests/Feature/Incident/CreateTest.md) | |
-| [`FileTest`](./classes/Tests/Feature/Incident/FileTest.md) | |
-| [`IndexTest`](./classes/Tests/Feature/Incident/IndexTest.md) | |
-| [`SearchTest`](./classes/Tests/Feature/Incident/SearchTest.md) | |
-| [`ShowTest`](./classes/Tests/Feature/Incident/ShowTest.md) | |
-| [`StatusTest`](./classes/Tests/Feature/Incident/StatusTest.md) | |
-| [`StoreTest`](./classes/Tests/Feature/Incident/StoreTest.md) | |
-| [`SupervisorTest`](./classes/Tests/Feature/Incident/SupervisorTest.md) | |
-
-
-
-
-### \Tests\Feature\Investigation
-
-#### Classes
-
-| Class | Description |
-|-------|-------------|
-| [`CreateTest`](./classes/Tests/Feature/Investigation/CreateTest.md) | |
-| [`ShowTest`](./classes/Tests/Feature/Investigation/ShowTest.md) | |
-| [`StoreTest`](./classes/Tests/Feature/Investigation/StoreTest.md) | |
-
-
-
-
-### \Tests\Feature\Report
-
-#### Classes
-
-| Class | Description |
-|-------|-------------|
-| [`ExportCSVTest`](./classes/Tests/Feature/Report/ExportCSVTest.md) | |
-| [`ExportXLSXTest`](./classes/Tests/Feature/Report/ExportXLSXTest.md) | |
-| [`IndexTest`](./classes/Tests/Feature/Report/IndexTest.md) | |
-| [`StatsTest`](./classes/Tests/Feature/Report/StatsTest.md) | |
-
-
-
-
-### \Tests\Feature\RootCauseAnalysis
-
-#### Classes
-
-| Class | Description |
-|-------|-------------|
-| [`CreateTest`](./classes/Tests/Feature/RootCauseAnalysis/CreateTest.md) | |
-| [`ShowTest`](./classes/Tests/Feature/RootCauseAnalysis/ShowTest.md) | |
-| [`StoreTest`](./classes/Tests/Feature/RootCauseAnalysis/StoreTest.md) | |
-
-
-
-
-### \Tests\Feature\User
-
-#### Classes
-
-| Class | Description |
-|-------|-------------|
-| [`DestroyTest`](./classes/Tests/Feature/User/DestroyTest.md) | |
-| [`StoreTest`](./classes/Tests/Feature/User/StoreTest.md) | |
-| [`UserRoleTest`](./classes/Tests/Feature/User/UserRoleTest.md) | |
-
-
-
-
-### \Tests\Unit\Aggregates
-
-#### Classes
-
-| Class | Description |
-|-------|-------------|
-| [`IncidentAggregateRootTest`](./classes/Tests/Unit/Aggregates/IncidentAggregateRootTest.md) | |
-| [`InvestigationAggregateRootTest`](./classes/Tests/Unit/Aggregates/InvestigationAggregateRootTest.md) | |
-| [`RootCauseAnalysisAggregateRootTest`](./classes/Tests/Unit/Aggregates/RootCauseAnalysisAggregateRootTest.md) | |
-
-
-
-
-### \Tests\Unit\Data
-
-#### Classes
-
-| Class | Description |
-|-------|-------------|
-| [`CommentDataTest`](./classes/Tests/Unit/Data/CommentDataTest.md) | |
-| [`ExportDataTest`](./classes/Tests/Unit/Data/ExportDataTest.md) | |
-| [`IncidentDataTest`](./classes/Tests/Unit/Data/IncidentDataTest.md) | |
-| [`InvestigationDataTest`](./classes/Tests/Unit/Data/InvestigationDataTest.md) | |
-| [`RootCauseAnalysisDataTest`](./classes/Tests/Unit/Data/RootCauseAnalysisDataTest.md) | |
-
-
-
-
-### \Tests\Unit\Models
-
-#### Classes
-
-| Class | Description |
-|-------|-------------|
-| [`CommentTest`](./classes/Tests/Unit/Models/CommentTest.md) | |
-| [`FileTest`](./classes/Tests/Unit/Models/FileTest.md) | |
-| [`IncidentTest`](./classes/Tests/Unit/Models/IncidentTest.md) | |
-| [`InvestigationTest`](./classes/Tests/Unit/Models/InvestigationTest.md) | |
-| [`RootCauseAnalysisTest`](./classes/Tests/Unit/Models/RootCauseAnalysisTest.md) | |
-| [`UserTest`](./classes/Tests/Unit/Models/UserTest.md) | |
-
-
-
-
-### \Tests\Unit\Policies
-
-#### Classes
-
-| Class | Description |
-|-------|-------------|
-| [`DashboardPolicyTest`](./classes/Tests/Unit/Policies/DashboardPolicyTest.md) | |
-| [`IncidentPolicyTest`](./classes/Tests/Unit/Policies/IncidentPolicyTest.md) | |
-| [`InvestigationPolicyTest`](./classes/Tests/Unit/Policies/InvestigationPolicyTest.md) | |
-| [`ReportPolicyTest`](./classes/Tests/Unit/Policies/ReportPolicyTest.md) | |
-| [`RootCauseAnalysisPolicyTest`](./classes/Tests/Unit/Policies/RootCauseAnalysisPolicyTest.md) | |
-| [`UserPolicyTest`](./classes/Tests/Unit/Policies/UserPolicyTest.md) | |
-
-
-
-
-### \Tests\Unit\Projectors
-
-#### Classes
-
-| Class | Description |
-|-------|-------------|
-| [`StoredEventProjectorTest`](./classes/Tests/Unit/Projectors/StoredEventProjectorTest.md) | |
-
-
-
-
-### \Tests\Unit\Reactors
-
-#### Classes
-
-| Class | Description |
-|-------|-------------|
-| [`StoredEventReactorTest`](./classes/Tests/Unit/Reactors/StoredEventReactorTest.md) | |
-
-
-
-
-### \Tests\Unit\States
-
-#### Classes
-
-| Class | Description |
-|-------|-------------|
-| [`IncidentStatusStateTest`](./classes/Tests/Unit/States/IncidentStatusStateTest.md) | |
-
-
-
-
-### \Tests\Unit\StoreableEvents\Comment
-
-#### Classes
-
-| Class | Description |
-|-------|-------------|
-| [`CommentCreatedTest`](./classes/Tests/Unit/StoreableEvents/Comment/CommentCreatedTest.md) | |
-
-
-
-
-### \Tests\Unit\StoreableEvents\Incident
-
-#### Classes
-
-| Class | Description |
-|-------|-------------|
-| [`AdditionalInformationAddedTest`](./classes/Tests/Unit/StoreableEvents/Incident/AdditionalInformationAddedTest.md) | |
-| [`FileCreatedTest`](./classes/Tests/Unit/StoreableEvents/Incident/FileCreatedTest.md) | |
-| [`FilesUploadedTest`](./classes/Tests/Unit/StoreableEvents/Incident/FilesUploadedTest.md) | |
-| [`IncidentClosedTest`](./classes/Tests/Unit/StoreableEvents/Incident/IncidentClosedTest.md) | |
-| [`IncidentCreatedTest`](./classes/Tests/Unit/StoreableEvents/Incident/IncidentCreatedTest.md) | |
-| [`IncidentReopenedTest`](./classes/Tests/Unit/StoreableEvents/Incident/IncidentReopenedTest.md) | |
-| [`IncidentReviewRequestedTest`](./classes/Tests/Unit/StoreableEvents/Incident/IncidentReviewRequestedTest.md) | |
-| [`SupervisorAssignedTest`](./classes/Tests/Unit/StoreableEvents/Incident/SupervisorAssignedTest.md) | |
-| [`SupervisorUnassignedTest`](./classes/Tests/Unit/StoreableEvents/Incident/SupervisorUnassignedTest.md) | |
-
-
-
-
-### \Tests\Unit\StoreableEvents\Investigation
-
-#### Classes
-
-| Class | Description |
-|-------|-------------|
-| [`InvestigationCreatedTest`](./classes/Tests/Unit/StoreableEvents/Investigation/InvestigationCreatedTest.md) | |
-| [`InvestigationReturnedTest`](./classes/Tests/Unit/StoreableEvents/Investigation/InvestigationReturnedTest.md) | |
-
-
-
-
-### \Tests\Unit\StoreableEvents\RootCauseAnalysis
-
-#### Classes
-
-| Class | Description |
-|-------|-------------|
-| [`RootCauseAnalysisCreatedTest`](./classes/Tests/Unit/StoreableEvents/RootCauseAnalysis/RootCauseAnalysisCreatedTest.md) | |
-| [`RootCauseAnalysisReturnedTest`](./classes/Tests/Unit/StoreableEvents/RootCauseAnalysis/RootCauseAnalysisReturnedTest.md) | |
-
-
-
-
-### \Tests\Unit\StoreableEvents\User
-
-#### Classes
-
-| Class | Description |
-|-------|-------------|
-| [`UserCreatedTest`](./classes/Tests/Unit/StoreableEvents/User/UserCreatedTest.md) | |
-| [`UserDeletedTest`](./classes/Tests/Unit/StoreableEvents/User/UserDeletedTest.md) | |
-| [`UserRoleUpdatedTest`](./classes/Tests/Unit/StoreableEvents/User/UserRoleUpdatedTest.md) | |
+| [`TestSeeder`](./classes/Database/Seeders/TestSeeder.md) | |
 
 
 
 
 ***
-> Automatically generated on 2025-03-07
+> Automatically generated on 2025-03-14

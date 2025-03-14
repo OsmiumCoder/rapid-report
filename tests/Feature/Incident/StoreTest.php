@@ -5,6 +5,7 @@ namespace Tests\Feature\Incident;
 use App\Data\IncidentData;
 use App\Enum\CommentType;
 use App\Enum\IncidentType;
+use App\Enum\IncidentRoles;
 use App\Mail\IncidentReceived;
 use App\Models\CustomStoredEvent;
 use App\Models\Incident;
@@ -29,7 +30,7 @@ class StoreTest extends TestCase
             'anonymous' => false,
             'on_behalf' => false,
             'on_behalf_anonymous' => false,
-            'role' => 0,
+            'role' => IncidentRoles::EMPLOYEE,
             'last_name' => null,
             'first_name' => null,
             'upei_id' => null,
@@ -69,7 +70,7 @@ class StoreTest extends TestCase
             'anonymous' => true,
             'on_behalf' => false,
             'on_behalf_anonymous' => false,
-            'role' => 0,
+            'role' => IncidentRoles::EMPLOYEE,
             'last_name' => null,
             'first_name' => null,
             'upei_id' => null,
@@ -105,7 +106,7 @@ class StoreTest extends TestCase
             'anonymous' => false,
             'on_behalf' => true,
             'on_behalf_anonymous' => false,
-            'role' => 0,
+            'role' => IncidentRoles::EMPLOYEE,
             'last_name' => 'last',
             'first_name' => 'first',
             'upei_id' => '322',
@@ -149,7 +150,7 @@ class StoreTest extends TestCase
             'anonymous' => false,
             'on_behalf' => false,
             'on_behalf_anonymous' => false,
-            'role' => 0,
+            'role' => IncidentRoles::EMPLOYEE,
             'last_name' => 'last',
             'first_name' => 'first',
             'upei_id' => '322',
@@ -277,7 +278,7 @@ class StoreTest extends TestCase
             'anonymous' => false,
             'on_behalf' => false,
             'on_behalf_anonymous' => false,
-            'role' => 0,
+            'role' => IncidentRoles::EMPLOYEE,
             'last_name' => 'last',
             'first_name' => 'first',
             'upei_id' => '322',
@@ -316,7 +317,7 @@ class StoreTest extends TestCase
             'anonymous' => false,
             'on_behalf' => true,
             'on_behalf_anonymous' => false,
-            'role' => 0,
+            'role' => IncidentRoles::EMPLOYEE,
             'last_name' => 'last',
             'first_name' => 'first',
             'upei_id' => '322',
@@ -382,7 +383,7 @@ class StoreTest extends TestCase
             'anonymous' => false,
             'on_behalf' => true,
             'on_behalf_anonymous' => false,
-            'role' => 0,
+            'role' => IncidentRoles::EMPLOYEE,
             'last_name' => 'last',
             'first_name' => 'first',
             'upei_id' => '322',
@@ -421,7 +422,7 @@ class StoreTest extends TestCase
             'anonymous' => false,
             'on_behalf' => true,
             'on_behalf_anonymous' => false,
-            'role' => 0,
+            'role' => IncidentRoles::EMPLOYEE,
             'last_name' => 'last',
             'first_name' => 'first',
             'upei_id' => '322',
@@ -460,7 +461,7 @@ class StoreTest extends TestCase
             'anonymous' => true,
             'on_behalf' => true,
             'on_behalf_anonymous' => false,
-            'role' => 0,
+            'role' => IncidentRoles::EMPLOYEE,
             'last_name' => 'last',
             'first_name' => 'first',
             'upei_id' => '322',

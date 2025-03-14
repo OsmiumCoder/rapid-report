@@ -1,9 +1,6 @@
 name: linter
 
 on:
-  push:
-    branches:
-      - staging
   pull_request:
     branches:
       - staging

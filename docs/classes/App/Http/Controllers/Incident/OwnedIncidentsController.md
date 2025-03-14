@@ -49,4 +49,4 @@ public __invoke(\Illuminate\Http\Request $request): \Inertia\Response
 
 
 ***
-> Automatically generated on 2025-03-07
+> Automatically generated on 2025-03-14

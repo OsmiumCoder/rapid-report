@@ -269,4 +269,4 @@ public scopeSort(mixed $query, mixed $sortBy = &#039;created_at&#039;, mixed $so
 
 
 ***
-> Automatically generated on 2025-03-07
+> Automatically generated on 2025-03-14

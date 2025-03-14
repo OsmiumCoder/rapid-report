@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Report;
 
-use App\Data\ExportData;
+use App\Data\IncidentExportData;
 use App\Exports\IncidentsExport;
 use App\Models\Incident;
 use App\Models\User;
@@ -23,7 +23,7 @@ class ExportCSVTest extends TestCase
         // these should thus not be returned
         Incident::factory(5)->create(['created_at' => now()->subDays(10)]);
 
-        $exportData = ExportData::from([
+        $exportData = IncidentExportData::from([
             'start' => now()->toDateString(),
             'end' => now()->addDay()->toDateString(),
             'fields' => ['ID']
@@ -46,7 +46,7 @@ class ExportCSVTest extends TestCase
         // these should thus not be returned
         Incident::factory(5)->create(['created_at' => now()->subDays(10)]);
 
-        $exportData = ExportData::from([
+        $exportData = IncidentExportData::from([
             'start' => now()->toDateString(),
             'end' => now()->addDay()->toDateString(),
             'fields' => ['ID']
@@ -78,7 +78,7 @@ class ExportCSVTest extends TestCase
     {
         $user = User::factory()->create()->syncRoles('user');
 
-        $exportData = ExportData::from([
+        $exportData = IncidentExportData::from([
             'start' => now()->toDateString(),
             'end' => now()->toDateString(),
             'fields' => ['ID']
@@ -93,7 +93,7 @@ class ExportCSVTest extends TestCase
     {
         $supervisor = User::factory()->create()->syncRoles('supervisor');
 
-        $exportData = ExportData::from([
+        $exportData = IncidentExportData::from([
             'start' => now()->toDateString(),
             'end' => now()->toDateString(),
             'fields' => ['ID']

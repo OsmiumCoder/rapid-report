@@ -12,7 +12,7 @@ export default function Created({ can_view, incident_id }: PageProps<{ can_view:
                     <CheckCircleIcon className="text-upei-green-500 size-16" />
                 </div>
                 <div className="my-2 text-xl">Thank you for submitting an Incident report.</div>
-                <div className="my-2">Your incident will be reviewed and investigated in due process.</div>
+                <div className="my-2">Your incident will be reviewed and investigated in a timely manner.</div>
                 <div className="my-2 flex w-3/4 justify-around">
                     <div>
                         <Link

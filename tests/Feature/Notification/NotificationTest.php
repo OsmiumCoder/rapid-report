@@ -4,6 +4,7 @@ namespace Tests\Feature\Notification;
 
 use App\Data\IncidentData;
 use App\Enum\IncidentType;
+use App\Enum\IncidentRoles;
 use App\Models\User;
 use Tests\TestCase;
 
@@ -18,7 +19,7 @@ class NotificationTest extends TestCase
             'anonymous' => false,
             'on_behalf' => false,
             'on_behalf_anonymous' => false,
-            'role' => 0,
+            'role' => IncidentRoles::EMPLOYEE,
             'last_name' => null,
             'first_name' => null,
             'upei_id' => null,
@@ -70,7 +71,7 @@ class NotificationTest extends TestCase
             'anonymous' => false,
             'on_behalf' => false,
             'on_behalf_anonymous' => false,
-            'role' => 0,
+            'role' => IncidentRoles::EMPLOYEE,
             'last_name' => null,
             'first_name' => null,
             'upei_id' => null,
@@ -119,7 +120,7 @@ class NotificationTest extends TestCase
             'anonymous' => false,
             'on_behalf' => false,
             'on_behalf_anonymous' => false,
-            'role' => 0,
+            'role' => IncidentRoles::EMPLOYEE,
             'last_name' => null,
             'first_name' => null,
             'upei_id' => null,

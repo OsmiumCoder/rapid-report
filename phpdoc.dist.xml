@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <phpdocumentor
     configVersion="3"
-    title="Rapid Report Documentation"
+    title="Rapid Report"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="https://www.phpdoc.org"
     xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/phpDocumentor/phpDocumentor/master/data/xsd/phpdoc.xsd"
@@ -16,8 +16,6 @@
             <source dsn=".">
                 <path>app</path>
                 <path>database</path>
-                <path>routes</path>
-                <path>tests</path>
             </source>
         </api>
     </version>

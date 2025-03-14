@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Report;
 
-use App\Data\ExportData;
+use App\Data\IncidentExportData;
 use App\Exports\IncidentsExport;
 use App\Http\Controllers\Controller;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -19,7 +19,7 @@ class ExportController extends Controller
      * @throws PhpSpreadSheetException
      * @throws WriterException
      */
-    public function exportXLSX(ExportData $exportData): BinaryFileResponse
+    public function exportXLSX(IncidentExportData $exportData): BinaryFileResponse
     {
         Gate::authorize('view-report-page');
 
@@ -35,7 +35,7 @@ class ExportController extends Controller
      * @throws PhpSpreadSheetException
      * @throws WriterException
      */
-    public function exportCSV(ExportData $exportData): BinaryFileResponse
+    public function exportCSV(IncidentExportData $exportData): BinaryFileResponse
     {
         Gate::authorize('view-report-page');
 

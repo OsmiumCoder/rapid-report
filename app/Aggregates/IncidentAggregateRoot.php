@@ -8,6 +8,9 @@ use App\Enum\CommentType;
 use App\Exceptions\UserNotSupervisorException;
 use App\Models\Incident;
 use App\Models\User;
+use App\States\IncidentStatus\Closed;
+use App\States\IncidentStatus\Reopened;
+use App\States\IncidentStatus\Returned;
 use App\StorableEvents\Comment\CommentCreated;
 use App\StorableEvents\Incident\AdditionalInformationAdded;
 use App\StorableEvents\Incident\FileCreated;
@@ -25,41 +28,19 @@ use Illuminate\Support\Facades\Storage;
 use Spatie\EventSourcing\AggregateRoots\AggregateRoot;
 
 /**
- * All available tags:
- * Any
- * author
- * copyright
- * deprecated
- * example
- * final
- * ignore
- * internal
- * link
- * see
- * since
- * source
- * todo
- * uses
- * version
+ * Handles all events related to incidents.
  *
- * Class
- * category
- * licence
- * method
- * package
- * property
- * property-read
- * property-write
- * subpackage
- *
- * Methods
- * api
- * param
- * return
- * throw
+ * @see Incident The model that is being aggregated.
  */
 class IncidentAggregateRoot extends AggregateRoot
 {
+    /**
+     * Records an IncidentCreated event.
+     *
+     * @param IncidentData $incidentData The request data for the new incident.
+     * @return $this
+     * @see IncidentCreated The event recorded by this method.
+     */
     public function createIncident(IncidentData $incidentData): static
     {
         $this->recordThat(new IncidentCreated(
@@ -91,7 +72,12 @@ class IncidentAggregateRoot extends AggregateRoot
     }
 
     /**
-     * @throws UserNotSupervisorException
+     * Assigns the user of the given id to the aggregated incident.
+     *
+     * @param int $supervisorId Is user id of the supervisor to assign.
+     * @return $this
+     * @throws UserNotSupervisorException If the user for the given id is not a supervisor.
+     * @see SupervisorAssigned The event recored by this method.
      */
     public function assignSupervisor(int $supervisorId): static
     {
@@ -106,6 +92,12 @@ class IncidentAggregateRoot extends AggregateRoot
         return $this;
     }
 
+    /**
+     * Unassigns the current supervisor from the aggregated incident.
+     *
+     * @return $this
+     * @see SupervisorUnassigned The event recorded by this method.
+     */
     public function unassignSupervisor(): static
     {
         $this->recordThat(new SupervisorUnassigned);
@@ -113,6 +105,12 @@ class IncidentAggregateRoot extends AggregateRoot
         return $this;
     }
 
+    /**
+     * Transitions the aggregated incident to In Review status.
+     *
+     * @return $this
+     * @see IncidentReviewRequested The event recorded by this method.
+     */
     public function requestReview(): static
     {
         $this->recordThat(new IncidentReviewRequested);
@@ -120,6 +118,13 @@ class IncidentAggregateRoot extends AggregateRoot
         return $this;
     }
 
+    /**
+     * Transitions the aggregated incident to Returned status, for current investigation.
+     *
+     * @return $this
+     * @see InvestigationReturned The event recorded by this method.
+     * @see Returned The status the incident will transition to.
+     */
     public function returnInvestigation(): static
     {
         $this->recordThat(new InvestigationReturned);
@@ -127,6 +132,13 @@ class IncidentAggregateRoot extends AggregateRoot
         return $this;
     }
 
+    /**
+     * Transitions the aggregated incident to Returned status, for current root cause analysis.
+     *
+     * @return $this
+     * @see RootCauseAnalysisReturned The event recorded by this method.
+     * @see Returned The status the incident will transition to.
+     */
     public function returnRCA(): static
     {
         $this->recordThat(new RootCauseAnalysisReturned);
@@ -134,6 +146,13 @@ class IncidentAggregateRoot extends AggregateRoot
         return $this;
     }
 
+    /**
+     * Transitions the aggregated incident to Closed status.
+     *
+     * @return $this
+     * @see IncidentClosed The event recorded by this method.
+     * @see Closed The status the incident will transition to.
+     */
     public function closeIncident(): static
     {
         $this->recordThat(new IncidentClosed);
@@ -141,6 +160,13 @@ class IncidentAggregateRoot extends AggregateRoot
         return $this;
     }
 
+    /**
+     * Transitions the aggregated incident to Reopened status.
+     *
+     * @return $this
+     * @see IncidentReopened The event recorded by this method.
+     * @see Reopened The status the incident will transition to.
+     */
     public function reopenIncident(): static
     {
         $this->recordThat(new IncidentReopened);
@@ -148,6 +174,13 @@ class IncidentAggregateRoot extends AggregateRoot
         return $this;
     }
 
+    /**
+     * Attaches a comment to the aggregated incident.
+     *
+     * @param CommentData $commentData The request containing the comment to add.
+     * @return $this
+     * @see CommentCreated The event recorded by this method.
+     */
     public function addComment(CommentData $commentData): static
     {
         $this->recordThat(new CommentCreated(
@@ -160,6 +193,12 @@ class IncidentAggregateRoot extends AggregateRoot
         return $this;
     }
 
+    /**
+     * Adds provided additional information to the aggregated incident.
+     *
+     * @param string $additionalInformation The additional information text to add to the incident.
+     * @return $this
+     */
     public function addAdditionalInformation(string $additionalInformation): static
     {
         $this->recordThat(new AdditionalInformationAdded($additionalInformation));
@@ -167,9 +206,16 @@ class IncidentAggregateRoot extends AggregateRoot
         return $this;
     }
 
+    /**
+     * Stores and attaches files to the aggregated incident.
+     *
+     * @param UploadedFile[] $files The list of uploaded files to store
+     * @return $this
+     * @see FileCreated Is recorded for every file that is stored.
+     * @see FilesUploaded Is recorded when all files have been stored.
+     */
     public function uploadFiles(array $files): static
     {
-        /* @var UploadedFile $file */
         foreach ($files as $file) {
             $storedFile = Storage::putFile($this->uuid(), $file);
 

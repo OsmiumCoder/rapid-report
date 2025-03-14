@@ -29,6 +29,21 @@ public string $url
 
 ***
 
+### message
+
+
+
+```php
+public string $message
+```
+
+
+
+
+
+
+***
+
 ### incidentId
 
 
@@ -118,4 +133,4 @@ public content(): \Illuminate\Mail\Mailables\Content
 
 
 ***
-> Automatically generated on 2025-03-07
+> Automatically generated on 2025-03-14
