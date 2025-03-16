@@ -2,6 +2,7 @@
 
 namespace App\Notifications\Incident;
 
+use App\Enum\NotificationMessageType;
 use App\Notifications\BaseNotification;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\VonageMessage;
@@ -12,23 +13,13 @@ class IncidentSubmittedNotification extends BaseNotification
      * Create a new notification instance.
      */
     public function __construct(
-        public string  $incidentId,
-        public ?string $firstName,
-        public ?string $lastName,
+        public array $data,
     ) {
-        if ($firstName == null && $lastName == null) {
-            $name = 'an Anonymous User';
-        } elseif ($firstName == null) {
-            $name = $lastName;
-        } elseif ($lastName == null) {
-            $name = $firstName;
-        } else {
-            $name = $firstName . ' ' . $lastName;
-        }
-        $this->message = "An incident was submitted by $name";
         $this->url = route('incidents.show', [
-            'incident' => $incidentId,
+            'incident' => $this->data['incidentId'],
         ]);
+
+        $this->parseMessage(NotificationMessageType::INCIDENT_SUBMITTED);
     }
 
     /**

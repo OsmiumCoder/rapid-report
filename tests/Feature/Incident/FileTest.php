@@ -157,14 +157,14 @@ class FileTest extends TestCase
             UploadedFile::fake()->image('file.jpg')->size(100),
         ];
 
-        $response = $this->post(route('incidents.upload-files', $incident), ['files' => $files]);
+        $this->post(route('incidents.upload-files', $incident), ['files' => $files]);
 
         Notification::assertCount(3);
 
         Notification::assertSentTo(
             $admins,
             function (FilesUploadedNotification $notification, array $channels) use ($incident, $supervisor) {
-                return $notification->incidentSlug === $incident->slug && $notification->user->id === $supervisor->id;
+                return $notification->data['incidentSlug'] === $incident->slug && $notification->data['name'] === $supervisor->name;
             }
         );
     }

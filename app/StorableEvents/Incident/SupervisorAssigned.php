@@ -69,8 +69,19 @@ class SupervisorAssigned extends StoredEvent
         $admin = User::find($this->metaData['user_id']);
         $incident = $this->incident();
 
-        Notification::send($this->supervisor(), new SupervisorAssignedNotification($incident->slug, $this->supervisor(), $admin));
+        $assignedData = [
+            'incidentSlug' => $incident->slug,
+            'name' => $admin->name,
+        ];
 
-        Notification::send($this->supervisor(), new IncidentFollowUpOverdueNotification($incident->slug, $this->supervisor()));
+        Notification::send($this->supervisor(), new SupervisorAssignedNotification($assignedData));
+
+        $overdueData = [
+            'incidentSlug' => $incident->slug,
+            'name' => $this->supervisor()->name,
+            'supervisorId' => $this->supervisor_id,
+        ];
+
+        Notification::send($this->supervisor(), new IncidentFollowUpOverdueNotification($overdueData));
     }
 }

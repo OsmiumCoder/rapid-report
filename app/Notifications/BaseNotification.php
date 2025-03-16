@@ -2,6 +2,8 @@
 
 namespace App\Notifications;
 
+use App\Enum\NotificationMessageType;
+use App\Models\NotificationMessage;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
@@ -10,6 +12,7 @@ abstract class BaseNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
+    public array $data;
     public string $message;
     public string $url;
 
@@ -35,5 +38,22 @@ abstract class BaseNotification extends Notification implements ShouldQueue
             'url' => $this->url,
             'message' => $this->message,
         ];
+    }
+
+    /**
+     * Parse the notification message and replace the placeholders with the data from $data array.
+     * Assign the parsed message to $this->message
+     *
+     * @param NotificationMessageType $notificationMessageType
+     * @return void
+     */
+    public function parseMessage(NotificationMessageType $notificationMessageType)
+    {
+        $notificationMessage = NotificationMessage::firstWhere('name', $notificationMessageType->value);
+
+        $this->message = preg_replace_callback('/\{(\w+)}/', function ($matches) {
+            $key = $matches[1];
+            return $this->data[$key] ?? $matches[0];
+        }, $notificationMessage->message);
     }
 }

@@ -79,7 +79,7 @@ class IncidentReviewRequestedTest extends TestCase
         Notification::assertSentTo(
             $admins,
             function (IncidentReviewRequestNotification $notification, array $channels) use ($incident, $supervisor) {
-                return $notification->incidentSlug === $incident->slug && $notification->supervisor->id === $supervisor->id;
+                return $notification->data['incidentSlug'] === $incident->slug && $notification->data['name'] === $supervisor->name;
             }
         );
     }

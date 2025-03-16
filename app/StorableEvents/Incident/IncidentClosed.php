@@ -50,11 +50,16 @@ class IncidentClosed extends StoredEvent
     {
         $incident = $this->incident();
 
+        $data = [
+            'incidentSlug' => $incident->slug,
+        ];
+
         if ($incident->supervisor) {
-            Notification::send($incident->supervisor, new IncidentClosedNotification($incident->id));
+            Notification::send($incident->supervisor, new IncidentClosedNotification($data));
         }
 
         $admins = User::role('admin')->get();
-        Notification::send($admins, new IncidentClosedNotification($incident->slug));
+
+        Notification::send($admins, new IncidentClosedNotification($data));
     }
 }

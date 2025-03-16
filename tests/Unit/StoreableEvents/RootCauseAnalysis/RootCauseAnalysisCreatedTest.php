@@ -83,9 +83,9 @@ class RootCauseAnalysisCreatedTest extends TestCase
             $admins,
             function (RootCauseAnalysisSubmittedNotification $notification, array $channels) use ($aggregateUuid, $supervisor, $incident) {
                 return (
-                    $notification->rootCauseAnalysisId === $aggregateUuid
-                    && $notification->supervisor->id === $supervisor->id
-                    && $notification->incidentSlug === $incident->slug
+                    $notification->data['incidentSlug'] === $incident->slug &&
+                    $notification->data['rootCauseAnalysisId'] === $aggregateUuid
+                    && $notification->data['name'] === $supervisor->name
                 );
             }
         );

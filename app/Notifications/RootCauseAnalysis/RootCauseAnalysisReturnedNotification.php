@@ -2,7 +2,7 @@
 
 namespace App\Notifications\RootCauseAnalysis;
 
-use App\Models\User;
+use App\Enum\NotificationMessageType;
 use App\Notifications\BaseNotification;
 use Illuminate\Notifications\Messages\MailMessage;
 
@@ -12,15 +12,14 @@ class RootCauseAnalysisReturnedNotification extends BaseNotification
      * Create a new notification instance.
      */
     public function __construct(
-        public string $incidentSlug,
-        public string $rootCauseAnalysisId,
-        public User $admin
+        public array $data,
     ) {
-        $this->message = "$admin->name has returned your root cause analysis on incident #$incidentSlug for further review";
         $this->url = route('incidents.root-cause-analyses.show', [
-            'incident' => $this->incidentSlug,
-            'root_cause_analysis' => $this->rootCauseAnalysisId
+            'incident' => $this->data['incidentSlug'],
+            'root_cause_analysis' => $this->data['rootCauseAnalysisId'],
         ]);
+
+        $this->parseMessage(NotificationMessageType::RCA_RETURNED);
     }
 
     /**
@@ -39,7 +38,7 @@ class RootCauseAnalysisReturnedNotification extends BaseNotification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Root Cause Analysis Returned')
+            ->subject("Root Cause Analysis For Incident #{$this->data['incidentSlug']} Returned")
             ->markdown('mail.root-cause-analysis-returned', [
                 'url' => $this->url,
                 'message' => $this->message,

@@ -2,6 +2,7 @@
 
 namespace App\Notifications\Incident;
 
+use App\Enum\NotificationMessageType;
 use App\Notifications\BaseNotification;
 use Illuminate\Notifications\Messages\MailMessage;
 
@@ -11,10 +12,10 @@ class IncidentClosedNotification extends BaseNotification
      * Create a new notification instance.
      */
     public function __construct(
-        public string $incidentSlug,
+        public array $data
     ) {
-        $this->message = "Incident #$incidentSlug has been closed";
-        $this->url = route('incidents.show', ['incident' => $this->incidentSlug]);
+        $this->url = route('incidents.show', ['incident' => $this->data['incidentSlug']]);
+        $this->parseMessage(NotificationMessageType::INCIDENT_CLOSED);
     }
 
     /**
@@ -33,7 +34,7 @@ class IncidentClosedNotification extends BaseNotification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject("Incident #$this->incidentSlug Closed")
+            ->subject("Incident #{$this->data['incidentSlug']} Closed")
             ->markdown('mail.incident-closed-notification', [
                 'url' => $this->url,
                 'message' => $this->message

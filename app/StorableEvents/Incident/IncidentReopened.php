@@ -51,6 +51,11 @@ class IncidentReopened extends StoredEvent
     {
         $incident = $this->incident();
         $admins = User::role('admin')->get();
-        Notification::send($admins, new IncidentReopenedNotification($incident->slug));
+
+        $data = [
+            'incidentSlug' => $incident->slug
+        ];
+
+        Notification::send($admins, new IncidentReopenedNotification($data));
     }
 }

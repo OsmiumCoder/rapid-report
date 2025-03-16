@@ -84,7 +84,7 @@ class RootCauseAnalysisAggregateRootTest extends TestCase
         Notification::assertSentTo(
             $admins,
             function (RootCauseAnalysisSubmittedNotification $notification, array $channels) use ($rca, $supervisor) {
-                return $notification->rootCauseAnalysisId === $rca->id && $notification->supervisor->id === $supervisor->id;
+                return $notification->data['rootCauseAnalysisId'] === $rca->id && $notification->data['name'] === $supervisor->name;
             }
         );
     }

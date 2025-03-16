@@ -54,7 +54,7 @@ class StoreTest extends TestCase
         Notification::assertSentTo(
             $admins,
             function (InvestigationSubmittedNotification $notification, array $channels) use ($investigation, $supervisor) {
-                return $notification->investigationId === $investigation->id && $notification->supervisor->id === $supervisor->id;
+                return $notification->data['investigationId'] === $investigation->id && $notification->data['name'] === $supervisor->name;
             }
         );
     }

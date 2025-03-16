@@ -118,8 +118,8 @@ class DashboardController extends Controller
     {
         Gate::authorize('view-settings');
 
-        $incidentReceivedMessage = NotificationMessage::firstWhere('name', 'incident-received');
+        $notificationMessages = NotificationMessage::all();
 
-        return Inertia::render('Dashboard/Settings', ['incidentReceivedMessage' => $incidentReceivedMessage]);
+        return Inertia::render('Dashboard/Settings', ['notificationMessages' => $notificationMessages]);
     }
 }

@@ -81,9 +81,8 @@ class SupervisorTest extends TestCase
             $supervisor,
             function (SupervisorAssignedNotification $notification, array $channels) use ($incident, $supervisor, $admin) {
                 return (
-                    $notification->incidentSlug === $incident->slug &&
-                    $notification->admin->id === $admin->id &&
-                    $notification->supervisor->id == $supervisor->id
+                    $notification->data['incidentSlug'] === $incident->slug &&
+                    $notification->data['name'] === $admin->name
                 );
             }
         );

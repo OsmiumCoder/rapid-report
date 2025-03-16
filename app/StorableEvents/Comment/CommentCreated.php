@@ -41,7 +41,12 @@ class CommentCreated extends StoredEvent
         if ($commentable) {
             $url = route('incidents.show', ['incident' => $this->commentable_id]);
 
-            $notification = new CommentAdded($this->content, $commenter, $url, $commentable->slug);
+            $data = [
+                'name' => $commenter->name,
+                'incidentSlug' => $commentable->slug,
+                'comment' => $this->content,
+            ];
+            $notification = new CommentAdded($url, $data);
 
             if ($commentable->supervisor && $commentable->supervisor->id !== $this->metaData['user_id']) {
                 Notification::send($commentable->supervisor, $notification);

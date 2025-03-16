@@ -2,7 +2,7 @@
 
 namespace App\Notifications\Comment;
 
-use App\Models\User;
+use App\Enum\NotificationMessageType;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use App\Notifications\BaseNotification;
@@ -15,12 +15,10 @@ class CommentAdded extends BaseNotification
      * Create a new notification instance.
      */
     public function __construct(
-        public string $comment,
-        public User $user,
         public string $url,
-        public string $incidentSlug,
+        public array $data,
     ) {
-        $this->message = "$user->name commented on incident #$incidentSlug: $comment";
+        $this->parseMessage(NotificationMessageType::COMMENT_ADDED);
     }
 
     /**
@@ -29,12 +27,10 @@ class CommentAdded extends BaseNotification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Comment Created')
+            ->subject("Comment Added on Incident #{$this->data['incidentSlug']}")
             ->line($this->message)
             ->markdown('mail.comment-made', [
-                'incidentSlug' => $this->incidentSlug,
-                'commenter' => $this->user->name,
-                'content' => $this->comment,
+                'message' => $this->message,
                 'url' => $this->url,
             ]);
     }

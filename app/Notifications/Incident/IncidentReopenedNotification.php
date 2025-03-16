@@ -2,6 +2,7 @@
 
 namespace App\Notifications\Incident;
 
+use App\Enum\NotificationMessageType;
 use App\Notifications\BaseNotification;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\VonageMessage;
@@ -12,10 +13,10 @@ class IncidentReopenedNotification extends BaseNotification
      * Create a new notification instance.
      */
     public function __construct(
-        public string $incidentSlug,
+        public array $data,
     ) {
-        $this->message = "Incident #{$incidentSlug} has been reopened.";
-        $this->url = route('incidents.show', ['incident' => $incidentSlug]);
+        $this->url = route('incidents.show', ['incident' => $this->data['incidentSlug']]);
+        $this->parseMessage(NotificationMessageType::INCIDENT_REOPENED);
     }
 
     /**
@@ -43,7 +44,7 @@ class IncidentReopenedNotification extends BaseNotification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject("Incident $this->incidentSlug Reopened")
+            ->subject("Incident {$this->data['incidentSlug']} Reopened")
             ->line($this->message)
             ->markdown('mail.incident-reopened-notification', [
                 'url' => $this->url,
