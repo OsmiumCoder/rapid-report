@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use Laravel\Socialite\Facades\Socialite;
 
 // TODO: Remove, used for demo purposes
 Route::get('/notification', function () {
@@ -82,6 +83,19 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+Route::get('/auth/redirect', function () {
+    return Socialite::driver('microsoft')
+        ->with(['hd' => 'upei.ca'])
+        ->redirect();
+});
+
+Route::get('/auth/callback', function () {
+    $user = Socialite::driver('microsoft')->user();
+
+    dd($user);
+    // $user->token
 });
 
 
