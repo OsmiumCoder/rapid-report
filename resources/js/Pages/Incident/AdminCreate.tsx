@@ -107,7 +107,7 @@ export default function AdminCreate({ incidentData }: { incidentData: IncidentDa
                         {(data.role === 1 || data.role === 2) && (
                             <div className="space-y-2">
                                 <InputLabel>UPEI ID</InputLabel>
-                                <TextInput onChange={() => {}} />
+                                <TextInput onChange={(e) => setData('upei_id', e.target.value)} />
                             </div>
                         )}
                     </>
