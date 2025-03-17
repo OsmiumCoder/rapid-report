@@ -4,6 +4,8 @@ ENV SERVER_NAME=137.149.157.7
 
 COPY . /app
 
+RUN ls -la
+
 COPY /certs/cert.pem /etc/ssl/certs/cert.pem
 COPY /certs/key.pem /etc/ssl/private/key.pem
 
