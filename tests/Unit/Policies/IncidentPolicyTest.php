@@ -18,6 +18,27 @@ use Tests\TestCase;
 
 class IncidentPolicyTest extends TestCase
 {
+    public function test_user_cant_view_admin_create_form()
+    {
+        $user = User::factory()->create()->syncRoles('user');
+
+        $this->assertFalse($this->getPolicy()->viewAdminCreateForm($user));
+    }
+
+    public function test_supervisor_cant_view_admin_create_form()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+
+        $this->assertFalse($this->getPolicy()->viewAdminCreateForm($supervisor));
+    }
+
+    public function test_admin_can_view_admin_create_form()
+    {
+        $admin = User::factory()->create()->syncRoles('admin');
+
+        $this->assertTrue($this->getPolicy()->viewAdminCreateForm($admin));
+    }
+
     public function test_user_cant_download_files()
     {
         $user = User::factory()->create()->syncRoles('user');

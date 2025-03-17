@@ -20,6 +20,45 @@ use Tests\TestCase;
 
 class StoreTest extends TestCase
 {
+    public function test_admin_submission_redirects_to_show_page(): void
+    {
+        $incidentData = IncidentData::from([
+            'anonymous' => false,
+            'on_behalf' => false,
+            'on_behalf_anonymous' => false,
+            'role' => IncidentRoles::EMPLOYEE,
+            'last_name' => 'last',
+            'first_name' => 'first',
+            'upei_id' => '322',
+            'email' => 'john@doe.com',
+            'phone' => '(902) 333-4444',
+            'work_related' => true,
+            'workers_comp_submitted' => true,
+            'happened_at' => now(),
+            'location' => 'Building A',
+            'room_number' => '123A',
+            'witnesses' => [],
+            'incident_type' => IncidentType::SAFETY,
+            'descriptor' => 'Burn',
+            'description' => 'A fire broke out in the room.',
+            'injury_description' => 'Minor burn',
+            'first_aid_description' => 'Minor burn treated',
+            'reporters_email' => 'jane@doe.com',
+            'supervisor_name' => 'John Doe',
+        ]);
+
+        $this->assertDatabaseCount('incidents', 0);
+
+        $response = $this->post(route('incidents.store', ['admin_submission' => true]), $incidentData->toArray());
+
+        $this->assertDatabaseCount('incidents', 1);
+
+
+        $incident = Incident::first();
+
+        $response->assertRedirect(route('incidents.show', ['incident' => $incident->id]));
+    }
+
     public function test_user_id_on_event_if_not_anonymous()
     {
         $user = User::factory()->create();

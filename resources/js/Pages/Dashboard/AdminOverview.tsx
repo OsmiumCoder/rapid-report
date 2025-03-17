@@ -102,7 +102,17 @@ export default function AdminOverview({ incidents, incidentCount, closedCount, u
 
                 {/* Latest Incidents Table */}
                 <div className="mt-8 rounded-lg bg-white p-6 shadow-lg">
-                    <h3 className="mb-2 ml-2 text-lg font-semibold text-gray-700">Latest Incidents</h3>
+                    <div className="mb-2 flex items-center justify-between">
+                        <h3 className="ml-2 text-lg font-semibold text-gray-700">Latest Incidents</h3>
+                        <Link
+                            as="button"
+                            className="bg-upei-green-500 hover:bg-upei-green-400 focus-visible:outline-upei-green-600 cursor-pointer rounded-md px-3 py-2 text-center text-sm font-semibold text-white shadow-xs focus-visible:outline focus-visible:outline-offset-2"
+                            href={route('incidents.create.admin')}
+                        >
+                            Record Incident
+                        </Link>
+                    </div>
+
                     <OverviewTable incidents={incidents} />
                 </div>
             </div>
