@@ -4,8 +4,8 @@ ENV SERVER_NAME=137.149.157.7
 
 COPY . /app
 
-COPY ../certs/cert.pem /etc/ssl/certs/cert.pem
-COPY ../certs/key.pem /etc/ssl/private/key.pem
+COPY ../../certs/cert.pem /etc/ssl/certs/cert.pem
+COPY ../../certs/key.pem /etc/ssl/private/key.pem
 
 WORKDIR /app
 
