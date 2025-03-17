@@ -1,6 +1,6 @@
 FROM dunglas/frankenphp
 
-ENV SERVER_NAME=:80
+ENV SERVER_NAME=137.149.157.7
 
 COPY . /app
 
