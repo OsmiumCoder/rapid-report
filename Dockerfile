@@ -1,8 +1,11 @@
 FROM dunglas/frankenphp
 
-ENV SERVER_NAME=137.149.157.7
+ENV SERVER_NAME=137.149.157.7:443
 
 COPY . /app
+
+COPY ./certs/cert.pem /etc/ssl/site/server.crt
+COPY ./certs/key.pem /etc/ssl/site/server.key
 
 WORKDIR /app
 
