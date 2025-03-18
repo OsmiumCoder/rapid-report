@@ -1,6 +1,6 @@
 FROM dunglas/frankenphp
 
-ENV SERVER_NAME=https://
+ENV SERVER_NAME=137.149.157.7
 
 COPY . /app
 
@@ -28,6 +28,8 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
 RUN mkdir -p /var/log/supervisor
 
 RUN ln -s /usr/bin/php /usr/bin/php8.4
+
+COPY Caddyfile /etc/caddy/Caddyfile
 
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
