@@ -29,8 +29,6 @@ RUN mkdir -p /var/log/supervisor
 
 RUN ln -s /usr/bin/php /usr/bin/php8.4
 
-COPY Caddyfile /etc/caddy/Caddyfile
-
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
