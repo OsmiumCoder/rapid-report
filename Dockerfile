@@ -1,6 +1,6 @@
 FROM dunglas/frankenphp
 
-ENV SERVER_NAME=localhost
+ENV SERVER_NAME=137.149.157.7
 
 COPY . /app
 
@@ -30,8 +30,6 @@ RUN mkdir -p /var/log/supervisor
 RUN ln -s /usr/bin/php /usr/bin/php8.4
 
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-
-COPY Caddyfile /etc/caddy/Caddyfile
 
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
