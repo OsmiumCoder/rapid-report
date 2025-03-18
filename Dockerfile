@@ -31,6 +31,8 @@ RUN ln -s /usr/bin/php /usr/bin/php8.4
 
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
+COPY Caddyfile /etc/caddy/Caddyfile
+
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
 RUN chmod +x ./start-container
