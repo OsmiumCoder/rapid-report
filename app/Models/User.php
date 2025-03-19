@@ -15,7 +15,6 @@ class User extends Authenticatable
     use HasFactory;
     use HasRoles;
     use Notifiable;
-    use SoftDeletes;
 
     /**
      * The relationships that should always be loaded.
@@ -46,6 +45,15 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::creating(function ($user) {
+            $user->syncRoles('user');
+        });
+    }
 
     /**
      * Get the attributes that should be cast.
