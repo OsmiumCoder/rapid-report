@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
+use App\Models\User;
 
 // TODO: Remove, used for demo purposes
 Route::get('/notification', function () {
@@ -94,8 +95,17 @@ Route::get('/auth/redirect', function () {
 Route::get('/auth/callback', function () {
     $user = Socialite::driver('microsoft')->user();
 
-    dd($user);
-    // $user->token
+    $user = User::updateOrCreate([
+        'email' => $user->getEmail(),
+    ], [
+        'name' => $user->getName(),
+        'email' => $user->getEmail(),
+        'phone' => $user->mobilePhone,
+    ]);
+
+    Auth::login($user);
+
+    return redirect(route('dashboard', absolute: false));
 });
 
 
