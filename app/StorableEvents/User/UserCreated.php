@@ -27,11 +27,13 @@ class UserCreated extends StoredEvent
      */
     public function handle(): void
     {
-        $user = User::create([
-            'name' => $this->name,
+        $user = User::withTrashed()->updateOrCreate([
             'email' => $this->email,
+        ], [
+            'name' => $this->name,
             'upei_id' => $this->upei_id,
             'phone' => $this->phone,
+            'deleted_at' => null,
         ])->syncRoles($this->role->value);
 
         if ($this->incident_id && $this->role === RolesEnum::SUPERVISOR) {
