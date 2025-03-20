@@ -163,7 +163,6 @@ export default function AffectedPartyStage({ formData, setFormData, failedStep, 
 
                         <div className="mt-1">
                             <TextInput
-                                disabled={!formData.on_behalf && auth.user && auth.user.phone !== undefined}
                                 type="tel"
                                 placeholder="123-456-7890"
                                 value={(!formData.on_behalf && auth.user ? auth.user.phone : formData.phone) ?? ''}
@@ -232,7 +231,6 @@ export default function AffectedPartyStage({ formData, setFormData, failedStep, 
 
                             <div className="mt-1">
                                 <TextInput
-                                    disabled={!formData.on_behalf && auth.user !== undefined}
                                     value={!formData.on_behalf && auth.user ? auth.user.upei_id : formData.upei_id}
                                     onChange={(e) => setFormData('upei_id', e.target.value)}
                                 />
