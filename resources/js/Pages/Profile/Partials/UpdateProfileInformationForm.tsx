@@ -42,12 +42,7 @@ export default function UpdateProfileInformation({
                 <div>
                     <InputLabel htmlFor="name" value="Name" />
 
-                    <TextInput
-                        id="name"
-                        className="mt-1 block w-full"
-                        value={data.name}
-                        disabled
-                    />
+                    <TextInput id="name" className="mt-1 block w-full" value={data.name} disabled />
 
                     <InputError className="mt-2" message={errors.name} />
                 </div>
@@ -55,13 +50,7 @@ export default function UpdateProfileInformation({
                 <div>
                     <InputLabel htmlFor="email" value="Email" />
 
-                    <TextInput
-                        id="email"
-                        type="email"
-                        className="mt-1 block w-full"
-                        value={data.email}
-                        disabled
-                    />
+                    <TextInput id="email" type="email" className="mt-1 block w-full" value={data.email} disabled />
 
                     <InputError className="mt-2" message={errors.email} />
                 </div>

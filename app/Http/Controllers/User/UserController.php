@@ -9,9 +9,7 @@ use App\StorableEvents\User\UserCreated;
 use App\StorableEvents\User\UserDeleted;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules;
 use Illuminate\Http\Request;
 
 class UserController extends Controller

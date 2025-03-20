@@ -1,5 +1,5 @@
 import GuestLayout from '@/Layouts/GuestLayout';
-import { PencilIcon, PencilSquareIcon } from '@heroicons/react/24/outline';
+import { PencilIcon } from '@heroicons/react/24/outline';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 
@@ -66,7 +66,7 @@ export default function Login({ status }: { status?: string; canResetPassword: b
                                     </g>
                                 </svg>
                             </div>
-                          Login with Microsoft
+                            Login with Microsoft
                         </span>
                     </a>
                 </div>
