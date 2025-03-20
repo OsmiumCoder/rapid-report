@@ -21,15 +21,13 @@ class PasswordController extends Controller
             'current_password' => [
                 function (string $attribute, mixed $value, Closure $fail) {
                     // If the provided value is null, check if the user's current password is also null
-                    if (is_null($value)) {
-                        if (!is_null(Auth::user()->password)) {
-                            $fail('The current password is incorrect.');
-                        }
-                    } else {
-                        // Otherwise, validate the password using Hash::check
-                        if (!Hash::check($value, Auth::user()->password)) {
-                            $fail('The current password is incorrect.');
-                        }
+                    if (is_null($value) && !is_null(Auth::user()->password)) {
+                        $fail('The current password is incorrect.');
+                    }
+
+                    // Otherwise, validate the password using Hash::check
+                    elseif (!Hash::check($value, Auth::user()->password)) {
+                        $fail('The current password is incorrect.');
                     }
                 },
             ],
