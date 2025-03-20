@@ -26,7 +26,7 @@ class UserController extends Controller
 
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|unique:' . User::class,
+            'email' => 'required|string|lowercase|email|max:255',
             'upei_id' => ['sometimes', 'nullable', 'string'],
             'phone' => ['sometimes', 'nullable', 'string'],
             'role' => ['required', Rule::enum(RolesEnum::class)],
