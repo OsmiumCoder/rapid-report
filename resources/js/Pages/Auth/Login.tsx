@@ -1,15 +1,10 @@
-import Checkbox from '@/Components/Checkbox';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { PencilIcon, PencilSquareIcon } from '@heroicons/react/24/outline';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 
-export default function Login({ status, canResetPassword }: { status?: string; canResetPassword: boolean }) {
-    const { data, setData, post, processing, errors, reset } = useForm({
+export default function Login({ status }: { status?: string; canResetPassword: boolean }) {
+    const { post, reset } = useForm({
         email: '',
         password: '',
         remember: false as boolean,
