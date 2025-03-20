@@ -4,19 +4,40 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Auth\EmailVerificationPromptController;
-use App\Http\Controllers\Auth\NewPasswordController;
-use App\Http\Controllers\Auth\PasswordController;
-use App\Http\Controllers\Auth\PasswordResetLinkController;
-use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use Laravel\Socialite\Facades\Socialite;
+use App\Models\User;
 
 Route::middleware('guest')->group(function () {
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
         ->name('login');
 
     Route::post('login', [AuthenticatedSessionController::class, 'store']);
+
+    Route::get('/auth/redirect', function () {
+        return Socialite::driver('microsoft')
+            ->with(['hd' => 'upei.ca'])
+            ->redirect();
+    })->name('redirect.microsoft');
+
+    Route::get('/auth/callback', function () {
+        $user = Socialite::driver('microsoft')->user();
+
+        $user = User::withTrashed()->updateOrCreate([
+            'email' => $user->getEmail(),
+        ], [
+            'name' => $user->getName(),
+            'email' => $user->getEmail(),
+            'phone' => $user->mobilePhone,
+            'deleted_at' => null,
+        ]);
+
+        Auth::login($user);
+
+        return redirect(route('dashboard', absolute: false));
+    })->name('callback.microsoft');
 });
 
 Route::middleware('auth')->group(function () {
