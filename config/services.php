@@ -35,4 +35,12 @@ return [
         ],
     ],
 
+    'microsoft' => [
+        'client_id' => env('MICROSOFT_CLIENT_ID'),
+        'client_secret' => env('MICROSOFT_CLIENT_SECRET'),
+        'redirect' => '/auth/callback',
+        'tenant' => 'organizations',
+        'include_tenant_info' => true,
+    ],
+
 ];

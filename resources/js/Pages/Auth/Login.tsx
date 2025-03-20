@@ -1,15 +1,10 @@
-import Checkbox from '@/Components/Checkbox';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
-import { PencilIcon, PencilSquareIcon } from '@heroicons/react/24/outline';
+import { PencilIcon } from '@heroicons/react/24/outline';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 
-export default function Login({ status, canResetPassword }: { status?: string; canResetPassword: boolean }) {
-    const { data, setData, post, processing, errors, reset } = useForm({
+export default function Login({ status }: { status?: string; canResetPassword: boolean }) {
+    const { post, reset } = useForm({
         email: '',
         password: '',
         remember: false as boolean,
@@ -31,6 +26,7 @@ export default function Login({ status, canResetPassword }: { status?: string; c
 
             <form onSubmit={submit}>
                 <div className="mt-2 flex justify-center font-semibold">Submit an Incident Without Signing In</div>
+
                 <div className="mt-4 flex justify-center">
                     <Link
                         href={route('incidents.create')}
@@ -41,68 +37,6 @@ export default function Login({ status, canResetPassword }: { status?: string; c
                         Submit Incident
                     </Link>
                 </div>
-                <div className="relative my-6">
-                    <div aria-hidden="true" className="absolute inset-0 flex items-center">
-                        <div className="w-full border-t border-gray-300" />
-                    </div>
-                    <div className="relative flex justify-center">
-                        <span className="bg-white px-2 text-sm text-gray-500">Or</span>
-                    </div>
-                </div>
-                <div>
-                    <InputLabel htmlFor="email" value="Email" />
-
-                    <TextInput
-                        id="email"
-                        type="email"
-                        name="email"
-                        value={data.email}
-                        className="mt-1 block w-full"
-                        autoComplete="username"
-                        isFocused={true}
-                        onChange={(e) => setData('email', e.target.value)}
-                    />
-
-                    <InputError message={errors.email} className="mt-2" />
-                </div>
-
-                <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
-
-                    <TextInput
-                        id="password"
-                        type="password"
-                        name="password"
-                        value={data.password}
-                        className="mt-1 block w-full"
-                        autoComplete="current-password"
-                        onChange={(e) => setData('password', e.target.value)}
-                    />
-
-                    <InputError message={errors.password} className="mt-2" />
-                </div>
-
-                <div className="mt-4 block">
-                    <label className="flex items-center">
-                        <Checkbox name="remember" checked={data.remember} onChange={(e) => setData('remember', e.target.checked)} />
-                        <span className="ms-2 text-sm text-gray-600">Remember me</span>
-                    </label>
-                </div>
-
-                <div className="mt-4 flex items-center justify-end">
-                    {canResetPassword && (
-                        <Link
-                            href={route('password.request')}
-                            className="focus:ring-upei-green-500 rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:ring-2 focus:ring-offset-2 focus:outline-hidden"
-                        >
-                            Forgot your password?
-                        </Link>
-                    )}
-
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Log in
-                    </PrimaryButton>
-                </div>
 
                 <div className="relative my-6">
                     <div aria-hidden="true" className="absolute inset-0 flex items-center">
@@ -112,15 +46,29 @@ export default function Login({ status, canResetPassword }: { status?: string; c
                         <span className="bg-white px-2 text-sm text-gray-500">Or</span>
                     </div>
                 </div>
+
                 <div className="mb-4 flex justify-center">
-                    <Link
-                        href={route('register')}
+                    <a
+                        href={route('redirect.microsoft')}
                         as="button"
                         className="bg-upei-green-500 hover:bg-upei-green-600 focus-visible:outline-upei-green-600 flex cursor-pointer items-center rounded-md px-3 py-2 text-center text-sm font-semibold text-white shadow-xs focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                     >
-                        <PencilSquareIcon className="mr-2 h-4 w-4" />
-                        Register
-                    </Link>
+                        <span className="flex items-center space-x-5 hover:cursor-pointer">
+                            <div className="size-10">
+                                <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                    <g id="SVGRepo_iconCarrier">
+                                        <rect x="17" y="17" width="10" height="10" fill="#FEBA08"></rect>
+                                        <rect x="5" y="17" width="10" height="10" fill="#05A6F0"></rect>
+                                        <rect x="17" y="5" width="10" height="10" fill="#80BC06"></rect>
+                                        <rect x="5" y="5" width="10" height="10" fill="#F25325"></rect>
+                                    </g>
+                                </svg>
+                            </div>
+                            Login with Microsoft
+                        </span>
+                    </a>
                 </div>
             </form>
         </GuestLayout>

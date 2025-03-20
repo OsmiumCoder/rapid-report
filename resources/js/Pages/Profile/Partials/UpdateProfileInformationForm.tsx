@@ -20,6 +20,8 @@ export default function UpdateProfileInformation({
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
         name: user.name,
         email: user.email,
+        upei_id: user.upei_id,
+        phone: user.phone,
     });
 
     const submit: FormEventHandler = (e) => {
@@ -40,15 +42,7 @@ export default function UpdateProfileInformation({
                 <div>
                     <InputLabel htmlFor="name" value="Name" />
 
-                    <TextInput
-                        id="name"
-                        className="mt-1 block w-full"
-                        value={data.name}
-                        onChange={(e) => setData('name', e.target.value)}
-                        required
-                        isFocused
-                        autoComplete="name"
-                    />
+                    <TextInput id="name" className="mt-1 block w-full" value={data.name} disabled />
 
                     <InputError className="mt-2" message={errors.name} />
                 </div>
@@ -56,17 +50,37 @@ export default function UpdateProfileInformation({
                 <div>
                     <InputLabel htmlFor="email" value="Email" />
 
-                    <TextInput
-                        id="email"
-                        type="email"
-                        className="mt-1 block w-full"
-                        value={data.email}
-                        onChange={(e) => setData('email', e.target.value)}
-                        required
-                        autoComplete="username"
-                    />
+                    <TextInput id="email" type="email" className="mt-1 block w-full" value={data.email} disabled />
 
                     <InputError className="mt-2" message={errors.email} />
+                </div>
+
+                <div>
+                    <InputLabel htmlFor="upei_id" value="UPEI ID" />
+
+                    <TextInput
+                        id="upei_id"
+                        type="upei_id"
+                        className="mt-1 block w-full"
+                        value={data.upei_id}
+                        onChange={(e) => setData('upei_id', e.target.value)}
+                    />
+
+                    <InputError className="mt-2" message={errors.upei_id} />
+                </div>
+
+                <div>
+                    <InputLabel htmlFor="phone" value="Phone" />
+
+                    <TextInput
+                        id="phone"
+                        type="phone"
+                        className="mt-1 block w-full"
+                        value={data.phone}
+                        onChange={(e) => setData('phone', e.target.value)}
+                    />
+
+                    <InputError className="mt-2" message={errors.phone} />
                 </div>
 
                 {mustVerifyEmail && user.email_verified_at === null && (

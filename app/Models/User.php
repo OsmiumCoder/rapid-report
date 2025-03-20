@@ -35,6 +35,7 @@ class User extends Authenticatable
         'password',
         'upei_id',
         'phone',
+        'deleted_at',
     ];
 
     /**
@@ -46,6 +47,15 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::creating(function ($user) {
+            $user->syncRoles('user');
+        });
+    }
 
     /**
      * Get the attributes that should be cast.

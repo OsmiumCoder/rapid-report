@@ -5,7 +5,12 @@ services:
     extra_hosts:
       - 'host.docker.internal:host-gateway'
     ports:
-      - "80:80"
+      - "80:80" # HTTP
+      - "443:443" # HTTPS
+      - "443:443/udp" # HTTP/3
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
     networks:
       - prod
     restart: unless-stopped
@@ -110,3 +115,5 @@ volumes:
     driver: local
   prod-minio:
     driver: local
+  caddy_data:
+  caddy_config:

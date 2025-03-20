@@ -34,7 +34,7 @@ class RegisteredUserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'upei_id' => ['required', 'string'],
+            'upei_id' => ['sometimes', 'nullable', 'string'],
             'phone' => ['sometimes', 'nullable', 'string'],
         ]);
 
@@ -44,7 +44,7 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
             'upei_id' => $request->upei_id,
             'phone' => $request->phone,
-        ])->syncRoles('user');
+        ]);
 
         event(new Registered($user));
 

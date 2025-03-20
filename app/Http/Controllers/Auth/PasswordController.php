@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Closure;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 
@@ -16,7 +18,19 @@ class PasswordController extends Controller
     public function update(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'current_password' => ['required', 'current_password'],
+            'current_password' => [
+                function (string $attribute, mixed $value, Closure $fail) {
+                    // If the provided value is null, check if the user's current password is also null
+                    if (is_null($value) && !is_null(Auth::user()->password)) {
+                        $fail('The current password is incorrect.');
+                    }
+
+                    // Otherwise, validate the password using Hash::check
+                    elseif (!Hash::check($value, Auth::user()->password)) {
+                        $fail('The current password is incorrect.');
+                    }
+                },
+            ],
             'password' => ['required', Password::defaults(), 'confirmed'],
         ]);
 

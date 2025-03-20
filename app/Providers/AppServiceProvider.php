@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Incident;
 use App\Policies\DashboardPolicy;
 use App\Policies\ReportPolicy;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Vite;
@@ -26,6 +27,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Vite::prefetch(concurrency: 3);
+
+        Event::listen(function (\SocialiteProviders\Manager\SocialiteWasCalled $event) {
+            $event->extendSocialite('microsoft', \SocialiteProviders\Microsoft\Provider::class);
+        });
 
         Route::bind('incident', function (string $value) {
             return Incident::where('id', $value)

@@ -25,7 +25,6 @@ class UserCreatedTest extends TestCase
         $event = new UserCreated(
             name: 'john',
             email: 'john@doe.com',
-            password: 'password',
             upei_id: '43123',
             phone: '2332413124321',
             role: RolesEnum::SUPERVISOR,
@@ -56,7 +55,6 @@ class UserCreatedTest extends TestCase
         $event = new UserCreated(
             name: 'john',
             email: 'john@doe.com',
-            password: 'password',
             upei_id: '43123',
             phone: '2332413124321',
             role: RolesEnum::ADMIN,
@@ -84,7 +82,6 @@ class UserCreatedTest extends TestCase
         $event = new UserCreated(
             name: 'john',
             email: 'john@doe.com',
-            password: 'password',
             upei_id: '43123',
             phone: '2332413124321',
             role: RolesEnum::USER,
@@ -107,7 +104,6 @@ class UserCreatedTest extends TestCase
         $event = new UserCreated(
             name: 'john',
             email: 'john@doe.com',
-            password: 'password',
             upei_id: '43123',
             phone: '2332413124321',
             role: RolesEnum::SUPERVISOR,
@@ -129,7 +125,6 @@ class UserCreatedTest extends TestCase
         $event = new UserCreated(
             name: 'john',
             email: 'john@doe.com',
-            password: 'password',
             upei_id: '43123',
             phone: '2332413124321',
             role: RolesEnum::SUPERVISOR,
