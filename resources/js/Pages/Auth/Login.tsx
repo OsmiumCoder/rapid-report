@@ -31,7 +31,7 @@ export default function Login({ status, canResetPassword }: { status?: string; c
 
             <form onSubmit={submit}>
                 <div className="mt-2 flex justify-center font-semibold">Submit an Incident Without Signing In</div>
-                
+
                 <div className="mt-4 flex justify-center">
                     <Link
                         href={route('incidents.create')}
@@ -53,7 +53,7 @@ export default function Login({ status, canResetPassword }: { status?: string; c
                 </div>
 
                 <div className="mb-4 flex justify-center">
-                    <Link
+                    <a
                         href={route('redirect.microsoft')}
                         as="button"
                         className="bg-upei-green-500 hover:bg-upei-green-600 focus-visible:outline-upei-green-600 flex cursor-pointer items-center rounded-md px-3 py-2 text-center text-sm font-semibold text-white shadow-xs focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
@@ -73,7 +73,7 @@ export default function Login({ status, canResetPassword }: { status?: string; c
                             </div>
                           Login with Microsoft
                         </span>
-                    </Link>
+                    </a>
                 </div>
             </form>
         </GuestLayout>
