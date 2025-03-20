@@ -35,6 +35,7 @@ class User extends Authenticatable
         'password',
         'upei_id',
         'phone',
+        'deleted_at',
     ];
 
     /**
