@@ -99,7 +99,6 @@ export default function AddUserModal({ roles, isOpen, onClose, assignToIncidentI
                         value={data.upei_id}
                         className="mt-1 block w-full"
                         onChange={(e) => setData('upei_id', e.target.value)}
-                        required
                     />
 
                     <InputError message={errors.upei_id} className="mt-2" />

@@ -15,8 +15,8 @@ class UserCreated extends StoredEvent
     public function __construct(
         public string    $name,
         public string    $email,
-        public string    $upei_id,
-        public string    $phone,
+        public ?string   $upei_id,
+        public ?string   $phone,
         public RolesEnum $role,
         public ?string $incident_id = null,
     ) {
