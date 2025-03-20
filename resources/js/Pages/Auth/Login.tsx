@@ -114,12 +114,25 @@ export default function Login({ status, canResetPassword }: { status?: string; c
                 </div>
                 <div className="mb-4 flex justify-center">
                     <Link
-                        href={route('register')}
+                        href={route('redirect.microsoft')}
                         as="button"
                         className="bg-upei-green-500 hover:bg-upei-green-600 focus-visible:outline-upei-green-600 flex cursor-pointer items-center rounded-md px-3 py-2 text-center text-sm font-semibold text-white shadow-xs focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                     >
-                        <PencilSquareIcon className="mr-2 h-4 w-4" />
-                        Register
+                        <span className="flex items-center space-x-5 hover:cursor-pointer">
+                            <div className="size-10">
+                                <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                    <g id="SVGRepo_iconCarrier">
+                                        <rect x="17" y="17" width="10" height="10" fill="#FEBA08"></rect>
+                                        <rect x="5" y="17" width="10" height="10" fill="#05A6F0"></rect>
+                                        <rect x="17" y="5" width="10" height="10" fill="#80BC06"></rect>
+                                        <rect x="5" y="5" width="10" height="10" fill="#F25325"></rect>
+                                    </g>
+                                </svg>
+                            </div>
+                          Login with Microsoft
+                        </span>
                     </Link>
                 </div>
             </form>

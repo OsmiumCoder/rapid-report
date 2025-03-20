@@ -15,6 +15,7 @@ class User extends Authenticatable
     use HasFactory;
     use HasRoles;
     use Notifiable;
+    use SoftDeletes;
 
     /**
      * The relationships that should always be loaded.

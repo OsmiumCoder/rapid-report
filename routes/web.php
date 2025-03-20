@@ -10,23 +10,24 @@ Route::get('/auth/redirect', function () {
     return Socialite::driver('microsoft')
         ->with(['hd' => 'upei.ca'])
         ->redirect();
-});
+})->name('redirect.microsoft');
 
 Route::get('/auth/callback', function () {
     $user = Socialite::driver('microsoft')->user();
 
-    $user = User::updateOrCreate([
+    $user = User::withTrashed()->updateOrCreate([
         'email' => $user->getEmail(),
     ], [
         'name' => $user->getName(),
         'email' => $user->getEmail(),
         'phone' => $user->mobilePhone,
+        'deleted_at' => null,
     ]);
 
     Auth::login($user);
 
     return redirect(route('dashboard', absolute: false));
-});
+})->name('callback.microsoft');
 
 
 require __DIR__ . '/auth.php';
