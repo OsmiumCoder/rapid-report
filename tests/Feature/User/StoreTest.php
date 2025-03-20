@@ -23,8 +23,6 @@ class StoreTest extends TestCase
         $response = $this->post(route('users.store'), [
             'name' => 'Test User',
             'email' => 'test@example.com',
-            'password' => 'password',
-            'password_confirmation' => 'password',
             'upei_id' => '123456',
             'phone' => '12346565',
             'role' => RolesEnum::SUPERVISOR->value,
@@ -52,8 +50,6 @@ class StoreTest extends TestCase
         $response = $this->post(route('users.store'), [
             'name' => 'Test User',
             'email' => 'test@example.com',
-            'password' => 'password',
-            'password_confirmation' => 'password',
             'upei_id' => '123456',
             'phone' => '12346565',
             'role' => RolesEnum::ADMIN->value,
@@ -80,8 +76,6 @@ class StoreTest extends TestCase
         $response = $this->post(route('users.store'), [
             'name' => 'Test User',
             'email' => 'test@example.com',
-            'password' => 'password',
-            'password_confirmation' => 'password',
             'upei_id' => '123456',
             'phone' => '12346565',
             'role' => RolesEnum::USER->value,
@@ -109,8 +103,6 @@ class StoreTest extends TestCase
         $response = $this->post(route('users.store'), [
             'name' => 'Test User',
             'email' => 'test@example.com',
-            'password' => 'password',
-            'password_confirmation' => 'password',
             'upei_id' => '123456',
             'phone' => '12346565',
             'role' => RolesEnum::SUPERVISOR->value,
@@ -134,8 +126,6 @@ class StoreTest extends TestCase
         $response = $this->post(route('users.store'), [
             'name' => 'Test User',
             'email' => 'test@example.com',
-            'password' => 'password',
-            'password_confirmation' => 'password',
             'upei_id' => '123456',
             'phone' => '12346565',
             'role' => RolesEnum::SUPERVISOR->value,
@@ -164,8 +154,6 @@ class StoreTest extends TestCase
         $response = $this->post(route('users.store'), [
             'name' => 'Test User',
             'email' => 'test@example.com',
-            'password' => 'password',
-            'password_confirmation' => 'password',
             'upei_id' => '123456',
             'phone' => '12346565',
             'role' => RolesEnum::SUPERVISOR->value,
@@ -191,8 +179,6 @@ class StoreTest extends TestCase
         $response = $this->post(route('users.store'), [
             'name' => 'Test User',
             'email' => 'test@example.com',
-            'password' => 'password',
-            'password_confirmation' => 'password',
             'upei_id' => '123456',
             'phone' => '12346565',
             'role' => RolesEnum::SUPERVISOR->value,
@@ -210,8 +196,6 @@ class StoreTest extends TestCase
         $response = $this->post(route('users.store'), [
             'name' => 'Test User',
             'email' => 'test@example.com',
-            'password' => 'password',
-            'password_confirmation' => 'password',
             'upei_id' => '123456',
             'phone' => '12346565',
             'role' => RolesEnum::SUPERVISOR->value,
