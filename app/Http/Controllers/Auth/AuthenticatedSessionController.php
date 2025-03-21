@@ -25,6 +25,21 @@ class AuthenticatedSessionController extends Controller
     }
 
     /**
+     * Display the login view for development environment.
+     */
+    public function devCreate(): Response
+    {
+        if (config('app.env') !== 'local') {
+            abort(404);
+        }
+
+        return Inertia::render('Auth/DevLogin', [
+            'canResetPassword' => Route::has('password.request'),
+            'status' => session('status'),
+        ]);
+    }
+
+    /**
      * Handle an incoming authentication request.
      */
     public function store(LoginRequest $request): RedirectResponse

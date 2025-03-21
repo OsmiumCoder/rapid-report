@@ -50,7 +50,6 @@ export default function Login({ status }: { status?: string; canResetPassword: b
                 <div className="mb-4 flex justify-center">
                     <a
                         href={route('redirect.microsoft')}
-                        as="button"
                         className="bg-upei-green-500 hover:bg-upei-green-600 focus-visible:outline-upei-green-600 flex cursor-pointer items-center rounded-md px-3 py-2 text-center text-sm font-semibold text-white shadow-xs focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                     >
                         <span className="flex items-center space-x-5 hover:cursor-pointer">

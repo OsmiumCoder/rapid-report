@@ -3,12 +3,37 @@
 namespace Tests\Feature\Auth;
 
 use App\Models\User;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 class AuthenticationTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function test_dev_login_screen_can_be_rendered_in_dev_env()
+    {
+        config(['app.env' => 'local']);
+        $this->assertEquals('local', config('app.env'));
+
+        $response = $this->get(route('dev.login'));
+        $response->assertOk();
+
+        $this->refreshApplication();
+
+    }
+
+    public function test_dev_login_screen_not_found_in_prod_env()
+    {
+        config(['app.env' => 'production']);
+        $this->assertEquals('production', config('app.env'));
+
+        $response = $this->get(route('dev.login'));
+        $response->assertNotFound();
+
+        $this->refreshApplication();
+    }
 
     public function test_login_screen_can_be_rendered(): void
     {
