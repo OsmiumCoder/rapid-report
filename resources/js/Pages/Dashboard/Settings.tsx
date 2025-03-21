@@ -64,7 +64,7 @@ export default function Settings({ notificationMessages }: { notificationMessage
                             />
                             <InputError message={errors.message} />
 
-                            {processing ? (
+                            {processing && notificationBeingEdited?.id === notificationMessage.id ? (
                                 <LoadingIndicator />
                             ) : notificationBeingEdited?.id === notificationMessage.id ? (
                                 <div className="flex justify-between">
