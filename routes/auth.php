@@ -38,6 +38,9 @@ Route::middleware('guest')->group(function () {
 
         return redirect(route('dashboard', absolute: false));
     })->name('callback.microsoft');
+
+    Route::get('dev/login', [AuthenticatedSessionController::class, 'devCreate'])
+        ->name('dev.login');
 });
 
 Route::middleware('auth')->group(function () {

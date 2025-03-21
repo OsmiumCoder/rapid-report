@@ -10,6 +10,24 @@ class AuthenticationTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_dev_login_screen_can_be_rendered_in_dev_env()
+    {
+        config(['app.env' => 'local']);
+        $this->assertEquals('local', config('app.env'));
+
+        $response = $this->get(route('dev.login'));
+        $response->assertOk();
+    }
+
+    public function test_dev_login_screen_not_found_in_prod_env()
+    {
+        config(['app.env' => 'production']);
+        $this->assertEquals('production', config('app.env'));
+
+        $response = $this->get(route('dev.login'));
+        $response->assertNotFound();
+    }
+
     public function test_login_screen_can_be_rendered(): void
     {
         $response = $this->get('/login');
