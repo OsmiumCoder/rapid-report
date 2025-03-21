@@ -19,7 +19,8 @@ export default function IncidentAdminActions({ incident, supervisors, roles }: A
                         {(incident.status === IncidentStatus.OPENED ||
                             incident.status === IncidentStatus.ASSIGNED ||
                             incident.status === IncidentStatus.REOPENED ||
-                            incident.status === IncidentStatus.IN_REVIEW) && (
+                            incident.status === IncidentStatus.IN_REVIEW ||
+                            incident.status === IncidentStatus.RETURNED) && (
                             <SupervisorUpdate incident={incident} supervisors={supervisors} roles={roles} />
                         )}
                         <StatusUpdate incident={incident} />
