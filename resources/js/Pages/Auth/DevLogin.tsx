@@ -6,7 +6,7 @@ import Guest from '@/Layouts/GuestLayout';
 import { Head, useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 
-export default function DevLog() {
+export default function DevLogin() {
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
         password: '',
