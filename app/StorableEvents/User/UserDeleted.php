@@ -2,7 +2,10 @@
 
 namespace App\StorableEvents\User;
 
+use App\Models\Incident;
 use App\Models\User;
+use App\States\IncidentStatus\Assigned;
+use App\States\IncidentStatus\Opened;
 use App\StorableEvents\StoredEvent;
 
 class UserDeleted extends StoredEvent
@@ -15,6 +18,16 @@ class UserDeleted extends StoredEvent
     public function handle(): void
     {
         $user = User::find($this->user_id);
+
+        $user->incidents->each(function (Incident $incident) {
+            if ($incident->status::class == Assigned::class) {
+                $incident->supervisor_id = null;
+                $incident->status->transitionTo(Opened::class);
+                $incident->save();
+            }
+        });
+
+        $user->syncRoles('user');
 
         $user->delete();
     }
