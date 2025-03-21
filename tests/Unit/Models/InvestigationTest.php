@@ -9,6 +9,18 @@ use Tests\TestCase;
 
 class InvestigationTest extends TestCase
 {
+    public function test_investigation_belongs_to_trashed_supervisor_relation()
+    {
+        $supervisor = User::factory()->create()->syncRoles('supervisor');
+        $investigation = Investigation::factory()->create(['supervisor_id' => $supervisor->id]);
+
+        $supervisor->delete();
+
+        $investigation->refresh();
+
+        $this->assertEquals($supervisor->id, $investigation->supervisor->id);
+    }
+
     public function test_investigation_belongs_to_supervisor_relation()
     {
         $supervisor = User::factory()->create()->syncRoles('supervisor');
