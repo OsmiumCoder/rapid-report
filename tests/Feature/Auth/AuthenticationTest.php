@@ -19,7 +19,6 @@ class AuthenticationTest extends TestCase
         $response->assertOk();
 
         $this->refreshApplication();
-
     }
 
     public function test_dev_login_screen_not_found_in_prod_env()
