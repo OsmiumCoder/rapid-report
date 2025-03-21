@@ -27,6 +27,8 @@ class UserDeleted extends StoredEvent
             }
         });
 
+        // Since we are using soft deletes supervisor and admins should be set to user
+        // in the event they sign in via oauth they will be restored but only as a user.
         $user->syncRoles('user');
 
         $user->delete();
