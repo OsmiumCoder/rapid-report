@@ -17,8 +17,6 @@ class AuthenticationTest extends TestCase
 
         $response = $this->get(route('dev.login'));
         $response->assertOk();
-
-        $this->refreshApplication();
     }
 
     public function test_dev_login_screen_not_found_in_prod_env()
@@ -28,8 +26,6 @@ class AuthenticationTest extends TestCase
 
         $response = $this->get(route('dev.login'));
         $response->assertNotFound();
-
-        $this->refreshApplication();
     }
 
     public function test_login_screen_can_be_rendered(): void
