@@ -14,7 +14,7 @@ export default function DevLog() {
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        post(route('dev.login'), {
+        post(route('login'), {
             onFinish: () => reset('password'),
         });
     };
